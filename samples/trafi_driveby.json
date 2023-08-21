@@ -1,0 +1,4041 @@
+{
+  "vehicleSharingCategories": [
+    {
+      "id": "cars",
+      "name": "Cars",
+      "providersWithVehiclesAndGroups": [
+        {
+          "provider": {
+            "supportContacts": [
+              {
+                "type": "EMAIL",
+                "label": "Email MILES support",
+                "value": "hello@miles-mobility.com",
+                "isPrimary": false,
+                "emailSubject": "BVG Jelbi App"
+              },
+              {
+                "type": "PHONE",
+                "label": "Call MILES support",
+                "value": "+493083799710",
+                "isPrimary": false
+              },
+              {
+                "type": "URL",
+                "label": "MILES FAQ",
+                "value": "https://support.miles-mobility.com/hc/en-us/categories/360002670840",
+                "isPrimary": false
+              }
+            ],
+            "id": "driveby",
+            "name": "MILES",
+            "idPrefix": "driveby",
+            "color": "110711",
+            "accentColor": "FFFFFF",
+            "icon": "driveby",
+            "isLevel3": true,
+            "features": {
+              "supportsConnect": false,
+              "supportsRegistration": true,
+              "requiresPayment": true,
+              "connectionNotes": "",
+              "connectionLocalizations": { "buttonTitle": "Log in to MILES" }
+            },
+            "supportInfo": {
+              "label": "Call MILES support",
+              "phoneNumber": "+493083799710",
+              "email": "hello@miles-mobility.com"
+            },
+            "faq": {
+              "label": "MILES FAQ",
+              "webUrl": "https://support.miles-mobility.com/hc/en-us/categories/360002670840"
+            },
+            "properties": [
+              { "key": "PricingText", "value": "View all pricing & fees" },
+              {
+                "key": "PricingUrl",
+                "value": "https://miles-mobility.com/en-de/fees"
+              }
+            ],
+            "transportIcon": "car",
+            "sharingPricing": {
+              "currency": "EUR",
+              "summary": "",
+              "details": [
+                {
+                  "header": "Fees",
+                  "text": "Rookie Fee - €9 / month\nBER airport pick-up / drop off - €5"
+                }
+              ]
+            },
+            "wheelchairAccessible": false,
+            "sharingOptions": [
+              {
+                "vehicleType": "CAR",
+                "transportIcon": "car",
+                "hasStations": false,
+                "supportsDamageReport": true,
+                "supportsReturnOptions": false,
+                "requiresPinCode": false,
+                "booking": {
+                  "requiresVehicleCode": false,
+                  "hasAsyncStatusTransition": false,
+                  "requiresLocationOnCreateBooking": true,
+                  "requiresLocationOnFinishBooking": true,
+                  "requiresPhotoOnFinishBooking": false,
+                  "paidReservation": false,
+                  "allowedActions": [
+                    {
+                      "action": "RESERVE",
+                      "actionLocalizations": {},
+                      "requirements": { "requiresLocation": true }
+                    },
+                    {
+                      "bookingStatus": "RESERVED",
+                      "action": "CANCEL",
+                      "actionLocalizations": {},
+                      "requirements": { "requiresLocation": true }
+                    },
+                    {
+                      "bookingStatus": "RESERVED",
+                      "action": "LEASE",
+                      "actionLocalizations": {},
+                      "requirements": { "requiresLocation": true }
+                    },
+                    {
+                      "action": "LEASE",
+                      "actionLocalizations": {},
+                      "requirements": { "requiresLocation": true }
+                    },
+                    {
+                      "bookingStatus": "LEASED",
+                      "action": "PAUSE",
+                      "actionLocalizations": {},
+                      "requirements": { "requiresLocation": true }
+                    },
+                    {
+                      "bookingStatus": "PAUSED",
+                      "action": "LEASE",
+                      "actionLocalizations": {},
+                      "requirements": { "requiresLocation": true }
+                    },
+                    {
+                      "bookingStatus": "PAUSED",
+                      "action": "FINISH",
+                      "actionLocalizations": {},
+                      "requirements": { "requiresLocation": true }
+                    },
+                    {
+                      "bookingStatus": "LEASED",
+                      "action": "FINISH",
+                      "actionLocalizations": {},
+                      "requirements": { "requiresLocation": true }
+                    }
+                  ]
+                },
+                "vehicleSelection": {
+                  "byQrCode": false,
+                  "byNfcTag": false,
+                  "byManualCodeEntry": false
+                }
+              }
+            ],
+            "rentalOptions": []
+          },
+          "vehicles": [
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 5751E",
+                "providerId": "driveby",
+                "name": "VW ID.4 Pro",
+                "location": { "lat": 52.523983, "lng": 13.415369 },
+                "address": "Mitte, Bernhard-Weiß-Straße 6. Berlin",
+                "licencePlate": "WI-D 5751E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID4_white.png",
+                "battery": { "fraction": 0.81, "isCharging": false },
+                "rangeRemaining": 243000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Bump/dent @ Door"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Door: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 239, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8916",
+                "providerId": "driveby",
+                "name": "Audi Q2",
+                "location": { "lat": 52.525047, "lng": 13.412756 },
+                "address": "Mitte, Karl-Liebknecht-Straße. Berlin",
+                "licencePlate": "B-MI 8916",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi-q2.png",
+                "fuel": { "fraction": 0.34 },
+                "rangeRemaining": 197000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 236, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MM 6447",
+                "providerId": "driveby",
+                "name": "Audi Q2",
+                "location": { "lat": 52.521484, "lng": 13.417786 },
+                "address": "Mitte, Karl-Marx-Allee 6. Berlin",
+                "licencePlate": "B-MM 6447",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi-q2.png",
+                "fuel": { "fraction": 0.64 },
+                "rangeRemaining": 371000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Bump/dent @ Side panel: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 258, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8913",
+                "providerId": "driveby",
+                "name": "Audi Q2",
+                "location": { "lat": 52.525196, "lng": 13.41477 },
+                "address": "Mitte, Alex-Wedding-Straße 5. Berlin",
+                "licencePlate": "B-MI 8913",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi-q2.png",
+                "fuel": { "fraction": 0.58 },
+                "rangeRemaining": 336000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 256, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 7466",
+                "providerId": "driveby",
+                "name": "SEAT Leon",
+                "location": { "lat": 52.524952, "lng": 13.410317 },
+                "address": "Mitte, Rosa-Luxemburg-Straße 17. Berlin",
+                "licencePlate": "B-MI 7466",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/SeatLeon.png",
+                "fuel": { "fraction": 0.78 },
+                "rangeRemaining": 460000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Side panel: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Broken @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 303, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 1143",
+                "providerId": "driveby",
+                "name": "VW Taigo",
+                "location": { "lat": 52.524277, "lng": 13.408011 },
+                "address": "Mitte, Rochstraße 18. Berlin",
+                "licencePlate": "B-BM 1143",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VW_Taigo.png",
+                "fuel": { "fraction": 0.6 },
+                "rangeRemaining": 348000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 314, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 1438",
+                "providerId": "driveby",
+                "name": "VW Taigo",
+                "location": { "lat": 52.525276, "lng": 13.409402 },
+                "address": "Mitte, Almstadtstraße 18. Berlin",
+                "licencePlate": "B-BM 1438",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VW_Taigo.png",
+                "fuel": { "fraction": 0.95 },
+                "rangeRemaining": 551000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 354, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 4317",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.52565, "lng": 13.411194 },
+                "address": "Mitte, Hirtenstraße 15. Berlin",
+                "licencePlate": "B-BM 4317",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.91 },
+                "rangeRemaining": 527000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Door: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 353, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 2940",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.525269, "lng": 13.409379 },
+                "address": "Mitte, Almstadtstraße 16. Berlin",
+                "licencePlate": "B-BM 2940",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.6 },
+                "rangeRemaining": 348000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Fender: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 353, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 3512E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.523293, "lng": 13.407963 },
+                "address": "Mitte, Dircksenstraße 37. Berlin",
+                "licencePlate": "WI-D 3512E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_grey.png",
+                "battery": { "fraction": 0.45, "isCharging": false },
+                "rangeRemaining": 157000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Missing @ Wheel rim"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 352, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MS 4465",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.523682, "lng": 13.418689 },
+                "address": "Mitte, Otto-Braun-Straße 70. Berlin",
+                "licencePlate": "B-MS 4465",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.7 },
+                "rangeRemaining": 399000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 366, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 5673E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.526604, "lng": 13.41296 },
+                "address": "Mitte, Weydingerstraße. Berlin",
+                "licencePlate": "WI-D 5673E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_grey.png",
+                "battery": { "fraction": 0.8, "isCharging": false },
+                "rangeRemaining": 280000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Door: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Exterior mirror"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 394, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 2862",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.521004, "lng": 13.420263 },
+                "address": "Mitte, Karl-Marx-Allee. Berlin",
+                "licencePlate": "B-ML 2862",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.47 },
+                "rangeRemaining": 272000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 398, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 1258",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.520981, "lng": 13.420317 },
+                "address": "Mitte, Karl-Marx-Allee. Berlin",
+                "licencePlate": "B-ML 1258",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.8 },
+                "rangeRemaining": 464000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 400, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 2076",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.520882, "lng": 13.420599 },
+                "address": "Mitte, Karl-Marx-Allee. Berlin",
+                "licencePlate": "B-ML 2076",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.35 },
+                "rangeRemaining": 199000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 415, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 4053E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.522884, "lng": 13.420017 },
+                "address": "Mitte, Berolinastraße 20. Berlin",
+                "licencePlate": "WI-D 4053E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/App_VW-ID3.png",
+                "battery": { "fraction": 0.53, "isCharging": false },
+                "rangeRemaining": 185000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ Fender: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 423, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MS 8108",
+                "providerId": "driveby",
+                "name": "VW Taigo",
+                "location": { "lat": 52.5205, "lng": 13.421083 },
+                "address": "Mitte, Karl-Marx-Allee 26. Berlin",
+                "licencePlate": "B-MS 8108",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VW_Taigo.png",
+                "fuel": { "fraction": 1.0 },
+                "rangeRemaining": 580000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 437, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 7340",
+                "providerId": "driveby",
+                "name": "SEAT Leon",
+                "location": { "lat": 52.523552, "lng": 13.406336 },
+                "address": "Mitte, Dircksenstraße 42-44. Berlin",
+                "licencePlate": "B-MI 7340",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/SeatLeon.png",
+                "fuel": { "fraction": 0.89 },
+                "rangeRemaining": 525000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scratch @ Side panel: Three hands"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scuffed @ Side panel: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Bump/dent @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 435, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 4353",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.51936, "lng": 13.414825 },
+                "address": "Mitte, Dircksenstraße 102. Berlin",
+                "licencePlate": "B-BM 4353",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.75 },
+                "rangeRemaining": 435000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 437, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 4968E",
+                "providerId": "driveby",
+                "name": "Cupra Born",
+                "location": { "lat": 52.526993, "lng": 13.414185 },
+                "address": "Mitte, Weydingerstraße 18. Berlin",
+                "licencePlate": "B-BM 4968E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Cupra-Born.png",
+                "battery": { "fraction": 0.43, "isCharging": false },
+                "rangeRemaining": 140000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 436, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 9123",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.527065, "lng": 13.414163 },
+                "address": "Mitte, Weydingerstraße 18. Berlin",
+                "licencePlate": "B-MI 9123",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.5 },
+                "rangeRemaining": 285000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 454, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8168",
+                "providerId": "driveby",
+                "name": "Mercedes Sprinter",
+                "location": { "lat": 52.522762, "lng": 13.42055 },
+                "address": "Mitte, Berolinastraße 17. Berlin",
+                "licencePlate": "B-MI 8168",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€2🔓 + €1.29/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €2🔓 + €1.29/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/MercedesSprinter.png",
+                "fuel": { "fraction": 0.39 },
+                "rangeRemaining": 382000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Sliding door: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Bump/dent @ Trunklid: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Sidewall: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 462, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 6013",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.527199, "lng": 13.410869 },
+                "address": "Mitte, Rosa-Luxemburg-Straße. Berlin",
+                "licencePlate": "B-MI 6013",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.92 },
+                "rangeRemaining": 487000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Door: Three hands"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ License Plate"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 474, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 2434",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.526913, "lng": 13.409991 },
+                "address": "Mitte, Almstadtstraße 45. Berlin",
+                "licencePlate": "B-MI 2434",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.57 },
+                "rangeRemaining": 324000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: Two hands"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 486, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MS 7250",
+                "providerId": "driveby",
+                "name": "VW Taigo",
+                "location": { "lat": 52.527588, "lng": 13.410456 },
+                "address": "Mitte, Rosa-Luxemburg-Straße. Berlin",
+                "licencePlate": "B-MS 7250",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VW_Taigo.png",
+                "fuel": { "fraction": 1.0 },
+                "rangeRemaining": 580000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 509, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 4058",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.527645, "lng": 13.41047 },
+                "address": "Mitte, Almstadtstraße. Berlin",
+                "licencePlate": "B-BM 4058",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.69 },
+                "rangeRemaining": 400000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 511, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 4389",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.523396, "lng": 13.404521 },
+                "address": "Mitte, Dircksenstraße 48. Berlin",
+                "licencePlate": "B-BM 4389",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.42 },
+                "rangeRemaining": 243000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 530, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 5382",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.52557, "lng": 13.420825 },
+                "address": "Friedrichshain, Otto-Braun-Straße. Berlin",
+                "licencePlate": "B-MI 5382",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.27 },
+                "rangeRemaining": 153000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ License Plate"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Side panel: More than three hands"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Missing @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Missing @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 533, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 3423",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.518116, "lng": 13.415564 },
+                "address": "Mitte, Dircksenstraße 92. Berlin",
+                "licencePlate": "B-ML 3423",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 1.0 },
+                "rangeRemaining": 580000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 541, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 9862",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.52697, "lng": 13.418712 },
+                "address": "Prenzlauer Berg, Mendelssohnstraße 10. Berlin",
+                "licencePlate": "B-BM 9862",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.64 },
+                "rangeRemaining": 364000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 548, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MM 8394",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.528042, "lng": 13.412817 },
+                "address": "Prenzlauer Berg, Torstraße 25. Berlin",
+                "licencePlate": "B-MM 8394",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.35 },
+                "rangeRemaining": 203000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 566, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 2746",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.527229, "lng": 13.408095 },
+                "address": "Mitte, Alte Schönhauser Straße 8. Berlin",
+                "licencePlate": "B-MI 2746",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.85 },
+                "rangeRemaining": 493000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 573, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 4821",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.517651, "lng": 13.415694 },
+                "address": "Mitte, Dircksenstraße 90. Berlin",
+                "licencePlate": "B-MI 4821",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.46 },
+                "rangeRemaining": 262000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Bump/dent @ Door: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Door: Three hands"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Bump/dent @ Engine Hood: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Door: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 580, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 7366",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.528206, "lng": 13.412294 },
+                "address": "Prenzlauer Berg, Torstraße 35. Berlin",
+                "licencePlate": "B-BM 7366",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.77 },
+                "rangeRemaining": 446000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 596, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 3327",
+                "providerId": "driveby",
+                "name": "Audi Q2 S line",
+                "location": { "lat": 52.520557, "lng": 13.423512 },
+                "address": "Mitte, Berolinastraße. Berlin",
+                "licencePlate": "B-ML 3327",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi-q2.png",
+                "fuel": { "fraction": 0.94 },
+                "rangeRemaining": 545000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 603, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 8636E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.520908, "lng": 13.423986 },
+                "address": "Mitte, Berolinastraße 1. Berlin",
+                "licencePlate": "B-BM 8636E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_grey.png",
+                "battery": { "fraction": 0.67, "isCharging": false },
+                "rangeRemaining": 234000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 607, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 3346",
+                "providerId": "driveby",
+                "name": "Audi Q2 S line",
+                "location": { "lat": 52.525219, "lng": 13.422256 },
+                "address": "Friedrichshain, Mollstraße 29. Berlin",
+                "licencePlate": "B-ML 3346",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi-q2.png",
+                "fuel": { "fraction": 1.0 },
+                "rangeRemaining": 580000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 615, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 6825",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.528427, "lng": 13.409232 },
+                "address": "Mitte, Alte Schönhauser Straße 60. Berlin",
+                "licencePlate": "B-MI 6825",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.85 },
+                "rangeRemaining": 450000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Bump/dent @ Fender: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scratch @ Door: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 612, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 3067",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.519775, "lng": 13.424239 },
+                "address": "Mitte, Karl-Marx-Allee 39. Berlin",
+                "licencePlate": "B-ML 3067",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.57 },
+                "rangeRemaining": 330000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 613, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8216",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.521893, "lng": 13.424081 },
+                "address": "Mitte, Berolinastraße 8. Berlin",
+                "licencePlate": "B-MI 8216",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.57 },
+                "rangeRemaining": 324000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scratch @ Side panel: Two hands"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scratch @ Door: Three hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 616, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8905",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.528572, "lng": 13.418803 },
+                "address": "Prenzlauer Berg, Prenzlauer Berg 8. Berlin",
+                "licencePlate": "B-MI 8905",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.46 },
+                "rangeRemaining": 262000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 616, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 2524",
+                "providerId": "driveby",
+                "name": "Ford Transit",
+                "location": { "lat": 52.528111, "lng": 13.408862 },
+                "address": "Mitte, Alte Schönhauser Straße 3. Berlin",
+                "licencePlate": "B-BM 2524",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€2🔓 + €1.29/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €2🔓 + €1.29/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Ford_Transit.png",
+                "fuel": { "fraction": 0.43 },
+                "rangeRemaining": 249000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 621, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 7324",
+                "providerId": "driveby",
+                "name": "SEAT Leon",
+                "location": { "lat": 52.518635, "lng": 13.421212 },
+                "address": "Mitte, Schillingstraße. Berlin",
+                "licencePlate": "B-MI 7324",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/SeatLeon.png",
+                "fuel": { "fraction": 0.99 },
+                "rangeRemaining": 584000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Fender: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Door: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Bump/dent @ Door: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 633, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 7942",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.524364, "lng": 13.42276 },
+                "address": "Mitte, Mollstraße. Berlin",
+                "licencePlate": "B-BM 7942",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.72 },
+                "rangeRemaining": 417000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Missing @ License Plate"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 638, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 7269",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.529312, "lng": 13.416044 },
+                "address": "Prenzlauer Berg, Saarbrücker Straße 35. Berlin",
+                "licencePlate": "B-MI 7269",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.6 },
+                "rangeRemaining": 318000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ Engine Hood: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Bump/dent @ Fender: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Bump/dent @ Fender: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Broken @ Wheel rim"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 633, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 9419",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.528442, "lng": 13.408767 },
+                "address": "Mitte, Alte Schönhauser Straße 2. Berlin",
+                "licencePlate": "B-MI 9419",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.53 },
+                "rangeRemaining": 302000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ Side panel: Two hands"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ Side panel: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 633, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MM 4192",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.519321, "lng": 13.424955 },
+                "address": "Mitte, Karl-Marx-Allee 46. Berlin",
+                "licencePlate": "B-MM 4192",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.72 },
+                "rangeRemaining": 417000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 648, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MM 8530",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.522251, "lng": 13.404683 },
+                "address": "Mitte, Rochstraße 9. Berlin",
+                "licencePlate": "B-MM 8530",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.31 },
+                "rangeRemaining": 176000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 654, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 5616E",
+                "providerId": "driveby",
+                "name": "VW ID.4 Pro",
+                "location": { "lat": 52.52853, "lng": 13.408225 },
+                "address": "Mitte, Linienstraße 45. Berlin",
+                "licencePlate": "WI-D 5616E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID4_gold.png",
+                "battery": { "fraction": 0.88, "isCharging": false },
+                "rangeRemaining": 264000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 662, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MM 3764",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.529613, "lng": 13.415495 },
+                "address": "Prenzlauer Berg, Saarbrücker Straße 31. Berlin",
+                "licencePlate": "B-MM 3764",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.81 },
+                "rangeRemaining": 461000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scratch @ Door: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 665, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 9097",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.528664, "lng": 13.419848 },
+                "address": "Prenzlauer Berg, Prenzlauer Berg. Berlin",
+                "licencePlate": "B-MI 9097",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.75 },
+                "rangeRemaining": 427000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Door: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 670, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8982",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.518719, "lng": 13.423376 },
+                "address": "Mitte, Neue Blumenstraße 14. Berlin",
+                "licencePlate": "B-MI 8982",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.66 },
+                "rangeRemaining": 376000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Side panel: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Bumper: Two hands"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Missing @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 681, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 2771",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.516552, "lng": 13.416818 },
+                "address": "Mitte, Dircksenstraße 40. Berlin",
+                "licencePlate": "B-MI 2771",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.66 },
+                "rangeRemaining": 376000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 682, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 4335",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.519058, "lng": 13.425677 },
+                "address": "Mitte, Karl-Marx-Allee 52. Berlin",
+                "licencePlate": "B-BM 4335",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.88 },
+                "rangeRemaining": 510000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 691, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 5643E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.529289, "lng": 13.401845 },
+                "address": "Mitte, Rosenthaler Straße 72A. Berlin",
+                "licencePlate": "WI-D 5643E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/App_VW-ID3.png",
+                "battery": { "fraction": 0.93, "isCharging": false },
+                "rangeRemaining": 325000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Missing @ Exterior mirror"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 702, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 2899",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.528946, "lng": 13.401195 },
+                "address": "Mitte, Linienstraße 76. Berlin",
+                "licencePlate": "B-ML 2899",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.82 },
+                "rangeRemaining": 475000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 708, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MS 6761",
+                "providerId": "driveby",
+                "name": "Audi Q2",
+                "location": { "lat": 52.529198, "lng": 13.408264 },
+                "address": "Prenzlauer Berg, Angermünder Straße 12A. Berlin",
+                "licencePlate": "B-MS 6761",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi-q2.png",
+                "fuel": { "fraction": 0.8 },
+                "rangeRemaining": 464000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Broken @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 702, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 9957",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.515739, "lng": 13.403469 },
+                "address": "Mitte, Breite Straße 36-37. Berlin",
+                "licencePlate": "B-BM 9957",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.72 },
+                "rangeRemaining": 417000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 708, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8937",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.51635, "lng": 13.424593 },
+                "address": "Mitte, Singerstraße 8. Berlin",
+                "licencePlate": "B-MI 8937",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.51 },
+                "rangeRemaining": 290000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Missing @ Exterior mirror"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Fender: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Door: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 705, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 3626",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.516056, "lng": 13.402965 },
+                "address": "Mitte, Breite Straße 36-37. Berlin",
+                "licencePlate": "B-MI 3626",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.27 },
+                "rangeRemaining": 143000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Trunklid: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Otherwise damaged @ Roof: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 705, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 948",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.530289, "lng": 13.418988 },
+                "address": "Prenzlauer Berg, Prenzlauer Allee 11. Berlin",
+                "licencePlate": "B-BM 948",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.5 },
+                "rangeRemaining": 290000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 715, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 5499E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.515884, "lng": 13.403125 },
+                "address": "Mitte, Breite Straße 36-37. Berlin",
+                "licencePlate": "WI-D 5499E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_white.png",
+                "battery": { "fraction": 0.45, "isCharging": false },
+                "rangeRemaining": 157000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 710, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MM 1868",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.526447, "lng": 13.428325 },
+                "address": "Friedrichshain, Friedenstraße 9. Berlin",
+                "licencePlate": "B-MM 1868",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.4 },
+                "rangeRemaining": 228000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 714, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8464",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.532436, "lng": 13.410108 },
+                "address": "Prenzlauer Berg, Christinenstraße 19a. Berlin",
+                "licencePlate": "B-MI 8464",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.31 },
+                "rangeRemaining": 176000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Door: Two hands"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 714, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 5520",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.525406, "lng": 13.429124 },
+                "address": "Friedrichshain, Büschingstraße. Berlin",
+                "licencePlate": "B-BM 5520",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.96 },
+                "rangeRemaining": 556000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Door: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 726, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 1869",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.521046, "lng": 13.401896 },
+                "address": "Mitte, Anna-Louisa-Karsch-Straße 7. Berlin",
+                "licencePlate": "B-ML 1869",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.94 },
+                "rangeRemaining": 535000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 723, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 9673",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.523819, "lng": 13.397495 },
+                "address": "Mitte, Oranienburger Straße 16. Berlin",
+                "licencePlate": "B-BM 9673",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.88 },
+                "rangeRemaining": 510000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 726, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 5574E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.520916, "lng": 13.429266 },
+                "address": "Friedrichshain, Lichtenberger Straße. Berlin",
+                "licencePlate": "WI-D 5574E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_grey.png",
+                "battery": { "fraction": 0.56, "isCharging": false },
+                "rangeRemaining": 196000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Bump/dent @ Side panel: Two hands"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scratch @ Fender: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 728, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 6404",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.529247, "lng": 13.407702 },
+                "address": "Prenzlauer Berg, Torstraße 67. Berlin",
+                "licencePlate": "B-MI 6404",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.25 },
+                "rangeRemaining": 132000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Door: Two hands"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Broken @ Lights"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Door: Three hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 725, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 5674",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.531616, "lng": 13.406071 },
+                "address": "Mitte, Choriner Straße 79. Berlin",
+                "licencePlate": "B-MI 5674",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.25 },
+                "rangeRemaining": 142000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 720, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 5053E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.516129, "lng": 13.425183 },
+                "address": "Mitte, Singerstraße. Berlin",
+                "licencePlate": "WI-D 5053E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_grey.png",
+                "battery": { "fraction": 0.87, "isCharging": false },
+                "rangeRemaining": 304000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Fender: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 735, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 7278E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.529282, "lng": 13.413251 },
+                "address": "Prenzlauer Berg, Straßburger Straße 6A. Berlin",
+                "licencePlate": "B-BM 7278E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_grey.png",
+                "battery": { "fraction": 0.78, "isCharging": false },
+                "rangeRemaining": 273000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 732, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 8533E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.513161, "lng": 13.412911 },
+                "address": "Mitte, Wallstraße 60. Berlin",
+                "licencePlate": "B-BM 8533E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_black.png",
+                "battery": { "fraction": 0.71, "isCharging": false },
+                "rangeRemaining": 248000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 734, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 4056E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.528664, "lng": 13.406618 },
+                "address": "Mitte, Linienstraße 53. Berlin",
+                "licencePlate": "WI-D 4056E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/App_VW-ID3.png",
+                "battery": { "fraction": 0.66, "isCharging": false },
+                "rangeRemaining": 231000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Door: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 736, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 7541",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.532902, "lng": 13.411654 },
+                "address": "Prenzlauer Berg, Schwedter Straße 268. Berlin",
+                "licencePlate": "B-MI 7541",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.61 },
+                "rangeRemaining": 347000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Side panel: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ Engine Hood: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 736, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 4102E",
+                "providerId": "driveby",
+                "name": "VW ID.3",
+                "location": { "lat": 52.530064, "lng": 13.409971 },
+                "address": "Prenzlauer Berg, Lottumstraße 1. Berlin",
+                "licencePlate": "WI-D 4102E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/App_VW-ID3.png",
+                "battery": { "fraction": 0.59, "isCharging": false },
+                "rangeRemaining": 206000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Missing @ Side panel"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 730, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 6547",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.513168, "lng": 13.412822 },
+                "address": "Mitte, Wallstraße 60. Berlin",
+                "licencePlate": "B-MI 6547",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.5 },
+                "rangeRemaining": 265000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Bumper: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 734, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 9732",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.532795, "lng": 13.410578 },
+                "address": "Prenzlauer Berg, Christinenstraße 22. Berlin",
+                "licencePlate": "B-BM 9732",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.27 },
+                "rangeRemaining": 156000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 736, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 7431",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.533001, "lng": 13.414416 },
+                "address": "Prenzlauer Berg, Kollwitzstraße 20. Berlin",
+                "licencePlate": "B-BM 7431",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 1.0 },
+                "rangeRemaining": 580000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 740, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 6164",
+                "providerId": "driveby",
+                "name": "Audi Q2 S line",
+                "location": { "lat": 52.529152, "lng": 13.407027 },
+                "address": "Mitte, Torstraße 76. Berlin",
+                "licencePlate": "B-BM 6164",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi-q2.png",
+                "fuel": { "fraction": 0.88 },
+                "rangeRemaining": 510000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 742, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 5474",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.52549, "lng": 13.423844 },
+                "address": "Friedrichshain, Barnimstraße 38. Berlin",
+                "licencePlate": "B-BM 5474",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.79 },
+                "rangeRemaining": 458000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 740, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MM 2173",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.526333, "lng": 13.42385 },
+                "address": "Friedrichshain, Georgenkirchstraße 11. Berlin",
+                "licencePlate": "B-MM 2173",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.48 },
+                "rangeRemaining": 273000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 740, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MM 7461",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.526382, "lng": 13.423885 },
+                "address": "Friedrichshain, Georgenkirchstraße 3. Berlin",
+                "licencePlate": "B-MM 7461",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.35 },
+                "rangeRemaining": 199000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 743, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 1796",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.533138, "lng": 13.411291 },
+                "address": "Prenzlauer Berg, Schwedter Straße 4. Berlin",
+                "licencePlate": "B-ML 1796",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.98 },
+                "rangeRemaining": 558000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 756, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 1807",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.532772, "lng": 13.408484 },
+                "address": "Prenzlauer Berg, Zionskirchstraße 69. Berlin",
+                "licencePlate": "B-ML 1807",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.4 },
+                "rangeRemaining": 228000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 757, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 1635",
+                "providerId": "driveby",
+                "name": "VW Polo GP 2022",
+                "location": { "lat": 52.514275, "lng": 13.42195 },
+                "address": "Mitte, Holzmarktstraße. Berlin",
+                "licencePlate": "B-ML 1635",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.32 },
+                "rangeRemaining": 185000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 754, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 5545",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.526577, "lng": 13.424288 },
+                "address": "Friedrichshain, Georgenkirchstraße 12. Berlin",
+                "licencePlate": "B-BM 5545",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 1.0 },
+                "rangeRemaining": 580000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 769, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 3817",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.532917, "lng": 13.418172 },
+                "address": "Prenzlauer Berg, Kolmarer Straße 2. Berlin",
+                "licencePlate": "B-MI 3817",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.52 },
+                "rangeRemaining": 275000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scratch @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scratch @ Window"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Door: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 762, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 1859",
+                "providerId": "driveby",
+                "name": "VW T6",
+                "location": { "lat": 52.52972, "lng": 13.413859 },
+                "address": "Prenzlauer Berg, Straßburger Straße 9K. Berlin",
+                "licencePlate": "B-MI 1859",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€2🔓 + €1.29/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €2🔓 + €1.29/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWT6.png",
+                "fuel": { "fraction": 0.85 },
+                "rangeRemaining": 680000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Sliding door: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Exterior mirror"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Side panel: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Exterior mirror"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Bump/dent @ Trunklid: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Bump/dent @ Door: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Bump/dent @ Trunklid: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Inside)",
+                    "description": "Scratch @ Cover"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Bump/dent @ Side panel: Three hands"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Bump/dent @ Door: Two hands"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ Door: Two hands"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Broken @ Exterior mirror"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 778, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-ML 2776",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.517529, "lng": 13.422338 },
+                "address": "Mitte, Neue Blumenstraße 1. Berlin",
+                "licencePlate": "B-ML 2776",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.35 },
+                "rangeRemaining": 203000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 774, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 6292",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.530624, "lng": 13.410862 },
+                "address": "Prenzlauer Berg, Fehrbelliner Straße 3. Berlin",
+                "licencePlate": "B-MI 6292",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.25 },
+                "rangeRemaining": 132000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Door: Two hands"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scuffed @ Fender: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 778, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 5809",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.530682, "lng": 13.411389 },
+                "address": "Prenzlauer Berg, Schönhauser Allee 10-11. Berlin",
+                "licencePlate": "B-BM 5809",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.36 },
+                "rangeRemaining": 208000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 787, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 9560",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.530777, "lng": 13.41051 },
+                "address": "Prenzlauer Berg, Fehrbelliner Straße 3. Berlin",
+                "licencePlate": "B-BM 9560",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.72 },
+                "rangeRemaining": 410000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 799, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 1413",
+                "providerId": "driveby",
+                "name": "VW Taigo",
+                "location": { "lat": 52.529469, "lng": 13.406185 },
+                "address": "Prenzlauer Berg, Torstraße 85. Berlin",
+                "licencePlate": "B-BM 1413",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VW_Taigo.png",
+                "fuel": { "fraction": 0.7 },
+                "rangeRemaining": 406000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 798, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 8369",
+                "providerId": "driveby",
+                "name": "Ford Fiesta",
+                "location": { "lat": 52.529892, "lng": 13.407721 },
+                "address": "Prenzlauer Berg, Christinenstraße 39. Berlin",
+                "licencePlate": "B-MI 8369",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Ford_Fiesta.png",
+                "fuel": { "fraction": 0.59 },
+                "rangeRemaining": 259000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Bump/dent @ Fender: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 795, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-BM 5313",
+                "providerId": "driveby",
+                "name": "Opel Corsa Elegance",
+                "location": { "lat": 52.529778, "lng": 13.40697 },
+                "address": "Prenzlauer Berg, Zehdenicker Straße 28. Berlin",
+                "licencePlate": "B-BM 5313",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Opel_Corsa.png",
+                "fuel": { "fraction": 0.41 },
+                "rangeRemaining": 237000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 798, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_WI-D 5534E",
+                "providerId": "driveby",
+                "name": "VW ID.4 Pro",
+                "location": { "lat": 52.530918, "lng": 13.411312 },
+                "address": "Prenzlauer Berg, Schönhauser Allee 179. Berlin",
+                "licencePlate": "WI-D 5534E",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID4_gold.png",
+                "battery": { "fraction": 0.82, "isCharging": false },
+                "rangeRemaining": 246000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scratch @ Bumper: Three hands"
+                  },
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Bumper: Two hands"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 808, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 5776",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.530804, "lng": 13.410295 },
+                "address": "Prenzlauer Berg, Fehrbelliner Straße 100. Berlin",
+                "licencePlate": "B-MI 5776",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.67 },
+                "rangeRemaining": 355000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Passenger Side - Rear (Outside)",
+                    "description": "Scratch @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 809, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MS 4296",
+                "providerId": "driveby",
+                "name": "Audi A4 Avant",
+                "location": { "lat": 52.529087, "lng": 13.405542 },
+                "address": "Mitte, Gormannstraße 16. Berlin",
+                "licencePlate": "B-MS 4296",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/Audi_A4Avant.png",
+                "fuel": { "fraction": 0.31 },
+                "rangeRemaining": 176000,
+                "isInMobilityHub": false,
+                "damages": [],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 817, "text": "" }
+            },
+            {
+              "vehicle": {
+                "id": "driveby_B-MI 6420",
+                "providerId": "driveby",
+                "name": "VW Polo",
+                "location": { "lat": 52.529152, "lng": 13.402789 },
+                "address": "Mitte, Linienstraße 71. Berlin",
+                "licencePlate": "B-MI 6420",
+                "pricing": {
+                  "currency": "EUR",
+                  "summary": "€1🔓 + €0.98/km",
+                  "details": [
+                    {
+                      "header": "Basic Pricing",
+                      "text": "Basic rate - €1🔓 + €0.98/km\nOn parking mode - €0.29/min"
+                    }
+                  ]
+                },
+                "imageUrl": "https://api.app.miles-mobility.com/static/img/cars/small/VWPolo.png",
+                "fuel": { "fraction": 0.95 },
+                "rangeRemaining": 503000,
+                "isInMobilityHub": false,
+                "damages": [
+                  {
+                    "title": "Driver Side - Rear (Outside)",
+                    "description": "Scratch @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  },
+                  {
+                    "title": "Driver Side - Front (Outside)",
+                    "description": "Bump/dent @ Engine Hood: One hand"
+                  },
+                  {
+                    "title": "Passenger Side - Front (Outside)",
+                    "description": "Scuffed @ Bumper: One hand"
+                  }
+                ],
+                "tags": [],
+                "endLeaseSupported": true,
+                "reservationSupported": true,
+                "parkingSupported": true,
+                "requiresUserLocation": true,
+                "type": "CAR",
+                "sustainability": {}
+              },
+              "walkDuration": { "seconds": 826, "text": "" }
+            }
+          ],
+          "vehicleGroups": [],
+          "instantUnlockEnabled": false
+        }
+      ]
+    }
+  ]
+}
