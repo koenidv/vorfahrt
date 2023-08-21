@@ -26,9 +26,11 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import MapView, {
   enableLatestRenderer,
+  Marker,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
-import { mapStyle } from './Map/mapStyle';
+import {mapStyle} from './Map/mapStyle';
+import {testPins} from './Map/testPins';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -89,13 +91,23 @@ function App(): JSX.Element {
           style={[{height: '100%', width: '100%'}]}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: 52.525084,
-            longitude: 13.369402,
+            latitude: 52.5277672,
+            longitude: 13.3767757,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-          customMapStyle={mapStyle}
-        />
+          customMapStyle={mapStyle}>
+          {testPins.map((pin, index) => {
+            return (
+              <Marker
+                key={index}
+                coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
+                title={pin.LicensePlate}
+                description={pin.VehicleType}
+              />
+            );
+          })}
+        </MapView>
       </View>
     </SafeAreaView>
   );
