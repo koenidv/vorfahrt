@@ -28,6 +28,7 @@ import MapView, {
   enableLatestRenderer,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
+import { mapStyle } from './Map/mapStyle';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -88,11 +89,12 @@ function App(): JSX.Element {
           style={[{height: '100%', width: '100%'}]}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: 52.525084,
+            longitude: 13.369402,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
+          customMapStyle={mapStyle}
         />
       </View>
     </SafeAreaView>
