@@ -5,8 +5,8 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React from "react";
+import type {PropsWithChildren} from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -15,31 +15,16 @@ import {
   Text,
   useColorScheme,
   View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import MapView, {
-  enableLatestRenderer,
-  Marker,
-  PROVIDER_GOOGLE,
-} from 'react-native-maps';
-import {mapStyle} from './Map/mapStyle';
-import {testPins} from './Map/testPins';
+} from "react-native";
+import {Colors} from "react-native/Libraries/NewAppScreen";
+import Map from "./Map/Map";
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-enableLatestRenderer();
-
 function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === "dark";
   return (
     <View style={styles.sectionContainer}>
       <Text
@@ -65,49 +50,23 @@ function Section({children, title}: SectionProps): JSX.Element {
 }
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === "dark";
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const styles = StyleSheet.create({
-    map: {
-      ...StyleSheet.absoluteFillObject,
-    },
-  });
-
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle={isDarkMode ? "light-content" : "dark-content"}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <View
         style={{
           backgroundColor: isDarkMode ? Colors.black : Colors.white,
         }}>
-        <MapView
-          style={[{height: '100%', width: '100%'}]}
-          provider={PROVIDER_GOOGLE}
-          initialRegion={{
-            latitude: 52.5277672,
-            longitude: 13.3767757,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          customMapStyle={mapStyle}>
-          {testPins.map((pin, index) => {
-            return (
-              <Marker
-                key={index}
-                coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
-                title={pin.LicensePlate}
-                description={pin.VehicleType}
-              />
-            );
-          })}
-        </MapView>
+        <Map />
       </View>
     </SafeAreaView>
   );
@@ -120,15 +79,15 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   highlight: {
-    fontWeight: '700',
+    fontWeight: "700",
   },
 });
 
