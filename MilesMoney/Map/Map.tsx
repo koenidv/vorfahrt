@@ -1,6 +1,6 @@
 import {mapStyle} from "./mapStyle";
 import {fetchVehicles} from "../lib/Miles/fetchVehicles";
-import {apiVehicle, VehicleEngine} from "../lib/Miles/types";
+import {apiCluster, apiVehicle, VehicleEngine} from "../lib/Miles/types";
 import _, {debounce} from "lodash";
 import MapView, {
   enableLatestRenderer,
@@ -16,7 +16,7 @@ type Region = {
   longitudeDelta: number;
 };
 
-class Map extends React.Component<{}, {region: Region; pins: apiVehicle[]}> {
+class Map extends React.Component<{}, {region: Region; pins: apiVehicle[], clusters: apiCluster[]}> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -27,6 +27,7 @@ class Map extends React.Component<{}, {region: Region; pins: apiVehicle[]}> {
         longitudeDelta: 0.0421,
       },
       pins: [],
+      clusters: []
     };
     enableLatestRenderer();
   }
@@ -45,23 +46,12 @@ class Map extends React.Component<{}, {region: Region; pins: apiVehicle[]}> {
       zoomLevel: 20,
       userLatitude: 52.5277672,
       userLongitude: 13.3767757,
-      //engine: [VehicleEngine.electric],
-      //maxFuel: 30
+      engine: [VehicleEngine.electric],
+      maxFuel: 30
     });
     this.setState({pins: this.joinPins(this.state.pins, res.Data.vehicles)});
-    console.log(
-      JSON.stringify(
-        this.state.pins.map(v => {
-          return {
-            plate: v.LicensePlate,
-            long: v.Longitude,
-            lat: v.Latitude,
-          };
-        }),
-        null,
-        2,
-      ),
-    );
+    this.setState({clusters: res.Data.clusters})
+    console.log(res.Data.clusters);
   };
 
   debounceFetchVehicles = debounce(this.handleFetchVehicles, 1000);
@@ -74,7 +64,6 @@ class Map extends React.Component<{}, {region: Region; pins: apiVehicle[]}> {
   onRegionChange = (region: any) => {
     this.setState({region: region});
     console.log(this.state.region);
-    this.debounceFetchVehicles();
   };
 
   render() {
@@ -92,6 +81,18 @@ class Map extends React.Component<{}, {region: Region; pins: apiVehicle[]}> {
               coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
               title={pin.LicensePlate}
               description={pin.VehicleType}
+              pinColor="indigo"
+            />
+          );
+        })}
+        {this.state.clusters.map((cluster, index) => {
+          return (
+            <Marker
+              key={index}
+              coordinate={{latitude: cluster.Latitude, longitude: cluster.Longitude}}
+              title={cluster.nUnits.toString()}
+              description={cluster.idCluster.toString()}
+              pinColor="yellow"
             />
           );
         })}
