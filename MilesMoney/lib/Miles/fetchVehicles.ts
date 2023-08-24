@@ -32,31 +32,6 @@ type VehicleFetchOptions = {
 export const fetchVehicles = async (
   options: VehicleFetchOptions,
 ): Promise<apiVehiclesResponse> => {
-  console.log(
-    `${BASE_URL}/Vehicles?` + new URLSearchParams({
-      deviceKey: options.deviceKey,
-      latitude: options.latitude.toString(),
-      longitude: options.longitude.toString(),
-      latitudeDelta: options.latitudeDelta.toString(),
-      longitudeDelta: options.longitudeDelta.toString(),
-      userLatitude: options.userLatitude.toString(),
-      userLongitude: options.userLongitude.toString(),
-      zoomLevel: options.zoomLevel.toString(),
-      lang: options.lang ?? "en",
-      FuelLevelFilterMin: options.minFuel?.toString() || "0",
-      FuelLevelFilterMax: options.maxFuel?.toString() || "100",
-      VehicleSizeFilter: options.size?.join(",") || "",
-      vehicleEngineFilter: options.engine?.join(",") || "",
-      VehicleSeatsFilter: options.seats?.join(",") || "",
-      vehicleModelsFilter: options.model?.join(",") || "",
-      showOnlyDiscountedVehicles: options.onlyDiscounted === true ? "1" : "0",
-      showFuelingStations: options.showFuelingStations === true ? "1" : "0",
-      showChargingStations: options.showChargingStations === true ? "1" : "0",
-      showMilesPartners: options.showPartners === true ? "1" : "0",
-      VehicleTransmissionFilter: "",
-    }),
-  );
-
   const res = await fetch(
     `${BASE_URL}/Vehicles?` + new URLSearchParams({
       deviceKey: options.deviceKey,

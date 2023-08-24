@@ -1,8 +1,8 @@
 export enum VehicleSize {
-  s = "S",
-  m = "M",
-  l = "L",
-  xl = "XL",
+  small = "S",
+  medium = "M",
+  large = "L",
+  transporter = "XL",
   premium = "P",
 }
 
@@ -65,7 +65,7 @@ export type apiVehicle = {
 };
 
 export type apiCluster = {
-  idCluster: number;
+  idCluster: number | null;
   idClusterHash: string;
   Latitude: number;
   Longitude: number;

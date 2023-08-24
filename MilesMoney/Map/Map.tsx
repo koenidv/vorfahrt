@@ -1,7 +1,7 @@
 import {mapStyle} from "./mapStyle";
 import {fetchVehicles} from "../lib/Miles/fetchVehicles";
-import {apiCluster, apiVehicle, VehicleEngine} from "../lib/Miles/types";
-import _, {debounce} from "lodash";
+import {apiCluster, apiVehicle, VehicleEngine, VehicleSize} from "../lib/Miles/types";
+import _ from "lodash";
 import MapView, {
   enableLatestRenderer,
   Marker,
@@ -47,14 +47,14 @@ class Map extends React.Component<{}, {region: Region; pins: apiVehicle[], clust
       userLatitude: 52.5277672,
       userLongitude: 13.3767757,
       engine: [VehicleEngine.electric],
+      size: [VehicleSize.small, VehicleSize.medium],
       maxFuel: 30
     });
     this.setState({pins: this.joinPins(this.state.pins, res.Data.vehicles)});
     this.setState({clusters: res.Data.clusters})
-    console.log(res.Data.clusters);
   };
 
-  debounceFetchVehicles = debounce(this.handleFetchVehicles, 1000);
+  debounceFetchVehicles = _.debounce(this.handleFetchVehicles, 1000);
 
   joinPins = (current: apiVehicle[], incoming: apiVehicle[]): apiVehicle[] => {
     // todo inefficient temp stuff
@@ -63,7 +63,7 @@ class Map extends React.Component<{}, {region: Region; pins: apiVehicle[], clust
 
   onRegionChange = (region: any) => {
     this.setState({region: region});
-    console.log(this.state.region);
+    this.debounceFetchVehicles();
   };
 
   render() {
@@ -80,7 +80,7 @@ class Map extends React.Component<{}, {region: Region; pins: apiVehicle[], clust
               key={index}
               coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
               title={pin.LicensePlate}
-              description={pin.VehicleType}
+              description={`${pin.VehicleType}, ${pin.FuelPct}`}
               pinColor="indigo"
             />
           );
@@ -91,7 +91,7 @@ class Map extends React.Component<{}, {region: Region; pins: apiVehicle[], clust
               key={index}
               coordinate={{latitude: cluster.Latitude, longitude: cluster.Longitude}}
               title={cluster.nUnits.toString()}
-              description={cluster.idCluster.toString()}
+              description={cluster.idCluster?.toString()}
               pinColor="yellow"
             />
           );
