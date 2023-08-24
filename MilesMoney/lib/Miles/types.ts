@@ -73,6 +73,30 @@ export type apiCluster = {
   Bounds: string;
 };
 
+export type apiPOI = {
+  idCityLayer: number;
+  idCityLayerType: "EV_CHARGING_STATION" | "TOTAL_GAS_STATION" | "ARAL_GAS_STATION" | "GENERIC_GAS_STATION";
+  Latitude: number;
+  Longitude: number;
+  Distance_m: number; // distance from user
+  txtDistance: string; // rounded distance from user
+  NavigateTo: null | string; // unsure
+  Available: boolean;
+  Station_Name: string;
+  Station_Address: string;
+};
+
+export type apiPartner = {
+  idMilesPartner: string;
+  idMilesPartnerLocation: number;
+  MapPointLogoURL: string;
+  Lat: number;
+  Long: number;
+  ParkingArea: string;
+  Info: string;
+  distance_m: number;
+};
+
 export type apiVehiclesResponse = {
   Result: "OK" | string;
   ResponseText: null | string;
@@ -102,7 +126,7 @@ export type apiVehiclesResponse = {
     };
     vehicles: apiVehicle[];
     clusters: apiCluster[];
-    pois: unknown[];
-    partners: unknown[];
+    pois: apiPOI[];
+    partners: apiPartner[];
   };
 };
