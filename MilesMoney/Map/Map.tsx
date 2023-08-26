@@ -7,7 +7,7 @@ import {
   VehicleEngine,
   VehicleSize,
 } from "../lib/Miles/types";
-import _ from "lodash";
+import _, {set} from "lodash";
 import MapView, {
   enableLatestRenderer,
   Marker,
@@ -30,9 +30,12 @@ class Map extends React.Component<
     pins: apiVehicle[];
     clusters: apiCluster[];
     pois: apiPOI[];
-    pos: Location;
+    pos: Location | undefined;
   }
 > {
+  locationInterval: NodeJS.Timeout | null = null;
+  map: any;
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -45,30 +48,36 @@ class Map extends React.Component<
       pins: [],
       clusters: [],
       pois: [],
-      pos: {
-        latitude: 52.5277672,
-        longitude: 13.3767757,
-        altitude: 0,
-        accuracy: 0,
-        speed: 0,
-        time: 0,
-      },
+      pos: undefined,
     };
     enableLatestRenderer();
+
+    this.locationInterval = null;
   }
 
   componentDidMount() {
-    this.handleFetchVehicles();
     this.handleGetLocation().then(pos => {
       this.setState({
         region: {
+          ...this.state.region,
           latitude: pos.latitude,
           longitude: pos.longitude,
-          latitudeDelta: this.state.region.latitudeDelta,
-          longitudeDelta: this.state.region.longitudeDelta,
         },
       });
+      this.map.animateCamera({
+        center: {
+          latitude: pos.latitude,
+          longitude: pos.longitude,
+        },
+      });
+      this.handleFetchVehicles();
     });
+
+    this.locationInterval = setInterval(this.handleGetLocation, 10000);
+  }
+
+  componentWillUnmount(): void {
+    this.locationInterval && clearInterval(this.locationInterval);
   }
 
   handleGetLocation = async (): Promise<Location> => {
@@ -119,16 +128,22 @@ class Map extends React.Component<
   render() {
     return (
       <MapView
+        ref={ref => (this.map = ref)}
         style={[{height: "100%", width: "100%"}]}
         provider={PROVIDER_GOOGLE}
         initialRegion={this.state.region}
         onRegionChange={this.onRegionChange}
         customMapStyle={mapStyle}>
+        {this.state.pos && (
           <Marker
-            coordinate={{latitude: this.state.pos.latitude, longitude: this.state.pos.longitude}}
+            coordinate={{
+              latitude: this.state.pos.latitude,
+              longitude: this.state.pos.longitude,
+            }}
             title="you"
             pinColor="orange"
           />
+        )}
         {this.state.pins.map((pin, index) => {
           return (
             <Marker
