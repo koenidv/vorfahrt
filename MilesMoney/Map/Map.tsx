@@ -133,17 +133,18 @@ class Map extends React.Component<
         provider={PROVIDER_GOOGLE}
         initialRegion={this.state.region}
         onRegionChange={this.onRegionChange}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
         customMapStyle={mapStyle}>
-        {this.state.pos && (
+        {/* {this.state.pos && (
           <Marker
             coordinate={{
               latitude: this.state.pos.latitude,
               longitude: this.state.pos.longitude,
             }}
-            title="you"
-            pinColor="orange"
+            image={CurrentLocationIcon}
           />
-        )}
+        )} */}
         {this.state.pins.map((pin, index) => {
           return (
             <Marker
