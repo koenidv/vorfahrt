@@ -21,6 +21,25 @@ export enum VehicleType {
   //todo
 }
 
+export type Vehicle = {
+  id: number;
+  licensePlate: string;
+  latitude: number;
+  longitude: number;
+  type: VehicleType;
+  isElectric: boolean;
+  isPlugged: boolean;
+  charge: number;
+  range: string;
+  color: string;
+  size: VehicleSize;
+  seats: VehicleSeats;
+  price_km: string;
+  price_park: string;
+  price_unlock: string;
+  image: string;
+};
+
 export type apiVehicle = {
   idVehicle: number;
   idCity: string;

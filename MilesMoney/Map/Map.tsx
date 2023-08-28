@@ -15,6 +15,7 @@ import MapView, {
 } from "react-native-maps";
 import React from "react";
 import GetLocation, {Location} from "react-native-get-location";
+import VehicleMarker from "./VehicleMarker";
 
 type Region = {
   latitude: number;
@@ -146,14 +147,21 @@ class Map extends React.Component<
           />
         )} */}
         {this.state.pins.map((pin, index) => {
+          // return (
+          //   <Marker
+          //     key={index}
+          //     coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
+          //     title={pin.LicensePlate}
+          //     description={`${pin.VehicleType}, ${pin.FuelPct}`}
+          //     pinColor="indigo"
+          //   />
+          // );
           return (
             <Marker
-              key={index}
               coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
-              title={pin.LicensePlate}
-              description={`${pin.VehicleType}, ${pin.FuelPct}`}
-              pinColor="indigo"
-            />
+              key={index}>
+              <VehicleMarker />
+            </Marker>
           );
         })}
         {this.state.clusters.map((cluster, index) => {
