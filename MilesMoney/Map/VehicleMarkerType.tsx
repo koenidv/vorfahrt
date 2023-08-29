@@ -44,7 +44,7 @@ const VehicleMarkerType = (props: VehicleMarkerTypeProps) => {
 
   if (props.type.includes("Cupra")) {
     return <CUPRA style={{position: "absolute"}} width={40} height={40} />;
-  } else if (props.type.includes("Seat")) {
+  } else if (props.type.includes("SEAT")) {
     return <SEAT style={{position: "absolute"}} width={40} height={40} />;
   } else if (props.type.includes("Opel")) {
     return <OPEL style={{position: "absolute"}} width={40} height={40} />;

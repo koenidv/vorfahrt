@@ -180,7 +180,7 @@ class Map extends React.Component<
             />
           );
         })}
-        {this.state.pois.map((poi, index) => {
+        {/* {this.state.pois.map((poi, index) => {
           return (
             <Marker
               key={index}
@@ -193,7 +193,7 @@ class Map extends React.Component<
               pinColor="teal"
             />
           );
-        })}
+        })} */}
       </MapView>
     );
   }
