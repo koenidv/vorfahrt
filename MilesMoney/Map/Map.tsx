@@ -159,8 +159,10 @@ class Map extends React.Component<
           return (
             <Marker
               coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
-              key={index}>
-              <VehicleMarker />
+              key={index}
+              title={pin.LicensePlate}
+              description={`${pin.VehicleType}, ${pin.FuelPct}`}>
+              <VehicleMarker vehicle={pin} />
             </Marker>
           );
         })}
