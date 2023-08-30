@@ -76,7 +76,7 @@ class Map extends React.Component<
       this.handleFetchVehicles();
     });
 
-    this.locationInterval = setInterval(this.handleGetLocation, 10000);
+    //this.locationInterval = setInterval(this.handleGetLocation, 10000);
   }
 
   componentWillUnmount(): void {
@@ -175,7 +175,9 @@ class Map extends React.Component<
               }}
               title={poi.Station_Name}
               description={poi.Station_Address}
-              tracksViewChanges={false}>
+              tracksViewChanges={false}
+              flat={true}
+              anchor={{x: 0.5, y: 0.5}}>
               <ChargeStationMarker />
             </Marker>
           );
