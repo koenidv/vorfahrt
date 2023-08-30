@@ -1,8 +1,8 @@
 import {Vehicle, apiVehicle} from "../lib/Miles/types";
 import * as React from "react";
 import {View} from "react-native";
-import VehicleMarkerChargestate from "./VehicleMarkerChargestate";
 import Background from "../assets/icons/Marker/background.svg";
+import VehicleMarkerChargestate from "./VehicleMarkerChargestate";
 import VehicleMarkerType from "./VehicleMarkerType";
 
 type VehicleMarkerProps = {

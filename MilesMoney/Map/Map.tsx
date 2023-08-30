@@ -137,31 +137,14 @@ class Map extends React.Component<
         showsUserLocation={true}
         showsMyLocationButton={true}
         customMapStyle={mapStyle}>
-        {/* {this.state.pos && (
-          <Marker
-            coordinate={{
-              latitude: this.state.pos.latitude,
-              longitude: this.state.pos.longitude,
-            }}
-            image={CurrentLocationIcon}
-          />
-        )} */}
         {this.state.pins.map((pin, index) => {
-          // return (
-          //   <Marker
-          //     key={index}
-          //     coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
-          //     title={pin.LicensePlate}
-          //     description={`${pin.VehicleType}, ${pin.FuelPct}`}
-          //     pinColor="indigo"
-          //   />
-          // );
           return (
             <Marker
               coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
               key={index}
               title={pin.LicensePlate}
-              description={`${pin.VehicleType}, ${pin.FuelPct}`}>
+              description={`${pin.VehicleType}, ${pin.FuelPct}`}
+              tracksViewChanges={false}>
               <VehicleMarker vehicle={pin} />
             </Marker>
           );
@@ -180,7 +163,7 @@ class Map extends React.Component<
             />
           );
         })}
-        {/* {this.state.pois.map((poi, index) => {
+        {this.state.pois.map((poi, index) => {
           return (
             <Marker
               key={index}
@@ -193,7 +176,7 @@ class Map extends React.Component<
               pinColor="teal"
             />
           );
-        })} */}
+        })}
       </MapView>
     );
   }
