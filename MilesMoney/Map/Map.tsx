@@ -17,6 +17,7 @@ import React from "react";
 import GetLocation, {Location} from "react-native-get-location";
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStationMarker";
+import Borders from "./Borders";
 
 type Region = {
   latitude: number;
@@ -179,6 +180,7 @@ class Map extends React.Component<
             </Marker>
           );
         })}
+        <Borders />
       </MapView>
     );
   }
