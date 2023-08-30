@@ -29,6 +29,7 @@ export type Vehicle = {
   type: VehicleType;
   isElectric: boolean;
   isPlugged: boolean;
+  isDiscounted: boolean;
   charge: number;
   range: string;
   color: string;
