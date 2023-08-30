@@ -11,7 +11,8 @@ import CUPRA from "../assets/icons/Marker/type/CUPRA.svg";
 import SEAT from "../assets/icons/Marker/type/SEAT.svg";
 import OPEL from "../assets/icons/Marker/type/OPEL.svg";
 import FORD from "../assets/icons/Marker/type/FORD.svg";
-import {View} from "react-native";
+import GenericCar from "../assets/icons/Marker/type/generic.svg";
+import GenericTruck from "../assets/icons/Marker/type/generic_truck.svg";
 
 type VehicleMarkerTypeProps = {
   type: string;
@@ -34,7 +35,7 @@ const VehicleMarkerType = (props: VehicleMarkerTypeProps) => {
     case "Audi A4 Avant":
       return <AUDI_A4 style={{position: "absolute"}} width={40} height={40} />;
     case "Audi Q2":
-    case "Audi Q2 S-Line":
+    case "Audi Q2 S line":
       return <AUDI_Q2 style={{position: "absolute"}} width={40} height={40} />;
     case "Tesla Model 3":
       return <TESLA_M3 style={{position: "absolute"}} width={40} height={40} />;
@@ -50,10 +51,11 @@ const VehicleMarkerType = (props: VehicleMarkerTypeProps) => {
     return <OPEL style={{position: "absolute"}} width={40} height={40} />;
   } else if (props.type.includes("Ford")) {
     return <FORD style={{position: "absolute"}} width={40} height={40} />;
+  } else if(props.type.includes("Sprinter") || props.type.includes("Crafter")) {
+    return <GenericTruck style={{position: "absolute"}} width={40} height={40} />;
   }
 
-  return <View />;
-  // todo generic icon if unknown type
+  return <GenericCar style={{position: "absolute"}} width={40} height={40} />;
 };
 
 export default VehicleMarkerType;
