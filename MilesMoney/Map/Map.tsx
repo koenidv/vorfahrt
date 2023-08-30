@@ -1,4 +1,4 @@
-import {mapStyle} from "./mapStyle";
+import mapStyle from "./mapStyle.json";
 import {fetchVehicles} from "../lib/Miles/fetchVehicles";
 import {
   apiCluster,
