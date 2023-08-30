@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import Map from "./Map/Map";
+import ButtonBar from "./Buttons/ButtonBar";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -64,9 +65,13 @@ function App(): JSX.Element {
       />
       <View
         style={{
+          position: "relative",
+          height: "100%",
+          width: "100%",
           backgroundColor: isDarkMode ? Colors.black : Colors.white,
         }}>
         <Map />
+        <ButtonBar />
       </View>
     </SafeAreaView>
   );
