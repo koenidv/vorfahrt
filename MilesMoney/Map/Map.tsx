@@ -94,7 +94,7 @@ class Map extends React.Component<
 
   handleFetchVehicles = async () => {
     const res = await fetchVehicles({
-      deviceKey: "king-application",
+      deviceKey: "d15231c7925b4517",
       latitude: this.state.region.latitude,
       longitude: this.state.region.longitude,
       latitudeDelta: this.state.region.latitudeDelta,
