@@ -1,0 +1,72 @@
+GET https://api.app.miles-mobility.com/mobile/Wallet?deviceKey=1160cf3fa7a62dfb
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+authorization:
+Bearer 4AA20D92-67E2-4509-9C1D-63191615B04E
+connection:
+Keep-Alive
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+-
+
+no body
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+2330
+content-type:
+application/json; charset=utf-8
+date:
+Fri, 01 Sep 2023 19:13:07 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "Result": "OK",
+    "ResponseText": "",
+    "Money_balance": xx.xx,
+    "Currency": "EUR",
+    "Money_balance_txt": "xx.xx€",
+    "Unlocks_balance": 0,
+    "Payment_methods": "[{\"idPaymentMethodType\":\"PERSONAL\",\"profileType\":\"Private\",\"icon\":\"paypal\",\"description\":\"xxx@gmail.com\",\"description2\":\"xx xx, xx Berlin\",\"description3\":\"PayPal account\",\"description4\":\"xxx@gmail.com\",\"invoiceAddress_Name\":\"dings florian\",\"invoiceAddress_Street\":\"xx xx\",\"invoiceAddress_City\":\"xx Berlin\",\"invoiceAddress_Email\":\"xxx@gmail.com\",\"balanceTxt\":\"0€\",\"CurrentSubscription\":null,\"CurrentSubscription_bgColor\":null,\"CurrentSubscription_fontColor\":null,\"CurrentSubscription_shortCode\":null,\"Selected\":false,\"isEditable\":true},{\"idPaymentMethodType\":\"BUSINESS\",\"profileType\":\"Professional profile\",\"icon\":\"visa\",\"description\":\"****xxxx\",\"description2\":\"xx xx, xx Berlin\",\"description3\":\"Visa ****xxxx\",\"description4\":\"Valid until xx\\/xx\",\"invoiceAddress_Name\":\"dings florian\",\"invoiceAddress_Street\":\"xx xx\",\"invoiceAddress_City\":\"xx Berlin\",\"invoiceAddress_Email\":\"xx@gmail.com\",\"balanceTxt\":\"xx.xx€\",\"CurrentSubscription\":null,\"CurrentSubscription_bgColor\":null,\"CurrentSubscription_fontColor\":null,\"CurrentSubscription_shortCode\":null,\"Selected\":true,\"isEditable\":true},{\"idPaymentMethodType\":\"CORPORATE\",\"profileType\":\"MILES for Business\",\"icon\":null,\"description\":null,\"description2\":null,\"description3\":null,\"description4\":null,\"invoiceAddress_Name\":null,\"invoiceAddress_Street\":null,\"invoiceAddress_City\":\" \",\"invoiceAddress_Email\":null,\"balanceTxt\":null,\"CurrentSubscription\":null,\"CurrentSubscription_bgColor\":null,\"CurrentSubscription_fontColor\":null,\"CurrentSubscription_shortCode\":null,\"Selected\":false,\"isEditable\":true,\"alreadyJoinedCorporate\":false}]",
+    "CurrentSubscription": null,
+    "CurrentSubscription_bgColor": null,
+    "CurrentSubscription_fontColor": null,
+    "MilesPartnersURL": "https://miles-mobility.com/en-de/cooperations",
+    "BurgerImprintURL": "https://miles-mobility.com/en-de/imprint",
+    "BurgerDataProtectionURL": "https://miles-mobility.com/en-de/data-protection"
+  }
+}

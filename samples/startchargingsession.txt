@@ -1,0 +1,70 @@
+GET https://api.app.miles-mobility.com/mobile/ChargingSessionStart?deviceKey=1160cf3fa7a62dfb&userLatitude=52.5637383&userLongitude=13.3297333&idCityLayerChargingStation=26395&portReference=DE*BSW*E603987*987+(3kW)
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+authorization:
+Bearer 4AA20D92-67E2-4509-9C1D-63191615B04E
+connection:
+Keep-Alive
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+-
+
+no body
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+361
+content-type:
+application/json; charset=utf-8
+date:
+Fri, 01 Sep 2023 19:11:06 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "response": {
+      "Result": "OK",
+      "ResponseText": "✅\nThe port is open now! Please plug the cable in the slot of the charging station right now.",
+      "ResponseText_key": "ride_charging_session_start_port_is_open"
+    },
+    "escapeButton": [
+      {
+        "Escapebutton_text": "Port did not open",
+        "Escapebutton_confirmationMessage": "Port did not open?"
+      }
+    ]
+  }
+}

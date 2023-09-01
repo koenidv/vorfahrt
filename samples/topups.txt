@@ -1,0 +1,28 @@
+GET https://api.app.miles-mobility.com/mobile/Wallet/TopUpOptions?deviceKey=1160cf3fa7a62dfb
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": [
+    {
+      "idTopUpOption": "50_FOR_45",
+      "isInvoicePayment": false,
+      "txtTitle": "MILES50",
+      "txtName": "50€ credit",
+      "txtDescription": "50€ for 45€",
+      "txtGreenPill": "Pay 10% less!",
+      "txtExtendedDescription": "Pay 45€ to get 50€ credit in your wallet. \n\nYour credit can be redeemed on rides and day rates. \n\nYour payment method will be charged as soon you confirm with \"Top Up now!\".",
+      "txtConfirmationWindow": "You choose MILES50Top Up option - nice! Your account will be charged 45€ and you will receive 50€ MILES credit immediately."
+    },
+    {
+      "idTopUpOption": "100_FOR_85",
+      "isInvoicePayment": false,
+      "txtTitle": "MILES100",
+      "txtName": "100€ credit",
+      "txtDescription": "100€ for 85€",
+      "txtGreenPill": "Pay 15% less!",
+      "txtExtendedDescription": "Pay 85€ to get 100€ credit in your wallet. \n\nYour credit can be redeemed on rides and day rates. \n\nYour payment method will be charged as soon you confirm with \"Top Up now!\".",
+      "txtConfirmationWindow": "You choose MILES100Top Up option - nice! Your account will be charged 85€ and you will receive 100€ MILES credit immediately."
+    }
+  ]
+}

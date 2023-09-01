@@ -1,0 +1,78 @@
+POST https://api.app.miles-mobility.com/mobile/Ride/Start?deviceKey=1160cf3fa7a62dfb&idVehicle=12385&userLatitude=52.5750933&userLongitude=13.3432883&pinCode=xxxx&tariffID=STANDARD_PERKM
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+authorization:
+Bearer 4AA20D92-67E2-4509-9C1D-63191615B04E
+connection:
+Keep-Alive
+content-length:
+0
+content-type:
+application/json
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+-
+
+no body
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+454
+content-type:
+application/json; charset=utf-8
+date:
+Fri, 01 Sep 2023 18:59:05 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "Result": "OK",
+    "ResponseText": "",
+    "ResponseText_key": null,
+    "idRide": 18047826,
+    "RideUUID": null,
+    "PINCodeValidated": true,
+    "UpperBanner_color": "#68E9A5",
+    "UpperBanner_1stRow": "Ready to ride! Your vehicle",
+    "UpperBanner_2ndRow": "is open! ✌️",
+    "UpperBanner_hideAfterSecs": 3,
+    "UpperBanner_alertType": "RIDE_START_OK",
+    "RideStartTime": "2023-09-01T20:59:06.413",
+    "Nearest_idVehicle": null,
+    "Nearest_Lat": null,
+    "Nearest_Long": null
+  }
+}

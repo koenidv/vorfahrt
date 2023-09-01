@@ -1,0 +1,121 @@
+GET https://api.app.miles-mobility.com/mobile/UserHello?deviceKey=1160cf3fa7a62dfb&ownerName=unknown&deviceInfo1=Android&deviceInfo2=goldfish_x86_64&osInfo1=Android&osInfo2=13&appVersion=4.24+(210373)&lang=en&translationDictionaryTimestamp=2023-09-01T15:28:58.87&cityAreasTimestamp=2023-09-01T14:16:45.03&existingSessionSID=4AA20D92-67E2-4509-9C1D-63191615B04E
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+connection:
+Keep-Alive
+host:
+api.app.miles-mobility.com
+if-modified-since:
+Fri, 01 Sep 2023 18:57:26 GMT
+user-agent:
+okhttp/4.9.1
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+8771
+content-type:
+application/json; charset=utf-8
+date:
+Fri, 01 Sep 2023 18:57:55 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "Result": "OK",
+    "ResponseText": "",
+    "idUser": xxxx,
+    "PhoneNumber": "+xxxx",
+    "Email": "xxxx@gmail.com",
+    "UserAddedPayment": true,
+    "UserIsInRide": false,
+    "ElapsedSecondsRide": null,
+    "RideStartDate": null,
+    "isRidePaused": false,
+    "ElapsedSecondsRidePause": null,
+    "RidePauseDate": null,
+    "RidePauseBannerText": null,
+    "CurrentRideTariffID": null,
+    "CurrentRideRateInfo": null,
+    "UserInBooking": 0,
+    "BookingSecondsRemaining": null,
+    "idVehicleSelected": null,
+    "UserHasOpsRights": false,
+    "UserInOpsMode": false,
+    "JSONTranslations": "",
+    "TranslationDictionaryTimestamp": "2023-09-01T15:28:58.87",
+    "RequireUpdate": false,
+    "RequireUpdate_txt": "",
+    "Name": "Florian",
+    "JSONCityAreas": "",
+    "CityAreasTimestamp": "2023-09-01T14:16:45.03",
+    "AppStoreURL": "https://itunes.apple.com/app/id1446543957",
+    "GooglePlayURL": "https://play.google.com/store/apps/details?id=com.goflash.consumer",
+    "LastUserLatitude": 52.57509231567383,
+    "LastUserLongitude": 13.34328842163086,
+    "CitiesCombo": "",
+    "UUID_Token": "FE69E163-78DB-4F27-A921-2EBF03817600",
+    "JSONCites": "[{\"name\":\"Augsburg\",\"idCity\":\"AGB\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Augsburg.png\",\"location_lat\":48.366512,\"location_long\":10.894446},{\"name\":\"Antwerp\",\"idCity\":\"ANR\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Antwerpen.png\",\"location_lat\":51.217778,\"location_long\":4.400278},{\"name\":\"Berlin\",\"idCity\":\"BER\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Berlin.png\",\"location_lat\":52.520008,\"location_long\":13.404954},{\"name\":\"Bonn\",\"idCity\":\"BNN\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Bonn.png\",\"location_lat\":50.737269,\"location_long\":7.115278},{\"name\":\"Brussels\",\"idCity\":\"BRU\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Brussels.png\",\"location_lat\":50.846667,\"location_long\":4.352500},{\"name\":\"Cologne\",\"idCity\":\"CGN\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Cologne.png\",\"location_lat\":50.935173,\"location_long\":6.953101},{\"name\":\"Duisburg\",\"idCity\":\"DUI\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Duisburg.png\",\"location_lat\":51.432470,\"location_long\":6.765160},{\"name\":\"Düsseldorf\",\"idCity\":\"DUS\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Dusseldorf.png\",\"location_lat\":51.233334,\"location_long\":6.783333},{\"name\":\"Ghent\",\"idCity\":\"GNE\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Ghent.png\",\"location_lat\":51.049999,\"location_long\":3.733333},{\"name\":\"Hamburg\",\"idCity\":\"HAM\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Hamburg.png\",\"location_lat\":53.551086,\"location_long\":9.993682},{\"name\":\"Munich\",\"idCity\":\"MUC\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Munich.png\",\"location_lat\":48.137154,\"location_long\":11.576124},{\"name\":\"Potsdam\",\"idCity\":\"PTD\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Postdam.png\",\"location_lat\":52.390569,\"location_long\":13.064473},{\"name\":\"Stuttgart\",\"idCity\":\"STR\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Stuttgart.png\",\"location_lat\":48.783333,\"location_long\":9.183333},{\"name\":\"Wuppertal\",\"idCity\":\"UWP\",\"mapimage\":\"https://api.app.miles-mobility.com/static/img/cities/Wuppertal.png\",\"location_lat\":51.256214,\"location_long\":7.150764}]",
+    "isNewsletterAccepted": true,
+    "isPushNotificationsAccepted": true,
+    "SignupStep": null,
+    "SignupPP": false,
+    "JSONSignupStatus": null,
+    "SignupPhoneNumber": null,
+    "SignupBannerColor": "",
+    "SignupBannerText": "",
+    "SignupBurguerMenuState": null,
+    "SignupBurguerMenuShowOpen": false,
+    "SignupBannerClickAction": null,
+    "SignupBanner_refreshAfterSecs": null,
+    "JSONPaymentMethods": "[{\"idPaymentMethodType\":\"PERSONAL\",\"profileType\":\"Private\",\"icon\":\"paypal\",\"description\":\"xxx@gmail.com\",\"description2\":\"xx xx, xx Berlin\",\"description3\":\"PayPal account\",\"description4\":\"xxx@gmail.com\",\"invoiceAddress_Name\":\"dings florian\",\"invoiceAddress_Street\":\"xx xx\",\"invoiceAddress_City\":\"xx Berlin\",\"invoiceAddress_Email\":\"xxx@gmail.com\",\"balanceTxt\":\"0€\",\"CurrentSubscription\":null,\"CurrentSubscription_bgColor\":null,\"CurrentSubscription_fontColor\":null,\"CurrentSubscription_shortCode\":null,\"Selected\":false,\"isEditable\":true},{\"idPaymentMethodType\":\"BUSINESS\",\"profileType\":\"Professional profile\",\"icon\":\"visa\",\"description\":\"****xxxx\",\"description2\":\"xx xx, xx Berlin\",\"description3\":\"Visa ****xxxx\",\"description4\":\"Valid until xx\\/xx\",\"invoiceAddress_Name\":\"dings florian\",\"invoiceAddress_Street\":\"xx xx\",\"invoiceAddress_City\":\"xx Berlin\",\"invoiceAddress_Email\":\"xxx@gmail.com\",\"balanceTxt\":\"xx.xx€\",\"CurrentSubscription\":null,\"CurrentSubscription_bgColor\":null,\"CurrentSubscription_fontColor\":null,\"CurrentSubscription_shortCode\":null,\"Selected\":true,\"isEditable\":true},{\"idPaymentMethodType\":\"CORPORATE\",\"profileType\":\"MILES for Business\",\"icon\":null,\"description\":null,\"description2\":null,\"description3\":null,\"description4\":null,\"invoiceAddress_Name\":null,\"invoiceAddress_Street\":null,\"invoiceAddress_City\":\" \",\"invoiceAddress_Email\":null,\"balanceTxt\":null,\"CurrentSubscription\":null,\"CurrentSubscription_bgColor\":null,\"CurrentSubscription_fontColor\":null,\"CurrentSubscription_shortCode\":null,\"Selected\":false,\"isEditable\":true,\"alreadyJoinedCorporate\":false}]",
+    "Money_balance_txt": "xxx",
+    "Unlocks_balance": 0,
+    "Referral_VoucherCode": "nH5rD49ZFr",
+    "Referral_Gift_txt": "10€",
+    "Referral_Gift_button_txt": "Earn extra credit!",
+    "Stripe_PublicKey": null,
+    "Braintree_TokenizationKey": "production_5rhx79rc_pf3gsfqyg6kwwddw",
+    "DI_Resol": 2048,
+    "DI_Compr": 80,
+    "MaxDistanceWalkingDirections_m": 5000,
+    "JSONHelpCenter": "{\"general\": [{\"title\":\"Business area\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/4408701781138\",\"type\":\"URL\"},{\"title\":\"Find MILES\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/4407011319442\",\"type\":\"URL\"},{\"title\":\"Reserve MILES\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/4405580758290\",\"type\":\"URL\"},{\"title\":\"Write an email!\",\"destination\":\"hello@miles-mobility.com\",\"type\":\"EMAIL\"}],\"detail_or_booking\": [{\"title\":\"How does a rental work?\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/360015545379\",\"type\":\"URL\"},{\"title\":\"Report damage\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/4407011392914\",\"type\":\"URL\"},{\"title\":\"Unlock MILES\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/4407003990034\",\"type\":\"URL\"},{\"title\":\"Write an email!\",\"destination\":\"hello@miles-mobility.com\",\"type\":\"EMAIL\"}],\"in_ride\": [{\"title\":\"Start engine\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/4405566593938\",\"type\":\"URL\"},{\"title\":\"Parking rules\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/4403828408082\",\"type\":\"URL\"},{\"title\":\"Refueling & Charging\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/sections\\/360004419400\",\"type\":\"URL\"},{\"title\":\"Accident handling\",\"destination\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/4411500402066\",\"type\":\"URL\"},{\"title\":\"Write an email\",\"destination\":\"hello@miles-mobility.com\",\"type\":\"EMAIL\"},{\"title\":\"EMERGENCY! Call customer care\",\"destination\":\"+49 30 837 99699\",\"type\":\"PHONE\"}],\"login_new_device\": [{\"title\":\"Write an email!\",\"destination\":\"hello@miles-mobility.com\",\"type\":\"EMAIL\"},{\"title\":\"In urgent cases: Call support!\",\"destination\":\"+49 30 837 99699\",\"type\":\"PHONE\"}]}",
+    "JToken1": "Y2NmMWY5MzItNGMyNS00YmI0LTk4NTAtNzU1MjMyNjk5ODZiNzlDNA==",
+    "JToken2": "NjI5OXFrcmFLRERKalRhMWl0WXpWR2M2QVZIY0VicUxHbDRU",
+    "CurrentSubscription": null,
+    "CurrentSubscription_bgColor": null,
+    "CurrentSubscription_fontColor": null,
+    "CurrentSubscription_shortCode": null,
+    "HighlightSection": "menu_partners|NEW|#000000|#FFFFFF",
+    "JSONLegalURLs": "{\"termsAndConditionsURL\":\"https:\\/\\/miles-mobility.com\\/en-de\\/terms\",\"privacyPolicyURL\":\"https:\\/\\/miles-mobility.com\\/en-de\\/data-protection\",\"imprintURL\":\"https:\\/\\/miles-mobility.com\\/en-de\\/imprint\"}"
+  }
+}

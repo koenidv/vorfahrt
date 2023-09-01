@@ -1,0 +1,36 @@
+GET https://www.paypal.com/connect/?flowEntry=lg&client_id=AajxZkQsvP4w7Q25hth01xJGA43Wc3cY7QXfQZ8csPx30WYBqwgh91pFYyGKa0YxPohhxfb-Aqvh_4FN&response_type=code&scope=openid%20profile%20email%20address%20https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%253A%252F%252Fapi.app.miles-mobility.com%252Fmobile%252FPayPalConnect&newUI=Y
+
+HEADERS
+accept:
+text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+accept-encoding:
+gzip, deflate
+accept-language:
+en-US,en;q=0.9
+connection:
+keep-alive
+host:
+www.paypal.com
+sec-fetch-dest:
+document
+sec-fetch-mode:
+navigate
+sec-fetch-site:
+none
+sec-fetch-user:
+?1
+upgrade-insecure-requests:
+1
+user-agent:
+Mozilla/5.0 (Linux; Android 13; sdk_gphone64_x86_64 Build/TE1A.220922.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/103.0.5060.71 Safari/537.36
+x-requested-with:
+com.driveby.app
+
+-
+
+no body
+
+---
+
+STATUS: 302 Found
+(invalid certificate)

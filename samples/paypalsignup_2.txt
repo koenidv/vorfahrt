@@ -1,0 +1,38 @@
+GET https://www.paypal.com/signin?intent=connect&ctxId=connect%3A643ed0f693774f96bd8cedf8238801f2&returnUri=https%3A%2F%2Fwww.paypal.com%2Fidapps%2Fconnect%2Fconsent%3FctxId%3DAAESQ-0TmTLKwBHtOVt1u75XxNUReR67O4ksSMBIQfZYFWohnAoszOiljOTdyLo9yb6fV4MktC2or-n2xJeV0isa%26client_id%3DAajxZkQsvP4w7Q25hth01xJGA43Wc3cY7QXfQZ8csPx30WYBqwgh91pFYyGKa0YxPohhxfb-Aqvh_4FN%26scope%3Dopenid%2Bprofile%2Bemail%2Baddress%2Bhttps%253A%252F%252Furi.paypal.com%252Fservices%252Fpaypalattributes%26redirect_uri%3Dhttps%25253A%25252F%25252Fapi.app.miles-mobility.com%25252Fmobile%25252FPayPalConnect%26response_type%3Dcode&flowId=2d57b9865300452caf2d89b8b8987277
+
+HEADERS
+accept:
+text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+accept-encoding:
+gzip, deflate
+accept-language:
+en-US,en;q=0.9
+connection:
+keep-alive
+cookie:
+LANG=en_US%3BUS; enforce_policy=ccpa; x-pp-s=eyJ0IjoiMTY5MzU5NDQ2OTkxMiIsImwiOiIwIiwibSI6IjAifQ; tsrce=identityappsnodeweb; nsid=s%3AvOfSI3658VJbqLGpnyia1mAZJ9f_ITzh.Fc5cMs3hZRQX4tgjutPmELMSYrLV4TYPrtxfPKVV29c; l7_az=dcg13.slc; ts=vreXpYrS%3D1788288869%26vteXpYrS%3D1693596269%26vr%3D5218c4e418a0a6c215e8add6fe3bc2e9%26vt%3D5218c4e418a0a6c215e8add6fe3bc2e8%26vtyp%3Dnew; ts_c=vr%3D5218c4e418a0a6c215e8add6fe3bc2e9%26vt%3D5218c4e418a0a6c215e8add6fe3bc2e8
+host:
+www.paypal.com
+sec-fetch-dest:
+document
+sec-fetch-mode:
+navigate
+sec-fetch-site:
+none
+sec-fetch-user:
+?1
+upgrade-insecure-requests:
+1
+user-agent:
+Mozilla/5.0 (Linux; Android 13; sdk_gphone64_x86_64 Build/TE1A.220922.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/103.0.5060.71 Safari/537.36
+x-requested-with:
+com.driveby.app
+
+-
+
+no body
+
+---
+
+STATUS 200
+(invalid certificate)

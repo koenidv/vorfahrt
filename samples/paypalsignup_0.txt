@@ -1,0 +1,58 @@
+GET https://api.app.miles-mobility.com/mobile/SignUp/PayPalUrl?deviceKey=1160cf3fa7a62dfb&lang=en
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+connection:
+Keep-Alive
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+-
+
+no body
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+419
+content-type:
+application/json; charset=utf-8
+date:
+Fri, 01 Sep 2023 18:54:26 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "PaypalConnectURL": "https://www.paypal.com/connect/?flowEntry=lg&client_id=AajxZkQsvP4w7Q25hth01xJGA43Wc3cY7QXfQZ8csPx30WYBqwgh91pFYyGKa0YxPohhxfb-Aqvh_4FN&response_type=code&scope=openid%20profile%20email%20address%20https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%253A%252F%252Fapi.app.miles-mobility.com%252Fmobile%252FPayPalConnect&newUI=Y"
+  }
+}

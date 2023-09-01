@@ -1,0 +1,114 @@
+GET https://api.app.miles-mobility.com/mobile/Ride/Progress?deviceKey=1160cf3fa7a62dfb&userLatitude=52.5637383&userLongitude=13.3297333
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+authorization:
+Bearer 4AA20D92-67E2-4509-9C1D-63191615B04E
+connection:
+Keep-Alive
+host:
+api.app.miles-mobility.com
+if-modified-since:
+Fri, 01 Sep 2023 19:09:42 GMT
+user-agent:
+okhttp/4.9.1
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+2081
+content-type:
+application/json; charset=utf-8
+date:
+Fri, 01 Sep 2023 19:09:48 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "Result": "OK",
+    "ResponseText": "",
+    "ResponseText_key": null,
+    "idRide": 18047826,
+    "RideUUID": "2203f9bc-87bf-48e5-b7ff-680f71db578d",
+    "idVehicle": 12385,
+    "LicensePlate": "WI-D 5958E",
+    "CloseRideInProgress": false,
+    "Elapsed_Distance_kms": 3,
+    "Elapsed_Distance": "3km",
+    "Elapsed_Time": "10m 42s",
+    "Elapsed_Seconds": 642,
+    "FuelLevel": "30%",
+    "FuelLevel_int": 30,
+    "FuelLevelIcon": 2,
+    "FuelCardPIN": "1313",
+    "FuelType": "Electric",
+    "FuelCapSide": "Right",
+    "RemainingRange": "127.0 km",
+    "RideCost": "3.07 €",
+    "RideStartTime": "2023-09-01T20:59:06.413",
+    "LatStart_vehicle": 52.575153,
+    "LongStart_vehicle": 13.343242,
+    "AddressStart_vehicle": "Reinickendorf, Lindauer Allee<br>13407 Berlin",
+    "LatCurrent_vehicle": 52.563786,
+    "LongCurrent_vehicle": 13.329748,
+    "isRidePaused": false,
+    "ElapsedSecondsRidePause": null,
+    "RidePauseTime": null,
+    "RidePauseBannerText": null,
+    "PollingFrequency": 5,
+    "TariffID": "STANDARD_PERKM",
+    "Tariff_title": "KM RATE",
+    "Tariff_txt": "0.98€/km",
+    "Tariff_txt_preDiscount": null,
+    "Tariff_description": "+1€ unlock fee",
+    "ParkingFee_txt": "0.29/min",
+    "ParkingFee_txt_preDiscount": null,
+    "UpperBanner_alertType": "RIDE_LOW_BATTERY_ALERT_30",
+    "UpperBanner_color": "#FFC940",
+    "UpperBanner_1stRow": "Charging level low!",
+    "UpperBanner_2ndRow": "127km left. Please charge the car soon!",
+    "UpperBanner_hideAfterSecs": null,
+    "UpperBanner_vibrateIfNew": true,
+    "UpperBanner_clickAction": null,
+    "ParkingModeConfirmation_title": null,
+    "ParkingModeConfirmation_body": null,
+    "EndOfRideConfirmation_title": "Do you really want to end your ride and pay?",
+    "EndOfRideConfirmation_body": "✔ Engine off?\n✔ Windows and doors closed?\n✔ All belonging with you?\n\nBy clicking \"YES\" the ride will be finished and the ride invoice will be created.",
+    "EVChargingStatus": "NOT_CHARGING",
+    "EVChargingStationInfo": null,
+    "BT1": "cH4MeAVmBxUNFHB8cQgFFQ==",
+    "BT2": "dwJjFydhdQJ7KSMGeHEtX2EDYjwjQBImU3U/CTRIcWxBYR4gHn5oIFJ6L3wYEhQEDAJ0NxANLHJeKhxReX0sendBAHUgXhEOSXRpYCMKIXpQewgBDWUVb3c5MAQAVyBeVFlpIB5WKgVLG2loLQARQGBURAc9TXYAaDksBgpwNXQeAXs0AnR+eQ==",
+    "BT3": "fUpaKXZ2OTd2EypdEgB0Q3doHh01Un55",
+    "MP": null,
+    "DFStatus": null,
+    "DFSessionInfo": null
+  }
+}

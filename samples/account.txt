@@ -1,0 +1,3 @@
+GET https://api.app.miles-mobility.com/mobile/Account?deviceKey=1160cf3fa7a62dfb
+
+request with your own deviceKey ;)

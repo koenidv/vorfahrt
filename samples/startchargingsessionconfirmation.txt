@@ -1,0 +1,59 @@
+GET https://api.app.miles-mobility.com/mobile/ChargingSessionStartConfirmPlugging?deviceKey=1160cf3fa7a62dfb&userLatitude=52.5637383&userLongitude=13.3297333&idCityLayerChargingStation=26395&portReference=DE*BSW*E603987*987+(3kW)
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+authorization:
+Bearer 4AA20D92-67E2-4509-9C1D-63191615B04E
+connection:
+Keep-Alive
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+195
+content-type:
+application/json; charset=utf-8
+date:
+Fri, 01 Sep 2023 19:11:31 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "Result": "OK",
+    "ResponseText": "✅\nCharging process successfully started!",
+    "ResponseText_key": "ride_charging_confirm_plugging_ok",
+    "ResponseText2": null
+  }
+}

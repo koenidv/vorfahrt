@@ -1,0 +1,432 @@
+GET https://api.app.miles-mobility.com/mobile/Vehicles?deviceKey=1160cf3fa7a62dfb&latitude=52.56717086590369&longitude=13.351627606898546&latitudeDelta=0.033293203376044286&longitudeDelta=0.06714387238025665&userLatitude=52.5750933&userLongitude=13.3432883&lang=en&FuelLevelFilterMin=0&FuelLevelFilterMax=100&VehicleSizeFilter=&vehicleEngineFilter=&VehicleSeatsFilter=&VehicleTransmissionFilter=&vehicleModelsFilter=&zoomLevel=13&forceDisplay=12385&showOnlyDiscountedVehicles=0&showFuelingStations=0&showChargingStations=0&showMilesPartners=0
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+authorization:
+Bearer 4AA20D92-67E2-4509-9C1D-63191615B04E
+connection:
+Keep-Alive
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+-
+
+no body
+
+---
+
+200
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+42529
+content-type:
+application/json; charset=utf-8
+date:
+Fri, 01 Sep 2023 18:59:38 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "response": {
+      "Result": "OK",
+      "ResponseText": "",
+      "idVehicleBooked": null,
+      "idRide": 18047826,
+      "idVehicleInRide": 12385,
+      "NearestIdCity": "BER",
+      "LivePayment": true,
+      "TopUpRequired": false,
+      "userAppVersion": 4.24,
+      "nFilterElements": 0,
+      "UserInOpsMode": false,
+      "CloseForceDisplayVehicle": false,
+      "SpecialAirportRate": null,
+      "SpecialAirportRate_E": null,
+      "SpecialAirportRate_2": null,
+      "SpecialAirportRate_E_2": null,
+      "UsesPPC": true,
+      "CurrentSubscription": null,
+      "JSONCityAreas": "",
+      "CityAreasTimestamp": "2001-01-01T00:00:00",
+      "AdditionalInfo": "{ \"MinZoomPA\": 12, \"DeltaPA\": 3.00, \"HubAutoOpen\": 17, \"Banner\": null}"
+    },
+    "vehicles": [
+      {
+        "idVehicle": 12385,
+        "idCity": "BER",
+        "LicensePlate": "WI-D 5958E",
+        "VehicleType": "VW ID.3",
+        "VehicleColor": "Grey",
+        "VehicleSize": "S",
+        "isElectric": true,
+        "Latitude": 52.5751534,
+        "Longitude": 13.3432465,
+        "DistanceFromUserPosition": 7.24,
+        "DistanceFromMiddlePosition": 1054.47,
+        "idVehicleStatus": "USER_IN_RIDE",
+        "GSMCoverage": 4,
+        "SatelliteNumber": 19,
+        "RentalPrice_row1": "0.98€",
+        "RentalPrice_row1unit": "/km",
+        "RentalPrice_discounted": "0.69€",
+        "RentalPrice_row2": "+1€ unlock fee | P 0.29€/min",
+        "RentalPrice_discountSource": "DYNAMIC",
+        "ParkingPrice": "0.29€",
+        "ParkingPrice_discounted": null,
+        "ParkingPrice_unit": "/min",
+        "UnlockFee": "1.00€",
+        "UnlockFee_discounted": null,
+        "UnlockFee_unit": "/trip",
+        "FuelPct": "30%",
+        "FuelLevelIcon": 2,
+        "RemainingRange": "105km",
+        "EVPlugged": false,
+        "JSONFullVehicleDetails": "{\"standardPricing\": [{\"priceInfo\":\"0.98€\\/km\",\"additionalInfo\":\"+1€ unlock fee\",\"additionalInfo2\":\"+1€ unlock fee, incl. charging\",\"tariffID\":\"STANDARD_PERKM\",\"tariffTitle\":\"KM RATE\",\"unlockFee\":1.00,\"unlockFee_discounted\":null,\"perKmFee\":0.98,\"perKmFee_discounted\":null,\"preBookingFeePerMinute\":0.09,\"preBookingFeePerMinute_discounted\":null,\"parkingFeePerMinute\":0.29,\"parkingFeePerMinute_discounted\":null,\"bookingRepeatRestriction_h\":2,\"isElectric\":true}],\"prepaidRateList\": [{\"listItem\":\"24h (incl. 50km & unlock fee)\",\"price\":\"45€\",\"price_numeric\":45.00,\"price_CCY\":\"EUR\",\"price_discounted\":null,\"isDailyRate\":true},{\"listItem\":\"3h (incl. 40km & unlock fee)\",\"price\":\"34€\",\"price_numeric\":34.00,\"price_CCY\":\"EUR\",\"price_discounted\":null,\"isDailyRate\":true},{\"listItem\":\"per extra km\",\"price\":\"0.49€\",\"price_numeric\":0.49,\"price_CCY\":\"EUR\",\"price_discounted\":null,\"isDailyRate\":false}],\"vehicleDetails\": [{\"key\":\"vehicle_details_engine_power\",\"item\":\"Engine Power\",\"value\":\"145PS\"},{\"key\":\"vehicle_details_seats\",\"item\":\"Seats\",\"value\":\"5\"},{\"key\":\"vehicle_details_transmission\",\"item\":\"Transmission\",\"value\":\"Automatic\"},{\"key\":\"vehicle_details_fuel\",\"item\":\"Engine\",\"value\":\"Electric\"}],\"OptimalRateSelector_Hours\": [{\"txtDuration\":\"3 h\",\"nHours\":3},{\"txtDuration\":\"6 h\",\"nHours\":6},{\"txtDuration\":\"1 day\",\"nHours\":24},{\"txtDuration\":\"2 day(s)\",\"nHours\":48},{\"txtDuration\":\"3 day(s)\",\"nHours\":72},{\"txtDuration\":\"4 day(s)\",\"nHours\":96},{\"txtDuration\":\"5 day(s)\",\"nHours\":120},{\"txtDuration\":\"6 day(s)\",\"nHours\":144},{\"txtDuration\":\"7 day(s)\",\"nHours\":168},{\"txtDuration\":\"8 day(s)\",\"nHours\":192},{\"txtDuration\":\"9 day(s)\",\"nHours\":216},{\"txtDuration\":\"10 day(s)\",\"nHours\":240},{\"txtDuration\":\"11 day(s)\",\"nHours\":264},{\"txtDuration\":\"12 day(s)\",\"nHours\":288},{\"txtDuration\":\"13 day(s)\",\"nHours\":312},{\"txtDuration\":\"14 day(s)\",\"nHours\":336},{\"txtDuration\":\"15 day(s)\",\"nHours\":360},{\"txtDuration\":\"16 day(s)\",\"nHours\":384},{\"txtDuration\":\"17 day(s)\",\"nHours\":408},{\"txtDuration\":\"18 day(s)\",\"nHours\":432},{\"txtDuration\":\"19 day(s)\",\"nHours\":456},{\"txtDuration\":\"20 day(s)\",\"nHours\":480},{\"txtDuration\":\"21 day(s)\",\"nHours\":504},{\"txtDuration\":\"22 day(s)\",\"nHours\":528},{\"txtDuration\":\"23 day(s)\",\"nHours\":552},{\"txtDuration\":\"24 day(s)\",\"nHours\":576},{\"txtDuration\":\"25 day(s)\",\"nHours\":600},{\"txtDuration\":\"26 day(s)\",\"nHours\":624},{\"txtDuration\":\"27 day(s)\",\"nHours\":648},{\"txtDuration\":\"28 day(s)\",\"nHours\":672},{\"txtDuration\":\"29 day(s)\",\"nHours\":696},{\"txtDuration\":\"30 day(s)\",\"nHours\":720}],\"stardardRate_descriptionTexts\": [[{\"row1\":\"This is our standard km rate! This will be automatically applied if you start your ride. This will be the best rate if you don't know how long your trip will take.\",\"row1_discounted\":\"This is our discounted km rate. This will be automatically applied if you start your ride with this vehicle and no other rate was applied. Please note that the reduced km rate is not applied to subsequent rides as well as cancelled or expired reservations.\",\"lower_bold_text\":\"Included within this km rate:\",\"lower_text\":\"Electricity costs (you can recharge on all charging stations shown in the app). No parking ticket needed for public parking spots within our business area (exception: red marked areas)\",\"lower_warning\":\"⚠️ Should your ride be longer and reach the terms and specification of a better and cheaper day rate, the cheaper rate will automatically be applied.\",\"greybox_icon\":null,\"greybox_text\":null}]],\"stardardRate_details\": [[{\"title\":\"km\",\"subtitle\":\"\",\"price\":\"0.98€\",\"price_discounted\":\"0.69€\",\"isBold\":true},{\"title\":\"Unlock Fee\",\"subtitle\":\"\",\"price\":\"1€\",\"price_discounted\":null,\"isBold\":false},{\"title\":\"Parking minutes\",\"subtitle\":\"in compliance with the booking duration time\",\"price\":\"0.29€\",\"price_discounted\":null,\"isBold\":false},{\"title\":\"Electricity\",\"subtitle\":\"free charging at the charging stations shown in the app\",\"price\":\"0€\",\"price_discounted\":null,\"isBold\":false}]],\"vehicleBanner\": [{\"color\":\"\",\"text\":\"\",\"text2\":\"\",\"delay\":\"\",\"clickAction\":\"\"}],\"vehicleDescriptors\": {\"detailsText\":\"This is a keyless vehicle! Please press the break pedal and start the engine by simply switching the shift lever on the steering wheel.\",\"isCharity\":false,\"text1\":\"\",\"text2\":\"\",\"text3\":\"\",\"text4\":\"\",\"text5\":\"\",\"countryName\":\"Germany\",\"detailsURL\":\"https:\\/\\/www.google.com\"},\"vehicleExtras\": {\"item\":\"vehicle_extras_navigator\",\"itemvalue\":\"Yes\"},\"airportPricing\": [{\"PriceInfo\":{\"title\":\"MILES @ BER airport\",\"items\":[{\"name\":\"Pick up\",\"price\":\"5.00€\"},{\"name\":\"Drop off\",\"price\":\"5.00€\"}]}}]}",
+        "FVDPrice": "0.69€",
+        "URLVehicleImage": "https://api.app.miles-mobility.com/static/img/cars/small/WV_ID3_grey.png",
+        "JSONVehicleDamages": "[{\"title\": \"Driver Side - Front (Outside)\", \"damages\": [\"Scuffed @ Bumper: One hand\"]},{\"title\": \"Passenger Side - Front (Outside)\", \"damages\": [\"Scratch @ Bumper: One hand\"]},{\"title\": \"Driver Side - Rear (Outside)\", \"damages\": [\"Broken @ Lights\"]}]",
+        "SpecialAirportRate": null,
+        "SpecialRates": "[{\"previewBox\": [{\"tariffId\":\"1D_350KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 1 DAY(S)\",\"tariffName\":\"1 day(s) & 350km\",\"tariff\":\"149€\",\"tariff_numeric\":149.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 350km distance and 1 day duration time. The 24h will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 1 day(s) & 350km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"1 day\"},{\"title\":\"Distance\",\"text\":\"350km\"},{\"title\":\"Rate end (from now)\",\"text\":\"02.09.23 20:59\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 24h. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 351 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"3D_125KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 3 DAY(S)\",\"tariffName\":\"3 day(s) & 125km\",\"tariff\":\"79€\",\"tariff_numeric\":79.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 125km distance and 3 days duration time. 3 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 3 day(s) & 125km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"3 day(s)\"},{\"title\":\"Distance\",\"text\":\"125km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|3|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 3 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 126 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"3D_750KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 3 DAY(S)\",\"tariffName\":\"3 day(s) & 750km\",\"tariff\":\"314€\",\"tariff_numeric\":314.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 750km distance and 3 days duration time. 3 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 3 day(s) & 750km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"3 day(s)\"},{\"title\":\"Distance\",\"text\":\"750km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|3|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 3 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 751 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"5D_125KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 5 DAY(S)\",\"tariffName\":\"5 day(s) & 125km\",\"tariff\":\"129€\",\"tariff_numeric\":129.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 125km distance and 5 days duration time. 5 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 5 day(s) & 125km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"5 day(s)\"},{\"title\":\"Distance\",\"text\":\"125km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|5|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 5 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 126 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"5D_750KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 5 DAY(S)\",\"tariffName\":\"5 day(s) & 750km\",\"tariff\":\"324€\",\"tariff_numeric\":324.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 750km distance and 5 days duration time. 5 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 5 day(s) & 750km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"5 day(s)\"},{\"title\":\"Distance\",\"text\":\"750km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|5|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 5 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 751 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"7D_175KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 7 DAY(S)\",\"tariffName\":\"7 day(s) & 175km\",\"tariff\":\"169€\",\"tariff_numeric\":169.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 175km distance and 7 days duration time. 7 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 7 day(s) & 175km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"7 day(s)\"},{\"title\":\"Distance\",\"text\":\"175km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|7|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 7 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 176 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"7D_750KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 7 DAY(S)\",\"tariffName\":\"7 day(s) & 750km\",\"tariff\":\"339€\",\"tariff_numeric\":339.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 750km distance and 7 days duration time. 7 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the special 7 day(s) & 750km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"7 day(s)\"},{\"title\":\"Distance\",\"text\":\"750km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|7|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 7 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 751 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"10D_250KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 10 DAY(S)\",\"tariffName\":\"10 day(s) & 250km\",\"tariff\":\"219€\",\"tariff_numeric\":219.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 250km distance and 10 days duration time. 10 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 10 day(s) & 250km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"10 day(s)\"},{\"title\":\"Distance\",\"text\":\"250km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|10|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 10 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 251 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"10D_750KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 10 DAY(S)\",\"tariffName\":\"10 day(s) & 1000km\",\"tariff\":\"499€\",\"tariff_numeric\":499.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 1000km distance and 10 days duration time. 10 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 10 day(s) & 1000km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"10 day(s)\"},{\"title\":\"Distance\",\"text\":\"1000km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|10|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 10 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 1001 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]},{\"previewBox\": [{\"tariffId\":\"14D_350KMS_S_HR\",\"tariffTittle\":\"HOLIDAY RATE 14 DAY(S)\",\"tariffName\":\"14 day(s) & 350km\",\"tariff\":\"289€\",\"tariff_numeric\":289.00,\"tariff_ccy\":\"EUR\",\"tariff_old\":null,\"tariff_old2\":null,\"lower_row1\":\"incl. 1€ unlock fee, parking minutes & charging\",\"lower_row2\":\"\"}],\"descriptionTexts\": [{\"row1\":\"This rate includes 350km distance and 14 days duration time. 14 days will start counting by starting your rent.\",\"rateDetails_title\":\"Rate details\",\"info_title\":\"Important information\",\"info_text\":\"Included within this rate: Unlock fee, parking minutes (parking mode also possible outside the business area), electricity costs. For a daily rate the vehicle must be charged with at least 50% when ending the rent, or left plugged in at a charging station.\",\"lower_bold_text\":\"The costs of the selected tariff will be authorized on your payment method as soon as you start the ride with \\\"Slide to open\\\".\",\"confirmation_message\":\"Apply the 14 day(s) & 350km rate to your ride?\",\"greybox_icon\":null,\"greybox_text\":null}],\"rateDetails\": [{\"title\":\"Duration\",\"text\":\"14 day(s)\"},{\"title\":\"Distance\",\"text\":\"350km\"},{\"title\":\"Rate end (from now)\",\"text\":\"#RATE_END_TIME|14|D#\"}],\"freeFeatures\": [{\"text\":\"Unlock Fee\",\"text2\":\"\"},{\"text\":\"Parking minutes\",\"text2\":\"(within the booked duration time of 14 days. Stop over during ride also possible outside the business area)\"},{\"text\":\"Electricity\",\"text2\":\"(free charging at the charging stations shown in the app)\"},{\"text\":\"Parking ticket within the business area\",\"text2\":\"\"}],\"extraCosts\": [{\"text\":\"Extra km (0.49€\\/km)\",\"text2\":\"(only due from the 351 kilometer)\"},{\"text\":\"<u>Parking tickets<\\/u> for parking at <u>non<\\/u> public parking spots\",\"text2\":\"(or parking outside our business area where a ticket is required)\"}]}]",
+        "ShowSpecialAirportRate": true,
+        "nDaysRookieDelay": 0,
+        "CityToCityOptions": "{\"OriginCity\": \"BERLIN\", \"Destinations\": [{\"idCity\":\"AGB\",\"Destination\":\"Augsburg\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"},{\"idCity\":\"BNN\",\"Destination\":\"Bonn\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"},{\"idCity\":\"CGN\",\"Destination\":\"Cologne\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"},{\"idCity\":\"DUI\",\"Destination\":\"Duisburg\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"},{\"idCity\":\"DUS\",\"Destination\":\"Düsseldorf\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"},{\"idCity\":\"HAM\",\"Destination\":\"Hamburg\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"},{\"idCity\":\"MUC\",\"Destination\":\"Munich\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"},{\"idCity\":\"PTD\",\"Destination\":\"Potsdam\",\"Price\":\"0€\",\"Price_discounted\":\"\"},{\"idCity\":\"STR\",\"Destination\":\"Stuttgart\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"},{\"idCity\":\"UWP\",\"Destination\":\"Wuppertal\",\"Price\":\"19.5€\",\"Price_discounted\":\"\"}], \"NotPossibleDestinations\": null}",
+        "PremiumRestrictedTxt": "",
+        "RookieDelayTxt": ""
+      }
+    ],
+    "clusters": [],
+    "pois": [
+      {
+        "idCityLayer": 78249,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.58247,
+        "Longitude": 13.340196,
+        "Distance_m": 840,
+        "txtDistance": "840m",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "Ubitricity Gesellschaft für verteilte Energiesyste",
+        "Station_Address": "38A Tessenowstraße , Berlin"
+      },
+      {
+        "idCityLayer": 78250,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.58242,
+        "Longitude": 13.339838,
+        "Distance_m": 841,
+        "txtDistance": "841m",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "Ubitricity Gesellschaft für verteilte Energiesyste",
+        "Station_Address": "40 Tessenowstraße , Berlin"
+      },
+      {
+        "idCityLayer": 78254,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.581709,
+        "Longitude": 13.335299,
+        "Distance_m": 906,
+        "txtDistance": "906m",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "Ubitricity Gesellschaft für verteilte Energiesyste",
+        "Station_Address": "57 Tessenowstraße , Berlin"
+      },
+      {
+        "idCityLayer": 78251,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.581637,
+        "Longitude": 13.334851,
+        "Distance_m": 918,
+        "txtDistance": "918m",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "Ubitricity Gesellschaft für verteilte Energiesyste",
+        "Station_Address": "59 Tessenowstraße , Berlin"
+      },
+      {
+        "idCityLayer": 24547,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.574747,
+        "Longitude": 13.358128,
+        "Distance_m": 1009,
+        "txtDistance": "1.01km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "Wirelane GmbH",
+        "Station_Address": "4 Reinickendorf , Berlin"
+      },
+      {
+        "idCityLayer": 26397,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.567171,
+        "Longitude": 13.351628,
+        "Distance_m": 1054,
+        "txtDistance": "1.05km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": false,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "116 Aroser Allee , Berlin"
+      },
+      {
+        "idCityLayer": 21051,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.564023,
+        "Longitude": 13.353527,
+        "Distance_m": 1421,
+        "txtDistance": "1.42km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "Liikennevirta Oy (CPO)",
+        "Station_Address": "  Aroser Allee 72-76 , Berlin"
+      },
+      {
+        "idCityLayer": 26395,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.563734,
+        "Longitude": 13.329722,
+        "Distance_m": 1566,
+        "txtDistance": "1.57km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "19 Blankestr. , Berlin"
+      },
+      {
+        "idCityLayer": 26396,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.562459,
+        "Longitude": 13.357175,
+        "Distance_m": 1699,
+        "txtDistance": "1.7km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "13 Rütlistr. , Berlin"
+      },
+      {
+        "idCityLayer": 26394,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.558927,
+        "Longitude": 13.350224,
+        "Distance_m": 1866,
+        "txtDistance": "1.87km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "21 Bristolstr. , Berlin"
+      },
+      {
+        "idCityLayer": 63322,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.560605,
+        "Longitude": 13.36431,
+        "Distance_m": 2158,
+        "txtDistance": "2.16km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "EWEGOPUB",
+        "Station_Address": "Markstraße 16, Berlin"
+      },
+      {
+        "idCityLayer": 64012,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.554993,
+        "Longitude": 13.340873,
+        "Distance_m": 2249,
+        "txtDistance": "2.25km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": false,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "76 Cornelius-Fredericks-Str. , Berlin"
+      },
+      {
+        "idCityLayer": 27252,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.562678,
+        "Longitude": 13.373826,
+        "Distance_m": 2495,
+        "txtDistance": "2.5km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "66 Reginhardstr. , Berlin"
+      },
+      {
+        "idCityLayer": 26843,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.560529,
+        "Longitude": 13.371225,
+        "Distance_m": 2499,
+        "txtDistance": "2.5km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "32 Reginhardstr. , Berlin"
+      },
+      {
+        "idCityLayer": 26398,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.554946,
+        "Longitude": 13.361305,
+        "Distance_m": 2560,
+        "txtDistance": "2.56km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": false,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "39 Groninger Str. , Berlin"
+      },
+      {
+        "idCityLayer": 26400,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.551304,
+        "Longitude": 13.340696,
+        "Distance_m": 2659,
+        "txtDistance": "2.66km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "32 Transvaalstr. , Berlin"
+      },
+      {
+        "idCityLayer": 75901,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.561665,
+        "Longitude": 13.379948,
+        "Distance_m": 2906,
+        "txtDistance": "2.91km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "Qwello GmbH",
+        "Station_Address": "6 Holzstraße , Berlin"
+      },
+      {
+        "idCityLayer": 77092,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.56053,
+        "Longitude": 13.37938,
+        "Distance_m": 2941,
+        "txtDistance": "2.94km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "63 Soldiner Str. , Berlin"
+      },
+      {
+        "idCityLayer": 29918,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.555014,
+        "Longitude": 13.383301,
+        "Distance_m": 3521,
+        "txtDistance": "3.52km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "Lidl Stiftung GmbH und Co. KG",
+        "Station_Address": "75-77 Prinzenallee , Berlin"
+      },
+      {
+        "idCityLayer": 71927,
+        "idCityLayerType": "EV_CHARGING_STATION",
+        "Latitude": 52.551368,
+        "Longitude": 13.38192,
+        "Distance_m": 3726,
+        "txtDistance": "3.73km",
+        "NavigateTo": "NAVIGATE TO CHARGING STATION",
+        "Available": true,
+        "Station_Name": "chargecloud GmbH",
+        "Station_Address": "24  Bastianstr. , Berlin"
+      }
+    ],
+    "partners": [
+      {
+        "idMilesPartner": "HOLLAENDER",
+        "idMilesPartnerLocation": 31,
+        "MapPointLogoURL": "https://api.app.miles-mobility.com/static/img/icons/Partners/Icons/Icon_Partner_Hollander.png",
+        "Lat": 52.596950409738305,
+        "Long": 13.366997064487446,
+        "ParkingArea": "{ \"type\": \"Polygon\", \"geoType\": \"POLYGON\", \"coordinates\": [[[13.36747182,52.59715895],[13.36673421,52.59710519],[13.36680663,52.59666855],[13.36694074,52.59666692],[13.36757910,52.59716710],[13.36747182,52.59715895]]]}",
+        "Info": "{\"mapPointLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Icons\\/Icon_Partner_Hollander.png\",\"infoLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Hollander.png\",\"text1\":\"Whoop! Great deal here! MILES and Gartencenter Holland have put their heads together and have an exclusive offer for you\",\"text2\":\"Switch to parking mode and show this barcode at the cash desk: get 10% discount on your shopping basket!\",\"linkText\":\"Click here for more info\",\"linkURL\":\"promolink_url_not_needed\",\"linkTitle\":\"deal: Hollaender Garten Center\",\"usesQRCode\":true,\"qrCodeBlurredIcon\":\"⚠️\",\"qrCodeBlurredText\":\"The code becomes visible as soon as we detect that you are in parking mode on a relevant parking lot.\",\"qrCodeImageURL\":null,\"buttonText\":\"Nice, got it\",\"firebaseEvent\":\"hollaender_31\"}",
+        "distance_m": 3473
+      },
+      {
+        "idMilesPartner": "HOLLAENDER",
+        "idMilesPartnerLocation": 32,
+        "MapPointLogoURL": "https://api.app.miles-mobility.com/static/img/icons/Partners/Icons/Icon_Partner_Hollander.png",
+        "Lat": 52.57338642429894,
+        "Long": 13.297467821847722,
+        "ParkingArea": "{ \"type\": \"Polygon\", \"geoType\": \"POLYGON\", \"coordinates\": [[[13.29771862,52.57330209],[13.29746515,52.57359959],[13.29711110,52.57349282],[13.29741954,52.57312887],[13.29771862,52.57330209]]]}",
+        "Info": "{\"mapPointLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Icons\\/Icon_Partner_Hollander.png\",\"infoLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Hollander.png\",\"text1\":\"Whoop! Great deal here! MILES and Gartencenter Holland have put their heads together and have an exclusive offer for you\",\"text2\":\"Switch to parking mode and show this barcode at the cash desk: get 10% discount on your shopping basket!\",\"linkText\":\"Click here for more info\",\"linkURL\":\"promolink_url_not_needed\",\"linkTitle\":\"deal: Hollaender Garten Center\",\"usesQRCode\":true,\"qrCodeBlurredIcon\":\"⚠️\",\"qrCodeBlurredText\":\"The code becomes visible as soon as we detect that you are in parking mode on a relevant parking lot.\",\"qrCodeImageURL\":null,\"buttonText\":\"Nice, got it\",\"firebaseEvent\":\"hollaender_32\"}",
+        "distance_m": 3736
+      },
+      {
+        "idMilesPartner": "TOOM",
+        "idMilesPartnerLocation": 3,
+        "MapPointLogoURL": "https://api.app.miles-mobility.com/static/img/icons/Partners/Icons/Icon_Partner_Toom.png",
+        "Lat": 52.52295410689826,
+        "Long": 13.46575967857361,
+        "ParkingArea": "{ \"type\": \"Polygon\", \"geoType\": \"POLYGON\", \"coordinates\": [[[13.46431665,52.52313169],[13.46469216,52.52307294],[13.46494965,52.52275308],[13.46696667,52.52238751],[13.46729927,52.52303378],[13.46452050,52.52360823],[13.46431665,52.52313169],[13.46431665,52.52313169]]]}",
+        "Info": "{\"mapPointLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Icons\\/Icon_Partner_Toom.png\",\"infoLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/toom.png\",\"text1\":\"*Whoop! Great deal!* MILES and toom have put their heads together and have an exclusive offer for you:\",\"text2\":\"Switch to *parking mode* and get *60 free parking minutes* while you're shopping there and an *additional goodie* when showing the barcode at the toom cash desk.\",\"linkText\":\"Click here for more info\",\"linkURL\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/6633428178066-MILES-x-toom\",\"linkTitle\":\"deal: Toom\",\"usesQRCode\":true,\"qrCodeBlurredIcon\":\"⚠️\",\"qrCodeBlurredText\":\"The code becomes visible as soon as we detect that you are in parking mode on a relevant parking lot.\",\"qrCodeImageURL\":null,\"buttonText\":\"Nice, got it\",\"firebaseEvent\":\"toom_3\"}",
+        "distance_m": 9173
+      },
+      {
+        "idMilesPartner": "HOLLANDPARK",
+        "idMilesPartnerLocation": 30,
+        "MapPointLogoURL": "https://api.app.miles-mobility.com/static/img/icons/Partners/Icons/Icon_Partner_Hollandpark.png",
+        "Lat": 52.621114563077036,
+        "Long": 13.543724393871361,
+        "ParkingArea": "{ \"type\": \"Polygon\", \"geoType\": \"POLYGON\", \"coordinates\": [[[13.54298410,52.62119272],[13.54288771,52.62096231],[13.54319902,52.62088823],[13.54358559,52.62076610],[13.54328585,52.62037855],[13.54273935,52.62051208],[13.54245034,52.61998124],[13.54401944,52.61938688],[13.54427961,52.62142232],[13.54431180,52.62208340],[13.54323623,52.62213388],[13.54305652,52.62141580],[13.54298410,52.62119272],[13.54298410,52.62119272]]]}",
+        "Info": "{\"mapPointLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Icons\\/Icon_Partner_Hollandpark.png\",\"infoLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Hollandpark.png\",\"text1\":\"Whoop! Great deal here! MILES and Hollandpark have put their heads together and have an exclusive offer for you:\",\"text2\":\"Switch to parking mode and show this barcode at the cash desk: get 20% discount on all day tickets at Hollandpark and 4€ discount on all MILES daily rates (only S and M vehicles).\",\"linkText\":\"Click here for more info\",\"linkURL\":\"promolink_url_not_needed\",\"linkTitle\":\"deal: Holland Park\",\"usesQRCode\":true,\"qrCodeBlurredIcon\":\"⚠️\",\"qrCodeBlurredText\":\"The code becomes visible as soon as we detect that you are in parking mode on a relevant parking lot.\",\"qrCodeImageURL\":null,\"buttonText\":\"Nice, got it\",\"firebaseEvent\":\"hollandpark_30\"}",
+        "distance_m": 14334
+      },
+      {
+        "idMilesPartner": "WETWILD",
+        "idMilesPartnerLocation": 44,
+        "MapPointLogoURL": "https://api.app.miles-mobility.com/static/img/icons/Partners/Icons/Icon_Partner_WetAndWild.png",
+        "Lat": 52.70007846276099,
+        "Long": 13.219098713131938,
+        "ParkingArea": "{ \"type\": \"Polygon\", \"geoType\": \"POLYGON\", \"coordinates\": [[[13.21755376,52.70011422],[13.21795609,52.69949982],[13.22040763,52.69975013],[13.22019305,52.70044255],[13.21755376,52.70011422]]]}",
+        "Info": "{\"mapPointLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Icons\\/Icon_Partner_WetAndWild.png\",\"infoLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/WetAndWild.png\",\"text1\":\"*Whoop! Great deal here!* MILES and Wet & Wild have put their heads together and have an exclusive offer for you:\",\"text2\":\"Switch to *parking mode*, show your paused MILES rental at the Wet & Wild cash desk, and get *1 hour free extension* when buying any time pass, *3€ off your parking ticket*, plus *4€ discount on your MILES daily rate* (only S and M vehicles).\",\"linkText\":\"Click here for more info\",\"linkURL\":\"promolink_url_not_needed\",\"linkTitle\":\"deal: Wet & Wild Wakeboard Berlin\",\"usesQRCode\":true,\"qrCodeBlurredIcon\":\"⚠️\",\"qrCodeBlurredText\":\"The code becomes visible as soon as we detect that you are in parking mode on a relevant parking lot.\",\"qrCodeImageURL\":null,\"buttonText\":\"Nice, got it\",\"firebaseEvent\":\"wetwild_44\"}",
+        "distance_m": 17298
+      },
+      {
+        "idMilesPartner": "TOOM",
+        "idMilesPartnerLocation": 12,
+        "MapPointLogoURL": "https://api.app.miles-mobility.com/static/img/icons/Partners/Icons/Icon_Partner_Toom.png",
+        "Lat": 52.38232465149798,
+        "Long": 13.244118626912806,
+        "ParkingArea": "{ \"type\": \"Polygon\", \"geoType\": \"POLYGON\", \"coordinates\": [[[13.24338370,52.38324802],[13.24288481,52.38279616],[13.24390941,52.38231810],[13.24497693,52.38188916],[13.24554020,52.38236722],[13.24338370,52.38324802]]]}",
+        "Info": "{\"mapPointLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/Icons\\/Icon_Partner_Toom.png\",\"infoLogoURL\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/icons\\/Partners\\/toom.png\",\"text1\":\"*Whoop! Great deal!* MILES and toom have put their heads together and have an exclusive offer for you:\",\"text2\":\"Switch to *parking mode* and get *60 free parking minutes* while you're shopping there and an *additional goodie* when showing the barcode at the toom cash desk.\",\"linkText\":\"Click here for more info\",\"linkURL\":\"https:\\/\\/support.miles-mobility.com\\/hc\\/en-us\\/articles\\/6633428178066-MILES-x-toom\",\"linkTitle\":\"deal: Toom\",\"usesQRCode\":true,\"qrCodeBlurredIcon\":\"⚠️\",\"qrCodeBlurredText\":\"The code becomes visible as soon as we detect that you are in parking mode on a relevant parking lot.\",\"qrCodeImageURL\":null,\"buttonText\":\"Nice, got it\",\"firebaseEvent\":\"toom_12\"}",
+        "distance_m": 21827
+      }
+    ]
+  }
+}
