@@ -19,7 +19,6 @@ import {
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import Map from "./Map/Map";
 import ButtonBar from "./Buttons/ButtonBar";
-import DebugDeviceKey from "./DebugDeviceKey";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -73,7 +72,6 @@ function App(): JSX.Element {
         }}>
         <Map />
         <ButtonBar />
-        <DebugDeviceKey />
       </View>
     </SafeAreaView>
   );
