@@ -19,7 +19,7 @@ export const parseVehicles = (response: apiVehiclesResponse): Vehicle[] => {
       model: vehicle.VehicleType,
       isElectric: vehicle.isElectric,
       isPlugged: vehicle.EVPlugged,
-      isDiscounted: vehicle.RentalPrice_discounted !== "0",
+      isDiscounted: vehicle.RentalPrice_discounted !== null,
       charge: parseChargePercentage(vehicle.FuelPct),
       range: vehicle.RemainingRange,
       color: vehicle.VehicleColor,
