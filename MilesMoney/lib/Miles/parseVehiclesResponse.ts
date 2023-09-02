@@ -33,6 +33,18 @@ export const parseVehicles = (response: apiVehiclesResponse): Vehicle[] => {
 export const parseChargeStations = (
   response: apiVehiclesResponse,
 ): ChargeStation[] => {
-  // todo
-  return [] as ChargeStation[];
+  const pois = response.Data.pois;
+  const chargeStations: ChargeStation[] = pois
+    .filter((poi) => poi.idCityLayerType === "EV_CHARGING_STATION")
+    .map((poi) => ({
+      provider: "BERLIN_STADTWERKE",
+      coordinates: {
+        lat: poi.Latitude,
+        lng: poi.Longitude,
+      },
+      name: poi.Station_Name,
+      address: poi.Station_Address,
+      milesId: poi.idCityLayer,
+    }));
+  return chargeStations;
 };

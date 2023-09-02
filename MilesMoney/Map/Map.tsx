@@ -12,11 +12,21 @@ import ChargeStationMarker from "./ChargeStationMarker";
 import Borders from "./Borders";
 import {useUpdateVehicles, useVehicles} from "../state/vehicles.state";
 import _ from "lodash";
-import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
-import {fetchVehiclesForRegion} from "../lib/Miles/fetchVehiclesForRegion";
+import {
+  parseChargeStations,
+  parseVehicles,
+} from "../lib/Miles/parseVehiclesResponse";
+import {
+  fetchChargeStationsForRegion,
+  fetchVehiclesForRegion,
+} from "../lib/Miles/fetchForRegion";
 import Geolocation, {
   GeolocationResponse,
 } from "@react-native-community/geolocation";
+import {
+  useChargeStations,
+  useUpdateChargeStations,
+} from "../state/chargestations.state";
 
 export interface MapState {
   region: Region;
@@ -85,19 +95,19 @@ class Map extends React.Component<{}, MapState> {
   };
 
   handleFetchVehicles = async () => {
-    const data = await fetchVehiclesForRegion({region: this.state.region});
+    const data = await fetchVehiclesForRegion(this.state.region);
     // todo fetch vehicles & pois in seperate queries (should be a lot faster)
     useUpdateVehicles(parseVehicles(data));
     this.setState({clusters: data.Data.clusters});
-    this.setState({pois: this.joinPOIs(this.state.pois, data.Data.pois)});
+  };
+
+  handleFetchChargeStations = async () => {
+    // todo region store && fetch charge stations somewhere else
+    const data = await fetchChargeStationsForRegion(this.state.region);
+    useUpdateChargeStations(parseChargeStations(data));
   };
 
   debounceFetchVehicles = _.debounce(this.handleFetchVehicles, 1000);
-
-  joinPOIs = (current: apiPOI[], incoming: apiPOI[]): apiPOI[] => {
-    // todo inefficient temp stuff
-    return _.unionBy(current, incoming, p => p.idCityLayer);
-  };
 
   onRegionChange = (region: any) => {
     this.setState({region: region});
@@ -118,9 +128,8 @@ class Map extends React.Component<{}, MapState> {
         showsTraffic={false}
         showsIndoors={false}
         pitchEnabled={false}
-        rotateEnabled={false}
-        >
-        {useVehicles.getState().vehicles.map((pin, index) => {
+        rotateEnabled={false}>
+        {useVehicles().vehicles.map((pin, index) => {
           return (
             <Marker
               coordinate={{
@@ -149,16 +158,16 @@ class Map extends React.Component<{}, MapState> {
             />
           );
         })}
-        {this.state.pois.map((poi, index) => {
+        {useChargeStations().stations.map((station, index) => {
           return (
             <Marker
               key={"p_" + index}
               coordinate={{
-                latitude: poi.Latitude,
-                longitude: poi.Longitude,
+                latitude: station.coordinates.lat,
+                longitude: station.coordinates.lng,
               }}
-              title={poi.Station_Name}
-              description={poi.idCityLayer.toString()}
+              title={station.name}
+              description={station.milesId.toString()}
               tracksViewChanges={false}
               flat={true}
               anchor={{x: 0.5, y: 0.5}}>

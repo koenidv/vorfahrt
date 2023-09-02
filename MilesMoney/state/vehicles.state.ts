@@ -24,7 +24,7 @@ const vehiclesState = create<VehiclesState>(
   }),
 );
 
-export const useVehicles = vehiclesState;
+export const useVehicles = vehiclesState.getState;
 export const useUpdateVehicles = (vehicles: Vehicle[]) => {
   const joined = unionBy(
     vehiclesState.getState().vehicles,
@@ -35,5 +35,3 @@ export const useUpdateVehicles = (vehicles: Vehicle[]) => {
   // todo properly merge vehicles
 };
 export const useOverrideVehicles = vehiclesState.getState().setVehicles;
-
-export default vehiclesState;

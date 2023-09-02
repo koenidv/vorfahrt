@@ -4,6 +4,7 @@ import {RefObject} from "react";
 import CircularButton from "./CircularButton";
 import RelocateIcon from "../assets/icons/relocate.svg";
 import ReloadIcon from "../assets/icons/reload.svg";
+import ChargeIcon from "../assets/icons/charge.svg";
 
 export interface ButtonBarProps {
   mapRef: RefObject<Map>;
@@ -15,8 +16,8 @@ const ButtonBar = (props: ButtonBarProps) => {
       <CircularButton onPress={() => {props.mapRef.current?.gotoSelfLocation()}}>
         <RelocateIcon width={35} height={35} />
       </CircularButton>
-      <CircularButton onPress={() => {}}>
-        <ReloadIcon width={35} height={35} />
+      <CircularButton onPress={() => {props.mapRef.current?.handleFetchChargeStations()}}>
+        <ChargeIcon width={35} height={35} />
       </CircularButton>
     </View>
   );
