@@ -174,7 +174,7 @@ class Map extends React.Component<
                 longitude: poi.Longitude,
               }}
               title={poi.Station_Name}
-              description={poi.Station_Address}
+              description={poi.idCityLayer.toString()}
               tracksViewChanges={false}
               flat={true}
               anchor={{x: 0.5, y: 0.5}}>
