@@ -1,12 +1,23 @@
 import {StyleSheet, View} from "react-native";
-import ReloadButton from "./ReloadButton";
-import RelocateButton from "./LocateButton";
+import type Map from "../Map/Map";
+import {RefObject} from "react";
+import CircularButton from "./CircularButton";
+import RelocateIcon from "../assets/icons/relocate.svg";
+import ReloadIcon from "../assets/icons/reload.svg";
 
-const ButtonBar = () => {
+export interface ButtonBarProps {
+  mapRef: RefObject<Map>;
+}
+
+const ButtonBar = (props: ButtonBarProps) => {
   return (
     <View style={styles.container}>
-        <RelocateButton />
-        <ReloadButton />
+      <CircularButton onPress={() => {props.mapRef.current?.gotoSelfLocation()}}>
+        <RelocateIcon width={35} height={35} />
+      </CircularButton>
+      <CircularButton onPress={() => {}}>
+        <ReloadIcon width={35} height={35} />
+      </CircularButton>
     </View>
   );
 };

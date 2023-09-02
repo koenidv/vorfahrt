@@ -7,7 +7,6 @@ import MapView, {
   Region,
 } from "react-native-maps";
 import React from "react";
-import {Location} from "react-native-get-location";
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStationMarker";
 import Borders from "./Borders";
@@ -19,15 +18,13 @@ import Geolocation, {
   GeolocationResponse,
 } from "@react-native-community/geolocation";
 
-class Map extends React.Component<
-  {},
-  {
-    region: Region;
-    clusters: apiCluster[];
-    pois: apiPOI[];
-    pos: GeolocationResponse | undefined;
-  }
-> {
+export interface MapState {
+  region: Region;
+  clusters: apiCluster[];
+  pois: apiPOI[];
+  pos: GeolocationResponse | undefined;
+}
+class Map extends React.Component<{}, MapState> {
   locationInterval: NodeJS.Timeout | null = null;
   map: any;
 
@@ -50,29 +47,28 @@ class Map extends React.Component<
   }
 
   componentDidMount() {
-    this.getLocation().then(pos => {
-      this.setState({
-        region: {
-          ...this.state.region,
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-        },
-      });
-      this.map.animateCamera({
-        center: {
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-        },
-      });
-      this.handleFetchVehicles();
+    this.gotoSelfLocation();
+  }
+
+  gotoSelfLocation = async () => {
+    const pos = await this.getLocation();
+
+    this.setState({
+      region: {
+        ...this.state.region,
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+      },
+    });
+    this.map.animateCamera({
+      center: {
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+      },
     });
 
-    //this.locationInterval = setInterval(this.handleGetLocation, 10000);
-  }
-
-  componentWillUnmount(): void {
-    this.locationInterval && clearInterval(this.locationInterval);
-  }
+    this.handleFetchVehicles();
+  };
 
   getLocation = async (): Promise<GeolocationResponse> => {
     return new Promise<GeolocationResponse>((resolve, reject) =>

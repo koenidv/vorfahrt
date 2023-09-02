@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from "react";
+import React, { useRef } from "react";
 import type {PropsWithChildren} from "react";
 import {
   SafeAreaView,
@@ -19,6 +19,7 @@ import {
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import Map from "./Map/Map";
 import ButtonBar from "./Buttons/ButtonBar";
+import MapView from "react-native-maps";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -57,6 +58,8 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const mapRef = useRef<Map>(null)
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -70,8 +73,8 @@ function App(): JSX.Element {
           width: "100%",
           backgroundColor: isDarkMode ? Colors.black : Colors.white,
         }}>
-        <Map />
-        <ButtonBar />
+        <Map ref={mapRef} />
+        <ButtonBar mapRef={mapRef} />
       </View>
     </SafeAreaView>
   );
