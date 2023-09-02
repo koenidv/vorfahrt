@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { type Vehicle } from "../lib/Miles/types";
+import { unionBy } from "lodash";
 
 interface VehiclesState {
   vehicles: Vehicle[];
@@ -24,7 +25,15 @@ const vehiclesState = create<VehiclesState>(
 );
 
 export const useVehicles = vehiclesState;
-export const useUpdateVehicles = vehiclesState.getState().setVehicles; // todo merge vehicles
+export const useUpdateVehicles = (vehicles: Vehicle[]) => {
+  const joined = unionBy(
+    vehiclesState.getState().vehicles,
+    vehicles,
+    (v) => v.id,
+  );
+  vehiclesState.getState().setVehicles(joined);
+  // todo properly merge vehicles
+};
 export const useOverrideVehicles = vehiclesState.getState().setVehicles;
 
 export default vehiclesState;

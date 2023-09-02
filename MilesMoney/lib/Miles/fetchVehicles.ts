@@ -1,13 +1,8 @@
 import { BASE_URL } from "./config";
-import type {
-  apiVehiclesResponse,
-  VehicleEngine,
-  VehicleSeats,
-  VehicleSize,
-  VehicleType,
-} from "./apiTypes";
+import type { apiVehiclesResponse } from "./apiTypes";
+import { VehicleEngine, VehicleSeats, VehicleSize } from "./enums";
 
-type VehicleFetchOptions = {
+export type VehicleFetchOptions = {
   deviceKey: string;
   latitude: number;
   longitude: number;
@@ -22,7 +17,7 @@ type VehicleFetchOptions = {
   size?: VehicleSize[]; // VehicleSizeFilter, default undefined
   engine?: VehicleEngine[]; // vehicleEngineFilter, default undefined
   seats?: VehicleSeats[]; // VehicleSeatsFilter, default undefined
-  model?: VehicleType[]; // vehicleModelsFilter, default undefined
+  model?: string[]; // vehicleModelsFilter, default undefined
   onlyDiscounted?: boolean; // showOnlyDiscountedVehicles, default false
   showFuelingStations?: boolean; // showFuelingStations, default false
   showChargingStations?: boolean; // showChargingStations, default false
