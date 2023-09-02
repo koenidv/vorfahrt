@@ -5,7 +5,7 @@ import type {
   VehicleSeats,
   VehicleSize,
   VehicleType,
-} from "./types";
+} from "./apiTypes";
 
 type VehicleFetchOptions = {
   deviceKey: string;

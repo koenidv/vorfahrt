@@ -1,4 +1,4 @@
-import {Vehicle, apiVehicle} from "../lib/Miles/types";
+import {apiVehicle} from "../lib/Miles/apiTypes";
 import * as React from "react";
 import {View} from "react-native";
 import Background from "../assets/icons/Marker/background.svg";

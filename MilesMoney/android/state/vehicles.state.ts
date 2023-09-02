@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { type Vehicle } from "../../lib/Miles/types";
+import { type Vehicle } from "../../lib/Miles/apiTypes";
 
 interface VehiclesState {
   vehicles: Vehicle[];

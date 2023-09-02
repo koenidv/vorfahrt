@@ -4,9 +4,7 @@ import {
   apiCluster,
   apiPOI,
   apiVehicle,
-  VehicleEngine,
-  VehicleSize,
-} from "../lib/Miles/types";
+} from "../lib/Miles/apiTypes";
 import _, {set} from "lodash";
 import MapView, {
   enableLatestRenderer,
@@ -18,6 +16,7 @@ import GetLocation, {Location} from "react-native-get-location";
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStationMarker";
 import Borders from "./Borders";
+import { VehicleEngine, VehicleSize } from "../lib/Miles/enums";
 
 type Region = {
   latitude: number;
