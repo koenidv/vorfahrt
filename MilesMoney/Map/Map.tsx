@@ -112,9 +112,14 @@ class Map extends React.Component<{}, MapState> {
         provider={PROVIDER_GOOGLE}
         initialRegion={this.state.region}
         onRegionChange={this.onRegionChange}
+        customMapStyle={mapStyle}
         showsUserLocation={true}
-        showsMyLocationButton={true}
-        customMapStyle={mapStyle}>
+        showsMyLocationButton={false}
+        showsTraffic={false}
+        showsIndoors={false}
+        pitchEnabled={false}
+        rotateEnabled={false}
+        >
         {useVehicles.getState().vehicles.map((pin, index) => {
           return (
             <Marker
