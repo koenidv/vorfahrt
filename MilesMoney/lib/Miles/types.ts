@@ -24,8 +24,7 @@ export enum VehicleType {
 export type Vehicle = {
   id: number;
   licensePlate: string;
-  latitude: number;
-  longitude: number;
+  coordinates: Coordinate;
   type: VehicleType;
   isElectric: boolean;
   isPlugged: boolean;
@@ -34,9 +33,21 @@ export type Vehicle = {
   range: string;
   color: string;
   size: VehicleSize;
-  seats: VehicleSeats;
   image: string;
 };
+
+export type ChargeStation = {
+  provider: "BERLIN_STADTWERKE" | "OTHER";
+  coordinates: Coordinate;
+  name: string;
+  address: string;
+  milesId: number;
+}
+
+export type Coordinate = {
+  lat: number;
+  lng: number;
+}
 
 export type apiVehicle = {
   idVehicle: number;
@@ -102,7 +113,7 @@ export type apiPOI = {
   Distance_m: number; // distance from user
   txtDistance: string; // rounded distance from user
   NavigateTo: null | string; // unsure
-  Available: boolean;
+  Available: boolean; // only during active rental
   Station_Name: string;
   Station_Address: string;
 };
