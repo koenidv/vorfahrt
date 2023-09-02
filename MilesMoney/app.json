@@ -1,4 +1,8 @@
 {
   "name": "MilesMoney",
-  "displayName": "MilesMoney"
+  "displayName": "MilesMoney",
+
+  "androidNavigationBar": {
+    "visible": "sticky-immersive"
+  }
 }

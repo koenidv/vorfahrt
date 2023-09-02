@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useRef } from "react";
+import React, {useRef} from "react";
 import type {PropsWithChildren} from "react";
 import {
   SafeAreaView,
@@ -58,13 +58,14 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const mapRef = useRef<Map>(null)
+  const mapRef = useRef<Map>(null);
 
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor={backgroundStyle.backgroundColor}
+        translucent={true}
+        backgroundColor="transparent"
+        barStyle="light-content"
       />
       <View
         style={{
