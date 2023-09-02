@@ -4,7 +4,7 @@ export type Vehicle = {
     id: number;
     licensePlate: string;
     coordinates: Coordinate;
-    type: string;
+    model: string;
     isElectric: boolean;
     isPlugged: boolean;
     isDiscounted: boolean;

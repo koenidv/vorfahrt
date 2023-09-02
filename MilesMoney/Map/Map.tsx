@@ -1,11 +1,6 @@
 import mapStyle from "./mapStyle.json";
 import {fetchVehicles} from "../lib/Miles/fetchVehicles";
-import {
-  apiCluster,
-  apiPOI,
-  apiVehicle,
-} from "../lib/Miles/apiTypes";
-import _, {set} from "lodash";
+import {apiCluster, apiPOI, apiVehicle} from "../lib/Miles/apiTypes";
 import MapView, {
   enableLatestRenderer,
   Marker,
@@ -16,7 +11,11 @@ import GetLocation, {Location} from "react-native-get-location";
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStationMarker";
 import Borders from "./Borders";
-import { VehicleEngine, VehicleSize } from "../lib/Miles/enums";
+import {VehicleEngine, VehicleSize} from "../lib/Miles/enums";
+import {useOverrideVehicles, useVehicles} from "../state/vehicles.state";
+import _ from "lodash";
+import {Vehicle} from "../lib/Miles/types";
+import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
 
 type Region = {
   latitude: number;
@@ -29,7 +28,6 @@ class Map extends React.Component<
   {},
   {
     region: Region;
-    pins: apiVehicle[];
     clusters: apiCluster[];
     pois: apiPOI[];
     pos: Location | undefined;
@@ -47,7 +45,6 @@ class Map extends React.Component<
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       },
-      pins: [],
       clusters: [],
       pois: [],
       pos: undefined,
@@ -106,16 +103,19 @@ class Map extends React.Component<
       maxFuel: 30,
       showChargingStations: true,
     });
-    this.setState({pins: this.joinPins(this.state.pins, res.Data.vehicles)});
+    const vehicles = parseVehicles(res);
+    useOverrideVehicles(
+      this.joinPins(useVehicles.getState().vehicles, vehicles),
+    );
     this.setState({clusters: res.Data.clusters});
     this.setState({pois: this.joinPOIs(this.state.pois, res.Data.pois)});
   };
 
   debounceFetchVehicles = _.debounce(this.handleFetchVehicles, 1000);
 
-  joinPins = (current: apiVehicle[], incoming: apiVehicle[]): apiVehicle[] => {
+  joinPins = (current: Vehicle[], incoming: Vehicle[]): Vehicle[] => {
     // todo inefficient temp stuff
-    return _.unionBy(current, incoming, v => v.LicensePlate);
+    return _.unionBy(current, incoming, v => v.id);
   };
   joinPOIs = (current: apiPOI[], incoming: apiPOI[]): apiPOI[] => {
     // todo inefficient temp stuff
@@ -138,13 +138,16 @@ class Map extends React.Component<
         showsUserLocation={true}
         showsMyLocationButton={true}
         customMapStyle={mapStyle}>
-        {this.state.pins.map((pin, index) => {
+        {useVehicles.getState().vehicles.map((pin, index) => {
           return (
             <Marker
-              coordinate={{latitude: pin.Latitude, longitude: pin.Longitude}}
+              coordinate={{
+                latitude: pin.coordinates.lat,
+                longitude: pin.coordinates.lng,
+              }}
               key={"v_" + index}
-              title={pin.LicensePlate}
-              description={`${pin.VehicleType}, ${pin.FuelPct}`}
+              title={pin.licensePlate}
+              description={`${pin.model}, ${pin.charge}`}
               tracksViewChanges={false}>
               <VehicleMarker vehicle={pin} />
             </Marker>

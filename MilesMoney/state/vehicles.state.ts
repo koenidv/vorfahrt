@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { type Vehicle } from "../../lib/Miles/apiTypes";
+import { type Vehicle } from "../lib/Miles/types";
 
 interface VehiclesState {
   vehicles: Vehicle[];
@@ -23,7 +23,8 @@ const vehiclesState = create<VehiclesState>(
   }),
 );
 
-const useVehicles = vehiclesState;
-const useUpdateVehicles = vehiclesState.getState().setVehicles; // todo merge vehicles
+export const useVehicles = vehiclesState;
+export const useUpdateVehicles = vehiclesState.getState().setVehicles; // todo merge vehicles
+export const useOverrideVehicles = vehiclesState.getState().setVehicles;
 
 export default vehiclesState;

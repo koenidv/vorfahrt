@@ -16,7 +16,7 @@ export const parseVehicles = (response: apiVehiclesResponse): Vehicle[] => {
         lat: vehicle.Latitude,
         lng: vehicle.Longitude,
       },
-      type: vehicle.VehicleType,
+      model: vehicle.VehicleType,
       isElectric: vehicle.isElectric,
       isPlugged: vehicle.EVPlugged,
       isDiscounted: vehicle.RentalPrice_discounted !== "0",
