@@ -3,6 +3,7 @@ import {Polyline} from "react-native-maps";
 const Borders = () => {
   return (
     <Polyline
+      strokeColor="#aaa"
       coordinates={[
         [13.2348776, 52.5076411],
         [13.2350922, 52.5066485],
@@ -635,6 +636,5 @@ const Borders = () => {
     />
   );
 };
-
 
 export default Borders;
