@@ -7,7 +7,7 @@ import MapView, {
   Region,
 } from "react-native-maps";
 import React from "react";
-import GetLocation, {Location} from "react-native-get-location";
+import {Location} from "react-native-get-location";
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStationMarker";
 import Borders from "./Borders";
@@ -15,14 +15,17 @@ import {useUpdateVehicles, useVehicles} from "../state/vehicles.state";
 import _ from "lodash";
 import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
 import {fetchVehiclesForRegion} from "../lib/Miles/fetchVehiclesForRegion";
-  
+import Geolocation, {
+  GeolocationResponse,
+} from "@react-native-community/geolocation";
+
 class Map extends React.Component<
   {},
   {
     region: Region;
     clusters: apiCluster[];
     pois: apiPOI[];
-    pos: Location | undefined;
+    pos: GeolocationResponse | undefined;
   }
 > {
   locationInterval: NodeJS.Timeout | null = null;
@@ -47,18 +50,18 @@ class Map extends React.Component<
   }
 
   componentDidMount() {
-    this.handleGetLocation().then(pos => {
+    this.getLocation().then(pos => {
       this.setState({
         region: {
           ...this.state.region,
-          latitude: pos.latitude,
-          longitude: pos.longitude,
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
         },
       });
       this.map.animateCamera({
         center: {
-          latitude: pos.latitude,
-          longitude: pos.longitude,
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
         },
       });
       this.handleFetchVehicles();
@@ -71,13 +74,18 @@ class Map extends React.Component<
     this.locationInterval && clearInterval(this.locationInterval);
   }
 
-  handleGetLocation = async (): Promise<Location> => {
-    const pos = await GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 5000,
-    });
-    this.setState({pos: pos});
-    return pos;
+  getLocation = async (): Promise<GeolocationResponse> => {
+    return new Promise<GeolocationResponse>((resolve, reject) =>
+      Geolocation.getCurrentPosition(
+        position => {
+          this.setState({pos: position});
+          resolve(position);
+        },
+        error => {
+          reject(error);
+        },
+      ),
+    );
   };
 
   handleFetchVehicles = async () => {
