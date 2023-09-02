@@ -3,6 +3,7 @@ import { Region } from "react-native-maps";
 import { apiVehiclesResponse } from "./apiTypes";
 import { VehicleFetchOptions } from "./fetchVehicles";
 import { DEVICE_KEY } from "./config";
+import { VehicleEngine, VehicleSize } from "./enums";
 
 export const fetchVehiclesForRegion = async (
   options: Partial<VehicleFetchOptions> & { "region": Region },
@@ -16,6 +17,10 @@ export const fetchVehiclesForRegion = async (
     userLongitude: options.region.longitude,
     userLatitude: options.region.latitude,
     zoomLevel: 20,
+    size: [VehicleSize.small, VehicleSize.medium],
+    maxFuel: 30,
+    engine: [VehicleEngine.electric],
+    showChargingStations: false,
     ...options,
   });
   // todo refetch clusters
