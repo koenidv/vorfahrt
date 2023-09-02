@@ -19,7 +19,7 @@ export const fetchVehiclesForRegion = async (
     userLatitude: region.latitude,
     zoomLevel: 20,
     size: [VehicleSize.small, VehicleSize.medium],
-    maxFuel: 30,
+    maxFuel: 35,
     engine: [VehicleEngine.electric],
     showChargingStations: false,
     ...options,
