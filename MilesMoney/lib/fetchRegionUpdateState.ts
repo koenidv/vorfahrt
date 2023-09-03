@@ -1,5 +1,5 @@
 import { Region } from "react-native-maps";
-import { useUpdateChargeStations } from "../state/chargestations.state";
+import { useChargeStations, useUpdateChargeStationAvailabilities, useUpdateChargeStations } from "../state/chargestations.state";
 import { fetchChargeStationsForRegion } from "./Miles/fetchForRegion";
 import { VehicleFetchOptions } from "./Miles/fetchVehicles";
 import { parseChargeStations } from "./Miles/parseVehiclesResponse";
@@ -25,9 +25,8 @@ export const fetchChargeStationsForRegionUpdateState = async (
   options?: Partial<VehicleFetchOptions>,
 ) => {
   const response = await fetchChargeStationsForRegion(region, options);
-  const parsed = parseChargeStations(response);
-  useUpdateChargeStations(parsed);
-  
+  useUpdateChargeStations(parseChargeStations(response));
+
   const bwsStations = await bswChargeStationsForRegion(region);
-  mergeChargeStationAvailability(parsed, parseBswChargeStations(bwsStations));
+  useUpdateChargeStationAvailabilities(parseBswChargeStations(bwsStations));
 };

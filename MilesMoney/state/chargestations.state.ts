@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { ChargeStation, type Vehicle } from "../lib/Miles/types";
 import { unionBy } from "lodash";
 import { ChargeStationAvailability } from "../lib/ChargeStationAvailabilityType";
+import { mergeChargeStationAvailability } from "../lib/mergeChargeStationAvailability";
 
 interface ChargeStationsState {
   stations:
@@ -25,4 +26,13 @@ export const useUpdateChargeStations = (stations: ChargeStation[]) => {
   );
   chargeStationsState.getState().setStations(joined);
   // todo properly merge chargestations
+};
+export const useUpdateChargeStationAvailabilities = (
+  availabilities: ChargeStationAvailability[],
+) => {
+  const merged = mergeChargeStationAvailability(
+    chargeStationsState.getState().stations,
+    availabilities,
+  );
+  chargeStationsState.getState().setStations(merged);
 };

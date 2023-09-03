@@ -153,7 +153,7 @@ class Map extends React.Component<{}, MapState> {
               tracksViewChanges={false}
               flat={true}
               anchor={{x: 0.5, y: 0.5}}>
-              <ChargeStationMarker />
+              <ChargeStationMarker station={station} />
             </Marker>
           );
         })}
