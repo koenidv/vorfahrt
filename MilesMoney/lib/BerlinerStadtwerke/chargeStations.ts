@@ -4,7 +4,11 @@ import { parseRegion } from "./parseRegion";
 import { BswChargeStation } from "./types";
 import { ChargeStationAvailability } from "../ChargeStationAvailabilityType";
 
-export const bswChargeStationsForRegion = async (region: Region) => {
+export const bswChargeAvailability = async (region: Region) => {
+  return parseBswChargeStations(await bswChargeStationsForRegion(region));
+};
+
+const bswChargeStationsForRegion = async (region: Region) => {
   const bswRegion = parseRegion(region);
   const res = await fetch(
     `${BASE_URL}/${CONTRACT_KEY}/getEmobilityLocationsData?` +
@@ -30,11 +34,12 @@ export const bswChargeStationsForRegion = async (region: Region) => {
   return json.data;
 };
 
-export const parseBswChargeStations = (
+const parseBswChargeStations = (
   data: BswChargeStation[],
 ): ChargeStationAvailability[] => {
   return data.map((station) => ({
     provider: "BSW",
+    name: "Berliner Stadtwerke",
 
     coordinates: {
       lat: parseFloat(station.coordinates.latitude),

@@ -1,0 +1,2 @@
+export const BASE_URL = "https://compass-bff.apps.mega.cariad.cloud/api/v3"
+export const AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicHVibGljIiwiaWF0IjoxNjA4MTE2NjcyfQ.wfN54dJQkv6_Z9Cq5ftAfzxmc5tJgEh0jNH5zxNAP88"

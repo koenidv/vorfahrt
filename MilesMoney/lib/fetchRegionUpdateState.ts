@@ -1,13 +1,13 @@
 import { Region } from "react-native-maps";
-import { useChargeStations, useUpdateChargeStationAvailabilities, useUpdateChargeStations } from "../state/chargestations.state";
+import {
+  useChargeStations,
+  useUpdateChargeStationAvailabilities,
+  useUpdateChargeStations,
+} from "../state/chargestations.state";
 import { fetchChargeStationsForRegion } from "./Miles/fetchForRegion";
 import { VehicleFetchOptions } from "./Miles/fetchVehicles";
 import { parseChargeStations } from "./Miles/parseVehiclesResponse";
-import {
-  bswChargeStationsForRegion,
-  parseBswChargeStations,
-} from "./BerlinerStadtwerke/chargeStations";
-import { mergeChargeStationAvailability } from "./mergeChargeStationAvailability";
+import { weChargeAvailability } from "./WeCharge/chargeStations";
 
 // export const fetchVehiclesForRegionUpdateState = async (
 //   region: Region,
@@ -27,6 +27,5 @@ export const fetchChargeStationsForRegionUpdateState = async (
   const response = await fetchChargeStationsForRegion(region, options);
   useUpdateChargeStations(parseChargeStations(response));
 
-  const bwsStations = await bswChargeStationsForRegion(region);
-  useUpdateChargeStationAvailabilities(parseBswChargeStations(bwsStations));
+  useUpdateChargeStationAvailabilities(await weChargeAvailability(region));
 };
