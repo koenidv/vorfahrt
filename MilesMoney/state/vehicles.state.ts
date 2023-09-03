@@ -35,3 +35,4 @@ export const useUpdateVehicles = (vehicles: Vehicle[]) => {
   // todo properly merge vehicles
 };
 export const useOverrideVehicles = vehiclesState.getState().setVehicles;
+export const useClearVehicles = vehiclesState.getState().clearVehicles;

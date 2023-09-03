@@ -3,10 +3,12 @@ import type Map from "../Map/Map";
 import {RefObject, useState} from "react";
 import CircularButton from "./CircularButton";
 import RelocateIcon from "../assets/icons/relocate.svg";
+import ReloadIcon from "../assets/icons/reload.svg";
 import ChargeIcon from "../assets/icons/charge.svg";
 import LottieView from "lottie-react-native";
 import {fetchChargeStationsForRegionUpdateState} from "../lib/fetchRegionUpdateState";
 import {useRegion} from "../state/region.state";
+import {useClearVehicles} from "../state/vehicles.state";
 
 export interface ButtonBarProps {
   mapRef: RefObject<Map>;
@@ -17,6 +19,13 @@ const ButtonBar = (props: ButtonBarProps) => {
 
   return (
     <View style={styles.container}>
+      <CircularButton
+        onPress={() => {
+          useClearVehicles();
+          props.mapRef.current?.handleFetchVehicles();
+        }}>
+        <ReloadIcon width={35} height={35} />
+      </CircularButton>
       <CircularButton
         onPress={() => {
           props.mapRef.current?.gotoSelfLocation();
@@ -47,7 +56,7 @@ const ButtonBar = (props: ButtonBarProps) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 40,
+    bottom: 80,
     right: 20,
     gap: 20,
   },
