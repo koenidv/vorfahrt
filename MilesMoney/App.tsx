@@ -72,7 +72,7 @@ function App(): JSX.Element {
           position: "relative",
           height: "100%",
           width: "100%",
-          backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          backgroundColor: Colors.black,
         }}>
         <Map ref={mapRef} />
         <ButtonBar mapRef={mapRef} />

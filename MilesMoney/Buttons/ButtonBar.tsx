@@ -1,23 +1,42 @@
 import {StyleSheet, View} from "react-native";
 import type Map from "../Map/Map";
-import {RefObject} from "react";
+import {RefObject, useState} from "react";
 import CircularButton from "./CircularButton";
 import RelocateIcon from "../assets/icons/relocate.svg";
-import ReloadIcon from "../assets/icons/reload.svg";
 import ChargeIcon from "../assets/icons/charge.svg";
+import LottieView from "lottie-react-native";
 
 export interface ButtonBarProps {
   mapRef: RefObject<Map>;
 }
 
 const ButtonBar = (props: ButtonBarProps) => {
+  const [stationsLoading, setStationsLoading] = useState(false);
+
   return (
     <View style={styles.container}>
-      <CircularButton onPress={() => {props.mapRef.current?.gotoSelfLocation()}}>
+      <CircularButton
+        onPress={() => {
+          props.mapRef.current?.gotoSelfLocation();
+        }}>
         <RelocateIcon width={35} height={35} />
       </CircularButton>
-      <CircularButton onPress={() => {props.mapRef.current?.handleFetchChargeStations()}}>
-        <ChargeIcon width={35} height={35} />
+      <CircularButton
+        onPress={async () => {
+          setStationsLoading(true);
+          await props.mapRef.current?.handleFetchChargeStations();
+          setStationsLoading(false);
+        }}>
+        {stationsLoading ? (
+          <LottieView
+            source={require("../assets/icons/loading.json")}
+            autoPlay
+            loop
+            style={{width: 35, height: 35}}
+          />
+        ) : (
+          <ChargeIcon width={35} height={35} />
+        )}
       </CircularButton>
     </View>
   );
