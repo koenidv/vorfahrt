@@ -148,11 +148,18 @@ class Map extends React.Component<{}, MapState> {
                 latitude: station.coordinates.lat,
                 longitude: station.coordinates.lng,
               }}
-              title={station.name}
-              description={station.milesId.toString()}
+              title="Charger"
+              description={
+                station.availability
+                  ? station.availability.statusKnown
+                    ? `${station.availability.available} available`
+                    : "Status unknown"
+                  : station.name
+              }
               tracksViewChanges={false}
               flat={true}
-              anchor={{x: 0.5, y: 0.5}}>
+              anchor={{x: 0.5, y: 0.5}}
+              calloutAnchor={{x: 0.45, y: 0.25}}>
               <ChargeStationMarker station={station} />
             </Marker>
           );
