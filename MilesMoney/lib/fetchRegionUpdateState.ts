@@ -1,15 +1,8 @@
 import { Region } from "react-native-maps";
 import { useUpdateChargeStations } from "../state/chargestations.state";
-import { useUpdateVehicles } from "../state/vehicles.state";
-import {
-  fetchChargeStationsForRegion,
-  fetchVehiclesForRegion,
-} from "./Miles/fetchForRegion";
+import { fetchChargeStationsForRegion } from "./Miles/fetchForRegion";
 import { VehicleFetchOptions } from "./Miles/fetchVehicles";
-import {
-  parseChargeStations,
-  parseVehicles,
-} from "./Miles/parseVehiclesResponse";
+import { parseChargeStations } from "./Miles/parseVehiclesResponse";
 
 // export const fetchVehiclesForRegionUpdateState = async (
 //   region: Region,
