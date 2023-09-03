@@ -83,15 +83,10 @@ class Map extends React.Component<{}, MapState> {
 
   handleFetchVehicles = async () => {
     const data = await fetchVehiclesForRegion(useRegion().current);
-    // todo fetch vehicles & pois in seperate queries (should be a lot faster)
+    // todo region store && fetch charge vehicles somewhere else
+    // requires refetching clusters first
     useUpdateVehicles(parseVehicles(data));
     this.setState({clusters: data.Data.clusters});
-  };
-
-  handleFetchChargeStations = async () => {
-    // todo region store && fetch charge stations somewhere else
-    const data = await fetchChargeStationsForRegion(useRegion().current);
-    useUpdateChargeStations(parseChargeStations(data));
   };
 
   debounceFetchVehicles = _.debounce(this.handleFetchVehicles, 1000);
