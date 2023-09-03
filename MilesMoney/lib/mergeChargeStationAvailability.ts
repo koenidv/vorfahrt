@@ -13,6 +13,8 @@ export const mergeChargeStationAvailability = (
         availability.coordinates.lat === station.coordinates.lat &&
         availability.coordinates.lng === station.coordinates.lng
     ));
+    // do not override previous availability without new information
+    if (!availability) return station;
     return {
       ...station,
       availability: availability,
