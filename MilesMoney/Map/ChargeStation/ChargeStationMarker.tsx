@@ -1,10 +1,10 @@
-import AvailableUnknown from "../assets/icons/Marker/chargestation/unknown.svg";
-import AvailableUnavailable from "../assets/icons/Marker/chargestation/unavailable.svg";
-import Available1 from "../assets/icons/Marker/chargestation/available_1.svg";
-import Available2 from "../assets/icons/Marker/chargestation/available_2.svg";
-import Available3 from "../assets/icons/Marker/chargestation/available_3.svg";
-import {ChargeStationAvailability} from "../lib/ChargeStationAvailabilityType";
-import {ChargeStation} from "../lib/Miles/types";
+import AvailableUnknown from "../../assets/icons/Marker/chargestation/unknown.svg";
+import AvailableUnavailable from "../../assets/icons/Marker/chargestation/unavailable.svg";
+import Available1 from "../../assets/icons/Marker/chargestation/available_1.svg";
+import Available2 from "../../assets/icons/Marker/chargestation/available_2.svg";
+import Available3 from "../../assets/icons/Marker/chargestation/available_3.svg";
+import {ChargeStationAvailability} from "../../lib/ChargeStationAvailabilityType";
+import {ChargeStation} from "../../lib/Miles/types";
 
 export interface ChargeStationMarkerProps {
   station: ChargeStation & Partial<{availability: ChargeStationAvailability}>;

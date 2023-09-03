@@ -1,33 +1,26 @@
 import mapStyle from "./mapStyle.json";
-import {apiCluster, apiPOI} from "../lib/Miles/apiTypes";
+import {apiCluster} from "../lib/Miles/apiTypes";
 import MapView, {
+  Callout,
   enableLatestRenderer,
   Marker,
   PROVIDER_GOOGLE,
-  Region,
 } from "react-native-maps";
 import React from "react";
 import VehicleMarker from "./VehicleMarker";
-import ChargeStationMarker from "./ChargeStationMarker";
+import ChargeStationMarker from "./ChargeStation/ChargeStationMarker";
 import Borders from "./Borders";
 import {useUpdateVehicles, useVehicles} from "../state/vehicles.state";
 import _ from "lodash";
-import {
-  parseChargeStations,
-  parseVehicles,
-} from "../lib/Miles/parseVehiclesResponse";
-import {
-  fetchChargeStationsForRegion,
-  fetchVehiclesForRegion,
-} from "../lib/Miles/fetchForRegion";
+import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
+import {fetchVehiclesForRegion} from "../lib/Miles/fetchForRegion";
 import Geolocation, {
   GeolocationResponse,
 } from "@react-native-community/geolocation";
-import {
-  useChargeStations,
-  useUpdateChargeStations,
-} from "../state/chargestations.state";
+import {useChargeStations} from "../state/chargestations.state";
 import {useRegion, useSetRegion, useUpdateRegion} from "../state/region.state";
+import { Text } from "react-native";
+import ChargeStationCallout from "./ChargeStation/ChargeStationCallout";
 
 export interface MapState {
   clusters: apiCluster[];
@@ -161,6 +154,7 @@ class Map extends React.Component<{}, MapState> {
               anchor={{x: 0.5, y: 0.5}}
               calloutAnchor={{x: 0.45, y: 0.25}}>
               <ChargeStationMarker station={station} />
+              <ChargeStationCallout station={station} />
             </Marker>
           );
         })}
