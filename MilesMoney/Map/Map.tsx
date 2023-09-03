@@ -27,33 +27,23 @@ import {
   useChargeStations,
   useUpdateChargeStations,
 } from "../state/chargestations.state";
+import {useRegion, useSetRegion, useUpdateRegion} from "../state/region.state";
 
 export interface MapState {
-  region: Region;
   clusters: apiCluster[];
-  pois: apiPOI[];
   pos: GeolocationResponse | undefined;
 }
+
 class Map extends React.Component<{}, MapState> {
-  locationInterval: NodeJS.Timeout | null = null;
   map: any;
 
   constructor(props: any) {
     super(props);
     this.state = {
-      region: {
-        latitude: 52.5277672,
-        longitude: 13.3767757,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      },
       clusters: [],
-      pois: [],
       pos: undefined,
     };
     enableLatestRenderer();
-
-    this.locationInterval = null;
   }
 
   componentDidMount() {
@@ -63,12 +53,9 @@ class Map extends React.Component<{}, MapState> {
   gotoSelfLocation = async () => {
     const pos = await this.getLocation();
 
-    this.setState({
-      region: {
-        ...this.state.region,
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-      },
+    useUpdateRegion({
+      latitude: pos.coords.latitude,
+      longitude: pos.coords.longitude,
     });
     this.map.animateCamera({
       center: {
@@ -95,7 +82,7 @@ class Map extends React.Component<{}, MapState> {
   };
 
   handleFetchVehicles = async () => {
-    const data = await fetchVehiclesForRegion(this.state.region);
+    const data = await fetchVehiclesForRegion(useRegion().current);
     // todo fetch vehicles & pois in seperate queries (should be a lot faster)
     useUpdateVehicles(parseVehicles(data));
     this.setState({clusters: data.Data.clusters});
@@ -103,14 +90,14 @@ class Map extends React.Component<{}, MapState> {
 
   handleFetchChargeStations = async () => {
     // todo region store && fetch charge stations somewhere else
-    const data = await fetchChargeStationsForRegion(this.state.region);
+    const data = await fetchChargeStationsForRegion(useRegion().current);
     useUpdateChargeStations(parseChargeStations(data));
   };
 
   debounceFetchVehicles = _.debounce(this.handleFetchVehicles, 1000);
 
   onRegionChange = (region: any) => {
-    this.setState({region: region});
+    useSetRegion(region);
     this.debounceFetchVehicles();
   };
 
@@ -120,7 +107,7 @@ class Map extends React.Component<{}, MapState> {
         ref={ref => (this.map = ref)}
         style={[{height: "100%", width: "100%"}]}
         provider={PROVIDER_GOOGLE}
-        initialRegion={this.state.region}
+        initialRegion={useRegion().current}
         onRegionChange={this.onRegionChange}
         customMapStyle={mapStyle}
         showsUserLocation={true}
