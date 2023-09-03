@@ -1,9 +1,11 @@
 import { create } from "zustand";
 import { ChargeStation, type Vehicle } from "../lib/Miles/types";
 import { unionBy } from "lodash";
+import { ChargeStationAvailability } from "../lib/ChargeStationAvailabilityType";
 
 interface ChargeStationsState {
-  stations: ChargeStation[];
+  stations:
+    (ChargeStation & Partial<{ "availability": ChargeStationAvailability }>)[];
   setStations: (stations: ChargeStation[]) => void;
 }
 
