@@ -17,9 +17,8 @@ import {
   View,
 } from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
-import Map from "./Map/Map";
+import Map, { MapMethods } from "./Map/Map";
 import ButtonBar from "./Buttons/ButtonBar";
-import MapView from "react-native-maps";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -58,7 +57,7 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const mapRef = useRef<Map>(null);
+  const mapRef = useRef<MapMethods>(null);
 
   return (
     <SafeAreaView style={backgroundStyle}>

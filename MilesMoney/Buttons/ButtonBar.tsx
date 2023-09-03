@@ -1,5 +1,4 @@
 import {StyleSheet, View} from "react-native";
-import type Map from "../Map/Map";
 import {RefObject, useState} from "react";
 import CircularButton from "./CircularButton";
 import RelocateIcon from "../assets/icons/relocate.svg";
@@ -9,9 +8,10 @@ import LottieView from "lottie-react-native";
 import {fetchChargeStationsForRegionUpdateState} from "../lib/fetchRegionUpdateState";
 import {useRegion} from "../state/region.state";
 import {useClearVehicles} from "../state/vehicles.state";
+import Map, { MapMethods } from "../Map/Map";
 
 export interface ButtonBarProps {
-  mapRef: RefObject<Map>;
+  mapRef: RefObject<MapMethods>;
 }
 
 const ButtonBar = (props: ButtonBarProps) => {
