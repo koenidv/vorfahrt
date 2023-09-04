@@ -9,8 +9,8 @@ export const bswChargeAvailability = async (region: Region) => {
 };
 
 const bswChargeStationsForRegion = async (region: Region) => {
+  const bswRegion = parseRegion(region);
   const startTime = performance.now();
-  console.time("bswChargeStationsForRegion")
   const res = await fetch(
     `${BASE_URL}/${CONTRACT_KEY}/getEmobilityLocationsData?` +
       new URLSearchParams({
