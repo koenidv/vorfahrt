@@ -1,0 +1,58 @@
+POST https://api.app.miles-mobility.com/mobile/GenericPost?deviceKey=f25d338071662680&requestType=GET_CITYTOCITY_OPTIONS&jsonPayload=%7B%22idCity_Origin%22:%22BER%22,%22idCity_Destination%22:%22MUC%22%7D
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+authorization:
+Bearer 79A2B327-01D9-4706-8655-437AFC218DAD
+connection:
+Keep-Alive
+content-length:
+0
+content-type:
+application/json
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+8810
+content-type:
+application/json; charset=utf-8
+date:
+Mon, 04 Sep 2023 15:19:29 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": "{\"citiesOrigin\": [{\"idCity\":\"AGB\",\"cityName\":\"Augsburg\",\"selected\":0},{\"idCity\":\"BER\",\"cityName\":\"Berlin\",\"selected\":1},{\"idCity\":\"BNN\",\"cityName\":\"Bonn\",\"selected\":0},{\"idCity\":\"CGN\",\"cityName\":\"Cologne\",\"selected\":0},{\"idCity\":\"DUI\",\"cityName\":\"Duisburg\",\"selected\":0},{\"idCity\":\"DUS\",\"cityName\":\"Düsseldorf\",\"selected\":0},{\"idCity\":\"HAM\",\"cityName\":\"Hamburg\",\"selected\":0},{\"idCity\":\"MUC\",\"cityName\":\"Munich\",\"selected\":0},{\"idCity\":\"PTD\",\"cityName\":\"Potsdam\",\"selected\":0},{\"idCity\":\"STR\",\"cityName\":\"Stuttgart\",\"selected\":0},{\"idCity\":\"UWP\",\"cityName\":\"Wuppertal\",\"selected\":0}], \"citiesDestination\": [{\"idCity\":\"AGB\",\"cityName\":\"Augsburg\",\"selected\":0},{\"idCity\":\"BER\",\"cityName\":\"Berlin\",\"selected\":0},{\"idCity\":\"BNN\",\"cityName\":\"Bonn\",\"selected\":0},{\"idCity\":\"CGN\",\"cityName\":\"Cologne\",\"selected\":0},{\"idCity\":\"DUI\",\"cityName\":\"Duisburg\",\"selected\":0},{\"idCity\":\"DUS\",\"cityName\":\"Düsseldorf\",\"selected\":0},{\"idCity\":\"HAM\",\"cityName\":\"Hamburg\",\"selected\":0},{\"idCity\":\"MUC\",\"cityName\":\"Munich\",\"selected\":1},{\"idCity\":\"PTD\",\"cityName\":\"Potsdam\",\"selected\":0},{\"idCity\":\"STR\",\"cityName\":\"Stuttgart\",\"selected\":0},{\"idCity\":\"UWP\",\"cityName\":\"Wuppertal\",\"selected\":0}], \"availableVehicles\": [{\"vehicleSize\":\"S\",\"vehicleType\":\"Cupra Born\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Cupra-Born.png\",\"isElectric\":true,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":22318,\"nearbyVehicleDistance\":2641,\"nearbyVehicleDistanceTxt\":\"2.64km\"},{\"vehicleSize\":\"S\",\"vehicleType\":\"Ford Fiesta\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Ford_Fiesta.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":9492,\"nearbyVehicleDistance\":2455,\"nearbyVehicleDistanceTxt\":\"2.46km\"},{\"vehicleSize\":\"S\",\"vehicleType\":\"Opel Corsa Elegance\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Opel_Corsa.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":17405,\"nearbyVehicleDistance\":964,\"nearbyVehicleDistanceTxt\":\"964.13m\"},{\"vehicleSize\":\"S\",\"vehicleType\":\"VW ID.3\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/App_VW-ID3.png\",\"isElectric\":true,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":11403,\"nearbyVehicleDistance\":336,\"nearbyVehicleDistanceTxt\":\"336.66m\"},{\"vehicleSize\":\"S\",\"vehicleType\":\"VW Polo\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/VWPolo.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":3771,\"nearbyVehicleDistance\":706,\"nearbyVehicleDistanceTxt\":\"706.9m\"},{\"vehicleSize\":\"S\",\"vehicleType\":\"VW Polo GP 2022\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/VWPolo.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":9459,\"nearbyVehicleDistance\":336,\"nearbyVehicleDistanceTxt\":\"336.84m\"},{\"vehicleSize\":\"M\",\"vehicleType\":\"Audi A4 Avant\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Audi_A4Avant.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":7247,\"nearbyVehicleDistance\":276,\"nearbyVehicleDistanceTxt\":\"276.41m\"},{\"vehicleSize\":\"M\",\"vehicleType\":\"Audi Q2\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Audi-q2.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":17188,\"nearbyVehicleDistance\":393,\"nearbyVehicleDistanceTxt\":\"393.96m\"},{\"vehicleSize\":\"M\",\"vehicleType\":\"Audi Q2 S line\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Audi-q2.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 0€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":19172,\"nearbyVehicleDistance\":965,\"nearbyVehicleDistanceTxt\":\"965.48m\"},{\"vehicleSize\":\"M\",\"vehicleType\":\"SEAT Leon\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/SeatLeon.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":5454,\"nearbyVehicleDistance\":627,\"nearbyVehicleDistanceTxt\":\"627.68m\"},{\"vehicleSize\":\"M\",\"vehicleType\":\"VW ID.4 Pro\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/WV_ID4_grey.png\",\"isElectric\":true,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":13496,\"nearbyVehicleDistance\":1104,\"nearbyVehicleDistanceTxt\":\"1.1km\"},{\"vehicleSize\":\"M\",\"vehicleType\":\"VW Taigo\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/VW_Taigo.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":14795,\"nearbyVehicleDistance\":992,\"nearbyVehicleDistanceTxt\":\"992.51m\"},{\"vehicleSize\":\"P\",\"vehicleType\":\"Ford Transit Custom 9 Seater\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Ford_Transit_9_Seat.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":15589,\"nearbyVehicleDistance\":4658,\"nearbyVehicleDistanceTxt\":\"4.66km\"},{\"vehicleSize\":\"P\",\"vehicleType\":\"Tesla Model 3\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Tesla_Model3.png\",\"isElectric\":true,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":6975,\"nearbyVehicleDistance\":1224,\"nearbyVehicleDistanceTxt\":\"1.22km\"},{\"vehicleSize\":\"P\",\"vehicleType\":\"Tesla Model Y\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Tesla_Y.png\",\"isElectric\":true,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 19.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":19275,\"nearbyVehicleDistance\":1624,\"nearbyVehicleDistanceTxt\":\"1.62km\"},{\"vehicleSize\":\"L\",\"vehicleType\":\"Ford Transit\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/Ford_Transit.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 49.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":14618,\"nearbyVehicleDistance\":595,\"nearbyVehicleDistanceTxt\":\"595.65m\"},{\"vehicleSize\":\"L\",\"vehicleType\":\"VW T6\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/VWT6.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 49.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":29,\"nearbyVehicleDistance\":767,\"nearbyVehicleDistanceTxt\":\"767.89m\"},{\"vehicleSize\":\"X\",\"vehicleType\":\"Mercedes Sprinter\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/MercedesSprinter.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 49.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":10379,\"nearbyVehicleDistance\":683,\"nearbyVehicleDistanceTxt\":\"683.03m\"},{\"vehicleSize\":\"X\",\"vehicleType\":\"VW Crafter\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/VWcRAFTER.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 49.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":430,\"nearbyVehicleDistance\":120,\"nearbyVehicleDistanceTxt\":\"120.86m\"},{\"vehicleSize\":\"X\",\"vehicleType\":\"VW Crafter Automatic\",\"vehicleImage\":\"https:\\/\\/api.app.miles-mobility.com\\/static\\/img\\/cars\\/small\\/VWcRAFTER.png\",\"isElectric\":false,\"isFakeVehicle\":false,\"dropOfftxt\":\"add. 49.5€\",\"dropOfftxt_preDiscount\":\"\",\"nearbyVehicle\":3265,\"nearbyVehicleDistance\":734,\"nearbyVehicleDistanceTxt\":\"734.8m\"}]}"
+}

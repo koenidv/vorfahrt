@@ -1,0 +1,58 @@
+POST https://api.app.miles-mobility.com/mobile/GenericPost?deviceKey=f25d338071662680&requestType=GET_CITYTOCITY_PRICING&jsonPayload=%7B%22vehicleSize%22:%22S%22%7D
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+authorization:
+Bearer 79A2B327-01D9-4706-8655-437AFC218DAD
+connection:
+Keep-Alive
+content-length:
+0
+content-type:
+application/json
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+9105
+content-type:
+application/json; charset=utf-8
+date:
+Mon, 04 Sep 2023 15:16:38 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": "{\r\n\t\t\"vehicleSizeSelector_title\": \"Choose your MILES size\",\r\n\t\t\"vehicleSizeSelector_options\": [{\"vehicleSize\":\"S\",\"vehicleSize_description\":\"Small vehicles\",\"selected\":true},{\"vehicleSize\":\"M\",\"vehicleSize_description\":\"Compact vehicles\",\"selected\":false},{\"vehicleSize\":\"L\",\"vehicleSize_description\":\"Vans\",\"selected\":false},{\"vehicleSize\":\"X\",\"vehicleSize_description\":\"XL Vans\",\"selected\":false},{\"vehicleSize\":\"P\",\"vehicleSize_description\":\"Premium Vehicles\",\"selected\":false}],\r\n\t\t\"txtOurCars\": \"*Our S vehicles:* VW Polo, VW ID.3, Opel Corsa, Cupra Born, Ford Fiesta\",\r\n\t\t\"txtPassIcon\": \"💡\",\r\n\t\t\"txtPassInfo\": \"*Save up to 25% with a MILES Pass!* Subscribe today and *start saving immediately* – no strings attached, cancel anytime!\",\r\n\t\t\"txtPassDeeplink\": \"PassScreen\",\r\n\t\t\"txtPassShowDiscount\": true,\r\n\t\t\"standardRate_title\": \"Standard km rate\",\r\n\t\t\"standardRate_items\": [{\"item_name\":\"price\\/km\",\"item_price\":\"0.98€\\/km\"},{\"item_name\":\"Stopover\",\"item_price\":\"0.29€\\/min\"},{\"item_name\":\"Unlock Fee\",\"item_price\":\"1.00€\"}],\r\n\t\t\"txtDiscountInfo\": \"On dedicated vehicles we also offer a reduced km rate for 0.69€/km. You can find those on the map marked with a red % icon.\",\r\n\t\t\"hourlyAndDailyRates_title\": \"Hourly & daily rates\",\r\n\t\t\"hourlyAndDailyRates_txt\": \"All our daily rates incl. unlock fee, parking minutes, refueling & charging!\",\r\n\t\t\"hourlyAndDailyRates_items\": [{\"item_title\":\"Up to 6h\",\"item_content\":[{\"option_name\":\"3h & 40km\",\"option_price\":\"34€\"},{\"option_name\":\"6h & 60km\",\"option_price\":\"39€\"}],\"lastitem_name\":\"Additional km\",\"lastitem_price\":\"0.49€\",\"firebaseEvent\":\"pricing_c2c_pricing_choose_up_to_6hrs\"},{\"item_title\":\"Up to 24h\",\"item_content\":[{\"option_name\":\"1 day & 50km\",\"option_price\":\"45€\"},{\"option_name\":\"1 day & 100km\",\"option_price\":\"64€\"},{\"option_name\":\"1 day & 150km\",\"option_price\":\"81€\"},{\"option_name\":\"1 day(s) & 350km\",\"option_price\":\"149€\"}],\"lastitem_name\":\"Additional km\",\"lastitem_price\":\"0.49€\",\"firebaseEvent\":\"pricing_c2c_pricing_choose_up_to_24hrs\"},{\"item_title\":\"From 1 - 7 days\",\"item_content\":[{\"option_name\":\"2 day(s) & 100km\",\"option_price\":\"70€\"},{\"option_name\":\"2 day(s) & 300km\",\"option_price\":\"144€\"},{\"option_name\":\"3 day(s) & 125km\",\"option_price\":\"79€\"},{\"option_name\":\"3 day(s) & 150km\",\"option_price\":\"104€\"},{\"option_name\":\"3 day(s) & 350km\",\"option_price\":\"174€\"},{\"option_name\":\"3 day(s) & 750km\",\"option_price\":\"314€\"},{\"option_name\":\"4 day(s) & 200km\",\"option_price\":\"129€\"},{\"option_name\":\"4 day(s) & 400km\",\"option_price\":\"179€\"},{\"option_name\":\"5 day(s) & 125km\",\"option_price\":\"129€\"},{\"option_name\":\"5 day(s) & 250km\",\"option_price\":\"159€\"},{\"option_name\":\"5 day(s) & 550km\",\"option_price\":\"249€\"},{\"option_name\":\"5 day(s) & 750km\",\"option_price\":\"324€\"},{\"option_name\":\"6 day(s) & 300km\",\"option_price\":\"190€\"},{\"option_name\":\"6 day(s) & 750km\",\"option_price\":\"339€\"},{\"option_name\":\"7 day(s) & 175km\",\"option_price\":\"169€\"},{\"option_name\":\"7 day(s) & 350km\",\"option_price\":\"239€\"},{\"option_name\":\"7 day(s) & 750km\",\"option_price\":\"339€\"}],\"lastitem_name\":\"Additional km\",\"lastitem_price\":\"0.49€\",\"firebaseEvent\":\"pricing_c2c_pricing_choose_1to7d\"},{\"item_title\":\"From 8 - 14 days\",\"item_content\":[{\"option_name\":\"8 day(s) & 400km\",\"option_price\":\"259€\"},{\"option_name\":\"8 day(s) & 1000km\",\"option_price\":\"449€\"},{\"option_name\":\"9 day(s) & 450km\",\"option_price\":\"279€\"},{\"option_name\":\"9 day(s) & 1100km\",\"option_price\":\"489€\"},{\"option_name\":\"10 day(s) & 250km\",\"option_price\":\"219€\"},{\"option_name\":\"10 day(s) & 500km\",\"option_price\":\"309€\"},{\"option_name\":\"10 day(s) & 1000km\",\"option_price\":\"499€\"},{\"option_name\":\"10 day(s) & 1250km\",\"option_price\":\"569€\"},{\"option_name\":\"11 day(s) & 550km\",\"option_price\":\"334€\"},{\"option_name\":\"11 day(s) & 1300km\",\"option_price\":\"599€\"},{\"option_name\":\"12 day(s) & 600km\",\"option_price\":\"379€\"},{\"option_name\":\"12 day(s) & 1400km\",\"option_price\":\"639€\"},{\"option_name\":\"13 day(s) & 650km\",\"option_price\":\"409€\"},{\"option_name\":\"13 day(s) & 1600km\",\"option_price\":\"729€\"},{\"option_name\":\"14 day(s) & 350km\",\"option_price\":\"289€\"},{\"option_name\":\"14 day(s) & 700km\",\"option_price\":\"449€\"},{\"option_name\":\"14 day(s) & 1700km\",\"option_price\":\"759€\"}],\"lastitem_name\":\"Additional km\",\"lastitem_price\":\"0.49€\",\"firebaseEvent\":\"pricing_c2c_pricing_choose_greaterthan7d\"},{\"item_title\":\"More than 14 days\",\"item_content\":[{\"option_name\":\"15 day(s) & 750km\",\"option_price\":\"479€\"},{\"option_name\":\"15 day(s) & 1800km\",\"option_price\":\"829€\"},{\"option_name\":\"16 day(s) & 800km\",\"option_price\":\"509€\"},{\"option_name\":\"16 day(s) & 1900km\",\"option_price\":\"869€\"},{\"option_name\":\"17 day(s) & 850km\",\"option_price\":\"529€\"},{\"option_name\":\"17 day(s) & 2000km\",\"option_price\":\"879€\"},{\"option_name\":\"18 day(s) & 900km\",\"option_price\":\"549€\"},{\"option_name\":\"18 day(s) & 2000km\",\"option_price\":\"899€\"},{\"option_name\":\"19 day(s) & 950km\",\"option_price\":\"599€\"},{\"option_name\":\"19 day(s) & 2000km\",\"option_price\":\"929€\"},{\"option_name\":\"20 day(s) & 1000km\",\"option_price\":\"609€\"},{\"option_name\":\"20 day(s) & 2000km\",\"option_price\":\"939€\"},{\"option_name\":\"21 day(s) & 1050km\",\"option_price\":\"649€\"},{\"option_name\":\"21 day(s) & 2000km\",\"option_price\":\"949€\"},{\"option_name\":\"22 day(s) & 1100km\",\"option_price\":\"689€\"},{\"option_name\":\"22 day(s) & 2200km\",\"option_price\":\"1029€\"},{\"option_name\":\"23 day(s) & 1150km\",\"option_price\":\"699€\"},{\"option_name\":\"23 day(s) & 2300km\",\"option_price\":\"1059€\"},{\"option_name\":\"24 day(s) & 1200km\",\"option_price\":\"719€\"},{\"option_name\":\"24 day(s) & 2400km\",\"option_price\":\"1099€\"},{\"option_name\":\"25 day(s) & 1250km\",\"option_price\":\"749€\"},{\"option_name\":\"25 day(s) & 2500km\",\"option_price\":\"1149€\"},{\"option_name\":\"26 day(s) & 1300km\",\"option_price\":\"769€\"},{\"option_name\":\"26 day(s) & 2500km\",\"option_price\":\"1165€\"},{\"option_name\":\"27 day(s) & 1350km\",\"option_price\":\"799€\"},{\"option_name\":\"27 day(s) & 2500km\",\"option_price\":\"1169€\"},{\"option_name\":\"28 day(s) & 1400km\",\"option_price\":\"829€\"},{\"option_name\":\"28 day(s) & 3000km\",\"option_price\":\"1299€\"},{\"option_name\":\"29 day(s) & 1450km\",\"option_price\":\"879€\"},{\"option_name\":\"29 day(s) & 3200km\",\"option_price\":\"1449€\"},{\"option_name\":\"30 day(s) & 1500km\",\"option_price\":\"899€\"},{\"option_name\":\"30 day(s) & 3500km\",\"option_price\":\"1679€\"}],\"lastitem_name\":\"Additional km\",\"lastitem_price\":\"0.49€\",\"firebaseEvent\":\"pricing_c2c_pricing_choose_greaterthan7d\"}],\r\n\t\t\"airportRate_title\": \"Airport fees\",\r\n\t\t\"airportRate_route\": \"BERLIN <> BER\",\r\n\t\t\"airportRate_items\": [{\"item_name\":\"Pick up\",\"item_value\":\"5€\"},{\"item_name\":\"Drop off\",\"item_value\":\"5€\"}],\r\n\t\t\"airportRate_text\": \"You'll find our MILES parking lots at BER: T1, P4 outside\",\r\n\t\t\"airportRate2_route\": null,\r\n\t\t\"airportRate2_items\": null,\r\n\t\t\"airportRate2_text\": null,\r\n\t\t\"specialHolidayRates_title\": \"Holiday rates\",\r\n\t\t\"specialHolidayRates_text1\": \"💡 On certain occasions, MILES offers reduced and time-limited short- and long-term rates.\",\r\n\t\t\"specialHolidayRates_text2\": \"⚠️ Holiday rates will get applied automatically, booking them via the app prior to the rental is not necessary.\",\r\n\t\t\"specialHolidayRates_text3\": \"[Check out our website for more information|https://miles-mobility.com/en-de/holiday-rates|HOLIDAY RATES]\",\r\n\t\t\"tripsAbroad_title\": \"Trips abroad\",\r\n\t\t\"tripsAbroad_txtSurcharge1\": \"Surcharge\",\r\n\t\t\"tripsAbroad_txtSurcharge2\": \"5€/day\", \r\n\t\t\"tripsAbroad_txtSurcharge3\": \"max. 25€/rental\", \r\n\t\t\"tripsAbroad_text1\": \"The cross country surcharge (capped at max. 25€/rental) will be calculated at the end of your rental. No additional deposit required.\",\r\n\t\t\"tripsAbroad_text2\": \"Find the *list of countries* you can visit with MILES [here|https://support-be.miles-mobility.com/hc/en-us/articles/7449367759634-Which-countries-can-I-travel-to-with-MILES-|TRIPS ABROAD].\",\r\n\t\t\"tripsAbroad_text3\": \"*Additional costs*: You bear the costs for parking fees and tickets, refueling costs, road tolls & toll stickers.\"\r\n\t}"
+}
