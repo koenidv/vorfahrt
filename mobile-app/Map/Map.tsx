@@ -32,6 +32,8 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   const vehicles = useVehicles((state) => state.vehicles);
   const stations = useChargeStations((state) => state.stations);
 
+  const initialRegion = useRegion.getState().current;
+
   useEffect(() => {
     gotoSelfLocation();
   }, []);
@@ -53,7 +55,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
     useVehicles.getState().updateVehicles(parseVehicles(data));
     setClusters(data.Data.clusters);
   };
-  const debounceFetchVehicles = useRef(debounce(handleFetchVehicles, 50)).current;
+  const debounceFetchVehicles = useRef(debounce(handleFetchVehicles, 200)).current;
 
   const onRegionChange = (region: any) => {
     useRegion.getState().setCurrent(region);
@@ -70,7 +72,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
       ref={map}
       style={[{height: "100%", width: "100%"}]}
       provider={PROVIDER_GOOGLE}
-      initialRegion={useRegion().current}
+      initialRegion={initialRegion}
       onRegionChange={onRegionChange}
       customMapStyle={mapStyle}
       showsUserLocation={true}

@@ -1,4 +1,3 @@
-import { Region } from "react-native-maps";
 import { fetchChargeStationsForRegion } from "./Miles/fetchForRegion";
 import { VehicleFetchOptions } from "./Miles/fetchVehicles";
 import { parseChargeStations } from "./Miles/parseVehiclesResponse";
