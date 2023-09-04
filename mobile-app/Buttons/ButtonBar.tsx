@@ -5,7 +5,7 @@ import RelocateIcon from "../assets/icons/relocate.svg";
 import ReloadIcon from "../assets/icons/reload.svg";
 import ChargeIcon from "../assets/icons/charge.svg";
 import LottieView from "lottie-react-native";
-import {fetchChargeStationsForRegionUpdateState} from "../lib/fetchRegionUpdateState";
+import {fetchChargeStationsCurrentRegionUpdateState} from "../lib/fetchRegionUpdateState";
 import {useRegion} from "../state/region.state";
 import { MapMethods } from "../Map/Map";
 import { useChargeStations } from "../state/chargestations.state";
@@ -36,7 +36,7 @@ const ButtonBar = (props: ButtonBarProps) => {
       <CircularButton
         onPress={async () => {
           setStationsLoading(true);
-          await fetchChargeStationsForRegionUpdateState(useRegion.getState().current);
+          await fetchChargeStationsCurrentRegionUpdateState();
           setStationsLoading(false);
         }}>
         {stationsLoading ? (

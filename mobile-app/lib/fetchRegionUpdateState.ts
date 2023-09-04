@@ -9,6 +9,7 @@ import {
   mergeChargeStationAvailability,
 } from "./mergeChargeStationAvailability";
 import { useChargeStations } from "../state/chargestations.state";
+import { useRegion } from "../state/region.state";
 
 // export const fetchVehiclesForRegionUpdateState = async (
 //   region: Region,
@@ -21,17 +22,15 @@ import { useChargeStations } from "../state/chargestations.state";
 //   }
 // };
 
-export const fetchChargeStationsForRegionUpdateState = async (
-  region: Region,
+export const fetchChargeStationsCurrentRegionUpdateState = async (
   options?: Partial<VehicleFetchOptions>,
 ) => {
-  console.log("fetchChargeStationsForRegionUpdateState")
+  const region = useRegion.getState().current;
   const [stationsRaw, bsrAvailabilities, weAvailabilities] = await Promise.all([
     fetchChargeStationsForRegion(region, options),
     bswChargeAvailability(region),
     weChargeAvailability(region),
   ]);
-  console.log("fetched stations")
 
   const stations = parseChargeStations(stationsRaw);
   // do not use BSR availibilities from WeCharge, BSR is more accurate
@@ -39,15 +38,12 @@ export const fetchChargeStationsForRegionUpdateState = async (
     ...bsrAvailabilities,
     ...weAvailabilities.filter((a) => !a.name.includes("Berliner Stadtwerke")),
   ];
-  console.log("parsed stations")
 
   const merged = mergeChargeStationAvailability(
     stations,
     availabilities,
     CHARGE_LOCATION_TOLERANCE.WECHARGE,
   );
-  console.log("merged stations")
 
   useChargeStations.getState().updateStations(merged);
-  console.log("updated stations")
 };
