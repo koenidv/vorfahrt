@@ -45,6 +45,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
         latitude: pos.coords.latitude,
         longitude: pos.coords.longitude,
       },
+      zoom: 15,
     });
   };
 
