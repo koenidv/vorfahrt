@@ -11,7 +11,7 @@ import React, {
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStation/ChargeStationMarker";
 import Borders from "./Borders";
-import _ from "lodash";
+import { debounce } from "lodash";
 import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
 import {fetchVehiclesForRegion} from "../lib/Miles/fetchForRegion";
 import {useRegion} from "../state/region.state";
@@ -53,7 +53,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
     useVehicles.getState().updateVehicles(parseVehicles(data));
     setClusters(data.Data.clusters);
   };
-  const debounceFetchVehicles = _.debounce(() => {}, 1000);
+  const debounceFetchVehicles = useRef(debounce(handleFetchVehicles, 50)).current;
 
   const onRegionChange = (region: any) => {
     useRegion.getState().setCurrent(region);
@@ -62,7 +62,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   useImperativeHandle(ref, () => ({
     gotoSelfLocation,
-    handleFetchVehicles: () => {},
+    handleFetchVehicles,
   }));
 
   return (
