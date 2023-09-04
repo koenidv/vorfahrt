@@ -1,0 +1,73 @@
+POST https://api.app.miles-mobility.com/mobile/Login?deviceKey=f25d338071662680&lang=en
+
+HEADERS
+accept:
+application/json
+accept-encoding:
+gzip
+connection:
+Keep-Alive
+content-length:
+89
+content-type:
+application/json
+host:
+api.app.miles-mobility.com
+user-agent:
+okhttp/4.9.1
+
+-
+
+{
+  "Email": "xxx@xx.com",
+  "Password": "xxx"
+}
+
+---
+
+STATUS: 200 OK
+HEADERS
+access-control-allow-credentials:
+true
+access-control-allow-headers:
+Content-Type, Access-Control-Allow-Headers, Access-Control-Allow-Credentials, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Cache-Control
+access-control-allow-methods:
+GET,HEAD,PUT,PATCH,POST,DELETE
+access-control-allow-origin:
+*
+cache-control:
+no-cache
+content-length:
+262
+content-type:
+application/json; charset=utf-8
+date:
+Mon, 04 Sep 2023 14:53:48 GMT
+expires:
+-1
+pragma:
+no-cache
+server:
+Microsoft-IIS/10.0
+x-aspnet-version:
+4.0.30319
+x-powered-by:
+ASP.NET
+
+-
+
+{
+  "Result": "OK",
+  "ResponseText": null,
+  "Data": {
+    "SID": "13D2B5B4-0543-4269-9D6C-xxx",
+    "Lang": "en",
+    "SessionExpirationMinutes": 60,
+    "SignupStep": "STEP8",
+    "UserMigrated": false,
+    "UserUUID": null,
+    "RequireSMSValidation": false,
+    "AuxData": null,
+    "AppPermissionLevel": "RIDER"
+  }
+}
