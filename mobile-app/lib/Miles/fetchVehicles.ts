@@ -27,6 +27,7 @@ export type VehicleFetchOptions = {
 export const fetchVehicles = async (
   options: VehicleFetchOptions,
 ): Promise<apiVehiclesResponse> => {
+  const startTime = performance.now();
   const res = await fetch(
     `${BASE_URL}/Vehicles?` + new URLSearchParams({
       deviceKey: options.deviceKey,
@@ -51,6 +52,7 @@ export const fetchVehicles = async (
       VehicleTransmissionFilter: "",
     }),
   );
+  console.log("fetchVehicles", performance.now() - startTime);
 
   if (!res.ok) {
     throw new Error(`fetchVehicles failed with status ${res.status}`);

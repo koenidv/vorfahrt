@@ -9,6 +9,7 @@ export const weChargeAvailability = async (region: Region) => {
 };
 
 const weChargeStationsForRegion = async (region: Region) => {
+  const startTime = performance.now();
   const res = await fetch(
     `${BASE_URL}/searchAndFind`,
     {
@@ -30,6 +31,7 @@ const weChargeStationsForRegion = async (region: Region) => {
       }),
     },
   );
+  console.log("weChargeStationsForRegion", performance.now() - startTime);
   if (!res.ok) {
     console.log(JSON.stringify({
       boundingBox: parseRegion(region),
