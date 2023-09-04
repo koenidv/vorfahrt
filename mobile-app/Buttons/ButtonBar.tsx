@@ -7,8 +7,9 @@ import ChargeIcon from "../assets/icons/charge.svg";
 import LottieView from "lottie-react-native";
 import {fetchChargeStationsForRegionUpdateState} from "../lib/fetchRegionUpdateState";
 import {useRegion} from "../state/region.state";
-import {useClearVehicles} from "../state/vehicles.state";
-import Map, { MapMethods } from "../Map/Map";
+import { MapMethods } from "../Map/Map";
+import { useChargeStations } from "../state/chargestations.state";
+import { useVehicles } from "../state/vehicles.state";
 
 export interface ButtonBarProps {
   mapRef: RefObject<MapMethods>;
@@ -21,7 +22,7 @@ const ButtonBar = (props: ButtonBarProps) => {
     <View style={styles.container}>
       <CircularButton
         onPress={() => {
-          useClearVehicles();
+          useVehicles.getState().clearVehicles();
           props.mapRef.current?.handleFetchVehicles();
         }}>
         <ReloadIcon width={35} height={35} />
@@ -35,7 +36,7 @@ const ButtonBar = (props: ButtonBarProps) => {
       <CircularButton
         onPress={async () => {
           setStationsLoading(true);
-          await fetchChargeStationsForRegionUpdateState(useRegion().current);
+          await fetchChargeStationsForRegionUpdateState(useRegion.getState().current);
           setStationsLoading(false);
         }}>
         {stationsLoading ? (

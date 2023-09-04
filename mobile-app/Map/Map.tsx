@@ -11,14 +11,14 @@ import React, {
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStation/ChargeStationMarker";
 import Borders from "./Borders";
-import {useUpdateVehicles, useVehicles} from "../state/vehicles.state";
 import _ from "lodash";
 import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
 import {fetchVehiclesForRegion} from "../lib/Miles/fetchForRegion";
-import {useChargeStations} from "../state/chargestations.state";
-import {useRegion, useSetRegion} from "../state/region.state";
+import {useRegion} from "../state/region.state";
 import ChargeStationCallout from "./ChargeStation/ChargeStationCallout";
 import {getLocation} from "../lib/location/getLocation";
+import { useVehicles } from "../state/vehicles.state";
+import { useChargeStations } from "../state/chargestations.state";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -28,6 +28,9 @@ export interface MapMethods {
 const Map = forwardRef<MapMethods>((_props, ref) => {
   const [clusters, setClusters] = useState<apiCluster[]>([]);
   let map = useRef<MapView>(null);
+
+  const vehicles = useVehicles((state) => state.vehicles);
+  const stations = useChargeStations((state) => state.stations);
 
   useEffect(() => {
     gotoSelfLocation();
@@ -44,22 +47,22 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   };
 
   const handleFetchVehicles = async () => {
-    const data = await fetchVehiclesForRegion(useRegion().current);
+    const data = await fetchVehiclesForRegion(useRegion.getState().current);
     // todo region store && fetch charge vehicles somewhere else
     // requires refetching clusters first
-    useUpdateVehicles(parseVehicles(data));
+    useVehicles.getState().updateVehicles(parseVehicles(data));
     setClusters(data.Data.clusters);
   };
-  const debounceFetchVehicles = _.debounce(handleFetchVehicles, 1000);
+  const debounceFetchVehicles = _.debounce(() => {}, 1000);
 
   const onRegionChange = (region: any) => {
-    useSetRegion(region);
+    useRegion.getState().setCurrent(region);
     debounceFetchVehicles();
   };
 
   useImperativeHandle(ref, () => ({
     gotoSelfLocation,
-    handleFetchVehicles,
+    handleFetchVehicles: () => {},
   }));
 
   return (
@@ -76,7 +79,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
       showsIndoors={false}
       pitchEnabled={false}
       rotateEnabled={false}>
-      {useVehicles().vehicles.map((pin, index) => {
+      {vehicles.map((pin, index) => {
         return (
           <Marker
             coordinate={{
@@ -105,7 +108,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
           />
         );
       })}
-      {useChargeStations().stations.map((station, index) => {
+      {stations.map((station, index) => {
         return (
           <Marker
             key={"p_" + index}

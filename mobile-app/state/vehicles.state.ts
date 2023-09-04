@@ -4,18 +4,15 @@ import { unionBy } from "lodash";
 
 interface VehiclesState {
   vehicles: Vehicle[];
-  setVehicles: (vehicles: Vehicle[]) => void;
-  addVehicle: (vehicle: Vehicle) => void;
+  updateVehicles: (vehicles: Vehicle[]) => void;
   clearVehicles: () => void;
   removeVehicle: (vehicle: Vehicle) => void;
 }
 
-const vehiclesState = create<VehiclesState>(
+export const useVehicles = create<VehiclesState>(
   (set) => ({
     vehicles: [],
-    setVehicles: (vehicles) => set({ vehicles }),
-    addVehicle: (vehicle) =>
-      set((state) => ({ vehicles: [...state.vehicles, vehicle] })),
+    updateVehicles: (vehicles) => set((current) => ({ vehicles: tempMergeVehicles(current.vehicles, vehicles) })),
     clearVehicles: () => set({ vehicles: [] }),
     removeVehicle: (vehicle) =>
       set((state) => ({
@@ -24,15 +21,11 @@ const vehiclesState = create<VehiclesState>(
   }),
 );
 
-export const useVehicles = vehiclesState.getState;
-export const useUpdateVehicles = (vehicles: Vehicle[]) => {
-  const joined = unionBy(
-    vehiclesState.getState().vehicles,
-    vehicles,
+const tempMergeVehicles = (currentVehicles: Vehicle[], newVehicles: Vehicle[]) => {
+  // todo properly merge vehicles
+  return unionBy(
+    currentVehicles,
+    newVehicles,
     (v) => v.id,
   );
-  vehiclesState.getState().setVehicles(joined);
-  // todo properly merge vehicles
 };
-export const useOverrideVehicles = vehiclesState.getState().setVehicles;
-export const useClearVehicles = vehiclesState.getState().clearVehicles;

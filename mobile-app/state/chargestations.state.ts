@@ -1,38 +1,35 @@
 import { create } from "zustand";
-import { ChargeStation, type Vehicle } from "../lib/Miles/types";
+import { ChargeStation } from "../lib/Miles/types";
 import { unionBy } from "lodash";
 import { ChargeStationAvailability } from "../lib/ChargeStationAvailabilityType";
-import { mergeChargeStationAvailability } from "../lib/mergeChargeStationAvailability";
 
 interface ChargeStationsState {
   stations:
     (ChargeStation & Partial<{ "availability": ChargeStationAvailability }>)[];
-  setStations: (stations: ChargeStation[]) => void;
+  updateStations: (stations: ChargeStation[]) => void;
+  // updateStationsAvailabilities for when availabilities are updated seperately
+  clearStations: () => void;
 }
 
-const chargeStationsState = create<ChargeStationsState>(
+export const useChargeStations = create<ChargeStationsState>(
   (set) => ({
     stations: [],
-    setStations: (stations) => set({ stations }),
+    updateStations: (stations: ChargeStation[]) =>
+      set((current) => ({
+        stations: tempMergeStations(current.stations, stations),
+      })),
+    clearStations: () => set({ stations: [] }),
   }),
 );
 
-export const useChargeStations = chargeStationsState.getState;
-export const useUpdateChargeStations = (stations: ChargeStation[]) => {
-  const joined = unionBy(
-    chargeStationsState.getState().stations,
-    stations,
+const tempMergeStations = (
+  currentStations: ChargeStation[],
+  newStations: ChargeStation[],
+): ChargeStation[] => {
+  // todo properly merge chargestations
+  return unionBy(
+    currentStations,
+    newStations,
     (v) => v.milesId,
   );
-  chargeStationsState.getState().setStations(joined);
-  // todo properly merge chargestations
-};
-export const useUpdateChargeStationAvailabilities = (
-  availabilities: ChargeStationAvailability[],
-) => {
-  const merged = mergeChargeStationAvailability(
-    chargeStationsState.getState().stations,
-    availabilities,
-  );
-  chargeStationsState.getState().setStations(merged);
 };
