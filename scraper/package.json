@@ -1,0 +1,36 @@
+{
+  "name": "vorfahrt-backend",
+  "version": "0.0.1",
+  "description": "Scraping service for Vorfahrt - A micromobility insight platform. Uses our abfahrt scraper.",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start",
+    "dev": "webpack-dev-server --inline --hot",
+    "build": "webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koenidv/vorfahrt.git"
+  },
+  "keywords": [
+    "vorfahrt"
+  ],
+  "author": "koenidv",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/koenidv/vorfahrt/issues"
+  },
+  "homepage": "https://github.com/koenidv/vorfahrt#readme",
+  "devDependencies": {
+    "@types/jasmine": "^4.3.5",
+    "jasmine-core": "^5.1.1",
+    "karma": "^6.4.2",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-jasmine": "^5.1.0",
+    "karma-webpack": "^5.0.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
