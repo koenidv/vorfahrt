@@ -12,15 +12,11 @@ const assertString = (value: unknown, key: string) => {
 const env = {
   milesAccountEmail: assertString(
     process.env.MILES_ACCOUNT_EMAIL,
-    "MILES_ACCOUNT_EMAIL"
+    "MILES_ACCOUNT_EMAIL",
   ),
   milesAccountPassword: assertString(
     process.env.MILES_ACCOUNT_PASSWORD,
-    "MILES_ACCOUNT_PASSWORD"
-  ),
-  milesAccountPin: assertString(
-    process.env.MILES_ACCOUNT_PIN,
-    "MILES_ACCOUNT_PIN"
+    "MILES_ACCOUNT_PASSWORD",
   ),
 } as const;
 
