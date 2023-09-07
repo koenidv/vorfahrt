@@ -20,7 +20,6 @@
   "bugs": {
     "url": "https://github.com/koenidv/vorfahrt/issues"
   },
-  "type": "module",
   "homepage": "https://github.com/koenidv/vorfahrt#readme",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
@@ -31,8 +30,5 @@
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "abfahrt": "github:koenidv/abfahrt"
   }
 }
