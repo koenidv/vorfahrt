@@ -10,7 +10,7 @@ const berlinArea: Abfahrt.Area = {
 
 const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const miles = new MilesClient({ deviceKey: "d15231c7925b4517" });
+    const miles = new MilesClient({ deviceKey: "d15231c7925b4530moinmeistersachedongs" });
 
     const ding = miles.createVehicleSearch(berlinArea);
 
