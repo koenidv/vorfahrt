@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -25,6 +26,7 @@ export class VehicleSize {
   models: VehicleModel[];
 
   @OneToOne(() => Pricing, (pricing) => pricing.size)
+  @JoinColumn()
   pricing: Pricing;
 
   @OneToMany(() => Tariff, (tariff) => tariff.size)

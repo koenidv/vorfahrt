@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -29,6 +30,7 @@ export class VehicleMeta {
   model: VehicleModel;
 
   @OneToOne(() => VehicleCurrent, (current) => current.vehicle)
+  @JoinColumn()
   current: VehicleCurrent;
 
   @Column()
