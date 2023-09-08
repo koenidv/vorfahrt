@@ -17,7 +17,7 @@ export class Tariff {
   @ManyToOne(() => VehicleSize, (size) => size.tariffs)
   size: VehicleSize;
 
-  @Column("interval day to hour")
+  @Column("interval")
   duration: string;
 
   @Column("int2")

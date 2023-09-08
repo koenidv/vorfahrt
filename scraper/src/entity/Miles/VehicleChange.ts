@@ -39,10 +39,7 @@ export class VehicleChange {
   })
   location: string | null;
 
-  @Column({
-    nullable: true,
-  })
-  @ManyToOne(() => City)
+  @ManyToOne(() => City, { nullable: true })
   city: City;
 
   @Column({
