@@ -31,9 +31,9 @@ const env = {
     process.env.DB_PASSWORD,
     "DB_PASSWORD",
   ),
-  dbDb: assertString(
-    process.env.DB_DATABASE,
-    "DB_DATABASE",
+  dbName: assertString(
+    process.env.DB_NAME,
+    "DB_NAME",
   ),
 } as const;
 

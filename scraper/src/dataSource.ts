@@ -9,7 +9,7 @@ export const AppDataSource = new DataSource({
     port: env.dbPort,
     username: env.dbUser,
     password: env.dbPassword,
-    database: env.dbDb,
+    database: env.dbName,
     synchronize: true,
     logging: false,
     entities: [MilesVehicleSize],
