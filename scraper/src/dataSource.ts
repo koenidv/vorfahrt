@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { MilesVehicleSize } from "./entity/MilesVehicleSize"
+import { VehicleSize } from "./entity/VehicleSize"
 import env from "./env"
 
 export const AppDataSource = new DataSource({
@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     database: env.dbName,
     synchronize: true,
     logging: false,
-    entities: [MilesVehicleSize],
+    entities: [VehicleSize],
     migrations: [],
     subscribers: [],
 })
