@@ -32,6 +32,6 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "abfahrt": "file:../abfahrt"
+    "@koenidv/abfahrt": "^0.0.8"
   }
 }
