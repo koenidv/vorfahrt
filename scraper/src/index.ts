@@ -1,10 +1,11 @@
-import { MilesClient } from "abfahrt";
+import { MilesClient } from "@koenidv/abfahrt";
 
 import env from "./env";
+import { AppDataSource } from "./dataSource";
+import MilesController from "./Miles/MilesController";
 
 async function main() {
-  console.log("miles account email:", env.milesAccountEmail);
-
-  console.log("MilesClient instance:", new MilesClient());
+  const appDataSource = await AppDataSource.initialize();
+  const milesController = new MilesController(appDataSource);
 }
 main();
