@@ -18,6 +18,23 @@ const env = {
     process.env.MILES_ACCOUNT_PASSWORD,
     "MILES_ACCOUNT_PASSWORD",
   ),
+  dbHost: assertString(
+    process.env.DB_HOST,
+    "DB_HOST",
+  ),
+  dbPort: (process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432),
+  dbUser: assertString(
+    process.env.DB_USER,
+    "DB_USER",
+  ),
+  dbPassword: assertString(
+    process.env.DB_PASSWORD,
+    "DB_PASSWORD",
+  ),
+  dbDb: assertString(
+    process.env.DB_DATABASE,
+    "DB_DATABASE",
+  ),
 } as const;
 
 export default env;
