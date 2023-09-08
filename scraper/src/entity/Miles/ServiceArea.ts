@@ -9,7 +9,9 @@ import {
 import { City } from "./City";
 import { Polygon } from "./Polygon";
 
-@Entity()
+@Entity({
+  name: "MilesServiceArea",
+})
 export class ServiceArea {
   @PrimaryGeneratedColumn()
   id: number;

@@ -10,7 +10,9 @@ import { City } from "./City";
 import { Polygon } from "./Polygon";
 import { NoParkingArea } from "./NoParkingArea";
 
-@Entity()
+@Entity({
+  name: "MilesNoParkingAreaHistory",
+})
 export class NoParkingAreaHistory {
   @PrimaryGeneratedColumn()
   id: number;
