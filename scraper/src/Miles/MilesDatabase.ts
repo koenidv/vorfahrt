@@ -1,4 +1,5 @@
 import { DataSource, EntityManager } from "typeorm";
+import { existsCity } from "./compare/existsCity";
 import * as iCity from "./insert/insertCity";
 import { RedisClientType } from "@redis/client";
 
@@ -13,6 +14,10 @@ export default class MilesDatabase {
     this.redis = redis;
 
     console.log("[Miles]", "Database initialized");
+  }
+
+  async existsCity(milesId: string) {
+    return await existsCity(this.redis, milesId);
   }
 
   async insertCity(props: iCity.CityProps) {
