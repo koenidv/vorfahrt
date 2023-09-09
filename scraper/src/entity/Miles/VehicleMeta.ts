@@ -21,7 +21,7 @@ export class VehicleMeta {
   id: number;
 
   @Column()
-  milesId: string;
+  milesId: number;
 
   @Column()
   licensePlate: string;

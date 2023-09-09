@@ -1,17 +1,16 @@
 import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
-import { City } from "../../entity/Miles/City";
-import { VehicleModel } from "../../entity/Miles/VehicleModel";
+import { VehicleCurrent } from "../../entity/Miles/VehicleCurrent";
 
 export type VehicleMetaProps = {
-  milesId: string;
+  milesId: number;
   licensePlate: string;
   color: string;
   imageUrl: string;
   modelId: number;
   firstCityId: number;
-  status: string;
+  current: VehicleCurrent;
 };
 
 export async function insertVehicleMeta(
@@ -35,6 +34,7 @@ async function insertPostgres(
   meta.imageUrl = props.imageUrl;
   meta.modelId = props.modelId;
   meta.firstCityId = props.firstCityId;
+  meta.current = props.current;
 
   const saved = await manager.save(meta);
   return saved.id;

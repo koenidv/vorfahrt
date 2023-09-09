@@ -5,6 +5,16 @@ import { existsCity } from "./compare/existsCity";
 import { CityProps, insertCity } from "./insert/insertCity";
 import { existsSize } from "./compare/existsSize";
 import { insertSize, SizeProps } from "./insert/insertSize";
+import {
+  insertVehicleModel,
+  VehicleModelProps,
+} from "./insert/insertVehicleModel";
+import { existsModel } from "./compare/existsModel";
+import {
+  insertVehicleMeta,
+  VehicleMetaProps,
+} from "./insert/insertVehicleMeta";
+import { idVehicleMeta } from "./compare/vehicleInfo";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -19,6 +29,9 @@ export default class MilesDatabase {
     console.log("[Miles]", "Database initialized");
   }
 
+  async getCity(cityName: string): Promise<number | false> {
+    return await existsCity(this.redis, cityName);
+  }
   async city(props: CityProps): Promise<number> {
     const id = await existsCity(this.redis, props.milesId);
     if (id) return id;
@@ -29,5 +42,17 @@ export default class MilesDatabase {
     const id = await existsSize(this.redis, props.name);
     if (id) return id;
     else return await insertSize(this.dataSource.manager, this.redis, props);
+  }
+
+  async model(props: VehicleModelProps): Promise<number> {
+    const id = await existsModel(this.redis, props.name);
+    if (id) return id;
+    return await insertVehicleModel(this.dataSource.manager, this.redis, props);
+  }
+
+  async vehicleMeta(props: VehicleMetaProps): Promise<number> {
+    const id = idVehicleMeta(this.redis, props.milesId);
+    if (id) return id;
+    return await insertVehicleMeta(this.dataSource.manager, this.redis, props);
   }
 }

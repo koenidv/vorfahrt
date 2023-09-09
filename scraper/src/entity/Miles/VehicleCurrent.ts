@@ -35,7 +35,10 @@ export class VehicleCurrent {
   location: string | null;
 
   @ManyToOne(() => City)
+  @JoinColumn({ name: "cityId" })
   city: City;
+  @Column()
+  cityId: number;
 
   @Column("int2")
   fuelPercent: number;

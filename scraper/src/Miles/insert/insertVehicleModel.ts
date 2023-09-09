@@ -1,10 +1,8 @@
 import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
-import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
-import { City } from "../../entity/Miles/City";
 import { VehicleModel } from "../../entity/Miles/VehicleModel";
 
-export type VehicleMetaProps = {
+export type VehicleModelProps = {
   name: string;
   seats: number;
   electric: boolean;
@@ -17,7 +15,7 @@ export type VehicleMetaProps = {
 export async function insertVehicleModel(
   manager: EntityManager,
   redis: RedisClientType,
-  props: VehicleMetaProps,
+  props: VehicleModelProps,
 ): Promise<number> {
   const id = await insertPostgres(manager, props);
   await insertRedis(redis, id, props);
@@ -26,7 +24,7 @@ export async function insertVehicleModel(
 
 async function insertPostgres(
   manager: EntityManager,
-  props: VehicleMetaProps,
+  props: VehicleModelProps,
 ): Promise<number> {
   const model = new VehicleModel();
   model.name = props.name;
@@ -44,7 +42,7 @@ async function insertPostgres(
 async function insertRedis(
   redis: RedisClientType,
   id: number,
-  props: VehicleMetaProps,
+  props: VehicleModelProps,
 ) {
   redis.set(`miles:model:${props.name}`, id);
 }
