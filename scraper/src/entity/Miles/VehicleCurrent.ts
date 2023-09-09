@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -19,7 +20,10 @@ export class VehicleCurrent {
   id: number;
 
   @OneToOne(() => VehicleMeta, (meta) => meta.current)
+  @JoinColumn({ name: "vehicleMetaId" })
   vehicle: VehicleMeta;
+  @Column()
+  vehicleMetaId: number;
 
   @Column({
     type: "enum",
@@ -40,7 +44,10 @@ export class VehicleCurrent {
   range: number;
 
   @ManyToOne(() => Pricing)
+  @JoinColumn({ name: "pricingId" })
   pricing: Pricing;
+  @Column()
+  pricingId: number;
 
   @Column("decimal")
   pricePreBooking: number;

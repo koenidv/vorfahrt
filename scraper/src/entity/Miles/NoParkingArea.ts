@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -17,7 +18,11 @@ export class NoParkingArea {
   id: number;
 
   @ManyToOne(() => City, (city) => city.noParkingAreas)
+  @JoinColumn({ name: "cityId" })
   city: City;
+  
+  @Column()
+  cityId: number;
 
   @OneToOne(() => Polygon)
   @JoinColumn()

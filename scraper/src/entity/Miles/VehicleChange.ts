@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -19,7 +20,10 @@ export class VehicleChange {
   id: number;
 
   @ManyToOne(() => VehicleMeta)
+  @JoinColumn({ name: "vehicleMetaId"})
   vehicle: VehicleMeta;
+  @Column()
+  vehicleMetaId: number;
 
   @Column({
     type: "enum",
@@ -41,7 +45,10 @@ export class VehicleChange {
   location: string | null;
 
   @ManyToOne(() => City, { nullable: true })
+  @JoinColumn({ name: "cityId" })
   city: City;
+  @Column({ nullable: true })
+  cityId: number;
 
   @Column({
     type: "int2",
@@ -56,7 +63,10 @@ export class VehicleChange {
   range: number;
 
   @ManyToOne(() => Pricing, { nullable: true })
+  @JoinColumn({ name: "pricingId" })
   pricing: Pricing;
+  @Column({ nullable: true })
+  pricingId: number;
   
   @Column({
     type: "decimal",

@@ -16,7 +16,10 @@ export class Pricing {
   id: number;
 
   @OneToOne(() => VehicleSize, (size) => size.pricing)
+  @JoinColumn({ name: "sizeId" })
   size: VehicleSize;
+  @Column()
+  sizeId: number;
 
   @Column()
   discounted: boolean;

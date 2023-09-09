@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -15,7 +16,10 @@ export class VehicleDamage {
   id: number;
 
   @ManyToOne(() => VehicleMeta, (meta) => meta.damages)
+  @JoinColumn({ name: "vehicleMetaId" })
   vehicle: VehicleMeta;
+  @Column()
+  vehicleMetaId: number;
 
   @Column()
   title: string;

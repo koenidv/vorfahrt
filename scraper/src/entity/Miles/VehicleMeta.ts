@@ -27,17 +27,22 @@ export class VehicleMeta {
   licensePlate: string;
 
   @ManyToOne(() => VehicleModel, (model) => model.vehicles)
+  @JoinColumn({ name: "modelId" })
   model: VehicleModel;
+  @Column()
+  modelId: number;
 
-  @OneToOne(() => VehicleCurrent, (current) => current.vehicle)
-  @JoinColumn()
+  @OneToOne(() => VehicleCurrent, (current) => current.vehicle, { cascade: ["insert"] })
   current: VehicleCurrent;
 
   @Column()
   color: string;
 
   @ManyToOne(() => City)
+  @JoinColumn({ name: "firstCityId" })
   firstCity: City;
+  @Column()
+  firstCityId: number;
 
   @Column()
   imageUrl: string;

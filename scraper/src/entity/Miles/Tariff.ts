@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -15,7 +16,10 @@ export class Tariff {
   id: number;
 
   @ManyToOne(() => VehicleSize, (size) => size.tariffs)
+  @JoinColumn({ name: "sizeId" })
   size: VehicleSize;
+  @Column()
+  sizeId: number;
 
   @Column("interval")
   duration: string;
