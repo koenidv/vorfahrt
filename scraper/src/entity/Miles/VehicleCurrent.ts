@@ -9,6 +9,7 @@ import {
 import { VehicleMeta } from "./VehicleMeta";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { City } from "./City";
+import { Pricing } from "./Pricing";
 
 @Entity({
   name: "MilesVehicleCurrent",
@@ -38,20 +39,11 @@ export class VehicleCurrent {
   @Column("int2")
   range: number;
 
-  @Column("decimal")
-  priceKm: number;
-
-  @Column("decimal")
-  pricePause: number;
-
-  @Column("decimal")
-  priceUnlock: number;
+  @ManyToOne(() => Pricing)
+  pricing: Pricing;
 
   @Column("decimal")
   pricePreBooking: number;
-
-  @Column()
-  discounted: boolean;
 
   @Column()
   charging: boolean;

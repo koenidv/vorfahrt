@@ -9,6 +9,7 @@ import { VehicleMeta } from "./VehicleMeta";
 import { ChangeEvent } from "./_ChangeEventEnum";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { City } from "./City";
+import { Pricing } from "./Pricing";
 
 @Entity({
   name: "MilesVehicleChange",
@@ -54,32 +55,14 @@ export class VehicleChange {
   })
   range: number;
 
-  @Column({
-    type: "decimal",
-    nullable: true,
-  })
-  priceKm: number;
-
-  @Column({
-    type: "decimal",
-    nullable: true,
-  })
-  pricePause: number;
-
-  @Column({
-    type: "decimal",
-    nullable: true,
-  })
-  priceUnlock: number;
-
+  @ManyToOne(() => Pricing, { nullable: true })
+  pricing: Pricing;
+  
   @Column({
     type: "decimal",
     nullable: true,
   })
   pricePreBooking: number;
-
-  @Column({ nullable: true })
-  discounted: boolean;
 
   @Column({ nullable: true })
   charging: boolean;

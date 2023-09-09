@@ -16,7 +16,7 @@ export class City {
   id: number;
 
   @Column()
-  milesId: number;
+  milesId: string;
 
   @Column()
   name: string;

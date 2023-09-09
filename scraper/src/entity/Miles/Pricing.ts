@@ -18,6 +18,9 @@ export class Pricing {
   @OneToOne(() => VehicleSize, (size) => size.pricing)
   size: VehicleSize;
 
+  @Column()
+  discounted: boolean;
+
   @Column("decimal")
   priceKm: number;
 
