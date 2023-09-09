@@ -1,7 +1,10 @@
 import { DataSource, EntityManager } from "typeorm";
-import { existsCity } from "./compare/existsCity";
-import * as iCity from "./insert/insertCity";
 import { RedisClientType } from "@redis/client";
+
+import { existsCity } from "./compare/existsCity";
+import { CityProps, insertCity } from "./insert/insertCity";
+import { existsSize } from "./compare/existsSize";
+import { insertSize, SizeProps } from "./insert/insertSize";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -20,7 +23,15 @@ export default class MilesDatabase {
     return await existsCity(this.redis, milesId);
   }
 
-  async insertCity(props: iCity.CityProps) {
-    await iCity.insertCity(this.dataSource.manager, this.redis, props);
+  async insertCity(props: CityProps) {
+    await insertCity(this.dataSource.manager, this.redis, props);
+  }
+
+  async existsSize(name: string) {
+    return await existsSize(this.redis, name);
+  }
+
+  async insertSize(props: SizeProps) {
+    await insertSize(this.dataSource.manager, this.redis, props);
   }
 }

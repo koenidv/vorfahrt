@@ -15,12 +15,12 @@ export async function insertCity(
   redis: RedisClientType,
   props: CityProps,
 ): Promise<number> {
-  const id = await insertCityPostgres(manager, props);
-  await insertCityRedis(redis, id, props);
+  const id = await insertPostgres(manager, props);
+  await insertRedis(redis, id, props);
   return id;
 }
 
-async function insertCityPostgres(
+async function insertPostgres(
   manager: EntityManager,
   props: CityProps,
 ): Promise<number> {
@@ -33,7 +33,7 @@ async function insertCityPostgres(
   return saved.id;
 }
 
-async function insertCityRedis(
+async function insertRedis(
   redis: RedisClientType,
   id: number,
   props: CityProps,
