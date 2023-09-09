@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { ServiceArea } from "./ServiceArea";
@@ -24,10 +25,10 @@ export class City {
   @Column("point")
   location: string;
 
-  @ManyToOne(() => ServiceArea, (serviceArea) => serviceArea.city)
+  @OneToMany(() => ServiceArea, (serviceArea) => serviceArea.city)
   serviceAreas: ServiceArea[];
 
-  @ManyToOne(() => NoParkingArea, (noParkingArea) => noParkingArea.city)
+  @OneToMany(() => NoParkingArea, (noParkingArea) => noParkingArea.city)
   noParkingAreas: NoParkingArea[];
 
   @CreateDateColumn()
