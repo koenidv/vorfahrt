@@ -1,0 +1,48 @@
+name: Publish Vienna on package.json version change
+run-name: Publish Vienna
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Publish
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./vorfahrt-vienna
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Release
+        uses: justincy/github-action-npm-release@2.0.2
+        id: release
+        with:
+          path: ${{ env.working-directory }}
+      - name: Print release output
+        if: ${{ steps.release.outputs.released == 'true' }}
+        run: echo Release ID ${{ steps.release.outputs.release_id }}
+      - uses: actions/setup-node@v3
+        if: ${{ steps.release.outputs.released == 'true' }}
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com/
+          scope: "@koenidv"
+          cache: "npm"
+          cache-dependency-path: ${{ env.working-directory }}/package-lock.json
+      - run: npm ci
+        if: ${{ steps.release.outputs.released == 'true' }}
+      - run: npm publish
+        if: ${{ steps.release.outputs.released == 'true' }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
