@@ -1,6 +1,6 @@
 import { RedisClientType } from "@redis/client";
 
-export async function existsCity(redis: RedisClientType, milesId: string) {
-    const existsCount = await redis.exists(`miles:city:${milesId}`);
-    return existsCount === 1;
+export async function existsCity(redis: RedisClientType, milesId: string): Promise<number|false> {
+    const val = await redis.get(`miles:city:${milesId}`);
+    return Number(val) || false;
 }

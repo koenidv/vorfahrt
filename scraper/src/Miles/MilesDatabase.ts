@@ -19,19 +19,15 @@ export default class MilesDatabase {
     console.log("[Miles]", "Database initialized");
   }
 
-  async existsCity(milesId: string) {
-    return await existsCity(this.redis, milesId);
+  async city(props: CityProps): Promise<number> {
+    const id = await existsCity(this.redis, props.milesId);
+    if (id) return id;
+    else return await insertCity(this.dataSource.manager, this.redis, props);
   }
 
-  async insertCity(props: CityProps) {
-    await insertCity(this.dataSource.manager, this.redis, props);
-  }
-
-  async existsSize(name: string) {
-    return await existsSize(this.redis, name);
-  }
-
-  async insertSize(props: SizeProps) {
-    await insertSize(this.dataSource.manager, this.redis, props);
+  async size(props: SizeProps): Promise<number> {
+    const id = await existsSize(this.redis, props.name);
+    if (id) return id;
+    else return await insertSize(this.dataSource.manager, this.redis, props);
   }
 }
