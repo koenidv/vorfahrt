@@ -13,7 +13,7 @@ import {
   MilesClient,
 } from "abfahrt";
 
-import electric_10_AUDI_A4 from "@koenidv/vorfahrt-vienna/dist/png/markers/electric_10.AUDI_A4.png"
+import { Marker } from "@koenidv/vorfahrt-vienna/src/index"
 
 import berlinDistricts from "../../data/BER-districts.geojson.json";
 
@@ -80,6 +80,9 @@ const Map = ({
             map: mapRef.current,
             title: vehicle.LicensePlate,
             clickable: false,
+            // icon: {
+            //   url: Marker.Vehicle.AUDI_A4.chargingState[10].src,
+            // },
             // icon: {
             //   url: "http://localhost:3000/marker/background.svg", // url
 
@@ -191,7 +194,7 @@ const Map = ({
           map,
           title: vehicle.LicensePlate,
           icon: {
-            url: "http://localhost:3000/marker/background.svg", // url
+            url: Marker.Vehicle.AUDI_A4.chargingState[10].src,
 
             scaledSize: new google.maps.Size(50, 50), // scaled size
             origin: new google.maps.Point(0, 0), // origin
@@ -294,7 +297,7 @@ const Map = ({
 
         if (featureData.type === "ABFAHRT:CITY_DISTRICT") {
           setHoveredDistrict(null)
-         }
+        }
       });
     }
     setLayers(dongs)
