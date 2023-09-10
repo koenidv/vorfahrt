@@ -3,6 +3,8 @@ import { join } from "path"
 
 import sharp from "sharp"
 import svgstore from "svgstore"
+import * as xml2js from 'xml2js';
+
 
 const rawAssetsDir = join(__dirname, "../assets/");
 const markerDir = join(rawAssetsDir, "Marker/");
@@ -89,4 +91,56 @@ async function main() {
             }));
     });
 }
+
+async function parseSpritesheet() {
+
+    const svgString = fs.readFileSync("/Users/linusbolls/downloads/Marker.svg", "utf8")
+
+    // Parse the SVG XML content
+    xml2js.parseString(svgString, (err, result) => {
+        if (err) {
+            console.error('Failed to parse SVG:', err);
+            return;
+        }
+
+        // Assume the root folder name from the first <g> tag
+        const rootFolder = join(__dirname, "../parsed/", result.svg.g[0]['$'].id);
+
+        fs.mkdirSync(rootFolder, { recursive: true });
+
+        // Loop through each <g> (group) tag
+        for (const group of result.svg.g[0].g || []) {
+            const groupName = group['$'].id;
+            const groupFolder = join(rootFolder, groupName);
+            fs.mkdirSync(groupFolder);
+
+            // Loop through each nested <g> tag inside the group
+            for (const subGroup of group.g || []) {
+                const subGroupName = subGroup['$'].id;
+                const subGroupContent = new xml2js.Builder().buildObject({
+                    svg: {
+                        $: {
+                            width: "100%",
+                            height: "100%",
+                            viewBox: "0 0 1179 1025",
+                            fill: "none",
+                            xmlns: "http://www.w3.org/2000/svg"
+                        },
+                        g: [
+                            {
+                                $: { id: subGroupName },
+                                ...subGroup
+                            }
+                        ]
+                    }
+                });
+                fs.writeFileSync(
+                    join(groupFolder, `${subGroupName}.svg`),
+                    subGroupContent
+                );
+            }
+        }
+    });
+}
 main();
+parseSpritesheet();

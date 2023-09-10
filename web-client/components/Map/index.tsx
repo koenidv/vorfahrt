@@ -13,6 +13,8 @@ import {
   MilesClient,
 } from "abfahrt";
 
+import electric_10_AUDI_A4 from "@koenidv/vorfahrt-vienna/dist/png/markers/electric_10.AUDI_A4.png"
+
 import berlinDistricts from "../../data/BER-districts.geojson.json";
 
 import berlinVehicleResponses from "../../data/vehicles.json";
