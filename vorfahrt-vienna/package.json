@@ -1,10 +1,20 @@
 {
   "name": "vorfahrt-vienna",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Assets for Vorfahrt - A micromobility insight platform.",
-  "main": "build/index.js",
+  "main": "build/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install": "bun install",
+    "build": "bun run build/index.ts",
+    "prepublishOnly": "npm run install && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "sharp": "^0.32.5",
+    "svgstore": "^3.0.1"
   },
   "repository": {
     "type": "git",
@@ -16,7 +26,6 @@
     "assets"
   ],
   "author": "koenidv",
-  "license": "",
   "bugs": {
     "url": "https://github.com/koenidv/vorfahrt/issues"
   },
