@@ -2,7 +2,7 @@ import { FileInfo } from "./types";
 
 const getMarker = (type: FileInfo, chargingStates: FileInfo[]) => {
 
-    const importStatements = chargingStates.map(i => `import ${i.fileNameWithoutExtension}_${type.fileNameWithoutExtension} from "../dist/png/markers/${i.fileNameWithoutExtension}.${type.fileNameWithoutExtension}.png";`);
+    const importStatements = chargingStates.map(i => `import ${i.fileNameWithoutExtension}_${type.fileNameWithoutExtension} from "../../dist/png/markers/${i.fileNameWithoutExtension}.${type.fileNameWithoutExtension}.png";`);
 
     const chargingStateVariants = `${type.fileNameWithoutExtension}: {
         chargingState: {
@@ -27,7 +27,7 @@ export const getVehicleMarkerImportMap = (types: FileInfo[], chargeStates: FileI
     
 const VehicleMarker = {
 ${markerInfos.map(i => "    " + i.chargingStateVariants).join("\n")}
-} as const;
+};
 
 export default VehicleMarker;`;
 
