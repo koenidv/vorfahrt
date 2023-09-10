@@ -32,14 +32,8 @@ jobs:
       - name: Print release output
         if: ${{ steps.release.outputs.released == 'true' }}
         run: echo Release ID ${{ steps.release.outputs.release_id }}
-      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
         if: ${{ steps.release.outputs.released == 'true' }}
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com/
-          scope: "@koenidv"
-          cache: "npm"
-          cache-dependency-path: ${{ env.working-directory }}/package-lock.json
       - run: npm ci
         if: ${{ steps.release.outputs.released == 'true' }}
       - run: npm publish
