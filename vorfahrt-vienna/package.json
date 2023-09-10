@@ -1,12 +1,11 @@
 {
   "name": "vorfahrt-vienna",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Assets for Vorfahrt - A micromobility insight platform.",
   "main": "build/index.ts",
   "scripts": {
-    "install": "bun install",
     "build": "bun run build/index.ts",
-    "prepublishOnly": "npm run install && npm run build"
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^20.6.0",
