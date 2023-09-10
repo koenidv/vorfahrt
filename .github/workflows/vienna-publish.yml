@@ -28,7 +28,7 @@ jobs:
         uses: justincy/github-action-npm-release@2.0.2
         id: release
         with:
-          path: ${{ env.working-directory }}
+          path: ${{ github.workspace }}/${{ env.working-directory }}
       - name: Print release output
         if: ${{ steps.release.outputs.released == 'true' }}
         run: echo Release ID ${{ steps.release.outputs.release_id }}
