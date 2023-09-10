@@ -1,19 +1,13 @@
 import fs from "fs"
-import { join } from "path"
+import { join, parse } from "path"
 
 import sharp from "sharp"
 import svgstore from "svgstore"
-import * as xml2js from 'xml2js';
+import parseSpritesheet from "./parseSpritesheet";
 
-
-const rawAssetsDir = join(__dirname, "../assets/");
-const markerDir = join(rawAssetsDir, "Marker/");
-
-const pngOutDir = join(__dirname, "../dist/png/");
-const svgOutDir = join(__dirname, "../dist/svg/");
-
-const markersPngOutDir = join(pngOutDir, "markers/");
-const markersSvgOutDir = join(svgOutDir, "markers/");
+import { getVehicleMarkerImportMap } from "./getImportMap"
+import { FileInfo } from "./types"
+import { MARKER_SIZE, ORIGINAL_MARKER_SIZE, generatedOutputDir, markerDir, markersPngOutDir, markersSvgOutDir } from "./options";
 
 const getCombinations = <T>(arrays: T[][]): T[][] => {
     if (arrays.length === 0) return [[]];
@@ -31,10 +25,11 @@ const getCombinations = <T>(arrays: T[][]): T[][] => {
     return combinations;
 }
 
-const getFullPaths = (dir: string) => {
+const getFullPaths = (dir: string): FileInfo[] => {
     const fileNames = fs.readdirSync(dir);
 
     return fileNames.map(fileName => ({
+        fileNameWithoutExtension: parse(fileName).name,
         fileName,
         path: join(dir, fileName),
         contents: fs.readFileSync(join(dir, fileName), "utf8"),
@@ -43,37 +38,41 @@ const getFullPaths = (dir: string) => {
 
 async function main() {
 
-    const background = fs.readFileSync(join(markerDir, "background.svg"), "utf8");
+    await parseSpritesheet("VehicleMarker.spritesheet.svg");
 
-    const chargeStates = getFullPaths(join(markerDir, "chargestate/"));
-    const chargeStations = getFullPaths(join(markerDir, "chargestation/"));
-    const types = getFullPaths(join(markerDir, "type/"));
-    const vehicleStatuses = getFullPaths(join(markerDir, "vehiclestatus/"));
+    const backgrounds = getFullPaths(join(markerDir, "backgrounds/"));
+    const chargestatesCombustion = getFullPaths(join(markerDir, "chargestates_combustion/"));
+    const chargestatesElectric = getFullPaths(join(markerDir, "chargestates_electric/"));
+    const modifiers = getFullPaths(join(markerDir, "modifiers/"));
+    const vehicleTypes = getFullPaths(join(markerDir, "vehicle_types/"));
 
-    const markerCombinations = getCombinations([chargeStates, types]);
-
+    fs.mkdirSync(generatedOutputDir, { recursive: true });
     fs.mkdirSync(markersPngOutDir, { recursive: true });
     fs.mkdirSync(markersSvgOutDir, { recursive: true });
 
-    const markers = markerCombinations.map(async i => {
+    fs.writeFileSync(join(generatedOutputDir, "VehicleMarker.assetMap.ts"), getVehicleMarkerImportMap(vehicleTypes, chargestatesElectric));
 
-        const [chargeState, type] = i;
+    const markerCombinations = getCombinations([chargestatesElectric, vehicleTypes]);
+
+    markerCombinations.map(async i => {
+
+        const [chargeState, vehicleType] = i;
 
         const contents = svgstore({
             svgAttrs: {
-                width: 120,
-                height: 120,
+                width: ORIGINAL_MARKER_SIZE,
+                height: ORIGINAL_MARKER_SIZE,
             },
             cleanSymbols: true,
         })
-            .add('background', background)
+            .add('background', backgrounds[1].contents)
             .add("chargeState", chargeState.contents)
-            .add("type", type.contents);
+            .add("type", vehicleType.contents);
 
-        const fileName = `${chargeState.fileName}.${type.fileName}`.replace(/\.svg/g, "");
+        const fileName = `${chargeState.fileName}.${vehicleType.fileName}`.replace(/\.svg/g, "");
 
-        const svgPath = join(markersSvgOutDir, fileName) + ".svg"
-        const pngPath = join(markersPngOutDir, fileName) + ".png"
+        const svgPath = join(markersSvgOutDir, fileName) + ".svg";
+        const pngPath = join(markersPngOutDir, fileName) + ".png";
 
         /**
          * svgstore insists on using symbols instead of just putting the svgs into the the top level tag...
@@ -81,7 +80,7 @@ async function main() {
         fs.writeFileSync(svgPath, contents.toString().replace(/<symbol\s+id=".*"\s+viewBox="\d+\s+\d+\s+\d+\s+\d+">/g, "").replace(/<\/symbol>/g, ""))
 
         await new Promise<void>(res => sharp(svgPath)
-            .resize(120 * 2)
+            .resize(MARKER_SIZE)
             .toFormat('png')
             .toFile(pngPath, (err, info) => {
                 if (err) {
@@ -91,56 +90,4 @@ async function main() {
             }));
     });
 }
-
-async function parseSpritesheet() {
-
-    const svgString = fs.readFileSync("/Users/linusbolls/downloads/Marker.svg", "utf8")
-
-    // Parse the SVG XML content
-    xml2js.parseString(svgString, (err, result) => {
-        if (err) {
-            console.error('Failed to parse SVG:', err);
-            return;
-        }
-
-        // Assume the root folder name from the first <g> tag
-        const rootFolder = join(__dirname, "../parsed/", result.svg.g[0]['$'].id);
-
-        fs.mkdirSync(rootFolder, { recursive: true });
-
-        // Loop through each <g> (group) tag
-        for (const group of result.svg.g[0].g || []) {
-            const groupName = group['$'].id;
-            const groupFolder = join(rootFolder, groupName);
-            fs.mkdirSync(groupFolder);
-
-            // Loop through each nested <g> tag inside the group
-            for (const subGroup of group.g || []) {
-                const subGroupName = subGroup['$'].id;
-                const subGroupContent = new xml2js.Builder().buildObject({
-                    svg: {
-                        $: {
-                            width: "100%",
-                            height: "100%",
-                            viewBox: "0 0 1179 1025",
-                            fill: "none",
-                            xmlns: "http://www.w3.org/2000/svg"
-                        },
-                        g: [
-                            {
-                                $: { id: subGroupName },
-                                ...subGroup
-                            }
-                        ]
-                    }
-                });
-                fs.writeFileSync(
-                    join(groupFolder, `${subGroupName}.svg`),
-                    subGroupContent
-                );
-            }
-        }
-    });
-}
 main();
-parseSpritesheet();
