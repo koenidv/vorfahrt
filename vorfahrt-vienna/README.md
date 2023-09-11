@@ -61,7 +61,7 @@ const marker = new google.maps.Marker({
 
 ## spritesheet requirements
 
-<img src="docs/spritesheetsFigma.png" width="100%" />
+<img src="docs/spritesheetsFigma.png" width="30%" />
 
 ### figma section named as *.spritesheet
 
@@ -69,7 +69,7 @@ const marker = new google.maps.Marker({
 
 ### figma export
 
-<img src="docs/spritesheetsFigmaExportPrompt.png" width="100%" />
+<img src="docs/spritesheetsFigmaExportPrompt.png" width="30%" />
 
 can't be renamed, must have the same name as the stylesheet section
 text must be outlined beforehand
