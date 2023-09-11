@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g id="electric_25">
-    <path id="Outline Path_10" d="M347.86 460.359C346.226 458.72 330.789 443.199 325 436.3C313 422 310.5 413.5 310.5 402.5C310.5 384.5 327 366.5 348 366.5C363.425 366.5 376.421 376.211 382.235 388.5C384.337 392.942 385.5 397.721 385.5 402.5C385.5 411.757 383.995 418.514 376.143 429.5" stroke="#37DFA3" stroke-width="5" stroke-linecap="round"/>
+<svg width="119" height="119" viewBox="0 0 119 119" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="electric_25" transform="translate(-288.5 -224.5)">
+    <path id="Outline Path_8" d="M347.86 340.359C346.226 338.72 330.789 323.199 325 316.3C313 302 310.5 293.5 310.5 282.5C310.5 264.5 327 246.5 348 246.5C363.425 246.5 376.421 256.211 382.235 268.5C384.337 272.942 385.5 277.721 385.5 282.5C385.5 291.757 383.995 298.514 376.143 309.5" stroke="#37DFA3" stroke-width="5" stroke-linecap="round" fill="none"/>
   </g>
 </svg>

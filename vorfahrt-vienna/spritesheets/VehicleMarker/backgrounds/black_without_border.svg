@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g id="black_without_border">
+<svg width="119" height="119" viewBox="0 0 119 119" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="black_without_border" transform="translate(-104.5 -224.5)">
     <path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M164 249C144.381 249 129 265.881 129 282.5C129 287.783 129.597 292.321 131.57 297.23C133.559 302.181 137.006 307.652 142.915 314.693C147.72 320.418 159.364 332.27 163.914 336.865C169.767 331.041 180.84 319.817 185.06 314.624C191.183 307.088 194.63 301.637 196.572 296.828C198.49 292.08 199 287.81 199 282.5C199 265.881 183.619 249 164 249Z" fill="#111111"/>
   </g>
 </svg>

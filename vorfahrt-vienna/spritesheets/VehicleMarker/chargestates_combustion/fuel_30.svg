@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g id="fuel_30">
-    <path id="Outline Path_2" d="M532 340.3C537.066 335.3 550.228 322.073 555 316.2C567.374 300.97 569.5 293.5 569.5 282.5C569.5 264.5 553 246.5 532 246.5C511 246.5 494.5 264.5 494.5 282.5C494.5 293.5 497 302 509 316.3C514.789 323.199 530.226 338.72 531.86 340.359" stroke="#429DF1" stroke-width="5" stroke-linecap="round"/>
+<svg width="119" height="119" viewBox="0 0 119 119" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="fuel_30" transform="translate(-472.5 -104.5)">
+    <path id="Outline Path" d="M532 220.3C537.066 215.3 550.228 202.073 555 196.2C567.374 180.97 569.5 173.5 569.5 162.5C569.5 144.5 553 126.5 532 126.5C511 126.5 494.5 144.5 494.5 162.5C494.5 173.5 497 182 509 196.3C514.789 203.199 530.226 218.72 531.86 220.359" stroke="#429DF1" stroke-width="5" stroke-linecap="round" fill="none"/>
   </g>
 </svg>

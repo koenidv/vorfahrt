@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svg width="119" height="119" viewBox="0 0 119 119" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="electric_31" transform="translate(-288.5 -824.5)">
+    <path id="Outline Path_13" d="M348 940.3C353.066 935.3 366.228 922.073 371 916.2C383.374 900.97 385.5 893.5 385.5 882.5C385.5 864.5 369 846.5 348 846.5C327 846.5 310.5 864.5 310.5 882.5C310.5 893.5 313 902 325 916.3C330.789 923.199 346.226 938.72 347.86 940.359" stroke="#37DFA3" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <g id="Frame 22">
+      <rect x="352" y="908" width="50" height="30" rx="15" fill="#37DFA3"/>
+      <g id="+1">
+        <mask id="path-150-outside-69_0_1" maskUnits="userSpaceOnUse" x="359.549" y="911.912" width="34" height="24" fill="black">
+          <rect fill="white" x="359.549" y="911.912" width="34" height="24"/>
+          <path d="M362.549 925.832V922.136H374.285V925.832H362.549ZM366.533 917.792H370.325V930.128H366.533V917.792Z"/>
+          <path d="M384.871 932V914.912H389.623V932H384.871ZM381.679 918.848V914.912H389.383V918.848H381.679Z"/>
+        </mask>
+        <path d="M362.549 925.832V922.136H374.285V925.832H362.549ZM366.533 917.792H370.325V930.128H366.533V917.792Z" fill="white"/>
+        <path d="M384.871 932V914.912H389.623V932H384.871ZM381.679 918.848V914.912H389.383V918.848H381.679Z" fill="white"/>
+        <path d="M362.549 925.832V922.136H374.285V925.832H362.549ZM366.533 917.792H370.325V930.128H366.533V917.792Z" stroke="black" stroke-width="6" mask="url(#path-150-outside-69_0_1)"/>
+        <path d="M384.871 932V914.912H389.623V932H384.871ZM381.679 918.848V914.912H389.383V918.848H381.679Z" stroke="black" stroke-width="6" mask="url(#path-150-outside-69_0_1)"/>
+      </g>
+    </g>
+  </g>
+</svg>
