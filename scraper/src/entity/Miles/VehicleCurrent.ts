@@ -1,10 +1,12 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from "typeorm";
 import { VehicleMeta } from "./VehicleMeta";
@@ -20,10 +22,9 @@ export class VehicleCurrent {
   id: number;
 
   @OneToOne(() => VehicleMeta, (meta) => meta.current)
-  @JoinColumn({ name: "vehicleMetaId" })
+  @JoinColumn()
+  @Index({ unique: true })
   vehicle: VehicleMeta;
-  @Column()
-  vehicleMetaId: number;
 
   @Column({
     type: "enum",
