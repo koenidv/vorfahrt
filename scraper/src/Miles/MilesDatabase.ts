@@ -4,7 +4,7 @@ import { RedisClientType } from "@redis/client";
 import { existsCity } from "./compare/existsCity";
 import { CityProps, insertCity } from "./insert/insertCity";
 import { existsSize } from "./compare/existsSize";
-import { insertSize, SizeProps } from "./insert/insertSize";
+import { insertVehicleSize, SizeProps } from "./insert/insertVehicleSize";
 import {
   insertVehicleModel,
   VehicleModelProps,
@@ -41,7 +41,7 @@ export default class MilesDatabase {
   async size(props: SizeProps): Promise<number> {
     const id = await existsSize(this.redis, props.name);
     if (id) return id;
-    else return await insertSize(this.dataSource.manager, this.redis, props);
+    else return await insertVehicleSize(this.dataSource.manager, this.redis, props);
   }
 
   async model(props: VehicleModelProps): Promise<number> {

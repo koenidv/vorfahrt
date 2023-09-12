@@ -26,6 +26,9 @@ export class PricingHistory {
   @Column("decimal")
   priceUnlock: number;
 
+  @Column("decimal", { nullable: true })
+  pricePreBooking: number;
+
   @CreateDateColumn()
   until: Date;
 }

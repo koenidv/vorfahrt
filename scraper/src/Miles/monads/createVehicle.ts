@@ -1,6 +1,6 @@
 import MilesDatabase from "../MilesDatabase";
 import { VehicleCurrent } from "../../entity/Miles/VehicleCurrent";
-import { createPoint } from "../insert/parsePoint";
+import { createPoint } from "../insert/utils";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 
 export type VehicleProps = {

@@ -2,7 +2,7 @@ import { EntityManager, Point } from "typeorm";
 import { RedisClientType } from "@redis/client";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { VehicleCurrent } from "../../entity/Miles/VehicleCurrent";
-import { createPoint } from "./parsePoint";
+import { createPoint } from "./utils";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 import { VehicleChange } from "../../entity/Miles/VehicleChange";
 import { ChangeEvent } from "../../entity/Miles/_ChangeEventEnum";

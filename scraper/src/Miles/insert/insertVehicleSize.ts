@@ -6,7 +6,7 @@ export type SizeProps = {
   name: string;
 };
 
-export async function insertSize(
+export async function insertVehicleSize(
   manager: EntityManager,
   redis: RedisClientType,
   props: SizeProps,

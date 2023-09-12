@@ -1,7 +1,7 @@
 import { EntityManager, Point } from "typeorm";
 import { RedisClientType } from "@redis/client";
 import { City } from "../../entity/Miles/City";
-import { createPoint } from "./parsePoint";
+import { createPoint } from "./utils";
 
 export type CityProps = {
   milesId: string;
