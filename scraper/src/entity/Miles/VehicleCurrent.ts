@@ -6,7 +6,6 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
-  Unique,
   UpdateDateColumn,
 } from "typeorm";
 import { VehicleMeta } from "./VehicleMeta";
@@ -52,9 +51,6 @@ export class VehicleCurrent {
   pricing: Pricing;
   @Column()
   pricingId: number;
-
-  @Column("decimal")
-  pricePreBooking: number;
 
   @Column()
   charging: boolean;

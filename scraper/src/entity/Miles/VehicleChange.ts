@@ -67,12 +67,6 @@ export class VehicleChange {
   pricing: Pricing;
   @Column({ nullable: true })
   pricingId: number;
-  
-  @Column({
-    type: "decimal",
-    nullable: true,
-  })
-  pricePreBooking: number;
 
   @Column({ nullable: true })
   charging: boolean;

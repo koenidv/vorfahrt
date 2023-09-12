@@ -33,6 +33,9 @@ export class Pricing {
   @Column("decimal")
   priceUnlock: number;
 
+  @Column("decimal", { nullable: true })
+  pricePreBooking: number;
+
   @CreateDateColumn()
   added: Date;
 }
