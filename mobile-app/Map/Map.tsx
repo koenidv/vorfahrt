@@ -90,8 +90,8 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
               longitude: pin.coordinates.lng,
             }}
             key={"v_" + index}
-            title={pin.licensePlate}
-            description={`${pin.model}, ${pin.charge}`}
+            title={`${pin.licensePlate} (${pin.id})`}
+            description={`${pin.model}, ${pin.charge}%`}
             tracksViewChanges={false}>
             <VehicleMarker vehicle={pin} />
           </Marker>
