@@ -15,6 +15,8 @@ import {
   VehicleMetaProps,
 } from "./insert/insertVehicleMeta";
 import { idVehicleMeta } from "./getRedis/vehicleInfo";
+import { createVehicleFromApiType } from "./monads/createVehicle";
+import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -29,30 +31,37 @@ export default class MilesDatabase {
     console.log("[Miles]", "Database initialized");
   }
 
-  async getCity(cityName: string): Promise<number | false> {
+  async getCityId(cityName: string): Promise<number | false> {
     return await idCity(this.redis, cityName);
   }
-  async city(props: CityProps): Promise<number> {
+  async cityId(props: CityProps): Promise<number> {
     const id = await idCity(this.redis, props.milesId);
     if (id) return id;
     else return await insertCity(this.dataSource.manager, this.redis, props);
   }
 
-  async size(props: SizeProps): Promise<number> {
+  async sizeId(props: SizeProps): Promise<number> {
     const id = await idSize(this.redis, props.name);
     if (id) return id;
     else return await insertVehicleSize(this.dataSource.manager, this.redis, props);
   }
 
-  async model(props: VehicleModelProps): Promise<number> {
+  async modelId(props: VehicleModelProps): Promise<number> {
     const id = await idModel(this.redis, props.name);
     if (id) return id;
     return await insertVehicleModel(this.dataSource.manager, this.redis, props);
   }
 
-  async vehicleMeta(props: VehicleMetaProps): Promise<number> {
+  async getVehicleMetaId(milesId: number): Promise<number | false> {
+    return await idVehicleMeta(this.redis, milesId);
+  }
+  async vehicleMetaId(props: VehicleMetaProps): Promise<number> {
     const id = idVehicleMeta(this.redis, props.milesId);
     if (id) return id;
     return await insertVehicleMeta(this.dataSource.manager, this.redis, props);
+  }
+
+  async createVehicle(apiVehicle: apiVehicleJsonParsed) {
+    return await createVehicleFromApiType(this, apiVehicle);
   }
 }

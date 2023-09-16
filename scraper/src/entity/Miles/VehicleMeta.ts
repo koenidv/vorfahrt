@@ -17,6 +17,8 @@ import { VehicleCurrent } from "./VehicleCurrent";
   name: "MilesVehicleMeta",
 })
 export class VehicleMeta {
+  // todo add isCharity
+  
   @PrimaryGeneratedColumn()
   id: number;
 
