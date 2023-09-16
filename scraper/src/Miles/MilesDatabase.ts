@@ -1,20 +1,20 @@
 import { DataSource, EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 
-import { idCity } from "./compare/cityInfo";
+import { idCity } from "./getRedis/cityInfo";
 import { CityProps, insertCity } from "./insert/insertCity";
-import { idSize } from "./compare/sizeInfo";
+import { idSize } from "./getRedis/sizeInfo";
 import { insertVehicleSize, SizeProps } from "./insert/insertVehicleSize";
 import {
   insertVehicleModel,
   VehicleModelProps,
 } from "./insert/insertVehicleModel";
-import { idModel } from "./compare/modelInfo";
+import { idModel } from "./getRedis/modelInfo";
 import {
   insertVehicleMeta,
   VehicleMetaProps,
 } from "./insert/insertVehicleMeta";
-import { idVehicleMeta } from "./compare/vehicleInfo";
+import { idVehicleMeta } from "./getRedis/vehicleInfo";
 
 export default class MilesDatabase {
   dataSource: DataSource;
