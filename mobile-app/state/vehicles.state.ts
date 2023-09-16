@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import { type Vehicle } from "../lib/Miles/types";
-import { unionBy } from "lodash";
+import { mergeVehiclesForRegion } from "../lib/mergeVehiclesForRegion";
+import { Region } from "react-native-maps";
 
 interface VehiclesState {
   vehicles: Vehicle[];
-  updateVehicles: (vehicles: Vehicle[]) => void;
+  updateVehicles: (vehicles: Vehicle[], region: Region) => void;
   clearVehicles: () => void;
   removeVehicle: (vehicle: Vehicle) => void;
 }
@@ -12,7 +13,7 @@ interface VehiclesState {
 export const useVehicles = create<VehiclesState>(
   (set) => ({
     vehicles: [],
-    updateVehicles: (vehicles) => set((current) => ({ vehicles: tempMergeVehicles(current.vehicles, vehicles) })),
+    updateVehicles: (vehicles, region) => set((current) => ({ vehicles: mergeVehiclesForRegion(current.vehicles, vehicles, region) })),
     clearVehicles: () => set({ vehicles: [] }),
     removeVehicle: (vehicle) =>
       set((state) => ({
@@ -20,12 +21,3 @@ export const useVehicles = create<VehiclesState>(
       })),
   }),
 );
-
-const tempMergeVehicles = (currentVehicles: Vehicle[], newVehicles: Vehicle[]) => {
-  // todo properly merge vehicles
-  return unionBy(
-    currentVehicles,
-    newVehicles,
-    (v) => v.id,
-  );
-};

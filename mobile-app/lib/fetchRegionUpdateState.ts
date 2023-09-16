@@ -1,6 +1,6 @@
-import { fetchChargeStationsForRegion } from "./Miles/fetchForRegion";
+import { fetchChargeStationsForRegion, fetchVehiclesForRegion } from "./Miles/fetchForRegion";
 import { VehicleFetchOptions } from "./Miles/fetchVehicles";
-import { parseChargeStations } from "./Miles/parseVehiclesResponse";
+import { parseChargeStations, parseVehicles } from "./Miles/parseVehiclesResponse";
 import { weChargeAvailability } from "./WeCharge/chargeStations";
 import { bswChargeAvailability } from "./BerlinerStadtwerke/chargeStations";
 import {
@@ -9,17 +9,22 @@ import {
 } from "./mergeChargeStationAvailability";
 import { useChargeStations } from "../state/chargestations.state";
 import { useRegion } from "../state/region.state";
+import { Region } from "react-native-maps";
+import { useVehicles } from "../state/vehicles.state";
+import { useClusters } from "../state/clusters.state";
 
-// export const fetchVehiclesForRegionUpdateState = async (
-//   region: Region,
-//   options?: Partial<VehicleFetchOptions>,
-// ) => {
-//   const response = await fetchVehiclesForRegion(region, options);
-//   useUpdateVehicles(parseVehicles(response));
-//   if (options?.showChargingStations) {
-//     useUpdateChargeStations(parseChargeStations(response));
-//   }
-// };
+export const fetchVehiclesForRegionUpdateState = async (
+  region: Region,
+  options?: Partial<VehicleFetchOptions>,
+) => {
+  const response = await fetchVehiclesForRegion(region, options);
+  useVehicles.getState().updateVehicles(parseVehicles(response), region);
+  if (options?.showChargingStations) {
+    useChargeStations.getState().updateStations(parseChargeStations(response));
+  }
+  // should automatically refetch clusters
+  useClusters.getState().setClusters(response.Data.clusters);
+};
 
 export const fetchChargeStationsCurrentRegionUpdateState = async (
   options?: Partial<VehicleFetchOptions>,

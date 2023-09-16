@@ -11,14 +11,15 @@ import React, {
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStation/ChargeStationMarker";
 import Borders from "./Borders";
-import { debounce } from "lodash";
+import {debounce} from "lodash";
 import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
 import {fetchVehiclesForRegion} from "../lib/Miles/fetchForRegion";
 import {useRegion} from "../state/region.state";
 import ChargeStationCallout from "./ChargeStation/ChargeStationCallout";
 import {getLocation} from "../lib/location/getLocation";
-import { useVehicles } from "../state/vehicles.state";
-import { useChargeStations } from "../state/chargestations.state";
+import {useVehicles} from "../state/vehicles.state";
+import {useChargeStations} from "../state/chargestations.state";
+import {fetchChargeStationsCurrentRegionUpdateState} from "../lib/fetchRegionUpdateState";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -29,8 +30,8 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   const [clusters, setClusters] = useState<apiCluster[]>([]);
   let map = useRef<MapView>(null);
 
-  const vehicles = useVehicles((state) => state.vehicles);
-  const stations = useChargeStations((state) => state.stations);
+  const vehicles = useVehicles(state => state.vehicles);
+  const stations = useChargeStations(state => state.stations);
 
   const initialRegion = useRegion.getState().current;
 
@@ -50,13 +51,13 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   };
 
   const handleFetchVehicles = async () => {
-    const data = await fetchVehiclesForRegion(useRegion.getState().current);
-    // todo region store && fetch charge vehicles somewhere else
-    // requires refetching clusters first
-    useVehicles.getState().updateVehicles(parseVehicles(data));
-    setClusters(data.Data.clusters);
+    fetchChargeStationsCurrentRegionUpdateState(
+      useRegion.getState().current,
+    );
   };
-  const debounceFetchVehicles = useRef(debounce(handleFetchVehicles, 200)).current;
+  const debounceFetchVehicles = useRef(
+    debounce(handleFetchVehicles, 200),
+  ).current;
 
   const onRegionChange = (region: any) => {
     useRegion.getState().setCurrent(region);
