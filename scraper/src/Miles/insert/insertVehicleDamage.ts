@@ -39,5 +39,5 @@ async function insertRedis(
   redis: RedisClientType,
   props: VehicleDamageProps,
 ) {
-  redis.sAdd(`miles:vehicle:${props.milesId}:damages`, insecureHash(props.title, props.damages));
+  await redis.sAdd(`miles:vehicle:${props.milesId}:damages`, insecureHash(props.title, props.damages));
 }

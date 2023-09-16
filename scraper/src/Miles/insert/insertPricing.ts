@@ -43,5 +43,5 @@ async function insertRedis(
   id: number,
   props: PricingProps,
 ) {
-  redis.set(`miles:pricing:${props.sizeName}:${props.priceKm}km_${props.pricePause}min_${props.priceUnlock}x_${props.pricePreBooking}pre`, id); // todo delete booking undefined key and set new when setting it later
+  await redis.set(`miles:pricing:${props.sizeName}:${props.priceKm}km_${props.pricePause}min_${props.priceUnlock}x_${props.pricePreBooking}pre`, id); // todo delete booking undefined key and set new when setting it later
 }

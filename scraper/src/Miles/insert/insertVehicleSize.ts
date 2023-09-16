@@ -32,5 +32,5 @@ async function insertRedis(
   id: number,
   props: SizeProps,
 ) {
-  redis.set(`miles:size:${props.name}`, id);
+  await redis.set(`miles:size:${props.name}`, id);
 }

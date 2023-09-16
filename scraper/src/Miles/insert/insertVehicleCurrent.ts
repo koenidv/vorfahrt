@@ -13,7 +13,6 @@ export type VehicleCurrentProps = {
   lng: number;
   fuelPercent: number;
   range: number;
-  pricePreBooking: number;
   charging: boolean;
   coverageGsm: number;
   coverageSatellites: number;
@@ -40,7 +39,6 @@ async function insertPostgres(
   current.location = createPoint({ lat: props.lat, lng: props.lng });
   current.fuelPercent = props.fuelPercent;
   current.range = props.range;
-  current.pricePreBooking = props.pricePreBooking;
   current.charging = props.charging;
   current.coverageGsm = props.coverageGsm;
   current.coverageSatellites = props.coverageSatellites;
@@ -60,7 +58,6 @@ async function insertRedis(
     location: createPoint({ lat: props.lat, lng: props.lng }),
     fuelPercent: props.fuelPercent.toString(),
     range: props.range.toString(),
-    pricePreBooking: props.pricePreBooking.toString(),
     charging: props.charging.toString(),
     coverageGsm: props.coverageGsm.toString(),
     coverageSatellites: props.coverageSatellites.toString(),

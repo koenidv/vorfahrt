@@ -38,5 +38,5 @@ async function insertRedis(
   id: number,
   props: CityProps,
 ) {
-  redis.set(`miles:city:${props.milesId}`, id);
+  await redis.set(`miles:city:${props.milesId}`, id);
 }

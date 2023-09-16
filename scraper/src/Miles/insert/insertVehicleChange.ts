@@ -15,7 +15,6 @@ export type VehicleChangeProps = {
   lng?: number;
   fuelPercent?: number;
   range?: number;
-  pricePreBooking?: number;
   charging?: boolean;
   coverageGsm?: number;
   coverageSatellites?: number;
@@ -43,7 +42,6 @@ async function insertPostgres(
   change.location = createPoint({ lat: props.lat, lng: props.lng });
   change.fuelPercent = props.fuelPercent;
   change.range = props.range;
-  change.pricePreBooking = props.pricePreBooking;
   change.charging = props.charging;
   change.coverageGsm = props.coverageGsm;
   change.coverageSatellites = props.coverageSatellites;
