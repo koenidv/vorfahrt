@@ -1,15 +1,15 @@
 import { DataSource, EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 
-import { existsCity } from "./compare/existsCity";
+import { idCity } from "./compare/cityInfo";
 import { CityProps, insertCity } from "./insert/insertCity";
-import { existsSize } from "./compare/existsSize";
+import { idSize } from "./compare/sizeInfo";
 import { insertVehicleSize, SizeProps } from "./insert/insertVehicleSize";
 import {
   insertVehicleModel,
   VehicleModelProps,
 } from "./insert/insertVehicleModel";
-import { existsModel } from "./compare/existsModel";
+import { idModel } from "./compare/modelInfo";
 import {
   insertVehicleMeta,
   VehicleMetaProps,
@@ -30,22 +30,22 @@ export default class MilesDatabase {
   }
 
   async getCity(cityName: string): Promise<number | false> {
-    return await existsCity(this.redis, cityName);
+    return await idCity(this.redis, cityName);
   }
   async city(props: CityProps): Promise<number> {
-    const id = await existsCity(this.redis, props.milesId);
+    const id = await idCity(this.redis, props.milesId);
     if (id) return id;
     else return await insertCity(this.dataSource.manager, this.redis, props);
   }
 
   async size(props: SizeProps): Promise<number> {
-    const id = await existsSize(this.redis, props.name);
+    const id = await idSize(this.redis, props.name);
     if (id) return id;
     else return await insertVehicleSize(this.dataSource.manager, this.redis, props);
   }
 
   async model(props: VehicleModelProps): Promise<number> {
-    const id = await existsModel(this.redis, props.name);
+    const id = await idModel(this.redis, props.name);
     if (id) return id;
     return await insertVehicleModel(this.dataSource.manager, this.redis, props);
   }

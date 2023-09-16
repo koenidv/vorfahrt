@@ -1,10 +1,5 @@
 import { RedisClientType } from "@redis/client";
 
-
-export async function existsVehicle(redis: RedisClientType, milesId: number): Promise<boolean> {
-    return idVehicleMeta(redis, milesId) !== null;
-}
-
 export async function idVehicleMeta(redis: RedisClientType, milesId: number): Promise<number|null> {
     const val = await redis.get(`miles:vehicle:${milesId}`);
     return Number(val) || null;
