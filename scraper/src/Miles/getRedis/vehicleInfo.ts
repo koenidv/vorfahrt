@@ -7,42 +7,42 @@ export async function idVehicleMeta(redis: RedisClientType, milesId: number): Pr
 
 export async function currentVehicleStatus(redis: RedisClientType, id: number): Promise<string|null> {
     const val = await redis.get(`miles:vehicle:${id}:status`);
-    return val;
+    return val || null;
 }
 
 export async function currentVehicleLat(redis: RedisClientType, id: number): Promise<number> {
     const val = await redis.get(`miles:vehicle:${id}:latitude`);
-    return Number(val) || 0;
+    return Number(val) || null;
 }
 
 export async function currentVehicleLng(redis: RedisClientType, id: number): Promise<number> {
     const val = await redis.get(`miles:vehicle:${id}:longitude`);
-    return Number(val) || 0;
+    return Number(val) || null;
 }
 
 export async function currentVehicleFuelPercentage(redis: RedisClientType, id: number): Promise<number> {
     const val = await redis.get(`miles:vehicle:${id}:fuelPercentage`);
-    return Number(val) || 0;
+    return Number(val) || null;
 }
 
-export async function currentVehicleRange(redis: RedisClientType, id: number): Promise<number> {
+export async function currentVehicleRange(redis: RedisClientType, id: number): Promise<number|null> {
     const val = await redis.get(`miles:vehicle:${id}:range`);
-    return Number(val) || 0;
+    return Number(val) || null;
 }
 
-export async function currentVehicleIsCharging(redis: RedisClientType, id: number): Promise<boolean> {
+export async function currentVehicleIsCharging(redis: RedisClientType, id: number): Promise<boolean|null> {
     const val = await redis.get(`miles:vehicle:${id}:isCharging`);
-    return val === "1";
+    return val === "1" ? true : val === "0" ? false : null;
 }
 
-export async function currentVehicleCoverageGsm(redis: RedisClientType, id: number): Promise<number> {
+export async function currentVehicleCoverageGsm(redis: RedisClientType, id: number): Promise<number|null> {
     const val = await redis.get(`miles:vehicle:${id}:coverageGsm`);
-    return Number(val) || 0;
+    return Number(val) || null;
 }
 
-export async function currentVehicleCoverageSatellites(redis: RedisClientType, id: number): Promise<number> {
+export async function currentVehicleCoverageSatellites(redis: RedisClientType, id: number): Promise<number|null> {
     const val = await redis.get(`miles:vehicle:${id}:coverageSatellites`);
-    return Number(val) || 0;
+    return Number(val) || null;
 }
 
 export async function currentVehiclePriceId(redis: RedisClientType, id: number): Promise<number|null> {
@@ -52,5 +52,5 @@ export async function currentVehiclePriceId(redis: RedisClientType, id: number):
 
 export async function currentVehicleCityMilesId(redis: RedisClientType, id: number): Promise<string|null> {
     const val = await redis.get(`miles:vehicle:${id}:cityMilesId`);
-    return val;
+    return val || null;
 }
