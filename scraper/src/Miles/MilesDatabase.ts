@@ -19,6 +19,8 @@ import { createVehicleFromApiType } from "./monads/createVehicle";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { VehicleChangeProps, insertVehicleChange } from "./insert/insertVehicleChange";
 import { VehicleDamageProps, insertVehicleDamage } from "./insert/insertVehicleDamage";
+import { PricingProps, insertPricing } from "./insert/insertPricing";
+import { idPricing } from "./getRedis/pricingInfo";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -61,6 +63,13 @@ export default class MilesDatabase {
     const id = idVehicleMeta(this.redis, props.milesId);
     if (id) return id;
     return await insertVehicleMeta(this.dataSource.manager, this.redis, props);
+  }
+
+  async pricingId(props: PricingProps): Promise<number> {
+    // todo handle pricing with unknown prebooking fee
+    const id = await idPricing(this.redis, props);
+    if (id) return id;
+    return await insertPricing(this.dataSource.manager, this.redis, props);
   }
 
   async createVehicle(apiVehicle: apiVehicleJsonParsed) {

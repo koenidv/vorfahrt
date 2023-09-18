@@ -36,6 +36,8 @@ export class Pricing {
   @Column("decimal", { nullable: true })
   pricePreBooking: number;
 
+  // todo include discount source (aka reason)
+
   @CreateDateColumn()
   added: Date;
 }

@@ -5,7 +5,7 @@ import { createPoint } from "./utils";
 import { Pricing } from "../../entity/Miles/Pricing";
 import { PricingHistory } from "../../entity/Miles/PricingHistory";
 
-export type PricingProps = {
+export type PricingHistoryProps = {
   currentId: Pricing,
   priceKm: number,
   pricePause: number,
@@ -16,7 +16,7 @@ export type PricingProps = {
 export async function insertPricingHistory(
   manager: EntityManager,
   redis: RedisClientType,
-  props: PricingProps,
+  props: PricingHistoryProps,
 ): Promise<number> {
   const id = await insertPostgres(manager, props);
   return id;
@@ -24,7 +24,7 @@ export async function insertPricingHistory(
 
 async function insertPostgres(
   manager: EntityManager,
-  props: PricingProps,
+  props: PricingHistoryProps,
 ): Promise<number> {
   const history = new PricingHistory();
   history.current = props.currentId;

@@ -29,6 +29,10 @@ export type CreateVehicleProps = {
   coverageGsm: number;
   coverageSatellites: number;
 
+  priceKm: number;
+  pricePause: number;
+  priceUnlock: number;
+  pricePreBooking: number;
   damages: { title: string, damages: string[] }[]; // todo import damages type from abfahrt
 };
 
@@ -55,16 +59,32 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
     charging: apiVehicle.EVPlugged,
     coverageGsm: apiVehicle.GSMCoverage,
     coverageSatellites: apiVehicle.SatelliteNumber,
+    priceKm: apiVehicle.JSONFullVehicleDetails.standardPricing.perKmFee,
+    pricePause: apiVehicle.JSONFullVehicleDetails.standardPricing.parkingFeePerMinute,
+    priceUnlock: apiVehicle.JSONFullVehicleDetails.standardPricing.unlockFee,
+    pricePreBooking: apiVehicle.JSONFullVehicleDetails.standardPricing.preBookingFeePerMinute,
     damages: apiVehicle.JSONVehicleDamages,
   });
+
+
 }
 
 async function insertVehicleAndRelations(
   db: MilesDatabase,
   props: CreateVehicleProps,
 ): Promise<number> {
+  // get city id
+  // vehicles only contain milesCityIds, but locations and polygons are required to create a new city
+  const cityId = await db.getCityId(props.cityName);
+  if (!cityId) {
+    throw new Error(
+      `City ${props.cityName} not found. Cities cannot be created from vehicles. Vehicle ${props.milesId}`,
+    );
+  }
+
   // get size id or create if new
   const sizeId = await db.sizeId({ name: props.sizeName });
+  
   // get model id or create if new
   const modelId = await db.modelId({
     name: props.modelName,
@@ -76,15 +96,15 @@ async function insertVehicleAndRelations(
     sizeId: sizeId,
   });
 
-  // get city id
-  const cityId = await db.getCityId(props.cityName);
-  if (!cityId) {
-    throw new Error(
-      `City ${props.cityName} not found. Cities cannot be created from vehicles. Vehicle ${props.milesId}`,
-    );
-  }
-
-  // todo get or create pricing
+  // get pricing id or create if new
+  const pricingId = await db.pricingId({
+    sizeId: sizeId,
+    sizeName: props.sizeName,
+    priceKm: props.priceKm,
+    pricePause: props.pricePause,
+    priceUnlock: props.priceUnlock,
+    pricePreBooking: props.pricePreBooking,
+  });
 
   // current vehicle state - cascaded insert with vehicle meta
   const current = new VehicleCurrent();
@@ -95,7 +115,7 @@ async function insertVehicleAndRelations(
   current.coverageSatellites = props.coverageSatellites;
   current.fuelPercent = props.fuelPercent;
   current.range = props.range;
-  current.pricingId = -1; // todo pricings
+  current.pricingId = pricingId;
   current.status = props.status;
 
   // insert vehicle meta
@@ -132,7 +152,7 @@ async function insertVehicleAndRelations(
     coverageGsm: props.coverageGsm,
     coverageSatellites: props.coverageSatellites,
     cityId: cityId,
-    pricingId: -1, // todo pricings
+    pricingId: pricingId,
   });
 
 
