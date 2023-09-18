@@ -45,22 +45,9 @@ export async function currentVehicleCoverageSatellites(redis: RedisClientType, i
     return Number(val) || 0;
 }
 
-export async function currentVehiclePriceKm(redis: RedisClientType, id: number): Promise<number> {
-    const val = await redis.get(`miles:vehicle:${id}:priceKm`);
-    return Number(val) || 0;
-    //fixme pricingId
-}
-
-export async function currentVehiclePriceParking(redis: RedisClientType, id: number): Promise<number> {
-    const val = await redis.get(`miles:vehicle:${id}:priceParking`);
-    return Number(val) || 0;
-    //fixme pricingId
-}
-
-export async function currentVehiclePriceUnlock(redis: RedisClientType, id: number): Promise<number> {
-    const val = await redis.get(`miles:vehicle:${id}:priceUnlock`);
-    return Number(val) || 0;
-    //fixme pricingId
+export async function currentVehiclePriceId(redis: RedisClientType, id: number): Promise<number|null> {
+    const val = await redis.get(`miles:vehicle:${id}:pricingId`);
+    return Number(val) || null;
 }
 
 export async function currentVehicleCityMilesId(redis: RedisClientType, id: number): Promise<string|null> {
