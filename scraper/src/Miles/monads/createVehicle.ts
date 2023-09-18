@@ -3,6 +3,8 @@ import { VehicleCurrent } from "../../entity/Miles/VehicleCurrent";
 import { createPoint } from "../insert/utils";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
+import { insertVehicleChange } from "../insert/insertVehicleChange";
+import { ChangeEvent } from "../../entity/Miles/_ChangeEventEnum";
 
 export type CreateVehicleProps = {
   milesId: number;
@@ -44,7 +46,7 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
     fuelType: vehicleDetails.find(d => d.key === "vehicle_details_fuel").value,
     color: apiVehicle.VehicleColor,
     imageUrl: apiVehicle.URLVehicleImage,
-    status: apiVehicle.idVehicleStatus as MilesVehicleStatus,
+    status: apiVehicle.idVehicleStatus as unknown as typeof MilesVehicleStatus,
     lat: apiVehicle.Latitude,
     lng: apiVehicle.Longitude,
     fuelPercent: Number(apiVehicle.FuelPct),
@@ -59,7 +61,9 @@ async function insertVehicleAndRelations(
   db: MilesDatabase,
   props: CreateVehicleProps,
 ): Promise<number> {
+  // get size id or create if new
   const sizeId = await db.sizeId({ name: props.sizeName });
+  // get model id or create if new
   const modelId = await db.modelId({
     name: props.modelName,
     seats: props.seats,
@@ -70,6 +74,7 @@ async function insertVehicleAndRelations(
     sizeId: sizeId,
   });
 
+  // get city id
   const cityId = await db.getCityId(props.cityName);
   if (!cityId) {
     throw new Error(
@@ -77,6 +82,9 @@ async function insertVehicleAndRelations(
     );
   }
 
+  // todo get or create pricing
+
+  // current vehicle state - cascaded insert with vehicle meta
   const current = new VehicleCurrent();
   current.location = createPoint({ lat: props.lat, lng: props.lng });
   current.cityId = cityId;
@@ -88,6 +96,7 @@ async function insertVehicleAndRelations(
   current.pricingId = -1; // todo pricings
   current.status = props.status;
 
+  // insert vehicle meta
   const metaId = await db.vehicleMetaId({
     milesId: props.milesId,
     licensePlate: props.licensePlate,
@@ -97,8 +106,25 @@ async function insertVehicleAndRelations(
     firstCityId: cityId,
     current: current,
   });
+  
+  // todo create damages
 
-  // todo damages
+  // insert vehicled added change with all values
+  const createdChangeId = await db.insertVehicleChange({
+    event: ChangeEvent.add,
+    metaId: metaId,
+    status: props.status,
+    lat: props.lat,
+    lng: props.lng,
+    charging: props.charging,
+    fuelPercent: props.fuelPercent,
+    range: props.range,
+    coverageGsm: props.coverageGsm,
+    coverageSatellites: props.coverageSatellites,
+    cityId: cityId,
+    pricingId: -1, // todo pricings
+  });
+
 
   return metaId;
 }

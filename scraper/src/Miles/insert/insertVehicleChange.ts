@@ -24,7 +24,6 @@ export type VehicleChangeProps = {
 
 export async function insertVehicleChange(
   manager: EntityManager,
-  redis: RedisClientType,
   props: VehicleChangeProps,
 ): Promise<number> {
   const id = await insertPostgres(manager, props);
