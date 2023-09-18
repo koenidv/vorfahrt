@@ -3,7 +3,6 @@ import { VehicleCurrent } from "../../entity/Miles/VehicleCurrent";
 import { createPoint } from "../insert/utils";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { insertVehicleChange } from "../insert/insertVehicleChange";
 import { ChangeEvent } from "../../entity/Miles/_ChangeEventEnum";
 
 export type CreateVehicleProps = {
@@ -29,6 +28,8 @@ export type CreateVehicleProps = {
   charging: boolean;
   coverageGsm: number;
   coverageSatellites: number;
+
+  damages: { title: string, damages: string[] }[]; // todo import damages type from abfahrt
 };
 
 export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: apiVehicleJsonParsed) {
@@ -54,6 +55,7 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
     charging: apiVehicle.EVPlugged,
     coverageGsm: apiVehicle.GSMCoverage,
     coverageSatellites: apiVehicle.SatelliteNumber,
+    damages: apiVehicle.JSONVehicleDamages,
   });
 }
 
@@ -106,8 +108,16 @@ async function insertVehicleAndRelations(
     firstCityId: cityId,
     current: current,
   });
-  
-  // todo create damages
+
+  // insert each damage
+  for (const damage of props.damages) {
+    await db.insertVehicleDamage({
+      vehicleMetaId: metaId,
+      milesId: props.milesId,
+      title: damage.title,
+      damages: damage.damages,
+    });
+  }
 
   // insert vehicled added change with all values
   const createdChangeId = await db.insertVehicleChange({

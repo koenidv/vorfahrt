@@ -9,7 +9,7 @@ export type VehicleDamageProps = {
   vehicleMetaId: number,
   milesId: number,
   title: string,
-  damages: string,
+  damages: string[],
 };
 
 export async function insertVehicleDamage(
@@ -29,7 +29,7 @@ async function insertPostgres(
   const damage = new VehicleDamage();
   damage.vehicleMetaId = props.vehicleMetaId;
   damage.title = props.title;
-  damage.damages = props.damages;
+  damage.damages = JSON.stringify(props.damages); // todo json storage type
 
   const saved = await manager.save(damage);
   return saved.id;
@@ -39,5 +39,5 @@ async function insertRedis(
   redis: RedisClientType,
   props: VehicleDamageProps,
 ) {
-  await redis.sAdd(`miles:vehicle:${props.milesId}:damages`, insecureHash(props.title, props.damages));
+  await redis.sAdd(`miles:vehicle:${props.milesId}:damages`, insecureHash(props.title, JSON.stringify(props.damages)));
 }
