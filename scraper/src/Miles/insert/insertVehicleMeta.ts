@@ -10,6 +10,7 @@ export type VehicleMetaProps = {
   imageUrl: string;
   modelId: number;
   firstCityId: number;
+  isCharity: boolean;
   current: VehicleCurrent;
 };
 
@@ -32,6 +33,7 @@ async function insertPostgres(
   meta.licensePlate = props.licensePlate;
   meta.color = props.color;
   meta.imageUrl = props.imageUrl;
+  meta.isCharity = props.isCharity;
   meta.modelId = props.modelId;
   meta.firstCityId = props.firstCityId;
   meta.current = props.current;
