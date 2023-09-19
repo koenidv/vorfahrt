@@ -25,7 +25,7 @@ export class VehicleDamage {
   title: string;
 
   @Column()
-  damages: string;
+  damages: string[];
 
   @CreateDateColumn()
   added: Date;

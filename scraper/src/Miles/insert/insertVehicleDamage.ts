@@ -29,7 +29,7 @@ async function insertPostgres(
   const damage = new VehicleDamage();
   damage.vehicleMetaId = props.vehicleMetaId;
   damage.title = props.title;
-  damage.damages = JSON.stringify(props.damages); // todo json storage type
+  damage.damages = props.damages;
 
   const saved = await manager.save(damage);
   return saved.id;
