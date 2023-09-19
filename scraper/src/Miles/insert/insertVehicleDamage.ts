@@ -1,8 +1,6 @@
-import { EntityManager, Point } from "typeorm";
+import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
-import { City } from "../../entity/Miles/City";
-import { createPoint, insecureHash } from "./utils";
-import { Pricing } from "../../entity/Miles/Pricing";
+import { insecureHash } from "./utils";
 import { VehicleDamage } from "../../entity/Miles/VehicleDamages";
 
 export type VehicleDamageProps = {
