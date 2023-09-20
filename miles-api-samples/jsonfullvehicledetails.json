@@ -1,0 +1,286 @@
+{
+    "standardPricing": [        
+        {
+            "priceInfo": "0.98€\/km",
+            "additionalInfo": "+1€ unlock fee",
+            "additionalInfo2": "+1€ unlock fee, incl. charging",
+            "tariffID": "STANDARD_PERKM",
+            "tariffTitle": "KM RATE",
+            "unlockFee": 1.00,
+            "unlockFee_discounted": null,
+            "perKmFee": 0.98,
+            "perKmFee_discounted": null,
+            "preBookingFeePerMinute": 0.09,
+            "preBookingFeePerMinute_discounted": null,
+            "parkingFeePerMinute": 0.29,
+            "parkingFeePerMinute_discounted": null,
+            "bookingRepeatRestriction_h": 2,
+            "isElectric": true
+        }
+    ],
+    "prepaidRateList": [
+        {
+            "listItem": "24h (incl. 50km & unlock fee)",
+            "price": "49€",
+            "price_numeric": 49.00,
+            "price_CCY": "EUR",
+            "price_discounted": null,
+            "isDailyRate": true
+        },
+        {
+            "listItem": "3h (incl. 40km & unlock fee)",
+            "price": "34€",
+            "price_numeric": 34.00,
+            "price_CCY": "EUR",
+            "price_discounted": null,
+            "isDailyRate": true
+        },
+        {
+            "listItem": "per extra km",
+            "price": "0.59€",
+            "price_numeric": 0.59,
+            "price_CCY": "EUR",
+            "price_discounted": null,
+            "isDailyRate": false
+        }
+    ],
+    "vehicleDetails": [
+        {
+            "key": "vehicle_details_engine_power",
+            "item": "Engine Power",
+            "value": "145PS"
+        },
+        {
+            "key": "vehicle_details_seats",
+            "item": "Seats",
+            "value": "5"
+        },
+        {
+            "key": "vehicle_details_transmission",
+            "item": "Transmission",
+            "value": "Automatic"
+        },
+        {
+            "key": "vehicle_details_fuel",
+            "item": "Engine",
+            "value": "Electric"
+        }
+    ],
+    "OptimalRateSelector_Hours": [
+        {
+            "txtDuration": "3 h",
+            "nHours": 3
+        },
+        {
+            "txtDuration": "6 h",
+            "nHours": 6
+        },
+        {
+            "txtDuration": "1 day",
+            "nHours": 24
+        },
+        {
+            "txtDuration": "2 day(s)",
+            "nHours": 48
+        },
+        {
+            "txtDuration": "3 day(s)",
+            "nHours": 72
+        },
+        {
+            "txtDuration": "4 day(s)",
+            "nHours": 96
+        },
+        {
+            "txtDuration": "5 day(s)",
+            "nHours": 120
+        },
+        {
+            "txtDuration": "6 day(s)",
+            "nHours": 144
+        },
+        {
+            "txtDuration": "7 day(s)",
+            "nHours": 168
+        },
+        {
+            "txtDuration": "8 day(s)",
+            "nHours": 192
+        },
+        {
+            "txtDuration": "9 day(s)",
+            "nHours": 216
+        },
+        {
+            "txtDuration": "10 day(s)",
+            "nHours": 240
+        },
+        {
+            "txtDuration": "11 day(s)",
+            "nHours": 264
+        },
+        {
+            "txtDuration": "12 day(s)",
+            "nHours": 288
+        },
+        {
+            "txtDuration": "13 day(s)",
+            "nHours": 312
+        },
+        {
+            "txtDuration": "14 day(s)",
+            "nHours": 336
+        },
+        {
+            "txtDuration": "15 day(s)",
+            "nHours": 360
+        },
+        {
+            "txtDuration": "16 day(s)",
+            "nHours": 384
+        },
+        {
+            "txtDuration": "17 day(s)",
+            "nHours": 408
+        },
+        {
+            "txtDuration": "18 day(s)",
+            "nHours": 432
+        },
+        {
+            "txtDuration": "19 day(s)",
+            "nHours": 456
+        },
+        {
+            "txtDuration": "20 day(s)",
+            "nHours": 480
+        },
+        {
+            "txtDuration": "21 day(s)",
+            "nHours": 504
+        },
+        {
+            "txtDuration": "22 day(s)",
+            "nHours": 528
+        },
+        {
+            "txtDuration": "23 day(s)",
+            "nHours": 552
+        },
+        {
+            "txtDuration": "24 day(s)",
+            "nHours": 576
+        },
+        {
+            "txtDuration": "25 day(s)",
+            "nHours": 600
+        },
+        {
+            "txtDuration": "26 day(s)",
+            "nHours": 624
+        },
+        {
+            "txtDuration": "27 day(s)",
+            "nHours": 648
+        },
+        {
+            "txtDuration": "28 day(s)",
+            "nHours": 672
+        },
+        {
+            "txtDuration": "29 day(s)",
+            "nHours": 696
+        },
+        {
+            "txtDuration": "30 day(s)",
+            "nHours": 720
+        }
+    ],
+    "stardardRate_descriptionTexts": [
+        [
+            {
+                "row1": "This is our standard km rate! This will be automatically applied if you start your ride. This will be the best rate if you don't know how long your trip will take.",
+                "row1_discounted": "This is our discounted km rate. This will be automatically applied if you start your ride with this vehicle and no other rate was applied. Please note that the reduced km rate is not applied to subsequent rides as well as cancelled or expired reservations.",
+                "lower_bold_text": "Included within this km rate:",
+                "lower_text": "Electricity costs (you can recharge on all charging stations shown in the app). No parking ticket needed for public parking spots within our business area (exception: red marked areas)",
+                "lower_warning": "⚠️ Should your ride be longer and reach the terms and specification of a better and cheaper day rate, the cheaper rate will automatically be applied.",
+                "greybox_icon": null,
+                "greybox_text": null
+            }
+        ]
+    ],
+    "stardardRate_details": [
+        [
+            {
+                "title": "km",
+                "subtitle": "",
+                "price": "0.98€",
+                "price_discounted": "0.69€",
+                "isBold": true
+            },
+            {
+                "title": "Unlock Fee",
+                "subtitle": "",
+                "price": "1€",
+                "price_discounted": null,
+                "isBold": false
+            },
+            {
+                "title": "Parking minutes",
+                "subtitle": "in compliance with the booking duration time",
+                "price": "0.29€",
+                "price_discounted": null,
+                "isBold": false
+            },
+            {
+                "title": "Electricity",
+                "subtitle": "free charging at the charging stations shown in the app",
+                "price": "0€",
+                "price_discounted": null,
+                "isBold": false
+            }
+        ]
+    ],
+    "vehicleBanner": [
+        {
+            "color": "",
+            "text": "",
+            "text2": "",
+            "delay": "",
+            "clickAction": ""
+        }
+    ],
+    "vehicleDescriptors": {
+        "detailsText": "This is a keyless vehicle! Please press the break pedal and start the engine by simply switching the shift lever on the steering wheel.",
+        "isCharity": false,
+        "text1": "",
+        "text2": "",
+        "text3": "",
+        "text4": "",
+        "text5": "",
+        "countryName": "Germany",
+        "detailsURL": "https:\/\/www.google.com"
+    },
+    "vehicleExtras": {
+        "item": "vehicle_extras_navigator",
+        "itemvalue": "Yes"
+    },
+    "airportPricing": [
+        {
+            "PriceInfo": {
+                "title": "MILES @ BER airport",
+                "items": [
+                    {
+                        "name": "Pick up",
+                        "price": "5.00€"
+                    },
+                    {
+                        "name": "Drop off",
+                        "price": "5.00€"
+                    }
+                ]
+            }
+        }
+    ]
+}
+ 
