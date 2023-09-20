@@ -24,7 +24,7 @@ export class VehicleDamage {
   @Column()
   title: string;
 
-  @Column()
+  @Column("varchar", { array: true, default: "{}" })
   damages: string[];
 
   @CreateDateColumn()

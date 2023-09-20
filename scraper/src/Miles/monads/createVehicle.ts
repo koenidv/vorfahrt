@@ -19,6 +19,7 @@ export type CreateVehicleProps = {
   fuelType: string;
   color: string;
   imageUrl: string;
+  isCharity: boolean;
 
   status: typeof MilesVehicleStatus;
   lat: number;
@@ -29,6 +30,7 @@ export type CreateVehicleProps = {
   coverageGsm: number;
   coverageSatellites: number;
 
+  discounted: boolean;
   priceKm: number;
   pricePause: number;
   priceUnlock: number;
@@ -44,13 +46,14 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
     licensePlate: apiVehicle.LicensePlate,
     sizeName: apiVehicle.VehicleSize,
     cityName: apiVehicle.idCity,
-    seats: Number(apiVehicle.JSONFullVehicleDetails.),
+    seats: Number(vehicleDetails.find(d => d.key === "vehicle_details_seats").value),
     electric: apiVehicle.isElectric,
     enginePower: apiVehicle.EnginePower,
     transmission: vehicleDetails.find(d => d.key === "vehicle_details_transmission").value,
     fuelType: vehicleDetails.find(d => d.key === "vehicle_details_fuel").value,
     color: apiVehicle.VehicleColor,
     imageUrl: apiVehicle.URLVehicleImage,
+    isCharity: apiVehicle.isCharity,
     status: apiVehicle.idVehicleStatus as unknown as typeof MilesVehicleStatus,
     lat: apiVehicle.Latitude,
     lng: apiVehicle.Longitude,
@@ -59,10 +62,11 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
     charging: apiVehicle.EVPlugged,
     coverageGsm: apiVehicle.GSMCoverage,
     coverageSatellites: apiVehicle.SatelliteNumber,
-    priceKm: apiVehicle.JSONFullVehicleDetails.standardPricing.perKmFee,
-    pricePause: apiVehicle.JSONFullVehicleDetails.standardPricing.parkingFeePerMinute,
-    priceUnlock: apiVehicle.JSONFullVehicleDetails.standardPricing.unlockFee,
-    pricePreBooking: apiVehicle.JSONFullVehicleDetails.standardPricing.preBookingFeePerMinute,
+    discounted: /*apiVehicle.JSONFullVehicleDetails.standardPricing.perKmFee_discounted*/ false,
+    priceKm: /*apiVehicle.JSONFullVehicleDetails.standardPricing.perKmFee*/ 0, // fixme abfahrt pricing type
+    pricePause: /*apiVehicle.JSONFullVehicleDetails.standardPricing.parkingFeePerMinute*/ 0,
+    priceUnlock: /*apiVehicle.JSONFullVehicleDetails.standardPricing.unlockFee*/ 0,
+    pricePreBooking: /*apiVehicle.JSONFullVehicleDetails.standardPricing.preBookingFeePerMinute*/ 0,
     damages: apiVehicle.JSONVehicleDamages,
   });
 
@@ -100,6 +104,7 @@ async function insertVehicleAndRelations(
   const pricingId = await db.pricingId({
     sizeId: sizeId,
     sizeName: props.sizeName,
+    discounted: props.discounted,
     priceKm: props.priceKm,
     pricePause: props.pricePause,
     priceUnlock: props.priceUnlock,
@@ -124,6 +129,7 @@ async function insertVehicleAndRelations(
     licensePlate: props.licensePlate,
     color: props.color,
     imageUrl: props.imageUrl,
+    isCharity: props.isCharity,
     modelId: modelId,
     firstCityId: cityId,
     current: current,

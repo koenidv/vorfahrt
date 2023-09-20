@@ -10,7 +10,7 @@ export type PricingHistoryProps = {
   priceKm: number,
   pricePause: number,
   priceUnlock: number,
-  pricePreBooking?: number, // todo function to update this later if previously unset - not included in prices query
+  pricePreBooking?: number,
   };
 
 export async function insertPricingHistory(

@@ -21,6 +21,7 @@ import { VehicleChangeProps, insertVehicleChange } from "./insert/insertVehicleC
 import { VehicleDamageProps, insertVehicleDamage } from "./insert/insertVehicleDamage";
 import { PricingProps, insertPricing } from "./insert/insertPricing";
 import { idPricing } from "./getRedis/pricingInfo";
+import { updatePricingPreBooking } from "./insert/updatePricingPreBooking";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -66,9 +67,23 @@ export default class MilesDatabase {
   }
 
   async pricingId(props: PricingProps): Promise<number> {
-    // todo handle pricing with unknown prebooking fee
     const id = await idPricing(this.redis, props);
     if (id) return id;
+    // try getting id with unknown prebooking fee, and update if found
+    if (props.pricePreBooking) {
+      const id = await idPricing(this.redis, {
+        ...props,
+        pricePreBooking: undefined,
+      });
+      if (id) {
+        await updatePricingPreBooking(this.dataSource.manager, this.redis, {
+          ...props,
+          pricePreBooking: props.pricePreBooking,
+          pricingId: id
+        });
+        return id;
+      }
+    }
     return await insertPricing(this.dataSource.manager, this.redis, props);
   }
 
@@ -78,7 +93,7 @@ export default class MilesDatabase {
 
   async insertVehicleChange(props: VehicleChangeProps) {
     return await insertVehicleChange(this.dataSource.manager, props);
-  } 
+  }
 
   async insertVehicleDamage(props: VehicleDamageProps) {
     return await insertVehicleDamage(this.dataSource.manager, this.redis, props);
