@@ -1,5 +1,5 @@
 import assert = require("assert");
-import { insecureHash } from "../../../src/Miles/insert/utils";
+import insecureHash from "../../../src/Miles/utils/InsecureHash";
 
 describe("test insecureHash function", function () {
 

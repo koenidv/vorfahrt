@@ -1,9 +1,9 @@
 import MilesDatabase from "../MilesDatabase";
 import { VehicleCurrent } from "../../entity/Miles/VehicleCurrent";
-import { createPoint } from "../insert/utils";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { ChangeEvent } from "../../entity/Miles/_ChangeEventEnum";
+import Point from "../utils/Point";
 
 export type CreateVehicleProps = {
   milesId: number;
@@ -117,7 +117,7 @@ async function insertVehicleAndRelations(
 
   // current vehicle state - cascaded insert with vehicle meta
   const current = new VehicleCurrent();
-  current.location = createPoint({ lat: props.lat, lng: props.lng });
+  current.location = new Point(props.lat, props.lng).toString();
   current.cityId = cityId;
   current.charging = props.charging;
   current.coverageGsm = props.coverageGsm;

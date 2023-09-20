@@ -1,7 +1,5 @@
 import { EntityManager, Point } from "typeorm";
 import { RedisClientType } from "@redis/client";
-import { City } from "../../entity/Miles/City";
-import { createPoint } from "./utils";
 import { Pricing } from "../../entity/Miles/Pricing";
 import { PricingHistory } from "../../entity/Miles/PricingHistory";
 

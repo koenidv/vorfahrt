@@ -1,8 +1,8 @@
 import { EntityManager } from "typeorm";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
-import { createPoint } from "./utils";
 import { VehicleChange } from "../../entity/Miles/VehicleChange";
 import { ChangeEvent } from "../../entity/Miles/_ChangeEventEnum";
+import Point from "../utils/Point";
 
 export type VehicleChangeProps = {
   event: ChangeEvent;
@@ -35,7 +35,7 @@ async function insertPostgres(
   change.vehicleMetaId = props.metaId;
   change.event = props.event;
   change.status = props.status;
-  change.location = createPoint({ lat: props.lat, lng: props.lng });
+  change.location = new Point(props.lat, props.lng).toString();
   change.fuelPercent = props.fuelPercent;
   change.range = props.range;
   change.charging = props.charging;

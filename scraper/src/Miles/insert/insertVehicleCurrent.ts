@@ -1,9 +1,9 @@
-import { EntityManager, Point } from "typeorm";
+import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { VehicleCurrent } from "../../entity/Miles/VehicleCurrent";
-import { createPoint } from "./utils";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
+import Point from "../utils/Point";
 
 export type VehicleCurrentProps = {
   meta: VehicleMeta;
@@ -36,7 +36,7 @@ async function insertPostgres(
 ): Promise<number> {
   const current = new VehicleCurrent();
   current.status = props.status;
-  current.location = createPoint({ lat: props.lat, lng: props.lng });
+  current.location = new Point(props.lat, props.lng ).toString();
   current.fuelPercent = props.fuelPercent;
   current.range = props.range;
   current.charging = props.charging;
@@ -55,7 +55,7 @@ async function insertRedis(
 ) {
   await redis.hSet(`miles:vehicle:${props.milesId}`, {
     status: props.status.toString(),
-    location: createPoint({ lat: props.lat, lng: props.lng }),
+    location: new Point(props.lat, props.lng).toString(),
     fuelPercent: props.fuelPercent.toString(),
     range: props.range.toString(),
     charging: props.charging.toString(),

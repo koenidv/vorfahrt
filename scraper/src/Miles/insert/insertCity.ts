@@ -1,7 +1,7 @@
-import { EntityManager, Point } from "typeorm";
+import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 import { City } from "../../entity/Miles/City";
-import { createPoint } from "./utils";
+import Point from "../utils/Point";
 
 export type CityProps = {
   milesId: string;
@@ -27,7 +27,7 @@ async function insertPostgres(
   const city = new City();
   city.milesId = props.milesId;
   city.name = props.name;
-  city.location = createPoint({ lat: props.latitude, lng: props.longitude });
+  city.location = new Point(props.latitude, props.longitude).toString();
 
   const saved = await manager.save(city);
   return saved.id;

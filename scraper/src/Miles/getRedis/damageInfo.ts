@@ -1,5 +1,5 @@
 import { RedisClientType } from "redis";
-import { insecureHash } from "../insert/utils";
+import insecureHash from "../utils/InsecureHash";
 
 export async function existsDamage(redis: RedisClientType, milesId: string, title: string, damages: string[]): Promise<boolean> {
     const hash = insecureHash(title, JSON.stringify(damages));

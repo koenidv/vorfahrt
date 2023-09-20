@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
-import { insecureHash } from "./utils";
+import insecureHash from "../utils/InsecureHash";
 import { VehicleDamage } from "../../entity/Miles/VehicleDamages";
 
 export type VehicleDamageProps = {
