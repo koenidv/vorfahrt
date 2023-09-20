@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -22,6 +23,7 @@ export class VehicleMeta {
   id: number;
 
   @Column()
+  @Index({ unique: true })
   milesId: number;
 
   @Column()

@@ -5,6 +5,8 @@ export async function idVehicleMeta(redis: RedisClientType, milesId: number): Pr
     return Number(val) || null;
 }
 
+// todo don't store vehiclecurrent in redis - use postgres & find a proper definition on when to use redis
+
 export async function currentVehicleStatus(redis: RedisClientType, id: number): Promise<string|null> {
     const val = await redis.get(`miles:vehicle:${id}:status`);
     return val || null;

@@ -22,6 +22,7 @@ import { VehicleDamageProps, insertVehicleDamage } from "./insert/insertVehicleD
 import { PricingProps, insertPricing } from "./insert/insertPricing";
 import { idPricing } from "./getRedis/pricingInfo";
 import { updatePricingPreBooking } from "./insert/updatePricingPreBooking";
+import { VehicleMeta } from "../entity/Miles/VehicleMeta";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -34,6 +35,11 @@ export default class MilesDatabase {
     this.redis = redis;
 
     console.log("[Miles]", "Database initialized");
+  }
+
+  async getVehicleInfoByMilesId(milesId: number) {
+    const vehicle = await this.dataSource.manager.findOne(VehicleMeta, { where: { milesId: milesId }, relations: { current: true } })
+    return vehicle;
   }
 
   async getCityId(cityName: string): Promise<number | false> {
