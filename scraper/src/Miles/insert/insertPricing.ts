@@ -1,13 +1,12 @@
 import { EntityManager, Point } from "typeorm";
 import { RedisClientType } from "@redis/client";
-import { City } from "../../entity/Miles/City";
-import { createPoint } from "./utils";
 import { Pricing } from "../../entity/Miles/Pricing";
 
 export type PricingProps = {
   sizeId: number,
   sizeName: string,
   discounted: boolean,
+  discountSource: string | null,
   priceKm: number,
   pricePause: number,
   priceUnlock: number,
@@ -33,6 +32,7 @@ async function insertPostgres(
   pricing.sizeId = props.sizeId;
   pricing.priceKm = props.priceKm;
   pricing.discounted = props.discounted;
+  pricing.discountReason = props.discountSource;
   pricing.pricePause = props.pricePause;
   pricing.priceUnlock = props.priceUnlock;
   pricing.pricePreBooking = props.pricePreBooking;

@@ -24,6 +24,9 @@ export class Pricing {
   @Column()
   discounted: boolean;
 
+  @Column({nullable: true})
+  discountReason: string; // fixme different discount reasons will currently not get picked up when prices have been seen before
+
   @Column("decimal")
   priceKm: number;
 
@@ -35,8 +38,6 @@ export class Pricing {
 
   @Column("decimal", { nullable: true })
   pricePreBooking: number;
-
-  // todo include discount source (aka reason)
 
   @CreateDateColumn()
   added: Date;

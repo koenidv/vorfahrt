@@ -31,6 +31,7 @@ export type CreateVehicleProps = {
   coverageSatellites: number;
 
   discounted: boolean;
+  discountSource: string | null;
   priceKm: number;
   pricePause: number;
   priceUnlock: number;
@@ -40,6 +41,7 @@ export type CreateVehicleProps = {
 
 export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: apiVehicleJsonParsed) {
   const vehicleDetails = apiVehicle.JSONFullVehicleDetails.vehicleDetails;
+  const pricing = apiVehicle.JSONFullVehicleDetails.standardPricing[0]
   return await insertVehicleAndRelations(db, {
     milesId: Number(apiVehicle),
     modelName: apiVehicle.VehicleType,
@@ -62,11 +64,12 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
     charging: apiVehicle.EVPlugged,
     coverageGsm: apiVehicle.GSMCoverage,
     coverageSatellites: apiVehicle.SatelliteNumber,
-    discounted: /*apiVehicle.JSONFullVehicleDetails.standardPricing.perKmFee_discounted*/ false,
-    priceKm: /*apiVehicle.JSONFullVehicleDetails.standardPricing.perKmFee*/ 0, // fixme abfahrt pricing type
-    pricePause: /*apiVehicle.JSONFullVehicleDetails.standardPricing.parkingFeePerMinute*/ 0,
-    priceUnlock: /*apiVehicle.JSONFullVehicleDetails.standardPricing.unlockFee*/ 0,
-    pricePreBooking: /*apiVehicle.JSONFullVehicleDetails.standardPricing.preBookingFeePerMinute*/ 0,
+    discounted: apiVehicle.RentalPrice_discountSource != null,
+    discountSource: apiVehicle.RentalPrice_discountSource,
+    priceKm: pricing.perKmFee, // todo parse possibly discounted prices from apiVehicle string - vehicleDetails doesn't include that (#milesbug)
+    pricePause: pricing.parkingFeePerMinute,
+    priceUnlock: pricing.unlockFee,
+    pricePreBooking: pricing.preBookingFeePerMinute,
     damages: apiVehicle.JSONVehicleDamages,
   });
 
@@ -105,6 +108,7 @@ async function insertVehicleAndRelations(
     sizeId: sizeId,
     sizeName: props.sizeName,
     discounted: props.discounted,
+    discountSource: props.discountSource,
     priceKm: props.priceKm,
     pricePause: props.pricePause,
     priceUnlock: props.priceUnlock,
