@@ -8,6 +8,7 @@ export type VehicleChangeProps = {
   event: ChangeEvent;
   metaId: number;
   status?: typeof MilesVehicleStatus;
+  location?: Point;
   lat?: number;
   lng?: number;
   fuelPercent?: number;
@@ -35,7 +36,7 @@ async function insertPostgres(
   change.vehicleMetaId = props.metaId;
   change.event = props.event;
   change.status = props.status;
-  change.location = new Point(props.lat, props.lng).toString();
+  change.location = props.location?.toString();
   change.fuelPercent = props.fuelPercent;
   change.range = props.range;
   change.charging = props.charging;

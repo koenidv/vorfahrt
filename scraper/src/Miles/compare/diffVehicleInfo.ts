@@ -3,6 +3,7 @@ import MilesDatabase from "../MilesDatabase";
 import { VehicleChangeProps } from "../insert/insertVehicleChange";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
+import Point from "../utils/Point";
 
 export async function diffVehicleInfo(currentVehicle: VehicleMeta, apiVehicle: apiVehicleJsonParsed): Promise<VehicleChangeProps> {
     const changes = {} as VehicleChangeProps;
@@ -13,7 +14,11 @@ export async function diffVehicleInfo(currentVehicle: VehicleMeta, apiVehicle: a
         changes.status = newStatus;
     }
 
-    // todo compare location with tolerance
+    const newLocation = new Point(apiVehicle.Latitude, apiVehicle.Longitude);
+    const oldLocation = Point.fromString(current.location);
+    if (!newLocation.equalsWithTolerance(oldLocation)) {
+        changes.location = newLocation;
+    }
 
     // todo these values should be parsed somewhere else
     if (Number(apiVehicle.FuelPct) !== current.fuelPercent || Number(apiVehicle.RemainingRange) !== current.range) {

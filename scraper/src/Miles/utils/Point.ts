@@ -18,6 +18,10 @@ export default class Point {
         return new this(lat, lng);
     }
 
+    public equalsWithTolerance(compare: Point, tolerance: number = 0.005) {
+        return Math.abs(this.lat - compare.lat) < tolerance && Math.abs(this.lng - compare.lng) < tolerance;
+    }
+
     public toString() {
         return `(${this.lat.toFixed(5)},${this.lng.toFixed(5)})`;
     }
