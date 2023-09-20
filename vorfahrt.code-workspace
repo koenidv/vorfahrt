@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "mobile-app",
+			"path": "mobile-app"
+		},
+		{
+			"name": "scraper",
+			"path": "scraper"
+		},
+		{
+			"name": "web-client",
+			"path": "web-client"
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": [
+			"vorfahrt",
+			"web-client"
+		]
+	}
+}

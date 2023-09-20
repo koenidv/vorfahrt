@@ -1,14 +1,12 @@
 module.exports = {
-  entry: './index.ts',
+  entry: "./index.ts",
   output: {
-    filename: './[name].js'
+    filename: "./[name].js",
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: [".ts", ".tsx", ".js"],
   },
   module: {
-    rules: [
-      { test: /.tsx?$/, loader: 'ts-loader' }
-    ]
-  }
-}
+    rules: [{ test: /.tsx?$/, loader: "ts-loader" }],
+  },
+};
