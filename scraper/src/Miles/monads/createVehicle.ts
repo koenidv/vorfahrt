@@ -43,7 +43,7 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
   const vehicleDetails = apiVehicle.JSONFullVehicleDetails.vehicleDetails;
   const pricing = apiVehicle.JSONFullVehicleDetails.standardPricing[0]
   return await insertVehicleAndRelations(db, {
-    milesId: Number(apiVehicle),
+    milesId: apiVehicle.idVehicle,
     modelName: apiVehicle.VehicleType,
     licensePlate: apiVehicle.LicensePlate,
     sizeName: apiVehicle.VehicleSize,
@@ -59,16 +59,16 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
     status: apiVehicle.idVehicleStatus as unknown as typeof MilesVehicleStatus,
     lat: apiVehicle.Latitude,
     lng: apiVehicle.Longitude,
-    fuelPercent: Number(apiVehicle.FuelPct),
-    range: Number(apiVehicle.RemainingRange),
+    fuelPercent: apiVehicle.FuelPct_parsed,
+    range: apiVehicle.RemainingRange_parsed,
     charging: apiVehicle.EVPlugged,
     coverageGsm: apiVehicle.GSMCoverage,
     coverageSatellites: apiVehicle.SatelliteNumber,
     discounted: apiVehicle.RentalPrice_discountSource != null,
     discountSource: apiVehicle.RentalPrice_discountSource,
-    priceKm: pricing.perKmFee, // todo parse possibly discounted prices from apiVehicle string - vehicleDetails doesn't include that (#milesbug)
-    pricePause: pricing.parkingFeePerMinute,
-    priceUnlock: pricing.unlockFee,
+    priceKm: apiVehicle.RentalPrice_discounted_parsed || apiVehicle.RentalPrice_row1_parsed,
+    pricePause: apiVehicle.ParkingPrice_discounted_parsed || apiVehicle.ParkingPrice_parsed,
+    priceUnlock: apiVehicle.UnlockFee_discounted_parsed || apiVehicle.UnlockFee_parsed,
     pricePreBooking: pricing.preBookingFeePerMinute,
     damages: apiVehicle.JSONVehicleDamages,
   });

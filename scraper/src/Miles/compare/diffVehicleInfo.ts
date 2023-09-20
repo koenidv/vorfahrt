@@ -20,16 +20,15 @@ export async function diffVehicleInfo(currentVehicle: VehicleMeta, apiVehicle: a
         changes.location = newLocation;
     }
 
-    // todo these values should be parsed somewhere else
-    if (Number(apiVehicle.FuelPct) !== current.fuelPercent || Number(apiVehicle.RemainingRange) !== current.range) {
-        changes.fuelPercent = Number(apiVehicle.FuelPct);
-        changes.range = Number(apiVehicle.RemainingRange);
+    if (apiVehicle.FuelPct_parsed !== current.fuelPercent || apiVehicle.RemainingRange_parsed !== current.range) {
+        changes.fuelPercent = apiVehicle.FuelPct_parsed;
+        changes.range = apiVehicle.RemainingRange_parsed;
     }
 
     if (apiVehicle.EVPlugged !== current.charging) {
         changes.charging = apiVehicle.EVPlugged;
-        changes.fuelPercent = Number(apiVehicle.FuelPct);
-        changes.range = Number(apiVehicle.RemainingRange);
+        changes.fuelPercent = apiVehicle.FuelPct_parsed;
+        changes.range = apiVehicle.RemainingRange_parsed;
     }
 
     if (apiVehicle.GSMCoverage !== current.coverageGsm) {
