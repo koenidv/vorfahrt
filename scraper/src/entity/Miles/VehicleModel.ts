@@ -10,6 +10,7 @@ import {
 import { CityToCityPricing } from "./CityToCityPricing";
 import { VehicleSize } from "./VehicleSize";
 import { VehicleMeta } from "./VehicleMeta";
+import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
 
 @Entity({
   name: "MilesVehicleModel",
@@ -40,10 +41,10 @@ export class VehicleModel {
   enginePower: number;
 
   @Column("char")
-  transmission: string; // todo should be transmission enum from abfahrt
+  transmission: typeof MilesVehicleTransmissionReturn;
 
   @Column()
-  fuelType: string; // todo should be fuelType enum from abfahrt
+  fuelType: typeof MilesVehicleFuelReturn;
 
   @OneToMany(() => VehicleMeta, (meta) => meta.model)
   vehicles: VehicleMeta[];

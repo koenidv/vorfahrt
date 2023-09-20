@@ -1,6 +1,7 @@
 import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 import { VehicleModel } from "../../entity/Miles/VehicleModel";
+import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
 
 export type VehicleModelProps = {
   name: string;
@@ -31,8 +32,8 @@ async function insertPostgres(
   model.seats = props.seats;
   model.electric = props.electric;
   model.enginePower = props.enginePower;
-  model.transmission = props.transmission;
-  model.fuelType = props.fuelType;
+  model.transmission = props.transmission as unknown as typeof MilesVehicleTransmissionReturn;
+  model.fuelType = props.fuelType as unknown as typeof MilesVehicleFuelReturn;
   model.sizeId = props.sizeId;
 
   const saved = await manager.save(model);
