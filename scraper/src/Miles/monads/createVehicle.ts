@@ -6,6 +6,8 @@ import { ChangeEvent } from "../../entity/Miles/_ChangeEventEnum";
 import Point from "../utils/Point";
 
 export type CreateVehicleProps = {
+  apiVehicle: apiVehicleJsonParsed; // todo WIP
+
   milesId: number;
   modelName: string;
   licensePlate: string;
@@ -69,7 +71,7 @@ export async function createVehicleFromApiType(db: MilesDatabase, apiVehicle: ap
     priceKm: apiVehicle.RentalPrice_discounted_parsed || apiVehicle.RentalPrice_row1_parsed,
     pricePause: apiVehicle.ParkingPrice_discounted_parsed || apiVehicle.ParkingPrice_parsed,
     priceUnlock: apiVehicle.UnlockFee_discounted_parsed || apiVehicle.UnlockFee_parsed,
-    pricePreBooking: pricing.preBookingFeePerMinute,
+    pricePreBooking: pricing.preBookingFeePerMinute,y
     damages: apiVehicle.JSONVehicleDamages,
   });
 
@@ -129,11 +131,7 @@ async function insertVehicleAndRelations(
 
   // insert vehicle meta
   const metaId = await db.vehicleMetaId({
-    milesId: props.milesId,
-    licensePlate: props.licensePlate,
-    color: props.color,
-    imageUrl: props.imageUrl,
-    isCharity: props.isCharity,
+    apiVehicle: props.apiVehicle,
     modelId: modelId,
     firstCityId: cityId,
     current: current,

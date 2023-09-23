@@ -2,15 +2,12 @@ import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 import { VehicleCurrent } from "../../entity/Miles/VehicleCurrent";
+import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 
 export type VehicleMetaProps = {
-  milesId: number;
-  licensePlate: string;
-  color: string;
-  imageUrl: string;
+  apiVehicle: apiVehicleJsonParsed;
   modelId: number;
   firstCityId: number;
-  isCharity: boolean;
   current: VehicleCurrent;
 };
 
@@ -29,11 +26,11 @@ async function insertPostgres(
   props: VehicleMetaProps,
 ): Promise<number> {
   const meta = new VehicleMeta();
-  meta.milesId = props.milesId;
-  meta.licensePlate = props.licensePlate;
-  meta.color = props.color;
-  meta.imageUrl = props.imageUrl;
-  meta.isCharity = props.isCharity;
+  meta.milesId = props.apiVehicle.idVehicle;
+  meta.licensePlate = props.apiVehicle.LicensePlate;
+  meta.color = props.apiVehicle.VehicleColor;
+  meta.imageUrl = props.apiVehicle.URLVehicleImage;
+  meta.isCharity = props.apiVehicle.isCharity;
   meta.modelId = props.modelId;
   meta.firstCityId = props.firstCityId;
   meta.current = props.current;
@@ -47,5 +44,5 @@ async function insertRedis(
   id: number,
   props: VehicleMetaProps,
 ) {
-  await redis.set(`miles:vehicle:${props.milesId}`, id);
+  await redis.set(`miles:vehicle:${props.apiVehicle.idVehicle}`, id);
 }

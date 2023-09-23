@@ -67,7 +67,7 @@ export default class MilesDatabase {
     return await idVehicleMeta(this.redis, milesId);
   }
   async vehicleMetaId(props: VehicleMetaProps): Promise<number> {
-    const id = idVehicleMeta(this.redis, props.milesId);
+    const id = idVehicleMeta(this.redis, props.apiVehicle.idVehicle);
     if (id) return id;
     return await insertVehicleMeta(this.dataSource.manager, this.redis, props);
   }
