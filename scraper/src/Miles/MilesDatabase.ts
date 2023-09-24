@@ -15,7 +15,7 @@ import {
   VehicleMetaProps,
 } from "./insert/insertVehicleMeta";
 import { idVehicleMeta } from "./getRedis/vehicleInfo";
-import { createVehicleFromApiType } from "./monads/createVehicle";
+import { insertVehicleAndRelations } from "./monads/createVehicle";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { VehicleChangeProps, insertVehicleChange } from "./insert/insertVehicleChange";
 import { VehicleDamageProps, insertVehicleDamage } from "./insert/insertVehicleDamage";
@@ -94,7 +94,7 @@ export default class MilesDatabase {
   }
 
   async createVehicle(apiVehicle: apiVehicleJsonParsed) {
-    return await createVehicleFromApiType(this, apiVehicle);
+    return await insertVehicleAndRelations(this, apiVehicle);
   }
 
   async insertVehicleChange(props: VehicleChangeProps) {
