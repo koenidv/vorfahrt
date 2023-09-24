@@ -37,11 +37,27 @@ export default class MilesDatabase {
     console.log("[Miles]", "Database initialized");
   }
 
+  /**
+   * Queries information about a vehicle by its milesId, including its current state, city and pricing info
+   * @param milesId Vehicle id assigned by Miles
+   * @returns VehicleMeta with expanded current, city, pricing relations
+   */
   async getVehicleInfoByMilesId(milesId: number) {
-    const vehicle = await this.dataSource.manager.findOne(VehicleMeta, { where: { milesId: milesId }, relations: { current: true } })
+    const vehicle = await this.dataSource.manager.findOne(VehicleMeta, {
+      where: { milesId: milesId },
+      relations: {
+        current: true,
+        firstCity: true
+      } // todo also expand pricing from model
+    }) 
     return vehicle;
   }
 
+  /**
+   * Retrieves an existing internal city id from a miles city id
+   * @param cityName City id assigned by Miles
+   * @returns postgres id of city or false if not found
+   */
   async getCityId(cityName: string): Promise<number | false> {
     return await idCity(this.redis, cityName);
   }
@@ -99,6 +115,7 @@ export default class MilesDatabase {
 
   async insertVehicleChange(props: VehicleChangeProps) {
     return await insertVehicleChange(this.dataSource.manager, props);
+    // todo also update current vehicle state
   }
 
   async insertVehicleDamage(props: VehicleDamageProps) {

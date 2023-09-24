@@ -1,45 +1,66 @@
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import MilesDatabase from "../MilesDatabase";
 import { VehicleChangeProps } from "../insert/insertVehicleChange";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 import Point from "../utils/Point";
 
-export async function diffVehicleInfo(currentVehicle: VehicleMeta, apiVehicle: apiVehicleJsonParsed): Promise<VehicleChangeProps> {
-    const changes = {} as VehicleChangeProps;
-    const current = currentVehicle.current;
+export type VehicleDiffProps = {
+    current: VehicleMeta;
+    update: apiVehicleJsonParsed;  
+} 
 
-    const newStatus = apiVehicle.idVehicleStatus as unknown as typeof MilesVehicleStatus;
+export type VehicleDiffReturn = {
+    changes: VehicleChangeProps;
+    changedCity: boolean;
+    changedPrice: boolean;
+}
+
+export async function diffVehicleInfo(currentMeta: VehicleMeta, update: apiVehicleJsonParsed): Promise<VehicleDiffReturn> {
+    const changes = {} as VehicleChangeProps;
+    let changedCity = false, changedPricing = false;
+    const current = currentMeta.current;
+
+    // todo calculate change event type
+
+    const newStatus = update.idVehicleStatus as unknown as typeof MilesVehicleStatus;
     if (newStatus !== current.status) {
         changes.status = newStatus;
     }
 
-    const newLocation = new Point(apiVehicle.Latitude, apiVehicle.Longitude);
+    const newLocation = new Point(update.Latitude, update.Longitude);
     const oldLocation = Point.fromString(current.location);
     if (!newLocation.equalsWithTolerance(oldLocation)) {
         changes.location = newLocation;
     }
 
-    if (apiVehicle.FuelPct_parsed !== current.fuelPercent || apiVehicle.RemainingRange_parsed !== current.range) {
-        changes.fuelPercent = apiVehicle.FuelPct_parsed;
-        changes.range = apiVehicle.RemainingRange_parsed;
+    if (update.FuelPct_parsed !== current.fuelPercent || update.RemainingRange_parsed !== current.range) {
+        changes.fuelPercent = update.FuelPct_parsed;
+        changes.range = update.RemainingRange_parsed;
     }
 
-    if (apiVehicle.EVPlugged !== current.charging) {
-        changes.charging = apiVehicle.EVPlugged;
-        changes.fuelPercent = apiVehicle.FuelPct_parsed;
-        changes.range = apiVehicle.RemainingRange_parsed;
+    if (update.EVPlugged !== current.charging) {
+        changes.charging = update.EVPlugged;
+        changes.fuelPercent = update.FuelPct_parsed;
+        changes.range = update.RemainingRange_parsed;
     }
 
-    if (apiVehicle.GSMCoverage !== current.coverageGsm) {
-        changes.coverageGsm = apiVehicle.GSMCoverage;
+    if (update.GSMCoverage !== current.coverageGsm) {
+        changes.coverageGsm = update.GSMCoverage;
     }
-    if (apiVehicle.SatelliteNumber !== current.coverageSatellites) {
-        changes.coverageSatellites = apiVehicle.SatelliteNumber;
+    if (update.SatelliteNumber !== current.coverageSatellites) {
+        changes.coverageSatellites = update.SatelliteNumber;
     }
 
-    // todo handle city and pricing changes
+    if (update.idCity !== currentMeta.firstCity.milesId) {
+        changedCity = true;
+    }
 
+    // todo compare pricing
 
+    return {
+        changes: changes,
+        changedCity: changedCity,
+        changedPrice: changedPricing,
+    }
 
 }
