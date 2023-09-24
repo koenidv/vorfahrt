@@ -22,11 +22,9 @@ export type VehicleCurrentProps = {
 
 export async function insertVehicleCurrent(
   manager: EntityManager,
-  redis: RedisClientType,
   props: VehicleCurrentProps,
 ): Promise<number> {
   const id = await insertPostgres(manager, props);
-  await insertRedis(redis, props);
   return id;
 }
 
@@ -47,22 +45,4 @@ async function insertPostgres(
 
   const saved = await manager.save(current);
   return saved.id;
-}
-
-async function insertRedis(
-  redis: RedisClientType,
-  props: VehicleCurrentProps,
-) {
-  await redis.hSet(`miles:vehicle:${props.milesId}`, {
-    status: props.status.toString(),
-    location: new Point(props.lat, props.lng).toString(),
-    fuelPercent: props.fuelPercent.toString(),
-    range: props.range.toString(),
-    charging: props.charging.toString(),
-    coverageGsm: props.coverageGsm.toString(),
-    coverageSatellites: props.coverageSatellites.toString(),
-    cityId: props.cityId.toString(),
-    pricingId: props.pricingId.toString(),
-  });
-
 }

@@ -49,7 +49,7 @@ export default class MilesDatabase {
         current: true,
         firstCity: true
       } // todo also expand pricing from model
-    }) 
+    })
     return vehicle;
   }
 

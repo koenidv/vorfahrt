@@ -65,7 +65,7 @@ export async function insertVehicleAndRelations(
 
   // insert vehicle meta
   const metaId = await db.vehicleMetaId({
-    apiVehicle: props.apiVehicle,
+    apiVehicle: vehicle,
     modelId: modelId,
     firstCityId: cityId,
     current: current,
