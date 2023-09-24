@@ -23,6 +23,8 @@ import { PricingProps, insertPricing } from "./insert/insertPricing";
 import { idPricing } from "./getRedis/pricingInfo";
 import { updatePricingPreBooking } from "./insert/updatePricingPreBooking";
 import { VehicleMeta } from "../entity/Miles/VehicleMeta";
+import { VehicleCurrent } from "../entity/Miles/VehicleCurrent";
+import { updateVehicleCurrent } from "./insert/updateVehicleCurrent";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -49,7 +51,7 @@ export default class MilesDatabase {
         current: true,
         firstCity: true
       } // todo also expand pricing from model
-    })
+    }) 
     return vehicle;
   }
 
@@ -113,11 +115,34 @@ export default class MilesDatabase {
     return await insertVehicleAndRelations(this, apiVehicle);
   }
 
+  /**
+   * Inserts a vehicle change event <i>without updating the current vehicle state</i>
+   * This is used when creating a new vehicle, as the current state is cascaded with the vehicle meta
+   * todo: reconsider inserting current state with vehicle change instead of vehicle meta
+   * @param props what has changed
+   * @returns id of the change event
+   */
   async insertVehicleChange(props: VehicleChangeProps) {
     return await insertVehicleChange(this.dataSource.manager, props);
-    // todo also update current vehicle state
+   }
+
+   /**
+    * Inserts a vehicle change event and updates the current vehicle state
+    * @param current current vehicle state to update
+    * @param props what has changed
+    * @returns id of the change event
+    */
+  async updateVehicle(current: VehicleCurrent, props: VehicleChangeProps) {
+    const changeId = await insertVehicleChange(this.dataSource.manager, props);
+    await updateVehicleCurrent(this.dataSource.manager, current, props);
+    return changeId;
   }
 
+  /**
+   * Inserts a damage for a vehicle and saves a hash in redis
+   * @param props damage title and description
+   * @returns id of the damage
+   */
   async insertVehicleDamage(props: VehicleDamageProps) {
     return await insertVehicleDamage(this.dataSource.manager, this.redis, props);
   }

@@ -29,7 +29,8 @@ export async function vehicleCompareInsert(db: MilesDatabase, apiVehicle: apiVeh
     }
 
     if (changes || newCityId || newPricingId) {
-        await db.insertVehicleChange(
+        await db.updateVehicle(
+            currentVehicle.current,
             {
                 ...changes,
                 cityId: newCityId,
