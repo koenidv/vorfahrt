@@ -4,6 +4,7 @@ import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { ChangeEvent } from "../../entity/Miles/_ChangeEventEnum";
 import Point from "../utils/Point";
+import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 
 /**
  * Create a vehicle with meta, current, add event. Also inserts size and pricing if new.
@@ -16,7 +17,7 @@ import Point from "../utils/Point";
 export async function insertVehicleAndRelations(
   db: MilesDatabase,
   vehicle: apiVehicleJsonParsed,
-): Promise<number> {
+): Promise<VehicleMeta> {
   
     const vehicleDetails = vehicle.JSONFullVehicleDetails.vehicleDetails;
 
@@ -24,8 +25,8 @@ export async function insertVehicleAndRelations(
   
     // get city id
   // vehicles only contain milesCityIds, but locations and polygons are required to create a new city
-  const cityId = await db.getCityId(vehicle.idCity);
-  if (!cityId) {
+  const city = await db.getCity(vehicle.idCity);
+  if (!city) {
     throw new Error(
       `City ${vehicle.idCity} not found. Cities cannot be created from vehicles. Vehicle ${vehicle.idVehicle}`,
     );
@@ -51,7 +52,7 @@ export async function insertVehicleAndRelations(
   // current vehicle state - cascaded insert with vehicle meta
   const current = new VehicleCurrent();
   current.location = new Point(vehicle.Latitude, vehicle.Longitude).toString();
-  current.cityId = cityId;
+  current.cityId = city.id;
   current.charging = vehicle.EVPlugged;
   current.coverageGsm = vehicle.GSMCoverage;
   current.coverageSatellites = vehicle.SatelliteNumber;
@@ -61,17 +62,17 @@ export async function insertVehicleAndRelations(
   current.status = vehicle.idVehicleStatus as unknown as keyof typeof MilesVehicleStatus;
 
   // insert vehicle meta
-  const metaId = await db.vehicleMetaId({
+  const meta = await db.insertVehicleMeta({
     apiVehicle: vehicle,
     modelId: modelId,
-    firstCityId: cityId,
+    firstCityId: city.id,
     current: current,
   });
 
   // insert each damage
   for (const damage of vehicle.JSONVehicleDamages) {
     await db.insertVehicleDamage({
-      vehicleMetaId: metaId,
+      vehicleMetaId: meta.id,
       milesId: vehicle.idVehicle,
       title: damage.title,
       damages: damage.damages,
@@ -81,7 +82,7 @@ export async function insertVehicleAndRelations(
   // insert vehicled added change with all values
   const createdChangeId = await db.insertVehicleChange({
     event: ChangeEvent.add,
-    metaId: metaId,
+    metaId: meta.id,
     status: vehicle.idVehicleStatus as unknown as keyof typeof MilesVehicleStatus,
     lat: vehicle.Latitude,
     lng: vehicle.Longitude,
@@ -90,10 +91,10 @@ export async function insertVehicleAndRelations(
     range: vehicle.RemainingRange_parsed,
     coverageGsm: vehicle.GSMCoverage,
     coverageSatellites: vehicle.SatelliteNumber,
-    cityId: cityId,
-    pricingId: pricingId,
+    cityId: city.id,
+    pricingId: pricing.id,
   });
 
 
-  return metaId;
+  return meta;
 }

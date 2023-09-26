@@ -12,13 +12,11 @@ import {
   insertVehicleMeta,
   VehicleMetaProps,
 } from "./insert/insertVehicleMeta";
-import { idVehicleMeta } from "./getRedis/vehicleInfo";
 import { insertVehicleAndRelations } from "./monads/createVehicle";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { VehicleChangeProps, insertVehicleChange } from "./insert/insertVehicleChange";
 import { VehicleDamageProps, insertVehicleDamage } from "./insert/insertVehicleDamage";
 import { insertPricing } from "./insert/insertPricing";
-import { VehicleMeta } from "../entity/Miles/VehicleMeta";
 import { VehicleCurrent } from "../entity/Miles/VehicleCurrent";
 import { updateVehicleCurrent } from "./insert/updateVehicleCurrent";
 import { Pricing } from "../entity/Miles/Pricing";
@@ -27,6 +25,7 @@ import { City } from "../entity/Miles/City";
 import { findCity } from "./find/findCity";
 import { CityProps, insertCity } from "./insert/insertCity";
 import { findVehicleInfoByMilesId } from "./find/findVehicleInfo";
+import { VehicleMeta } from "../entity/Miles/VehicleMeta";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -71,6 +70,7 @@ export default class MilesDatabase {
     return await insertCity(this.dataSource.manager, this.redis, props);
   }
 
+  
   async sizeId(props: SizeProps): Promise<number> {
     const id = await idSize(this.redis, props.name);
     if (id) return id;
@@ -83,13 +83,14 @@ export default class MilesDatabase {
     return await insertVehicleModel(this.dataSource.manager, this.redis, props);
   }
 
-  async getVehicleMetaId(milesId: number): Promise<number | false> {
-    return await idVehicleMeta(this.redis, milesId);
-  }
-  async vehicleMetaId(props: VehicleMetaProps): Promise<number> {
-    const id = idVehicleMeta(this.redis, props.apiVehicle.idVehicle);
-    if (id) return id;
-    return await insertVehicleMeta(this.dataSource.manager, this.redis, props);
+
+  /**
+   * Inserts a VehicleMeta entity to the database
+   * @param props Vehicle from Miles API and some calculated properties
+   * @returns VehicleMeta entity that was inserted
+   */
+  async insertVehicleMeta(props: VehicleMetaProps): Promise<VehicleMeta> {
+    return await insertVehicleMeta(this.dataSource.manager, props);
   }
 
   /**

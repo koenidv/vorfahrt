@@ -16,9 +16,9 @@ export async function vehicleCompareInsert(db: MilesDatabase, apiVehicle: apiVeh
 
     let newCityId = undefined;
     if (changedCity) {
-        const foundCity = await db.getCityId(apiVehicle.idCity);
+        const foundCity = await db.getCity(apiVehicle.idCity);
         if (foundCity) {
-            newCityId = foundCity;
+            newCityId = foundCity.id;
         } else {
             throw new Error(`City ${apiVehicle.idCity} not found. Cities cannot be created from vehicles. Vehicle ${apiVehicle.idVehicle}`)
         }
