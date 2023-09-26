@@ -26,6 +26,10 @@ import { findCity } from "./find/findCity";
 import { CityProps, insertCity } from "./insert/insertCity";
 import { findVehicleInfoByMilesId } from "./find/findVehicleInfo";
 import { VehicleMeta } from "../entity/Miles/VehicleMeta";
+import { findSize } from "./find/findSize";
+import { VehicleSize } from "../entity/Miles/VehicleSize";
+import { VehicleModel } from "../entity/Miles/VehicleModel";
+import { findModel } from "./find/findModel";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -70,12 +74,28 @@ export default class MilesDatabase {
     return await insertCity(this.dataSource.manager, this.redis, props);
   }
 
-  
-  async sizeId(props: SizeProps): Promise<number> {
-    const id = await idSize(this.redis, props.name);
-    if (id) return id;
-    else return await insertVehicleSize(this.dataSource.manager, this.redis, props);
+  /**
+   * Retrieves an existing size from a size name
+   * @param sizeName Size name assigned by Miles, eg "M"
+   * @returns VehicleSize entity from postgres or null if not found
+   */
+  async getSize(sizeName: string): Promise<VehicleSize> {
+    return await findSize(this.dataSource.manager, sizeName);
   }
+
+  /**
+   * Inserts a new size to the database
+   * @param sizeName Size name assigned by Miles, eg "M"
+   * @returns VehicleSize entity that was inserted
+   */
+  async insertSize(sizeName: string): Promise<VehicleSize> {
+    return await insertVehicleSize(this.dataSource.manager, sizeName);
+  }
+
+  async getModel(modelName: string): Promise<VehicleModel|false> {
+    return await findModel(this.dataSource.manager, modelName);
+  }
+
 
   async modelId(props: VehicleModelProps): Promise<number> {
     const id = await idModel(this.redis, props.name);
