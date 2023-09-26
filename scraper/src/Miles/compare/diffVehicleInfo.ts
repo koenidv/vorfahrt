@@ -4,11 +4,12 @@ import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 import Point from "../utils/Point";
 import { compareDbAndApiPricing } from "./comparePricing";
+import { getChangeEventType } from "./getEventChangeType";
 
 export type VehicleDiffProps = {
     current: VehicleMeta;
-    update: apiVehicleJsonParsed;  
-} 
+    update: apiVehicleJsonParsed;
+}
 
 export type VehicleDiffReturn = {
     changes: VehicleChangeProps;
@@ -17,13 +18,13 @@ export type VehicleDiffReturn = {
 }
 
 export async function diffVehicleInfo(currentMeta: VehicleMeta, update: apiVehicleJsonParsed): Promise<VehicleDiffReturn> {
+    if (!currentMeta || !currentMeta.current) throw new Error("Diffed vehicle must have current info");
+    
     const changes = {} as VehicleChangeProps;
     let changedCity = false, changedPricing = false;
     const current = currentMeta.current;
 
-    // todo calculate change event type
-
-    const newStatus = update.idVehicleStatus as unknown as typeof MilesVehicleStatus;
+    const newStatus = update.idVehicleStatus as unknown as keyof typeof MilesVehicleStatus;
     if (newStatus !== current.status) {
         changes.status = newStatus;
     }
@@ -59,6 +60,9 @@ export async function diffVehicleInfo(currentMeta: VehicleMeta, update: apiVehic
     if (!compareDbAndApiPricing(update, current.pricing)) {
         changedPricing = true;
     }
+
+    changes.metaId = currentMeta.id;
+    changes.event = getChangeEventType(current, changes);
 
     return {
         changes: changes,

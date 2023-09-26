@@ -36,7 +36,7 @@ export class VehicleChange {
     type: "enum",
     enum: MilesVehicleStatus,
   })
-  status: typeof MilesVehicleStatus;
+  status: keyof typeof MilesVehicleStatus;
 
   @Column({
     type: "point",

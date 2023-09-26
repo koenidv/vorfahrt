@@ -61,7 +61,7 @@ export async function insertVehicleAndRelations(
   current.fuelPercent = vehicle.FuelPct_parsed;
   current.range = vehicle.RemainingRange_parsed;
   current.pricingId = pricingId;
-  current.status = vehicle.idVehicleStatus as unknown as typeof MilesVehicleStatus;
+  current.status = vehicle.idVehicleStatus as unknown as keyof typeof MilesVehicleStatus;
 
   // insert vehicle meta
   const metaId = await db.vehicleMetaId({
@@ -85,7 +85,7 @@ export async function insertVehicleAndRelations(
   const createdChangeId = await db.insertVehicleChange({
     event: ChangeEvent.add,
     metaId: metaId,
-    status: vehicle.idVehicleStatus as unknown as typeof MilesVehicleStatus,
+    status: vehicle.idVehicleStatus as unknown as keyof typeof MilesVehicleStatus,
     lat: vehicle.Latitude,
     lng: vehicle.Longitude,
     charging: vehicle.EVPlugged,

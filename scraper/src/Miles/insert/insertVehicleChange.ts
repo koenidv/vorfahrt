@@ -7,7 +7,7 @@ import Point from "../utils/Point";
 export type VehicleChangeProps = {
   event: ChangeEvent;
   metaId: number;
-  status?: typeof MilesVehicleStatus;
+  status?: keyof typeof MilesVehicleStatus;
   location?: Point;
   lat?: number;
   lng?: number;

@@ -29,7 +29,7 @@ export class VehicleCurrent {
     type: "enum",
     enum: MilesVehicleStatus,
   })
-  status: typeof MilesVehicleStatus;
+  status: keyof typeof MilesVehicleStatus;
 
   @Column("point")
   location: string | null;

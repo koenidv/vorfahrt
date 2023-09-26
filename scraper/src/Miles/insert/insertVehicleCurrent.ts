@@ -8,7 +8,7 @@ import Point from "../utils/Point";
 export type VehicleCurrentProps = {
   meta: VehicleMeta;
   milesId: number;
-  status: typeof MilesVehicleStatus;
+  status: keyof typeof MilesVehicleStatus;
   lat: number;
   lng: number;
   fuelPercent: number;
