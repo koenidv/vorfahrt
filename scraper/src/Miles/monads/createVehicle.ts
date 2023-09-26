@@ -53,10 +53,10 @@ export async function insertVehicleAndRelations(
     sizeName: vehicle.VehicleSize,
     discounted: vehicle.RentalPrice_discountSource != null,
     discountSource: vehicle.RentalPrice_discountSource,
-    priceKm: vehicle.RentalPrice_discounted_parsed || vehicle.RentalPrice_row1_parsed,
-    pricePause: vehicle.ParkingPrice_discounted_parsed || vehicle.ParkingPrice_parsed,
-    priceUnlock: vehicle.UnlockFee_discounted_parsed || vehicle.UnlockFee_parsed,
-    pricePreBooking: pricing.preBookingFeePerMinute, // todo discounted prebooking?
+    priceKm: vehicle.RentalPrice_discounted_parsed ?? vehicle.RentalPrice_row1_parsed,
+    pricePause: vehicle.ParkingPrice_discounted_parsed ?? vehicle.ParkingPrice_parsed,
+    priceUnlock: vehicle.UnlockFee_discounted_parsed ?? vehicle.UnlockFee_parsed,
+    pricePreBooking: pricing.preBookingFeePerMinute_discounted as number ?? pricing.preBookingFeePerMinute,
   });
 
   // current vehicle state - cascaded insert with vehicle meta

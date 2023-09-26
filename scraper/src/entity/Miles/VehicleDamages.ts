@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -18,6 +19,7 @@ export class VehicleDamage {
   @ManyToOne(() => VehicleMeta, (meta) => meta.damages)
   @JoinColumn({ name: "vehicleMetaId" })
   vehicle: VehicleMeta;
+  @Index()
   @Column()
   vehicleMetaId: number;
 

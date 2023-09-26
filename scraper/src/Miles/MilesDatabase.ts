@@ -95,6 +95,7 @@ export default class MilesDatabase {
   async pricingId(props: PricingProps): Promise<number> {
     const id = await idPricing(this.redis, props);
     if (id) return id;
+    // todo prebooking fee is no longer optional
     // try getting id with unknown prebooking fee, and update if found
     if (props.pricePreBooking) {
       const id = await idPricing(this.redis, {

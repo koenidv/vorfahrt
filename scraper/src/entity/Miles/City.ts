@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -16,6 +17,7 @@ export class City {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Index({ unique: true})
   @Column()
   milesId: string;
 

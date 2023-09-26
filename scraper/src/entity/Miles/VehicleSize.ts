@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   OneToMany,
   OneToOne,
@@ -20,6 +21,7 @@ export class VehicleSize {
   id: number;
 
   @Column()
+  @Index({ unique: true })
   name: string;
 
   @OneToMany(() => VehicleModel, (model) => model.size)

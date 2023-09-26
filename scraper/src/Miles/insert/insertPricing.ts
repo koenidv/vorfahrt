@@ -10,7 +10,7 @@ export type PricingProps = {
   priceKm: number,
   pricePause: number,
   priceUnlock: number,
-  pricePreBooking?: number,
+  pricePreBooking: number,
 };
 
 export async function insertPricing(
