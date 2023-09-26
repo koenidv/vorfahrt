@@ -50,6 +50,12 @@ export class VehicleChange {
   @Column({ nullable: true })
   cityId: number;
 
+  @ManyToOne(() => Pricing, { nullable: true })
+  @JoinColumn({ name: "pricingId" })
+  pricing: Pricing;
+  @Column({ nullable: true })
+  pricingId: number;
+
   @Column({
     type: "int2",
     nullable: true,
@@ -61,12 +67,6 @@ export class VehicleChange {
     nullable: true,
   })
   range: number;
-
-  @ManyToOne(() => Pricing, { nullable: true })
-  @JoinColumn({ name: "pricingId" })
-  pricing: Pricing;
-  @Column({ nullable: true })
-  pricingId: number;
 
   @Column({ nullable: true })
   charging: boolean;

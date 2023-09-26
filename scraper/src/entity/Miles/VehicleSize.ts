@@ -25,10 +25,6 @@ export class VehicleSize {
   @OneToMany(() => VehicleModel, (model) => model.size)
   models: VehicleModel[];
 
-  @OneToOne(() => Pricing, (pricing) => pricing.size)
-  @JoinColumn()
-  pricing: Pricing;
-
   @OneToMany(() => Tariff, (tariff) => tariff.size)
   tariffs: Tariff[];
 

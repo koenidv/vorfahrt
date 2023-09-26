@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -15,7 +16,7 @@ export class Pricing {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => VehicleSize, (size) => size.pricing)
+  @ManyToOne(() => VehicleSize)
   @JoinColumn({ name: "sizeId" })
   size: VehicleSize;
   @Column()
@@ -25,7 +26,7 @@ export class Pricing {
   discounted: boolean;
 
   @Column({nullable: true})
-  discountReason: string; // fixme different discount reasons will currently not get picked up when prices have been seen before
+  discountReason: string;
 
   @Column("decimal")
   priceKm: number;
@@ -36,7 +37,7 @@ export class Pricing {
   @Column("decimal")
   priceUnlock: number;
 
-  @Column("decimal", { nullable: true })
+  @Column("decimal")
   pricePreBooking: number;
 
   @CreateDateColumn()

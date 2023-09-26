@@ -40,17 +40,17 @@ export class VehicleCurrent {
   @Column()
   cityId: number;
 
-  @Column("int2")
-  fuelPercent: number;
-
-  @Column("int2")
-  range: number;
-
   @ManyToOne(() => Pricing)
   @JoinColumn({ name: "pricingId" })
   pricing: Pricing;
   @Column()
   pricingId: number;
+
+  @Column("int2")
+  fuelPercent: number;
+
+  @Column("int2")
+  range: number;
 
   @Column()
   charging: boolean;
