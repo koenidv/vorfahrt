@@ -26,6 +26,7 @@ import { findPricingForVehicle } from "./find/findPricingForVehicle";
 import { City } from "../entity/Miles/City";
 import { findCity } from "./find/findCity";
 import { CityProps, insertCity } from "./insert/insertCity";
+import { findVehicleInfoByMilesId } from "./find/findVehicleInfo";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -49,16 +50,7 @@ export default class MilesDatabase {
    * @returns VehicleMeta with expanded current, city, pricing relations
    */
   async getVehicleInfoByMilesId(milesId: number) {
-    const vehicle = await this.dataSource.manager.findOne(VehicleMeta, {
-      where: { milesId: milesId },
-      relations: {
-        current: {
-          pricing: true,
-        },
-        firstCity: true
-      }
-    })
-    return vehicle;
+    return await findVehicleInfoByMilesId(this.dataSource.manager, milesId);
   }
 
   /**
