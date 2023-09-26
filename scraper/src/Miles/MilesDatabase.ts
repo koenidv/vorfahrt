@@ -1,8 +1,6 @@
 import { DataSource, EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 
-import { idCity } from "./getRedis/cityInfo";
-import { CityProps, insertCity } from "./insert/insertCity";
 import { idSize } from "./getRedis/sizeInfo";
 import { insertVehicleSize, SizeProps } from "./insert/insertVehicleSize";
 import {
@@ -25,6 +23,9 @@ import { VehicleCurrent } from "../entity/Miles/VehicleCurrent";
 import { updateVehicleCurrent } from "./insert/updateVehicleCurrent";
 import { Pricing } from "../entity/Miles/Pricing";
 import { findPricingForVehicle } from "./find/findPricingForVehicle";
+import { City } from "../entity/Miles/City";
+import { findCity } from "./find/findCity";
+import { CityProps, insertCity } from "./insert/insertCity";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -61,17 +62,21 @@ export default class MilesDatabase {
   }
 
   /**
-   * Retrieves an existing internal city id from a miles city id
-   * @param cityName City id assigned by Miles
-   * @returns postgres id of city or false if not found
+   * Retrieves an existing city from a miles city id
+   * @param cityName City id assigned by Miles, eg "BER"
+   * @returns City entity from postgres or null if not found
    */
-  async getCityId(cityName: string): Promise<number | false> {
-    return await idCity(this.redis, cityName);
+  async getCity(milesCityId: string): Promise<City|null> {
+    return await findCity(this.dataSource.manager, milesCityId);
   }
-  async cityId(props: CityProps): Promise<number> {
-    const id = await idCity(this.redis, props.milesId);
-    if (id) return id;
-    else return await insertCity(this.dataSource.manager, this.redis, props);
+
+  /**
+   * Inserts a new city to the database
+   * @param props City properties. Not included in vehicles, but in UserHello
+   * @returns City entity that was inserted
+   */
+  async insertCity(props: CityProps): Promise<City> {
+    return await insertCity(this.dataSource.manager, this.redis, props);
   }
 
   async sizeId(props: SizeProps): Promise<number> {
