@@ -2,21 +2,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
+  Index,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { VehicleSize } from "./VehicleSize";
 
 @Entity({
   name: "MilesPricing",
 })
+@Index(["discounted", "discountReason", "priceKm", "pricePause", "priceUnlock", "pricePreBooking"], { unique: true })
 export class Pricing {
   @PrimaryGeneratedColumn()
   id: number;
-
-  // todo combined index on discounted and prices
 
   @Column()
   discounted: boolean;

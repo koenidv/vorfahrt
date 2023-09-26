@@ -25,7 +25,8 @@ export async function vehicleCompareInsert(db: MilesDatabase, apiVehicle: apiVeh
     }
     let newPricingId = undefined;
     if (changedPrice) {
-        // todo handle changed price
+        const foundPricing = await db.getOrInsertPricing(apiVehicle);
+        changes.pricingId = foundPricing.id
     }
 
     if (changes || newCityId || newPricingId) {

@@ -19,10 +19,8 @@ export async function insertVehicleAndRelations(
 ): Promise<number> {
   
     const vehicleDetails = vehicle.JSONFullVehicleDetails.vehicleDetails;
-    const pricing = vehicle.JSONFullVehicleDetails.standardPricing[0];
 
     if (!vehicleDetails) throw new Error(`Vehicle details not found for vehicle ${vehicle.idVehicle}`);
-    if (!pricing) throw new Error(`Pricing not found for vehicle ${vehicle.idVehicle}`);
   
     // get city id
   // vehicles only contain milesCityIds, but locations and polygons are required to create a new city
@@ -48,16 +46,7 @@ export async function insertVehicleAndRelations(
   });
 
   // get pricing id or create if new
-  const pricingId = await db.pricingId({
-    sizeId: sizeId,
-    sizeName: vehicle.VehicleSize,
-    discounted: vehicle.RentalPrice_discountSource != null,
-    discountSource: vehicle.RentalPrice_discountSource,
-    priceKm: vehicle.RentalPrice_discounted_parsed ?? vehicle.RentalPrice_row1_parsed,
-    pricePause: vehicle.ParkingPrice_discounted_parsed ?? vehicle.ParkingPrice_parsed,
-    priceUnlock: vehicle.UnlockFee_discounted_parsed ?? vehicle.UnlockFee_parsed,
-    pricePreBooking: pricing.preBookingFeePerMinute_discounted as number ?? pricing.preBookingFeePerMinute,
-  });
+  const pricing = await db.getOrInsertPricing(vehicle);
 
   // current vehicle state - cascaded insert with vehicle meta
   const current = new VehicleCurrent();
@@ -68,7 +57,7 @@ export async function insertVehicleAndRelations(
   current.coverageSatellites = vehicle.SatelliteNumber;
   current.fuelPercent = vehicle.FuelPct_parsed;
   current.range = vehicle.RemainingRange_parsed;
-  current.pricingId = pricingId;
+  current.pricing = pricing;
   current.status = vehicle.idVehicleStatus as unknown as keyof typeof MilesVehicleStatus;
 
   // insert vehicle meta

@@ -19,13 +19,12 @@ import { insertVehicleAndRelations } from "./monads/createVehicle";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { VehicleChangeProps, insertVehicleChange } from "./insert/insertVehicleChange";
 import { VehicleDamageProps, insertVehicleDamage } from "./insert/insertVehicleDamage";
-import { PricingProps, insertPricing } from "./insert/insertPricing";
-import { idPricing } from "./getRedis/pricingInfo";
-import { updatePricingPreBooking } from "./insert/updatePricingPreBooking";
+import { insertPricing } from "./insert/insertPricing";
 import { VehicleMeta } from "../entity/Miles/VehicleMeta";
 import { VehicleCurrent } from "../entity/Miles/VehicleCurrent";
 import { updateVehicleCurrent } from "./insert/updateVehicleCurrent";
 import { Pricing } from "../entity/Miles/Pricing";
+import { findPricingForVehicle } from "./find/findPricingForVehicle";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -98,22 +97,13 @@ export default class MilesDatabase {
 
   /**
    * Finds or inserts a pricing entity. Used when creating or updating a vehicle.
-   * @param props Pricing details to query for
+   * @param vehicle Parsed vehicle as returned by the Miles API, including pricing
    * @returns Pricing entity - either existing or newly inserted
    */
-  async getOrInsertPricing(props: PricingProps): Promise<Pricing> {
-    const pricing = await this.dataSource.manager.findOne(Pricing, {
-      where: {
-        discounted: props.discounted,
-        discountReason: props.discountSource,
-        priceKm: props.priceKm,
-        pricePause: props.pricePause,
-        priceUnlock: props.priceUnlock,
-        pricePreBooking: props.pricePreBooking,
-      },
-    });
+  async getOrInsertPricing(vehicle: apiVehicleJsonParsed): Promise<Pricing> {
+    const pricing = await findPricingForVehicle(this.dataSource.manager, vehicle);
     if (pricing) return pricing;
-    else return await insertPricing(this.dataSource.manager, props);
+    else return await insertPricing(this.dataSource.manager, vehicle);
   }
 
   /**

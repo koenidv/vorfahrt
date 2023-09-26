@@ -1,31 +1,22 @@
 import { EntityManager, Point } from "typeorm";
-import { RedisClientType } from "@redis/client";
 import { Pricing } from "../../entity/Miles/Pricing";
-
-export type PricingProps = {
-  sizeId: number,
-  sizeName: string,
-  discounted: boolean,
-  discountSource: string | null,
-  priceKm: number,
-  pricePause: number,
-  priceUnlock: number,
-  pricePreBooking: number,
-};
+import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 
 export async function insertPricing(
   manager: EntityManager,
-  props: PricingProps,
+  vehicle: apiVehicleJsonParsed,
 ): Promise<Pricing> {
+  const vehiclepricing = vehicle.JSONFullVehicleDetails.standardPricing[0];
+  if (!vehiclepricing) throw new Error(`Pricing not found for vehicle ${vehicle.idVehicle}`);
   const pricing = new Pricing();
-  pricing.priceKm = props.priceKm;
-  pricing.discounted = props.discounted;
-  pricing.discountReason = props.discountSource;
-  pricing.pricePause = props.pricePause;
-  pricing.priceUnlock = props.priceUnlock;
-  pricing.pricePreBooking = props.pricePreBooking;
+
+  pricing.discounted = vehicle.RentalPrice_discountSource != null;
+  pricing.discountReason = vehicle.RentalPrice_discountSource;
+  pricing.priceKm = vehicle.RentalPrice_discounted_parsed ?? vehicle.RentalPrice_row1_parsed;
+  pricing.pricePause = vehicle.ParkingPrice_discounted_parsed ?? vehicle.ParkingPrice_parsed;
+  pricing.priceUnlock = vehicle.UnlockFee_discounted_parsed ?? vehicle.UnlockFee_parsed;
+  pricing.pricePreBooking = vehiclepricing.preBookingFeePerMinute_discounted as number ?? vehiclepricing.preBookingFeePerMinute;
 
   const saved = await manager.save(pricing);
   return saved;
-  // fixme relation is not set properly - https://orkhan.gitbook.io/typeorm/docs/relational-query-builder
 }

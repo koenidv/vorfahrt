@@ -37,3 +37,5 @@ export const MilesEntities = [
   VehicleModel,
   VehicleSize,
 ];
+
+export default {...MilesEntities}
