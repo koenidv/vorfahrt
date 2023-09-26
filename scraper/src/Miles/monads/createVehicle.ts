@@ -5,6 +5,14 @@ import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { ChangeEvent } from "../../entity/Miles/_ChangeEventEnum";
 import Point from "../utils/Point";
 
+/**
+ * Create a vehicle with meta, current, add event. Also inserts size and pricing if new.
+ * @param db MilesDatabase instance
+ * @param vehicle Single vehicle as returned by the Miles API
+ * @returns id of the inserted vehicle meta
+ * @throws Error if city is not found
+ * @throws Error if details or pricing are not found within the apiVehicle
+ */
 export async function insertVehicleAndRelations(
   db: MilesDatabase,
   vehicle: apiVehicleJsonParsed,

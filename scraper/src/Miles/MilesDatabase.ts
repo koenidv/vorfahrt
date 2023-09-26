@@ -48,10 +48,12 @@ export default class MilesDatabase {
     const vehicle = await this.dataSource.manager.findOne(VehicleMeta, {
       where: { milesId: milesId },
       relations: {
-        current: true,
+        current: {
+          pricing: true,
+        },
         firstCity: true
-      } // todo also expand pricing from model
-    }) 
+      }
+    })
     return vehicle;
   }
 
@@ -111,6 +113,18 @@ export default class MilesDatabase {
     return await insertPricing(this.dataSource.manager, this.redis, props);
   }
 
+  /**
+   * Inserts a vehicle to the database. This includes:
+   * - vehicle meta
+   * - vehicle current
+   * - vehicle added change event
+   * - vehicle size if new
+   * - vehicle model if new
+   * * Cities cannot be created from vehicles, will throw if city is not found
+   * @param apiVehicle Single vehicle as returned by the Miles API
+   * @returns id of the inserted vehicle meta
+   * @throws Error if city is not found
+   */
   async createVehicle(apiVehicle: apiVehicleJsonParsed) {
     return await insertVehicleAndRelations(this, apiVehicle);
   }
@@ -124,14 +138,14 @@ export default class MilesDatabase {
    */
   async insertVehicleChange(props: VehicleChangeProps) {
     return await insertVehicleChange(this.dataSource.manager, props);
-   }
+  }
 
-   /**
-    * Inserts a vehicle change event and updates the current vehicle state
-    * @param current current vehicle state to update
-    * @param props what has changed
-    * @returns id of the change event
-    */
+  /**
+   * Inserts a vehicle change event and updates the current vehicle state
+   * @param current current vehicle state to update
+   * @param props what has changed
+   * @returns id of the change event
+   */
   async updateVehicle(current: VehicleCurrent, props: VehicleChangeProps) {
     const changeId = await insertVehicleChange(this.dataSource.manager, props);
     await updateVehicleCurrent(this.dataSource.manager, current, props);
