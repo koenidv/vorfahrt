@@ -25,6 +25,7 @@ import { updatePricingPreBooking } from "./insert/updatePricingPreBooking";
 import { VehicleMeta } from "../entity/Miles/VehicleMeta";
 import { VehicleCurrent } from "../entity/Miles/VehicleCurrent";
 import { updateVehicleCurrent } from "./insert/updateVehicleCurrent";
+import { Pricing } from "../entity/Miles/Pricing";
 
 export default class MilesDatabase {
   dataSource: DataSource;
@@ -40,7 +41,10 @@ export default class MilesDatabase {
   }
 
   /**
-   * Queries information about a vehicle by its milesId, including its current state, city and pricing info
+   * Queries information about a vehicle by its milesId, including:
+   * - current vehicle state
+   * - current pricing
+   * - first city
    * @param milesId Vehicle id assigned by Miles
    * @returns VehicleMeta with expanded current, city, pricing relations
    */
@@ -92,26 +96,24 @@ export default class MilesDatabase {
     return await insertVehicleMeta(this.dataSource.manager, this.redis, props);
   }
 
-  async pricingId(props: PricingProps): Promise<number> {
-    const id = await idPricing(this.redis, props);
-    if (id) return id;
-    // todo prebooking fee is no longer optional
-    // try getting id with unknown prebooking fee, and update if found
-    if (props.pricePreBooking) {
-      const id = await idPricing(this.redis, {
-        ...props,
-        pricePreBooking: undefined,
-      });
-      if (id) {
-        await updatePricingPreBooking(this.dataSource.manager, this.redis, {
-          ...props,
-          pricePreBooking: props.pricePreBooking,
-          pricingId: id
-        });
-        return id;
-      }
-    }
-    return await insertPricing(this.dataSource.manager, this.redis, props);
+  /**
+   * Finds or inserts a pricing entity. Used when creating or updating a vehicle.
+   * @param props Pricing details to query for
+   * @returns Pricing entity - either existing or newly inserted
+   */
+  async getOrInsertPricing(props: PricingProps): Promise<Pricing> {
+    const pricing = await this.dataSource.manager.findOne(Pricing, {
+      where: {
+        discounted: props.discounted,
+        discountReason: props.discountSource,
+        priceKm: props.priceKm,
+        pricePause: props.pricePause,
+        priceUnlock: props.priceUnlock,
+        pricePreBooking: props.pricePreBooking,
+      },
+    });
+    if (pricing) return pricing;
+    else return await insertPricing(this.dataSource.manager, props);
   }
 
   /**

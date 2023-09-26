@@ -17,13 +17,6 @@ export class Pricing {
   id: number;
 
   // todo combined index on discounted and prices
-  // todo is size needed?
-
-  @ManyToOne(() => VehicleSize)
-  @JoinColumn({ name: "sizeId" })
-  size: VehicleSize;
-  @Column()
-  sizeId: number;
 
   @Column()
   discounted: boolean;
