@@ -63,14 +63,13 @@ export async function insertVehicleAndRelations(
   // insert each damage
   for (const damage of vehicle.JSONVehicleDamages) {
     await db.insertVehicleDamage({
-      vehicleMetaId: meta.id,
-      milesId: vehicle.idVehicle,
+      vehicleMeta: meta,
       title: damage.title,
       damages: damage.damages,
     });
   }
 
-  // insert vehicled added change with all values
+  // insert vehicle added change with all values
   const createdChangeId = await db.insertVehicleChange({
     event: ChangeEvent.add,
     metaId: meta.id,

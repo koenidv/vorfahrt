@@ -29,6 +29,8 @@ export async function vehicleCompareInsert(db: MilesDatabase, apiVehicle: apiVeh
         changes.pricingId = foundPricing.id
     }
 
+    // todo handle new damages
+
     if (changes || newCityId || newPricingId) {
         await db.updateVehicle(
             currentVehicle.current,

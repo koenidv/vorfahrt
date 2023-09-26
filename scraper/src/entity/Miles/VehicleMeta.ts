@@ -12,7 +12,7 @@ import {
 } from "typeorm";
 import { VehicleModel } from "./VehicleModel";
 import { City } from "./City";
-import { VehicleDamage } from "./VehicleDamages";
+import { VehicleDamage } from "./VehicleDamage";
 import { VehicleCurrent } from "./VehicleCurrent";
 
 @Entity({

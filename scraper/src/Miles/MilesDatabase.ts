@@ -56,7 +56,7 @@ export default class MilesDatabase {
 
   /**
    * Retrieves an existing city from a miles city id
-   * @param cityName City id assigned by Miles, eg "BER"
+   * @param milesCityId City id assigned by Miles, eg "BER"
    * @returns City entity from postgres or null if not found
    */
   async getCity(milesCityId: string): Promise<City|null> {
@@ -174,6 +174,6 @@ export default class MilesDatabase {
    * @returns id of the damage
    */
   async insertVehicleDamage(props: VehicleDamageProps) {
-    return await insertVehicleDamage(this.dataSource.manager, this.redis, props);
+    return await insertVehicleDamage(this.dataSource.manager, props);
   }
 }

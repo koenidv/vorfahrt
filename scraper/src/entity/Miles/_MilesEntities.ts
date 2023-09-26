@@ -12,7 +12,7 @@ import { Tariff } from "./Tariff";
 import { TariffHistory } from "./TariffHistory";
 import { VehicleChange } from "./VehicleChange";
 import { VehicleCurrent } from "./VehicleCurrent";
-import { VehicleDamage } from "./VehicleDamages";
+import { VehicleDamage } from "./VehicleDamage";
 import { VehicleMeta } from "./VehicleMeta";
 import { VehicleModel } from "./VehicleModel";
 import { VehicleSize } from "./VehicleSize";
