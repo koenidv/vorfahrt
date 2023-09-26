@@ -18,12 +18,8 @@ export async function insertVehicleAndRelations(
   db: MilesDatabase,
   vehicle: apiVehicleJsonParsed,
 ): Promise<VehicleMeta> {
-  
-    const vehicleDetails = vehicle.JSONFullVehicleDetails.vehicleDetails;
 
-    if (!vehicleDetails) throw new Error(`Vehicle details not found for vehicle ${vehicle.idVehicle}`);
-  
-    // get city id
+  // get city id
   // vehicles only contain milesCityIds, but locations and polygons are required to create a new city
   const city = await db.getCity(vehicle.idCity);
   if (!city) {
@@ -33,17 +29,12 @@ export async function insertVehicleAndRelations(
   }
 
   // get size id or create if new
-  const sizeId = await db.sizeId({ name: vehicle.VehicleSize });
-  
+  const size = await db.insertSize(vehicle.VehicleSize);
+
   // get model id or create if new
-  const modelId = await db.modelId({
-    name: vehicle.VehicleType,
-    seats: Number(vehicleDetails.find(d => d.key === "vehicle_details_seats").value),
-    electric: vehicle.isElectric,
-    enginePower: vehicle.EnginePower,
-    transmission: vehicleDetails.find(d => d.key === "vehicle_details_transmission").value,
-    fuelType: vehicleDetails.find(d => d.key === "vehicle_details_fuel").value,
-    sizeId: sizeId,
+  const model = await db.insertModel({
+    apiVehicle: vehicle,
+    sizeId: size.id,
   });
 
   // get pricing id or create if new
@@ -64,7 +55,7 @@ export async function insertVehicleAndRelations(
   // insert vehicle meta
   const meta = await db.insertVehicleMeta({
     apiVehicle: vehicle,
-    modelId: modelId,
+    modelId: model.id,
     firstCityId: city.id,
     current: current,
   });

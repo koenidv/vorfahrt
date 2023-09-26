@@ -1,13 +1,11 @@
 import { DataSource, EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 
-import { idSize } from "./getRedis/sizeInfo";
-import { insertVehicleSize, SizeProps } from "./insert/insertVehicleSize";
+import { insertVehicleSize } from "./insert/insertVehicleSize";
 import {
   insertVehicleModel,
   VehicleModelProps,
 } from "./insert/insertVehicleModel";
-import { idModel } from "./getRedis/modelInfo";
 import {
   insertVehicleMeta,
   VehicleMetaProps,
@@ -92,17 +90,24 @@ export default class MilesDatabase {
     return await insertVehicleSize(this.dataSource.manager, sizeName);
   }
 
+  /**
+   * Retrieves an existing model from a model name
+   * @param modelName model name assigned by Miles, eg "VW_POLO"
+   * @returns VehicleModel entity from postgres or null if not found
+   */
   async getModel(modelName: string): Promise<VehicleModel|false> {
     return await findModel(this.dataSource.manager, modelName);
   }
 
-
-  async modelId(props: VehicleModelProps): Promise<number> {
-    const id = await idModel(this.redis, props.name);
-    if (id) return id;
+  /**
+   * Inserts a new model to the database
+   * @param props apiVehicle and size id
+   * @see {@link getSize} to get the size id
+   * @returns VehicleModel entity that was inserted
+   */
+  async insertModel(props: VehicleModelProps): Promise<VehicleModel> {
     return await insertVehicleModel(this.dataSource.manager, this.redis, props);
   }
-
 
   /**
    * Inserts a VehicleMeta entity to the database

@@ -2,14 +2,10 @@ import { EntityManager } from "typeorm";
 import { RedisClientType } from "@redis/client";
 import { VehicleModel } from "../../entity/Miles/VehicleModel";
 import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
+import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 
 export type VehicleModelProps = {
-  name: string;
-  seats: number;
-  electric: boolean;
-  enginePower: number;
-  transmission: string;
-  fuelType: string;
+  apiVehicle: apiVehicleJsonParsed;
   sizeId: number;
 };
 
@@ -17,33 +13,20 @@ export async function insertVehicleModel(
   manager: EntityManager,
   redis: RedisClientType,
   props: VehicleModelProps,
-): Promise<number> {
-  const id = await insertPostgres(manager, props);
-  await insertRedis(redis, id, props);
-  return id;
-}
+): Promise<VehicleModel> {
+  const vehicle = props.apiVehicle;
+  const vehicleDetails = vehicle.JSONFullVehicleDetails.vehicleDetails;
+  if (!vehicleDetails) throw new Error(`Vehicle details not found for vehicle ${vehicle.idVehicle}`);
 
-async function insertPostgres(
-  manager: EntityManager,
-  props: VehicleModelProps,
-): Promise<number> {
   const model = new VehicleModel();
-  model.name = props.name;
-  model.seats = props.seats;
-  model.electric = props.electric;
-  model.enginePower = props.enginePower;
-  model.transmission = props.transmission as unknown as typeof MilesVehicleTransmissionReturn;
-  model.fuelType = props.fuelType as unknown as typeof MilesVehicleFuelReturn;
+  model.name = vehicle.VehicleType;
+  model.seats = Number(vehicleDetails.find(d => d.key === "vehicle_details_seats").value);
+  model.electric = vehicle.isElectric;
+  model.enginePower = vehicle.EnginePower;
+  model.transmission = vehicleDetails.find(d => d.key === "vehicle_details_transmission").value as keyof typeof MilesVehicleTransmissionReturn;
+  model.fuelType = vehicleDetails.find(d => d.key === "vehicle_details_fuel").value as keyof typeof MilesVehicleFuelReturn;
   model.sizeId = props.sizeId;
 
   const saved = await manager.save(model);
-  return saved.id;
-}
-
-async function insertRedis(
-  redis: RedisClientType,
-  id: number,
-  props: VehicleModelProps,
-) {
-  await redis.set(`miles:model:${props.name}`, id);
+  return saved;
 }

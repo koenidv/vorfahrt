@@ -43,10 +43,10 @@ export class VehicleModel {
   enginePower: number;
 
   @Column("char")
-  transmission: typeof MilesVehicleTransmissionReturn;
+  transmission: keyof typeof MilesVehicleTransmissionReturn;
 
   @Column()
-  fuelType: typeof MilesVehicleFuelReturn;
+  fuelType: keyof typeof MilesVehicleFuelReturn;
 
   @OneToMany(() => VehicleMeta, (meta) => meta.model)
   vehicles: VehicleMeta[];
