@@ -12,7 +12,6 @@ export type CityProps = {
 
 export async function insertCity(
   manager: EntityManager,
-  redis: RedisClientType,
   props: CityProps,
 ): Promise<City> {
   const city = new City();

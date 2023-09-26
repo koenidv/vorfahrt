@@ -11,7 +11,6 @@ export type VehicleModelProps = {
 
 export async function insertVehicleModel(
   manager: EntityManager,
-  redis: RedisClientType,
   props: VehicleModelProps,
 ): Promise<VehicleModel> {
   const vehicle = props.apiVehicle;

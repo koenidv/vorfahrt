@@ -1,5 +1,4 @@
 import { DataSource, EntityManager } from "typeorm";
-import { RedisClientType } from "@redis/client";
 
 import { insertVehicleSize } from "./insert/insertVehicleSize";
 import {
@@ -32,12 +31,10 @@ import { findModel } from "./find/findModel";
 export default class MilesDatabase {
   dataSource: DataSource;
   manager: EntityManager;
-  redis: RedisClientType;
 
-  constructor(dataSource: DataSource, redis: RedisClientType) {
+  constructor(dataSource: DataSource) {
     this.dataSource = dataSource;
     this.manager = dataSource.manager;
-    this.redis = redis;
 
     console.log("[Miles]", "Database initialized");
   }
@@ -69,7 +66,7 @@ export default class MilesDatabase {
    * @returns City entity that was inserted
    */
   async insertCity(props: CityProps): Promise<City> {
-    return await insertCity(this.dataSource.manager, this.redis, props);
+    return await insertCity(this.dataSource.manager, props);
   }
 
   /**
@@ -106,7 +103,7 @@ export default class MilesDatabase {
    * @returns VehicleModel entity that was inserted
    */
   async insertModel(props: VehicleModelProps): Promise<VehicleModel> {
-    return await insertVehicleModel(this.dataSource.manager, this.redis, props);
+    return await insertVehicleModel(this.dataSource.manager, props);
   }
 
   /**
