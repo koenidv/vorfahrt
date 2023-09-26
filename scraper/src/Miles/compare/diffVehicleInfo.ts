@@ -3,6 +3,7 @@ import { VehicleChangeProps } from "../insert/insertVehicleChange";
 import { MilesVehicleStatus } from "@koenidv/abfahrt";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 import Point from "../utils/Point";
+import { compareDbAndApiPricing } from "./comparePricing";
 
 export type VehicleDiffProps = {
     current: VehicleMeta;
@@ -55,7 +56,9 @@ export async function diffVehicleInfo(currentMeta: VehicleMeta, update: apiVehic
         changedCity = true;
     }
 
-    // todo compare pricing
+    if (!compareDbAndApiPricing(update, current.pricing)) {
+        changedPricing = true;
+    }
 
     return {
         changes: changes,
