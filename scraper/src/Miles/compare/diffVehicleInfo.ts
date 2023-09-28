@@ -5,6 +5,7 @@ import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 import Point from "../utils/Point";
 import { compareDbAndApiPricing } from "./comparePricing";
 import { getChangeEventType } from "./getEventChangeType";
+import { VehicleDamage } from "../../entity/Miles/VehicleDamage";
 
 export type VehicleDiffProps = {
     current: VehicleMeta;
@@ -15,13 +16,15 @@ export type VehicleDiffReturn = {
     changes: VehicleChangeProps;
     changedCity: boolean;
     changedPrice: boolean;
+    addedDamages: VehicleDamage[];
 }
 
 export async function diffVehicleInfo(currentMeta: VehicleMeta, update: apiVehicleJsonParsed): Promise<VehicleDiffReturn> {
     if (!currentMeta || !currentMeta.current) throw new Error("Diffed vehicle must have current info");
-    
+
     const changes = {} as VehicleChangeProps;
     let changedCity = false, changedPricing = false;
+    const addedDamages = [] as VehicleDamage[];
     const current = currentMeta.current;
 
     const newStatus = update.idVehicleStatus as unknown as keyof typeof MilesVehicleStatus;
@@ -64,10 +67,22 @@ export async function diffVehicleInfo(currentMeta: VehicleMeta, update: apiVehic
     changes.metaId = currentMeta.id;
     changes.event = getChangeEventType(current, changes);
 
+    for (const damage of update.JSONVehicleDamages as VehicleDamage[]) {
+        const alreadySeen = currentMeta.damages.some((currentDamage) =>
+            currentDamage.title === damage.title &&
+            JSON.stringify(currentDamage.damages) === JSON.stringify(damage.damages)
+        );
+
+        if (!alreadySeen) {
+            addedDamages.push(damage);
+        }
+    }
+
     return {
         changes: changes,
         changedCity: changedCity,
         changedPrice: changedPricing,
+        addedDamages: addedDamages,
     }
 
 }

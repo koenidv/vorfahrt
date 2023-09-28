@@ -6,9 +6,10 @@ import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
  * - current vehicle state
  * - current pricing
  * - first city
+ * - damages
  * @param em EntityManager instance
  * @param milesId Vehicle id assigned by Miles
- * @returns VehicleMeta with expanded current, city, pricing relations; or null if not found
+ * @returns VehicleMeta with expanded current, city, pricing, damages relations; or null if not found
  */
 export async function findVehicleInfoByMilesId(em: EntityManager, milesId: number) {
     return em.findOne(VehicleMeta, {
@@ -17,7 +18,8 @@ export async function findVehicleInfoByMilesId(em: EntityManager, milesId: numbe
             current: {
                 pricing: true,
             },
-            firstCity: true
-        }
+            firstCity: true,
+            damages: true,
+        },
     })
 }

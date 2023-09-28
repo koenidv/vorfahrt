@@ -44,8 +44,9 @@ export default class MilesDatabase {
    * - current vehicle state
    * - current pricing
    * - first city
+   * - damages
    * @param milesId Vehicle id assigned by Miles
-   * @returns VehicleMeta with expanded current, city, pricing relations
+   * @returns VehicleMeta with expanded current, city, pricing, damages relations
    */
   async getVehicleInfoByMilesId(milesId: number) {
     return await findVehicleInfoByMilesId(this.dataSource.manager, milesId);
