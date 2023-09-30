@@ -3,6 +3,8 @@ import { Vehicle } from "./Miles/types";
 
 export const mergeVehiclesForRegion = (currentVehicles: Vehicle[], newVehicles: Vehicle[], region: Region): Vehicle[] => {
 
+    // todo vehicles should not be removed if the miles api vehicle count is maxed out, display a warning instead
+
     // remove vehicles in the current region
     // v.coordinates is { lat, lng } and region is { latitude, longitude, latitudeDelta, longitudeDelta }
     const vehicles = currentVehicles.filter((v) => {

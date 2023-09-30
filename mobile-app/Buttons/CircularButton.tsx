@@ -18,7 +18,16 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 100,
     padding: 10,
-    elevation: 2,
+    elevation: 12,
+    shadowRadius: 10,
+    shadowOpacity: 0.5,
+    shadowColor: "black",
+    shadowOffset: {width: 0, height: 0},
+    width: 56,
+    height: 56,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

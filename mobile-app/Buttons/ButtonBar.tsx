@@ -3,6 +3,7 @@ import {RefObject, useState} from "react";
 import CircularButton from "./CircularButton";
 import RelocateIcon from "../assets/icons/relocate.svg";
 import ReloadIcon from "../assets/icons/reload.svg";
+import PreferencesIcon from "../assets/icons/preferences.svg";
 import ChargeIcon from "../assets/icons/charge.svg";
 import LottieView from "lottie-react-native";
 import {fetchChargeStationsCurrentRegionUpdateState} from "../lib/fetchRegionUpdateState";
@@ -23,13 +24,13 @@ const ButtonBar = (props: ButtonBarProps) => {
           useVehicles.getState().clearVehicles();
           props.mapRef.current?.handleFetchVehicles();
         }}>
-        <ReloadIcon width={35} height={35} />
+        <PreferencesIcon width={30} height={30} />
       </CircularButton>
       <CircularButton
         onPress={() => {
           props.mapRef.current?.gotoSelfLocation();
         }}>
-        <RelocateIcon width={35} height={35} />
+        <RelocateIcon width={30} height={30} />
       </CircularButton>
       <CircularButton
         onPress={async () => {
@@ -42,10 +43,10 @@ const ButtonBar = (props: ButtonBarProps) => {
             source={require("../assets/icons/loading.json")}
             autoPlay
             loop
-            style={{width: 35, height: 35}}
+            style={{width: 30, height: 30}}
           />
         ) : (
-          <ChargeIcon width={35} height={35} />
+          <ChargeIcon width={30} height={30} />
         )}
       </CircularButton>
     </View>
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     bottom: 80,
     right: 20,
     gap: 20,
-  },
+  }
 });
 
 export default ButtonBar;
