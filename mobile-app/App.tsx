@@ -22,35 +22,10 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import MapScreen from "./screens/MapScreen";
 import FiltersScreen from "./screens/FiltersScreen";
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === "dark";
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+export type RootStackParamList = {
+  Map: undefined;
+  Filters: undefined;
+};
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -60,7 +35,12 @@ function App(): JSX.Element {
     flex: 1,
   };
 
-  const Stack = createNativeStackNavigator();
+  const headerStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    color: isDarkMode ? Colors.white : Colors.black,
+  };
+
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -73,31 +53,12 @@ function App(): JSX.Element {
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Map">
             <Stack.Screen name="Map" component={MapScreen} options={{headerShown: false}} />
-            <Stack.Screen name="Filters" component={FiltersScreen} />
+            <Stack.Screen name="Filters" component={FiltersScreen} options={{}} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
-});
 
 export default App;

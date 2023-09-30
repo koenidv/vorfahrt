@@ -8,6 +8,8 @@ import LottieView from "lottie-react-native";
 import {fetchChargeStationsCurrentRegionUpdateState} from "../lib/fetchRegionUpdateState";
 import { MapMethods } from "../Map/Map";
 import { useVehicles } from "../state/vehicles.state";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../App";
 
 export interface ButtonBarProps {
   mapRef: RefObject<MapMethods>;
@@ -15,13 +17,13 @@ export interface ButtonBarProps {
 
 const ButtonBar = (props: ButtonBarProps) => {
   const [stationsLoading, setStationsLoading] = useState(false);
+  const navigation = useNavigation() as any; // TODO: Fix type
 
   return (
     <View style={styles.container}>
       <CircularButton
         onPress={() => {
-          useVehicles.getState().clearVehicles();
-          props.mapRef.current?.handleFetchVehicles();
+          navigation.navigate("Filters");
         }}>
         <PreferencesIcon width={30} height={30} />
       </CircularButton>
