@@ -2,7 +2,6 @@ import {StyleSheet, View} from "react-native";
 import {RefObject, useState} from "react";
 import CircularButton from "./CircularButton";
 import RelocateIcon from "../assets/icons/relocate.svg";
-import ReloadIcon from "../assets/icons/reload.svg";
 import PreferencesIcon from "../assets/icons/preferences.svg";
 import ChargeIcon from "../assets/icons/charge.svg";
 import LottieView from "lottie-react-native";

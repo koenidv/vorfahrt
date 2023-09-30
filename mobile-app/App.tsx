@@ -17,8 +17,10 @@ import {
   View,
 } from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
-import Map, { MapMethods } from "./Map/Map";
+import Map, {MapMethods} from "./Map/Map";
 import ButtonBar from "./Buttons/ButtonBar";
+import {NavigationContainer} from "@react-navigation/native";
+import MapScreen from "./screens/MapScreen";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -57,8 +59,6 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const mapRef = useRef<MapMethods>(null);
-
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -66,16 +66,9 @@ function App(): JSX.Element {
         backgroundColor="transparent"
         barStyle="light-content"
       />
-      <View
-        style={{
-          position: "relative",
-          height: "100%",
-          width: "100%",
-          backgroundColor: Colors.black,
-        }}>
-        <Map ref={mapRef} />
-        <ButtonBar mapRef={mapRef} />
-      </View>
+      <NavigationContainer>
+        <MapScreen />
+      </NavigationContainer>
     </SafeAreaView>
   );
 }
