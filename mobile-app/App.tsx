@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, {useRef} from "react";
+import React from "react";
 import type {PropsWithChildren} from "react";
 import {
   SafeAreaView,
@@ -17,10 +17,10 @@ import {
   View,
 } from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
-import Map, {MapMethods} from "./Map/Map";
-import ButtonBar from "./Buttons/ButtonBar";
 import {NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import MapScreen from "./screens/MapScreen";
+import FiltersScreen from "./screens/FiltersScreen";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -57,7 +57,10 @@ function App(): JSX.Element {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1,
   };
+
+  const Stack = createNativeStackNavigator();
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -66,9 +69,14 @@ function App(): JSX.Element {
         backgroundColor="transparent"
         barStyle="light-content"
       />
-      <NavigationContainer>
-        <MapScreen />
-      </NavigationContainer>
+      <View style={{flex: 1}}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Map">
+            <Stack.Screen name="Map" component={MapScreen} options={{headerShown: false}} />
+            <Stack.Screen name="Filters" component={FiltersScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </View>
     </SafeAreaView>
   );
 }
