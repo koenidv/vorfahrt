@@ -10,6 +10,10 @@ interface FiltersState {
   vehicleSize: VehicleSize[];
   enableVehicleSize: (vehicleSize: VehicleSize) => void;
   disableVehicleSize: (vehicleSize: VehicleSize) => void;
+  alwaysShowChargingStations: boolean;
+  setAlwaysShowChargingStations: (alwaysShowChargingStations: boolean) => void;
+  showNoParkingZones: boolean;
+  setShowNoParkingZones: (showNoParkingZones: boolean) => void;
   resetAll: () => void;
 }
 
@@ -37,7 +41,15 @@ export const useFilters = create<FiltersState>(
       set((state) => ({
         vehicleSize: state.vehicleSize.filter((vs) => vs !== vehicleSize),
       })),
-      
+
+    alwaysShowChargingStations: false,
+    setAlwaysShowChargingStations: (alwaysShowChargingStations) =>
+      set({ alwaysShowChargingStations }),
+
+    showNoParkingZones: false,
+    setShowNoParkingZones: (showNoParkingZones) =>
+      set({ showNoParkingZones }),
+
     resetAll: () =>
       set({
         maxCharge: 32,

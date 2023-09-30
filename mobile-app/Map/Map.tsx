@@ -12,14 +12,16 @@ import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStation/ChargeStationMarker";
 import Borders from "./Borders";
 import {debounce} from "lodash";
-import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
-import {fetchVehiclesForRegion} from "../lib/Miles/fetchForRegion";
 import {useRegion} from "../state/region.state";
 import ChargeStationCallout from "./ChargeStation/ChargeStationCallout";
 import {getLocation} from "../lib/location/getLocation";
 import {useVehicles} from "../state/vehicles.state";
 import {useChargeStations} from "../state/chargestations.state";
-import {fetchChargeStationsCurrentRegionUpdateState} from "../lib/fetchRegionUpdateState";
+import {
+  fetchChargeStationsCurrentRegionUpdateState,
+  fetchVehiclesForRegionUpdateState,
+} from "../lib/fetchRegionUpdateState";
+import {useFilters} from "../state/filters.state";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -51,10 +53,12 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   };
 
   const handleFetchVehicles = async () => {
-    fetchChargeStationsCurrentRegionUpdateState(
-      useRegion.getState().current,
-    );
+    fetchVehiclesForRegionUpdateState(useRegion.getState().current);
+    if (useFilters.getState().alwaysShowChargingStations === true) {
+      fetchChargeStationsCurrentRegionUpdateState(useRegion.getState().current);
+    }
   };
+
   const debounceFetchVehicles = useRef(
     debounce(handleFetchVehicles, 200),
   ).current;
@@ -83,14 +87,14 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
       showsIndoors={false}
       pitchEnabled={false}
       rotateEnabled={false}>
-      {vehicles.map((pin, index) => {
+      {vehicles.map(pin => {
         return (
           <Marker
             coordinate={{
               latitude: pin.coordinates.lat,
               longitude: pin.coordinates.lng,
             }}
-            key={"v_" + index}
+            key={"v_" + pin.id}
             title={`${pin.licensePlate} (${pin.id})`}
             description={`${pin.model}, ${pin.charge}%`}
             tracksViewChanges={false}>
@@ -98,10 +102,10 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
           </Marker>
         );
       })}
-      {clusters.map((cluster, index) => {
+      {clusters.map(cluster => {
         return (
           <Marker
-            key={"c_" + index}
+            key={"c_" + cluster.idClusterHash}
             coordinate={{
               latitude: cluster.Latitude,
               longitude: cluster.Longitude,
@@ -112,10 +116,10 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
           />
         );
       })}
-      {stations.map((station, index) => {
+      {stations.map(station => {
         return (
           <Marker
-            key={"p_" + index}
+            key={"p_" + station.milesId}
             coordinate={{
               latitude: station.coordinates.lat,
               longitude: station.coordinates.lng,

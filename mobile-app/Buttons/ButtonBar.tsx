@@ -6,9 +6,7 @@ import ReloadIcon from "../assets/icons/reload.svg";
 import ChargeIcon from "../assets/icons/charge.svg";
 import LottieView from "lottie-react-native";
 import {fetchChargeStationsCurrentRegionUpdateState} from "../lib/fetchRegionUpdateState";
-import {useRegion} from "../state/region.state";
 import { MapMethods } from "../Map/Map";
-import { useChargeStations } from "../state/chargestations.state";
 import { useVehicles } from "../state/vehicles.state";
 
 export interface ButtonBarProps {
