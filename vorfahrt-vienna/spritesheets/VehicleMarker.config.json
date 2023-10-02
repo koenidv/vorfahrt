@@ -1,4 +1,7 @@
 {
+    "options": {
+        "switchFirstAndSecondDepth": true
+    },
     "allVehicles": {
         "backgrounds\\default": {
             "chargestates\\electric": true,

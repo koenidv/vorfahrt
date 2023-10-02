@@ -12,10 +12,14 @@ export async function parseConfig(configName: string) {
     const config = JSON.parse(await fs.promises.readFile(configPath, "utf8"));
     const allVehiclesConfig = config.allVehicles
 
-    const vehicles = {}
+    let vehicles = {}
 
     for (const [vehicleName, vehicleConfig] of Object.entries(config.vehicles)) {
         vehicles[vehicleName] = deepMerge(allVehiclesConfig, vehicleConfig);
+    }
+
+    if (config?.options?.switchFirstAndSecondDepth === true) {
+        vehicles = switchFirstAndSecondDepth(vehicles);
     }
 
     return vehicles;
@@ -42,5 +46,25 @@ export function deepMerge(obj1: any, obj2: any): any {
             }
         }
     }
+    return result;
+}
+
+/**
+ * Switches the first and second leaf depth of an object
+ * eg {a: {b: {c: 1}, d: 2}} => {b: {a: {c: 1}}, d: {a: 2}} 
+ */
+export function switchFirstAndSecondDepth(obj: any): any {
+    if (typeof obj !== 'object') {
+        return obj;
+    }
+
+    const result: any = {};
+
+    for (const majorkey of Object.keys(obj)) {
+        for (const [minorkey, minorvalue] of Object.entries(obj[majorkey])) {
+            result[minorkey] = { ...result[minorkey], [majorkey]: minorvalue };
+        }
+    }
+
     return result;
 }
