@@ -27,7 +27,7 @@ export const mergeChargeStationAvailability = (
     });
 
     // do not override previous availability without new information
-    if (!availability) return station;
+    if (availability === undefined) return station;
     return {
       ...station,
       availability: availability,

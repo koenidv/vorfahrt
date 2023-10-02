@@ -5,59 +5,34 @@
  * @format
  */
 
-import React, {useRef} from "react";
-import type {PropsWithChildren} from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from "react-native";
+import React from "react";
+import {SafeAreaView, StatusBar, useColorScheme, View} from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
-import Map, { MapMethods } from "./Map/Map";
-import ButtonBar from "./Buttons/ButtonBar";
+import {NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import MapScreen from "./screens/MapScreen";
+import FiltersScreen from "./screens/FiltersScreen";
+import NavigationBar from "./NavigationBar";
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === "dark";
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+export type RootStackParamList = {
+  Map: undefined;
+  Filters: undefined;
+};
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1,
   };
 
-  const mapRef = useRef<MapMethods>(null);
+  const headerStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    color: isDarkMode ? Colors.white : Colors.black,
+  };
+
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -66,37 +41,28 @@ function App(): JSX.Element {
         backgroundColor="transparent"
         barStyle="light-content"
       />
-      <View
-        style={{
-          position: "relative",
-          height: "100%",
-          width: "100%",
-          backgroundColor: Colors.black,
-        }}>
-        <Map ref={mapRef} />
-        <ButtonBar mapRef={mapRef} />
+      <View style={{flex: 1}}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Map"
+            screenOptions={{
+              header: props => <NavigationBar props={props} />,
+            }}>
+            <Stack.Screen
+              name="Map"
+              component={MapScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Filters"
+              component={FiltersScreen}
+              options={{}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
-});
 
 export default App;

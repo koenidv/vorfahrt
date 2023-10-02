@@ -11,14 +11,19 @@ import React, {
 import VehicleMarker from "./VehicleMarker";
 import ChargeStationMarker from "./ChargeStation/ChargeStationMarker";
 import Borders from "./Borders";
-import { debounce } from "lodash";
-import {parseVehicles} from "../lib/Miles/parseVehiclesResponse";
-import {fetchVehiclesForRegion} from "../lib/Miles/fetchForRegion";
+import {debounce} from "lodash";
 import {useRegion} from "../state/region.state";
 import ChargeStationCallout from "./ChargeStation/ChargeStationCallout";
 import {getLocation} from "../lib/location/getLocation";
-import { useVehicles } from "../state/vehicles.state";
-import { useChargeStations } from "../state/chargestations.state";
+import {useVehicles} from "../state/vehicles.state";
+import {useChargeStations} from "../state/chargestations.state";
+import {
+  fetchChargeStationsCurrentRegionUpdateState,
+  fetchVehiclesForRegionUpdateState,
+} from "../lib/fetchRegionUpdateState";
+import {useFilters} from "../state/filters.state";
+import {Text, View} from "react-native";
+import {Colors} from "react-native/Libraries/NewAppScreen";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -29,14 +34,19 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   const [clusters, setClusters] = useState<apiCluster[]>([]);
   let map = useRef<MapView>(null);
 
-  const vehicles = useVehicles((state) => state.vehicles);
-  const stations = useChargeStations((state) => state.stations);
+  const vehicles = useVehicles(state => state.vehicles);
+  const stations = useChargeStations(state => state.stations);
 
   const initialRegion = useRegion.getState().current;
 
-  useEffect(() => {
+  const filters = useFilters();
+
+  const [isMapReady, setIsMapReady] = useState(false);
+  const onContainerLayout = () => {
+    console.log("Map is ready");
+    setIsMapReady(true);
     gotoSelfLocation();
-  }, []);
+  };
 
   const gotoSelfLocation = async () => {
     const pos = await getLocation();
@@ -50,13 +60,15 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   };
 
   const handleFetchVehicles = async () => {
-    const data = await fetchVehiclesForRegion(useRegion.getState().current);
-    // todo region store && fetch charge vehicles somewhere else
-    // requires refetching clusters first
-    useVehicles.getState().updateVehicles(parseVehicles(data));
-    setClusters(data.Data.clusters);
+    fetchVehiclesForRegionUpdateState(useRegion.getState().current);
+    if (useFilters.getState().alwaysShowChargingStations === true) {
+      fetchChargeStationsCurrentRegionUpdateState(useRegion.getState().current);
+    }
   };
-  const debounceFetchVehicles = useRef(debounce(handleFetchVehicles, 200)).current;
+
+  const debounceFetchVehicles = useRef(
+    debounce(handleFetchVehicles, 200),
+  ).current;
 
   const onRegionChange = (region: any) => {
     useRegion.getState().setCurrent(region);
@@ -69,75 +81,84 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   }));
 
   return (
-    <MapView
-      ref={map}
-      style={[{height: "100%", width: "100%"}]}
-      provider={PROVIDER_GOOGLE}
-      initialRegion={initialRegion}
-      onRegionChange={onRegionChange}
-      customMapStyle={mapStyle}
-      showsUserLocation={true}
-      showsMyLocationButton={false}
-      showsTraffic={false}
-      showsIndoors={false}
-      pitchEnabled={false}
-      rotateEnabled={false}>
-      {vehicles.map((pin, index) => {
-        return (
-          <Marker
-            coordinate={{
-              latitude: pin.coordinates.lat,
-              longitude: pin.coordinates.lng,
-            }}
-            key={"v_" + index}
-            title={pin.licensePlate}
-            description={`${pin.model}, ${pin.charge}`}
-            tracksViewChanges={false}>
-            <VehicleMarker vehicle={pin} />
-          </Marker>
-        );
-      })}
-      {clusters.map((cluster, index) => {
-        return (
-          <Marker
-            key={"c_" + index}
-            coordinate={{
-              latitude: cluster.Latitude,
-              longitude: cluster.Longitude,
-            }}
-            title={cluster.nUnits.toString()}
-            description={cluster.idCluster?.toString()}
-            pinColor="yellow"
-          />
-        );
-      })}
-      {stations.map((station, index) => {
-        return (
-          <Marker
-            key={"p_" + index}
-            coordinate={{
-              latitude: station.coordinates.lat,
-              longitude: station.coordinates.lng,
-            }}
-            title="Charger"
-            description={
-              station.availability
-                ? station.availability.statusKnown
-                  ? `${station.availability.available} available`
-                  : "Status unknown"
-                : station.name
-            }
-            tracksViewChanges={false}
-            flat={true}
-            anchor={{x: 0.5, y: 0.5}}
-            calloutAnchor={{x: 0.45, y: 0.25}}>
-            <ChargeStationMarker station={station} />
-            <ChargeStationCallout station={station} />
-          </Marker>
-        );
-      })}
-      <Borders />
-    </MapView>
+    <View
+      style={{backgroundColor: Colors.green, height: "100%", width: "100%"}}
+      onLayout={onContainerLayout}>
+      {isMapReady && (
+        <>
+        <MapView
+          ref={map}
+          style={[{height: "100%", width: "100%"}]}
+          provider={PROVIDER_GOOGLE}
+          initialRegion={initialRegion}
+          onRegionChange={onRegionChange}
+          customMapStyle={mapStyle}
+          showsUserLocation={true}
+          showsMyLocationButton={false}
+          showsTraffic={false}
+          showsIndoors={false}
+          pitchEnabled={false}
+          rotateEnabled={false}>
+          {vehicles.map(pin => {
+            return (
+              <Marker
+                coordinate={{
+                  latitude: pin.coordinates.lat,
+                  longitude: pin.coordinates.lng,
+                }}
+                key={"v_" + pin.id}
+                title={`${pin.licensePlate} (${pin.id})`}
+                description={`${pin.model}, ${pin.charge}%`}
+                tracksViewChanges={false}>
+                <VehicleMarker vehicle={pin} />
+              </Marker>
+            );
+          })}
+          {clusters.map(cluster => {
+            return (
+              <Marker
+                key={"c_" + cluster.idClusterHash}
+                coordinate={{
+                  latitude: cluster.Latitude,
+                  longitude: cluster.Longitude,
+                }}
+                title={cluster.nUnits.toString()}
+                description={cluster.idCluster?.toString()}
+                pinColor="yellow"
+              />
+            );
+          })}
+          {stations.map(station => {
+            return (
+              <Marker
+                key={"p_" + station.milesId}
+                coordinate={{
+                  latitude: station.coordinates.lat,
+                  longitude: station.coordinates.lng,
+                }}
+                title="Charger"
+                description={
+                  station.availability
+                    ? station.availability.statusKnown
+                      ? `${station.availability.available} available`
+                      : "Status unknown"
+                    : station.name
+                }
+                tracksViewChanges={false}
+                flat={true}
+                anchor={{x: 0.5, y: 0.5}}
+                calloutAnchor={{x: 0.45, y: 0.25}}>
+                <ChargeStationMarker station={station} />
+                <ChargeStationCallout station={station} />
+              </Marker>
+            );
+          })}
+          <Borders displayNoParking={filters.showNoParkingZones} />
+        </MapView>
+        <Text>Sache</Text>
+        </>
+      )}
+    </View>
   );
 });
 

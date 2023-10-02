@@ -1,6 +1,6 @@
-import { fetchChargeStationsForRegion } from "./Miles/fetchForRegion";
+import { fetchChargeStationsForRegion, fetchVehiclesForRegion } from "./Miles/fetchForRegion";
 import { VehicleFetchOptions } from "./Miles/fetchVehicles";
-import { parseChargeStations } from "./Miles/parseVehiclesResponse";
+import { parseChargeStations, parseVehicles } from "./Miles/parseVehiclesResponse";
 import { weChargeAvailability } from "./WeCharge/chargeStations";
 import { bswChargeAvailability } from "./BerlinerStadtwerke/chargeStations";
 import {
@@ -9,17 +9,35 @@ import {
 } from "./mergeChargeStationAvailability";
 import { useChargeStations } from "../state/chargestations.state";
 import { useRegion } from "../state/region.state";
+import { Region } from "react-native-maps";
+import { useVehicles } from "../state/vehicles.state";
+import { useClusters } from "../state/clusters.state";
+import { useFilters } from "../state/filters.state";
+import { chargeFilter } from "./Miles/chargeFilter";
+import { Vehicle } from "./Miles/types";
+import { apiCluster } from "./Miles/apiTypes";
 
-// export const fetchVehiclesForRegionUpdateState = async (
-//   region: Region,
-//   options?: Partial<VehicleFetchOptions>,
-// ) => {
-//   const response = await fetchVehiclesForRegion(region, options);
-//   useUpdateVehicles(parseVehicles(response));
-//   if (options?.showChargingStations) {
-//     useUpdateChargeStations(parseChargeStations(response));
-//   }
-// };
+export const fetchVehiclesForRegionUpdateState = async (
+  region: Region
+) => {
+  const filters = useFilters.getState();
+  const parsedVehicles: Vehicle[] = [];
+  const clusters: apiCluster[] = [];
+
+  await Promise.all(filters.engineType.map(async (engineType) => {
+    const options: Partial<VehicleFetchOptions> = {
+      engine: [engineType],
+      maxFuel: chargeFilter(engineType, filters.chargeOverflow)
+    }
+    const response = await fetchVehiclesForRegion(region, options);
+    // todo should automatically refetch clusters
+    parsedVehicles.push(...parseVehicles(response));
+    clusters.push(...response.Data.clusters);
+  }));
+  
+  useVehicles.getState().updateVehicles(parsedVehicles, region);
+  useClusters.getState().setClusters(clusters);
+};
 
 export const fetchChargeStationsCurrentRegionUpdateState = async (
   options?: Partial<VehicleFetchOptions>,
