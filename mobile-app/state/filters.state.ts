@@ -2,37 +2,27 @@ import { create } from "zustand";
 import { VehicleEngine, VehicleSize } from "../lib/Miles/enums";
 
 interface FiltersState {
-  maxCharge: number;
-  setMaxCharge: (maxCharge: number) => void;
+  chargeOverflow: number;
+  setChargeOverflow: (overflow: number) => void;
   engineType: VehicleEngine[];
-  enableEngineType: (engineType: VehicleEngine) => void;
-  disableEngineType: (engineType: VehicleEngine) => void;
+  setEngineType: (engineType: VehicleEngine[]) => void;
   vehicleSize: VehicleSize[];
   enableVehicleSize: (vehicleSize: VehicleSize) => void;
   disableVehicleSize: (vehicleSize: VehicleSize) => void;
   alwaysShowChargingStations: boolean;
   toggleAlwaysShowChargingStations: () => void;
-  setAlwaysShowChargingStations: (alwaysShowChargingStations: boolean) => void;
   showNoParkingZones: boolean;
   toggleShowNoParkingZones: () => void;
-  setShowNoParkingZones: (showNoParkingZones: boolean) => void;
   resetAll: () => void;
 }
 
 export const useFilters = create<FiltersState>(
   (set) => ({
-    maxCharge: 32,
-    setMaxCharge: (maxCharge) => set({ maxCharge }),
+    chargeOverflow: 2,
+    setChargeOverflow: (chargeOverflow) => set({ chargeOverflow }),
 
     engineType: [VehicleEngine.electric],
-    enableEngineType: (engineType) =>
-      set((state) => ({
-        engineType: [...state.engineType, engineType],
-      })),
-    disableEngineType: (engineType) =>
-      set((state) => ({
-        engineType: state.engineType.filter((et) => et !== engineType),
-      })),
+    setEngineType: (engineType) => set({ engineType }),
 
     vehicleSize: [VehicleSize.small, VehicleSize.medium],
     enableVehicleSize: (vehicleSize) =>
@@ -49,22 +39,20 @@ export const useFilters = create<FiltersState>(
       set((state) => ({
         alwaysShowChargingStations: !state.alwaysShowChargingStations,
       })),
-    setAlwaysShowChargingStations: (alwaysShowChargingStations) =>
-      set({ alwaysShowChargingStations }),
 
     showNoParkingZones: false,
     toggleShowNoParkingZones: () =>
       set((state) => ({
         showNoParkingZones: !state.showNoParkingZones,
       })),
-    setShowNoParkingZones: (showNoParkingZones) =>
-      set({ showNoParkingZones }),
 
     resetAll: () =>
       set({
-        maxCharge: 32,
+        chargeOverflow: 2,
         engineType: [VehicleEngine.electric],
         vehicleSize: [VehicleSize.small, VehicleSize.medium],
+        alwaysShowChargingStations: false,
+        showNoParkingZones: false,
       }),
   }),
 );
