@@ -2,15 +2,15 @@ import { fetchVehicles } from "./fetchVehicles";
 import { Region } from "react-native-maps";
 import { apiVehiclesResponse } from "./apiTypes";
 import { VehicleFetchOptions } from "./fetchVehicles";
-import { DEVICE_KEY } from "./config";
 import { VehicleEngine, VehicleSize } from "./enums";
+import { DeviceKey } from "./DeviceKey";
 
 export const fetchVehiclesForRegion = async (
   region: Region,
   options?: Partial<VehicleFetchOptions>,
 ): Promise<apiVehiclesResponse> => {
   return await fetchVehicles({
-    deviceKey: DEVICE_KEY,
+    deviceKey: await DeviceKey.getCurrent(),
     longitude: region.longitude,
     latitude: region.latitude,
     longitudeDelta: region.longitudeDelta,
