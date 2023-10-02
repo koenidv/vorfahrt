@@ -127,18 +127,11 @@ export default async function parseSpritesheet(spritesheetId: string) {
     await fs.promises.mkdir(outDir, { recursive: true });
 
     for (const sprite of parsedSprites) {
-
-        fs.mkdir(parse(join(outDir, sprite.importPath)).dir, { recursive: true }, function (err) {
-            if (err) {
-                throw new Error("failed to create path");
-            }
-            fs.writeFileSync(
-                join(outDir, sprite.importPath),
-                sprite.contents,
-            );
-        });
+        await fs.promises.mkdir(parse(join(outDir, sprite.importPath)).dir, { recursive: true });
+        await fs.promises.writeFile(join(outDir, sprite.importPath), sprite.contents);
     }
-    fs.writeFileSync(join(outDir, "index.ts"), getTypescriptImportMap(spritesheetName, parsedSprites.map(i => ({
+
+    await fs.promises.writeFile(join(outDir, "index.ts"), getTypescriptImportMap(spritesheetName, parsedSprites.map(i => ({
         ...i,
         importPath: "./" + i.importPath,
     }))));

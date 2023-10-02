@@ -85,7 +85,7 @@ async function main() {
     fs.mkdirSync(markersPngOutDir, { recursive: true });
     fs.mkdirSync(markersSvgOutDir, { recursive: true });
 
-    const vehicleMarkers = getVehicleMarkers(backgrounds[2], vehicleTypes, chargestates);
+    const vehicleMarkers = getVehicleMarkers(backgrounds[0], vehicleTypes, chargestates);
 
     for (const [idx, marker] of vehicleMarkers.entries()) {
 
