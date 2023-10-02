@@ -124,6 +124,8 @@ export default async function parseSpritesheet(spritesheetId: string) {
 
     const outDir = join(__dirname, "../spritesheets/", spritesheetName);
 
+    await fs.promises.mkdir(outDir, { recursive: true });
+
     for (const sprite of parsedSprites) {
 
         fs.mkdir(parse(join(outDir, sprite.importPath)).dir, { recursive: true }, function (err) {
