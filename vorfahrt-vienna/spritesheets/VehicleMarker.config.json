@@ -1,0 +1,30 @@
+{
+    "allVehicles": {
+        "background.default": {
+            "electric": true,
+            "electric_plus1": true,
+            "electric_plus2": true,
+            "electric_plus3": true,
+            "electric_plus4": true,
+            "electric_plus5": true,
+            "fuel": true
+        }
+    },
+    "vehicles": {
+        "VW ID.3": {
+            "background.default": {
+                "fuel": false
+            }
+        },
+        "VW Polo": {
+            "background.default": {
+                "electric": false,
+                "electric_plus1": false,
+                "electric_plus2": false,
+                "electric_plus3": false,
+                "electric_plus4": false,
+                "electric_plus5": false
+            }
+        }
+    }
+}

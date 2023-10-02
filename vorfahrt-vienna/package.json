@@ -11,8 +11,11 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.5",
     "@types/node": "^20.6.0",
     "@types/xml2js": "^0.4.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
