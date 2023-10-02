@@ -10,6 +10,7 @@ import { FileInfo } from "./types"
 import { MARKER_SIZE, ORIGINAL_MARKER_SIZE, OUTPUT_SVGS, assetmapOutDir, markerDir, markersPngOutDir, markersSvgOutDir } from "./options";
 import { parseConfig } from "./parseConfig";
 import { checkConfigEntitiesExist } from "./checkConfigEntitiesExist";
+import { mergeSpritesFromConfig } from "./mergeSpritesFromConfig";
 
 const getCombinations = <T>(arrays: T[][]): T[][] => {
     if (arrays.length === 0) return [[]];
@@ -75,9 +76,15 @@ function getVehicleMarkers(background: FileInfo, vehicleTypes: FileInfo[], charg
 
 async function main() {
 
-    const spritesDir = await parseSpritesheet("VehicleMarker.spritesheet.svg");
+    // const spritesDir = await parseSpritesheet("VehicleMarker.spritesheet.svg");
+    const spritesDir = "C:\\Users\\koeni\\Code\\vorfahrt\\vorfahrt-vienna\\spritesheets\\VehicleMarker"
     const config = await parseConfig("VehicleMarker.config.json");
-    await checkConfigEntitiesExist(config, spritesDir);
+    // await checkConfigEntitiesExist(config, spritesDir);
+    console.log(config)
+
+    const merged = mergeSpritesFromConfig(config, spritesDir)
+    console.log(merged.length);
+    console.log(merged[8].toString());
 
     process.exit(0);
 

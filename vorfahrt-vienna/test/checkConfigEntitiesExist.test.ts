@@ -1,4 +1,4 @@
-import { getAllKeys } from "../build/checkConfigEntitesExist";
+import { getAllKeys } from "../build/checkConfigEntitiesExist";
 
 describe("keys from object", () => {
     it("should get all keys", () => {
