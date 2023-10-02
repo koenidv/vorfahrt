@@ -6,21 +6,13 @@
  */
 
 import React from "react";
-import type {PropsWithChildren} from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from "react-native";
+import {SafeAreaView, StatusBar, useColorScheme, View} from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import MapScreen from "./screens/MapScreen";
 import FiltersScreen from "./screens/FiltersScreen";
+import NavigationBar from "./NavigationBar";
 
 export type RootStackParamList = {
   Map: undefined;
@@ -51,9 +43,21 @@ function App(): JSX.Element {
       />
       <View style={{flex: 1}}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Map">
-            <Stack.Screen name="Map" component={MapScreen} options={{headerShown: false}} />
-            <Stack.Screen name="Filters" component={FiltersScreen} options={{}} />
+          <Stack.Navigator
+            initialRouteName="Map"
+            screenOptions={{
+              header: props => <NavigationBar props={props} />,
+            }}>
+            <Stack.Screen
+              name="Map"
+              component={MapScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Filters"
+              component={FiltersScreen}
+              options={{}}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
