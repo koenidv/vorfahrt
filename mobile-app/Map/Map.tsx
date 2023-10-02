@@ -39,6 +39,8 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   const initialRegion = useRegion.getState().current;
 
+  const filters = useFilters();
+
   const [isMapReady, setIsMapReady] = useState(false);
   const onContainerLayout = () => {
     console.log("Map is ready");
@@ -151,7 +153,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
               </Marker>
             );
           })}
-          <Borders />
+          <Borders displayNoParking={filters.showNoParkingZones} />
         </MapView>
         <Text>Sache</Text>
         </>
