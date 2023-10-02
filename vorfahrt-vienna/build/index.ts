@@ -36,66 +36,36 @@ const getFullPaths = (dir: string): FileInfo[] => {
     }));
 };
 
-function getVehicleMarkers(background: FileInfo, vehicleTypes: FileInfo[], vehicleStatuses: FileInfo[], chargestatesCombustion: FileInfo[], chargestatesElectric: FileInfo[]) {
+function getVehicleMarkers(background: FileInfo, vehicleTypes: FileInfo[], chargestates: FileInfo[]) {
 
     let markers: Sprite[] = [];
 
     for (const vehicleType of vehicleTypes) {
 
-        for (const status of vehicleStatuses) {
+        for (const chargeState of chargestates) {
 
-            for (const chargeState of chargestatesCombustion) {
+            const contents = svgstore({
+                svgAttrs: {
+                    width: ORIGINAL_MARKER_SIZE,
+                    height: ORIGINAL_MARKER_SIZE,
+                },
+                cleanSymbols: true,
+            })
+                .add('background', background.contents)
+                .add("type", vehicleType.contents)
+                .add("chargeState", chargeState.contents)
+                .toString()
+                /**
+                 * svgstore insists on using symbols instead of just putting the svgs into the the top level tag...
+                 */
+                .replace(/<symbol\s+id=".*"\s+viewBox="\d+\s+\d+\s+\d+\s+\d+">/g, "").replace(/<\/symbol>/g, "");
 
-                const contents = svgstore({
-                    svgAttrs: {
-                        width: ORIGINAL_MARKER_SIZE,
-                        height: ORIGINAL_MARKER_SIZE,
-                    },
-                    cleanSymbols: true,
-                })
-                    .add('background', background.contents)
-                    .add("type", vehicleType.contents)
-                    .add("status", status.contents)
-                    .add("chargeState", chargeState.contents)
-                    .toString()
-                    /**
-                     * svgstore insists on using symbols instead of just putting the svgs into the the top level tag...
-                     */
-                    .replace(/<symbol\s+id=".*"\s+viewBox="\d+\s+\d+\s+\d+\s+\d+">/g, "").replace(/<\/symbol>/g, "");
-
-                markers.push({
-                    symbolName: (vehicleType.fileNameWithoutExtension + "_" + status.fileNameWithoutExtension + "_" + chargeState.fileNameWithoutExtension).replace(/\s/g, "_").replace(/\./g, "_"),
-                    objPath: [vehicleType.fileNameWithoutExtension, status.fileNameWithoutExtension, chargeState.fileNameWithoutExtension],
-                    importPath: vehicleType.fileNameWithoutExtension + "_" + status.fileNameWithoutExtension + "_" + chargeState.fileNameWithoutExtension + ".svg",
-                    contents,
-                });
-            }
-            for (const chargeState of chargestatesElectric) {
-
-                const contents = svgstore({
-                    svgAttrs: {
-                        width: ORIGINAL_MARKER_SIZE,
-                        height: ORIGINAL_MARKER_SIZE,
-                    },
-                    cleanSymbols: true,
-                })
-                    .add('background', background.contents)
-                    .add("type", vehicleType.contents)
-                    .add("status", status.contents)
-                    .add("chargeState", chargeState.contents)
-                    .toString()
-                    /**
-                     * svgstore insists on using symbols instead of just putting the svgs into the the top level tag...
-                     */
-                    .replace(/<symbol\s+id=".*"\s+viewBox="\d+\s+\d+\s+\d+\s+\d+">/g, "").replace(/<\/symbol>/g, "");
-
-                markers.push({
-                    symbolName: (vehicleType.fileNameWithoutExtension + "_" + status.fileNameWithoutExtension + "_" + chargeState.fileNameWithoutExtension).replace(/\s/g, "_").replace(/\./g, "_"),
-                    objPath: [vehicleType.fileNameWithoutExtension, status.fileNameWithoutExtension, chargeState.fileNameWithoutExtension],
-                    importPath: vehicleType.fileNameWithoutExtension + "_" + status.fileNameWithoutExtension + "_" + chargeState.fileNameWithoutExtension + ".svg",
-                    contents,
-                });
-            }
+            markers.push({
+                symbolName: (vehicleType.fileNameWithoutExtension + "_" + chargeState.fileNameWithoutExtension).replace(/\s/g, "_").replace(/\./g, "_"),
+                objPath: [vehicleType.fileNameWithoutExtension, chargeState.fileNameWithoutExtension],
+                importPath: vehicleType.fileNameWithoutExtension + "_" + chargeState.fileNameWithoutExtension + ".svg",
+                contents,
+            });
         }
     }
     return markers;
@@ -106,17 +76,16 @@ async function main() {
     await parseSpritesheet("VehicleMarker.spritesheet.svg");
 
     const backgrounds = getFullPaths(join(markerDir, "backgrounds/"));
-    const vehicleStatuses = getFullPaths(join(markerDir, "vehicle_status/"));
-    const chargestatesCombustion = getFullPaths(join(markerDir, "chargestates_combustion/"));
-    const chargestatesElectric = getFullPaths(join(markerDir, "chargestates_electric/"));
-    const modifiers = getFullPaths(join(markerDir, "modifiers/"));
+    //const vehicleStatuses = getFullPaths(join(markerDir, "vehicle_status/")); todo ride_status, internal_status
+    const chargestates = getFullPaths(join(markerDir, "chargestates/"));
+    //const modifiers = getFullPaths(join(markerDir, "modifiers/")); // todo modifiers
     const vehicleTypes = getFullPaths(join(markerDir, "vehicle_types/"));
 
     fs.mkdirSync(assetmapOutDir, { recursive: true });
     fs.mkdirSync(markersPngOutDir, { recursive: true });
     fs.mkdirSync(markersSvgOutDir, { recursive: true });
 
-    const vehicleMarkers = getVehicleMarkers(backgrounds[2], vehicleTypes, vehicleStatuses, chargestatesCombustion, chargestatesElectric);
+    const vehicleMarkers = getVehicleMarkers(backgrounds[2], vehicleTypes, chargestates);
 
     for (const [idx, marker] of vehicleMarkers.entries()) {
 
@@ -126,7 +95,7 @@ async function main() {
 
         if (OUTPUT_SVGS) {
             const svgPath = join(markersSvgOutDir, marker.importPath);
-        
+
             fs.writeFileSync(svgPath, marker.contents);
         }
 
@@ -156,51 +125,5 @@ async function main() {
     }))));
 
     console.info("done");
-
-    process.exit(0);
-
-    fs.writeFileSync(join(assetmapOutDir, "VehicleMarker.assetMap.ts"), getVehicleMarkerImportMap(vehicleTypes, chargestatesElectric));
-
-    const markerCombinations = getCombinations([chargestatesElectric, vehicleTypes]);
-
-    markerCombinations.map(async i => {
-
-        const [chargeState, vehicleType] = i;
-
-        const contents = svgstore({
-            svgAttrs: {
-                width: ORIGINAL_MARKER_SIZE,
-                height: ORIGINAL_MARKER_SIZE,
-            },
-            cleanSymbols: true,
-        })
-            .add('background', backgrounds[2].contents)
-            .add("chargeState", chargeState.contents)
-            .add("type", vehicleType.contents);
-
-        const fileName = `${chargeState.fileName}.${vehicleType.fileName}`.replace(/\.svg/g, "");
-
-        const svgPath = join(markersSvgOutDir, fileName) + ".svg";
-        const pngPath = join(markersPngOutDir, fileName) + ".png";
-
-        /**
-         * svgstore insists on using symbols instead of just putting the svgs into the the top level tag...
-         */
-        const contentsWithoutSymbols = contents.toString().replace(/<symbol\s+id=".*"\s+viewBox="\d+\s+\d+\s+\d+\s+\d+">/g, "").replace(/<\/symbol>/g, "");
-
-        fs.writeFileSync(svgPath, contentsWithoutSymbols);
-
-        await new Promise<void>(res => sharp(svgPath)
-            .resize(MARKER_SIZE)
-            .toFormat('png')
-            .toFile(pngPath, (err) => {
-                if (err) {
-                    console.error(`ERROR: failed to rasterize marker: "${svgPath}"`);
-
-                    throw err;
-                }
-                res();
-            }));
-    });
 }
 main();
