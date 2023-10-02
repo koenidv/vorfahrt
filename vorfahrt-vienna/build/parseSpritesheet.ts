@@ -18,6 +18,7 @@ export interface Sprite extends ImportMapItem {
  * ```
  */
 export default async function parseSpritesheet(spritesheetId: string) {
+    console.info(`Parsing spritesheet ${spritesheetId}`);
 
     const spritesheetName = spritesheetId.match(SPRITESHEET_REGEX)?.[1];
 
@@ -136,5 +137,5 @@ export default async function parseSpritesheet(spritesheetId: string) {
         importPath: "./" + i.importPath,
     }))));
 
-    return parsedSprites;
+    return outDir;
 }

@@ -8,6 +8,8 @@ import parseSpritesheet, { Sprite } from "./parseSpritesheet";
 import { getTypescriptImportMap, getVehicleMarkerImportMap } from "./getImportMap"
 import { FileInfo } from "./types"
 import { MARKER_SIZE, ORIGINAL_MARKER_SIZE, OUTPUT_SVGS, assetmapOutDir, markerDir, markersPngOutDir, markersSvgOutDir } from "./options";
+import { parseConfig } from "./parseConfig";
+import { checkConfigEntitiesExist } from "./checkConfigEntitiesExist";
 
 const getCombinations = <T>(arrays: T[][]): T[][] => {
     if (arrays.length === 0) return [[]];
@@ -73,7 +75,13 @@ function getVehicleMarkers(background: FileInfo, vehicleTypes: FileInfo[], charg
 
 async function main() {
 
-    await parseSpritesheet("VehicleMarker.spritesheet.svg");
+    const spritesDir = await parseSpritesheet("VehicleMarker.spritesheet.svg");
+    const config = await parseConfig("VehicleMarker.config.json");
+    await checkConfigEntitiesExist(config, spritesDir);
+
+    process.exit(0);
+
+
 
     const backgrounds = getFullPaths(join(markerDir, "backgrounds/"));
     //const vehicleStatuses = getFullPaths(join(markerDir, "vehicle_status/")); todo ride_status, internal_status

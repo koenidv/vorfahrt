@@ -1,5 +1,6 @@
 import { join } from "path";
 import { spriteSheetDir } from "./options";
+import fs from "fs";
 
 /**
  * Maps the allVehicles config onto each vehicle
@@ -8,9 +9,8 @@ import { spriteSheetDir } from "./options";
  */
 export async function parseConfig(configName: string) {
     const configPath = join(spriteSheetDir, configName);
-    const config = await import(configPath);
+    const config = JSON.parse(await fs.promises.readFile(configPath, "utf8"));
     const allVehiclesConfig = config.allVehicles
-
 
     const vehicles = {}
 

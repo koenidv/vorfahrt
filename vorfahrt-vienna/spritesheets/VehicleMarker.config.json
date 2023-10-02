@@ -1,29 +1,29 @@
 {
     "allVehicles": {
-        "background.default": {
-            "electric": true,
-            "electric_plus1": true,
-            "electric_plus2": true,
-            "electric_plus3": true,
-            "electric_plus4": true,
-            "electric_plus5": true,
-            "fuel": true
+        "backgrounds\\default": {
+            "chargestates\\electric": true,
+            "chargestates\\electric_plus1": true,
+            "chargestates\\electric_plus2": true,
+            "chargestates\\electric_plus3": true,
+            "chargestates\\electric_plus4": true,
+            "chargestates\\electric_plus5": true,
+            "chargestates\\fuel": true
         }
     },
     "vehicles": {
         "VW ID.3": {
-            "background.default": {
-                "fuel": false
+            "backgrounds\\default": {
+                "chargestates\\fuel": false
             }
         },
         "VW Polo": {
-            "background.default": {
-                "electric": false,
-                "electric_plus1": false,
-                "electric_plus2": false,
-                "electric_plus3": false,
-                "electric_plus4": false,
-                "electric_plus5": false
+            "backgrounds\\default": {
+                "chargestates\\electric": false,
+                "chargestates\\electric_plus1": false,
+                "chargestates\\electric_plus2": false,
+                "chargestates\\electric_plus3": false,
+                "chargestates\\electric_plus4": false,
+                "chargestates\\electric_plus5": false
             }
         }
     }
