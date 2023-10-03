@@ -56,6 +56,33 @@
                 "modifiers/discounted": true,
                 "none": true
             }
+        },
+        "backgrounds/internal": {
+            "internal_status/used_internally": true,
+            "internal_status/in_ops": true,
+            "internal_status/in_repair": true,
+            "internal_status/lifecycle": true,
+            "internal_status/decomissioned": true
+        },
+        "backgrounds/in_use": {
+            "ride_status/kmh00_08": true,
+            "ride_status/kmh08_16": true,
+            "ride_status/kmh16_24": true,
+            "ride_status/kmh24_32": true,
+            "ride_status/kmh32_40": true,
+            "ride_status/kmh40_48": true,
+            "ride_status/kmh48_56": true,
+            "ride_status/kmh56_64": true,
+            "ride_status/kmh64_72": true,
+            "ride_status/kmh72_80": true,
+            "ride_status/paused": true,
+            "ride_status/booked": true,
+            "ride_status/booked_for_5": true,
+            "ride_status/booked_for_6": true,
+            "ride_status/booked_for_7": true,
+            "ride_status/booked_for_8": true,
+            "ride_status/booked_for_9": true,
+            "ride_status/car_subscription": true
         }
     },
     "vehicles": {

@@ -6,6 +6,20 @@ takes figma exports of vorfahrt stylesheets (figma sections structured and expor
 
 ## usage examples
 
+### using v0.1.0
+```
+import findIcon from "@koenidv/vorfahrt-vienna";
+
+const tags = [
+  "VW ID.3",
+  "discounted",
+  "electric_plus3"
+];
+const icon = findIcon("png", tags);
+```
+
+for now, please look up possible tags in figma. every included component name is a tag.
+
 ### using [Next.js Local Image Imports](https://nextjs.org/docs/app/building-your-application/optimizing/images#local-images)
 
 
