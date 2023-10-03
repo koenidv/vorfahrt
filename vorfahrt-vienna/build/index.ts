@@ -77,10 +77,10 @@ function getVehicleMarkers(background: FileInfo, vehicleTypes: FileInfo[], charg
 
 async function main() {
 
-    // const spritesDir = await parseSpritesheet("VehicleMarker.spritesheet.svg");
-    const spritesDir = "C:\\Users\\koeni\\Code\\vorfahrt\\vorfahrt-vienna\\spritesheets\\VehicleMarker"
+    const spritesDir = await parseSpritesheet("VehicleMarker.spritesheet.svg");
+    // const spritesDir = "C:\\Users\\koeni\\Code\\vorfahrt\\vorfahrt-vienna\\spritesheets\\VehicleMarker"
     const config = await parseConfig("VehicleMarker.config.json");
-    // await checkConfigEntitiesExist(config, spritesDir);
+    await checkConfigEntitiesExist(config, spritesDir);
 
     const merged = mergeSpritesFromConfig(config, spritesDir)
     

@@ -4,13 +4,58 @@
     },
     "allVehicles": {
         "backgrounds\\default": {
-            "chargestates\\electric": true,
-            "chargestates\\electric_plus1": true,
-            "chargestates\\electric_plus2": true,
-            "chargestates\\electric_plus3": true,
-            "chargestates\\electric_plus4": true,
-            "chargestates\\electric_plus5": true,
-            "chargestates\\fuel": true
+            "chargestates\\electric": {
+                "modifiers\\discounted": {
+                    "modifiers\\charging": true,
+                    "modifiers\\nomodifier": true
+                },
+                "modifiers\\charging": true,
+                "modifiers\\nomodifier": true
+            },
+            "chargestates\\electric_plus1": {
+                "modifiers\\discounted": {
+                    "modifiers\\charging": true,
+                    "modifiers\\nomodifier": true
+                },
+                "modifiers\\charging": true,
+                "modifiers\\nomodifier": true
+            },
+            "chargestates\\electric_plus2": {
+                "modifiers\\discounted": {
+                    "modifiers\\charging": true,
+                    "modifiers\\nomodifier": true
+                },
+                "modifiers\\charging": true,
+                "modifiers\\nomodifier": true
+            },
+            "chargestates\\electric_plus3": {
+                "modifiers\\discounted": {
+                    "modifiers\\charging": true,
+                    "modifiers\\nomodifier": true
+                },
+                "modifiers\\charging": true,
+                "modifiers\\nomodifier": true
+            },
+            "chargestates\\electric_plus4": {
+                "modifiers\\discounted": {
+                    "modifiers\\charging": true,
+                    "modifiers\\nomodifier": true
+                },
+                "modifiers\\charging": true,
+                "modifiers\\nomodifier": true
+            },
+            "chargestates\\electric_plus5": {
+                "modifiers\\discounted": {
+                    "modifiers\\charging": true,
+                    "modifiers\\nomodifier": true
+                },
+                "modifiers\\charging": true,
+                "modifiers\\nomodifier": true
+            },
+            "chargestates\\fuel": {
+                "modifiers\\discounted": true,
+                "modifiers\\nomodifier": true
+            }
         }
     },
     "vehicles": {
