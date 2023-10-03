@@ -23,6 +23,8 @@ export async function parseConfig(configName: string) {
     }
 
     return vehicles;
+
+    // todo enable entities without disabling siblings
 }
 
 /**
