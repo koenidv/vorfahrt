@@ -51,12 +51,15 @@ function symbolNamesToSymbols(exports: exportsType[]) {
  * This function is included in the index.js file, not used during build
  */
 function findIcon(filetype, entities) {
+    console.log(entities)
     const candidates = exports.filter(el => 
         el.filetype === filetype && 
-        entities.every(i => el.entities.map(eli => eli.toLowerCase).includes(i.toLowerCase)));
+        entities.every(i => el.entities.map(eli => eli.toLowerCase()).includes(i.toLowerCase())));
     if (candidates.length === 0) {
+        console.log("no candidates found for", filetype, entities)
         return;
     }
+    console.log(candidates)
     // select the candidate with the least entities → highest % match
     const bestCandidate = candidates.reduce((prev, curr) => prev.entities.length < curr.entities.length ? prev : curr);
     return bestCandidate.symbolName;
