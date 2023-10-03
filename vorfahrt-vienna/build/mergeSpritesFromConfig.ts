@@ -62,7 +62,9 @@ function createSpriteFromConfigObject(key: string, value: any, current: any /*sv
             sprites.push(...createSpriteFromConfigObject(newKey, newValue, createSvgStore(current), spritesDir))
         }
     } else {
-        sprites.push(current)
+        if (value == true) { // loose equality for more flexible config
+            sprites.push(current)
+        }
     }
     return sprites;
 }

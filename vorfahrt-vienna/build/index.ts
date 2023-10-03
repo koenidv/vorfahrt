@@ -84,7 +84,6 @@ async function main() {
 
     const merged = mergeSpritesFromConfig(config, spritesDir)
     console.log(merged.length);
-    console.log(merged[8].toString());
 
     process.exit(0);
 
