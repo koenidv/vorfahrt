@@ -33,10 +33,6 @@ export async function parseConfig(configName: string) {
  * @param obj2 (nested) keys will override obj1
  */
 export function deepMerge(obj1: any, obj2: any): any {
-    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
-        throw new Error("Can only merge objects. Trying to merge" + typeof obj1 + "and" + typeof obj2);
-    }
-
     const result = { ...obj1 };
 
     for (const key in obj2) {
@@ -44,7 +40,8 @@ export function deepMerge(obj1: any, obj2: any): any {
             if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
                 result[key] = deepMerge(obj1[key], obj2[key]);
             } else {
-                result[key] = obj2[key];
+                if (obj2[key] === true && obj1[key]) result[key] = obj1[key];
+                else result[key] = obj2[key];
             }
         }
     }

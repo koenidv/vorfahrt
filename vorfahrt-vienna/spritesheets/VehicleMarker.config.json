@@ -218,6 +218,7 @@
                 "chargestates\\electric_plus4": false,
                 "chargestates\\electric_plus5": false
             }
-        }
+        },
+        "Fake Test Car": true
     }
 }
