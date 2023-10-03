@@ -28,15 +28,6 @@ export function mergeSpritesFromConfig(config: any, spritesDir: string): MergedS
     }
 
     return flattenMarkers(markers);
-
-    // todo remember included entities for naming 
-
-    //         markers.push({
-    //             symbolName: (vehicleType.fileNameWithoutExtension + "_" + chargeState.fileNameWithoutExtension).replace(/\s/g, "_").replace(/\./g, "_"),
-    //             objPath: [vehicleType.fileNameWithoutExtension, chargeState.fileNameWithoutExtension],
-    //             importPath: vehicleType.fileNameWithoutExtension + "_" + chargeState.fileNameWithoutExtension + ".svg",
-    //             contents,
-    //         });
 }
 
 /**
@@ -53,7 +44,7 @@ function createSprite(initial?: MergedSprite): MergedSprite {
         cleanSymbols: true,
     })
     if (initial) {
-        svg.add("inherit", initial.toString())
+        svg.add("inherit", initial.sprite.toString())
     }
     return {
         entities: initial ? [...initial.entities] : [],
