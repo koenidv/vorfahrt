@@ -5,6 +5,7 @@ export const MARKER_SIZE = 120;
 
 export const pngOutDir = join(__dirname, "../dist/png/");
 export const svgOutDir = join(__dirname, "../dist/svg/");
+export const indexOutDir = join(__dirname, "../dist/");
 
 export const markersPngOutDir = join(pngOutDir, "markers/");
 export const markersSvgOutDir = join(svgOutDir, "markers/");
@@ -19,5 +20,5 @@ export const SPRITESHEET_REGEX = /^(.*)\.spritesheet\.svg$/;
 
 export const VALID_TYPESCRIPT_SYMBOL_REGEX = /^[^\d\s][\w$€£¥₹]*$/;
 
-export const OUTPUT_SVGS = true;
+export const OUTPUT_SVGS = false;
 export const OUTPUT_PNGS = true;

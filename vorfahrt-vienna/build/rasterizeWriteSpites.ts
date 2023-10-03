@@ -7,6 +7,7 @@ import cliProgress from "cli-progress";
 
 export type WrittenSprite = {
     entities: string[],
+    filename: string,
     path: string,
     filetype: "png" | "svg",
 }
@@ -18,13 +19,14 @@ export async function rasterizeWriteSprites(sprites: MergedSpriteFlattened[]): P
 
     const writtenSprites: WrittenSprite[] = [];
     for (const [index, sprite] of sprites.entries()) {
-        const filename = sprite.entities.join("_");
+        const filename = sprite.entities.join("_").replace(/[\s\.]/g, "");
 
         if (OUTPUT_SVGS) {
             const svgPath = join(svgOutDir, filename + ".svg");
             await fs.promises.writeFile(svgPath, sprite.contents, "utf8");
             writtenSprites.push({
                 entities: sprite.entities,
+                filename: filename,
                 path: svgPath,
                 filetype: "svg",
             })
@@ -36,6 +38,7 @@ export async function rasterizeWriteSprites(sprites: MergedSpriteFlattened[]): P
                 await writePng(sprite, pngPath);
                 writtenSprites.push({
                     entities: sprite.entities,
+                    filename: filename,
                     path: pngPath,
                     filetype: "png",
                 })

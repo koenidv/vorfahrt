@@ -6,7 +6,7 @@ import * as xml2js from 'xml2js';
 import { SPRITESHEET_REGEX, spriteSheetDir } from "./options";
 
 import { checkObjectPropertiesRecursively } from "./checkObjectPropertiesRecursively"
-import { ImportMapItem, getTypescriptImportMap } from "./getImportMap";
+import { ImportMapItem, getTypescriptImportMap } from "./getImportMapOld";
 
 export interface Sprite extends ImportMapItem {
     contents: string,
