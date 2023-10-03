@@ -112,7 +112,7 @@ export default async function parseSpritesheet(spritesheetId: string) {
                     sprites.push({
                         symbolName: spriteName.replace(/\s/g, "_").replace(/\./g, "_"),
                         objPath: [groupName, spriteName],
-                        importPath: join(groupName, spriteName + ".svg"),
+                        importPath: join(groupName, spriteName.replace(/[\s\.-]/g, "") + ".svg"),
                         contents: spriteContent,
                     });
                 }

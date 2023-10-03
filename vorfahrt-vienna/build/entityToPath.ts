@@ -1,10 +1,11 @@
 import { join } from "path";
 
 export const entityToPath = (entityKey: string, spritesDir) => {
-    if (entityKey.indexOf("\\") === -1 && entityKey.indexOf("/") === -1) {
-        return join(spritesDir, "vehicle_types", entityKey + ".svg")
+    const modified = entityKey.replace(/[\s\.-]/g, "");
+    if (modified.indexOf("\\") === -1 && modified.indexOf("/") === -1) {
+        return join(spritesDir, "vehicle_types", modified + ".svg")
     }
-    return join(spritesDir, entityKey + ".svg")
+    return join(spritesDir, modified + ".svg")
 }
 
 export const entityToSymbolId = (entityKey: string) => {
