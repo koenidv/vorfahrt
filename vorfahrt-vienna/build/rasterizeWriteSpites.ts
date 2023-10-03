@@ -3,6 +3,7 @@ import fs from "fs";
 import { MARKER_SIZE, OUTPUT_PNGS, OUTPUT_SVGS, pngOutDir, svgOutDir } from "./options";
 import sharp from "sharp";
 import { join } from "path";
+import cliProgress from "cli-progress";
 
 export type WrittenSprite = {
     entities: string[],
@@ -11,7 +12,9 @@ export type WrittenSprite = {
 }
 
 export async function rasterizeWriteSprites(sprites: MergedSpriteFlattened[]): Promise<WrittenSprite[]> {
-    makeOutputDirectories();
+    await makeOutputDirectories();
+    const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+    progressBar.start(sprites.length, 0);
 
     const writtenSprites: WrittenSprite[] = [];
     for (const [index, sprite] of sprites.entries()) {
@@ -40,8 +43,11 @@ export async function rasterizeWriteSprites(sprites: MergedSpriteFlattened[]): P
                 console.error(`ERROR: failed to rasterize marker: "${filename}"`)
             }
         }
+
+        progressBar.update(index + 1);
     }
 
+    progressBar.stop();
     return writtenSprites;
 }
 
