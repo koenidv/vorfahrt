@@ -20,3 +20,4 @@ export const SPRITESHEET_REGEX = /^(.*)\.spritesheet\.svg$/;
 export const VALID_TYPESCRIPT_SYMBOL_REGEX = /^[^\d\s][\w$€£¥₹]*$/;
 
 export const OUTPUT_SVGS = false;
+export const OUTPUT_PNGS = true;

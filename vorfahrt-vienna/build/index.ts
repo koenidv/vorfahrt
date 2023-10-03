@@ -11,6 +11,7 @@ import { MARKER_SIZE, ORIGINAL_MARKER_SIZE, OUTPUT_SVGS, assetmapOutDir, markerD
 import { parseConfig } from "./parseConfig";
 import { checkConfigEntitiesExist } from "./checkConfigEntitiesExist";
 import { mergeSpritesFromConfig } from "./mergeSpritesFromConfig";
+import { rasterizeWriteSprites } from "./rasterizeWriteSpites";
 
 const getCombinations = <T>(arrays: T[][]): T[][] => {
     if (arrays.length === 0) return [[]];
@@ -80,10 +81,10 @@ async function main() {
     const spritesDir = "C:\\Users\\koeni\\Code\\vorfahrt\\vorfahrt-vienna\\spritesheets\\VehicleMarker"
     const config = await parseConfig("VehicleMarker.config.json");
     // await checkConfigEntitiesExist(config, spritesDir);
-    console.log(config)
 
     const merged = mergeSpritesFromConfig(config, spritesDir)
-    console.log(merged.length);
+    
+    const writtenSprites = await rasterizeWriteSprites(merged);
 
     process.exit(0);
 
@@ -100,35 +101,6 @@ async function main() {
     fs.mkdirSync(markersSvgOutDir, { recursive: true });
 
     const vehicleMarkers = getVehicleMarkers(backgrounds[0], vehicleTypes, chargestates);
-
-    for (const [idx, marker] of vehicleMarkers.entries()) {
-
-        console.info(`rasterizing marker ${idx}/${vehicleMarkers.length}`);
-
-        const pngPath = join(markersPngOutDir, marker.importPath).replace(".svg", ".png");
-
-        if (OUTPUT_SVGS) {
-            const svgPath = join(markersSvgOutDir, marker.importPath);
-
-            fs.writeFileSync(svgPath, marker.contents);
-        }
-
-        try {
-            await new Promise<void>(res => sharp(Buffer.from(marker.contents, 'utf8'))
-                .resize(MARKER_SIZE)
-                .toFormat('png')
-                .toFile(pngPath, (err) => {
-                    if (err) {
-                        console.error(`ERROR: sharp failed to rasterize marker: "${marker.symbolName}"`);
-
-                        throw err;
-                    }
-                    res();
-                }));
-        } catch (err) {
-            console.error(`ERROR: failed to rasterize marker: "${marker.symbolName}"`)
-        }
-    }
 
     /**
      * TODO: change importPaths for assetMap

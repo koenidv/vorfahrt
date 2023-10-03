@@ -71,7 +71,6 @@ function createSprite(initial?: MergedSprite): MergedSprite {
  */
 function createSpriteFromConfigObject(key: string, value: any, current: MergedSprite, spritesDir: string): MergedSprite[] {
     const sprites: any[] = [];
-    console.log(key)
 
     current.entities.push(entityToSymbolId(key));
     current.sprite.add(key, fs.readFileSync(entityToPath(key, spritesDir)));
