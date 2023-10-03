@@ -1,19 +1,33 @@
-import { entityToPath } from "./entityToPath";
+import { entityToPath, entityToSymbolId } from "./entityToPath";
 import { ORIGINAL_MARKER_SIZE } from "./options";
 import { Sprite } from "./parseSpritesheet";
 import svgstore from "svgstore";
 import fs from "fs";
 
+type MergedSprite = {
+    entities: string[],
+    sprite: any, /*svgstore*/
+}
 
-export function mergeSpritesFromConfig(config: any, spritesDir: string) {
+export type MergedSpriteFlattened = {
+    entities: string[],
+    contents: string,
+}
 
-    let markers: Sprite[] = [];
+/**
+ * Merges sprites from the sprite directory according to the config object
+ * @param config parsed config object. will create one sprite per leaf
+ * @param spritesDir directory of the sprite svgs
+ * @returns array of merged sprites, as svgs contents
+ */
+export function mergeSpritesFromConfig(config: any, spritesDir: string): MergedSpriteFlattened[] {
+    let markers: MergedSprite[] = [];
 
     for (const [key, value] of Object.entries(config)) {
-        markers.push(...createSpriteFromConfigObject(key, value, createSvgStore(), spritesDir));
+        markers.push(...createSpriteFromConfigObject(key, value, createSprite(), spritesDir));
     }
 
-    return removeSymbols(markers);
+    return flattenMarkers(markers);
 
     // todo remember included entities for naming 
 
@@ -30,7 +44,7 @@ export function mergeSpritesFromConfig(config: any, spritesDir: string) {
  * @param initial optional initial svg content
  * @returns svgstore instance
  */
-function createSvgStore(initial?: any) {
+function createSprite(initial?: MergedSprite): MergedSprite {
     const svg = svgstore({
         svgAttrs: {
             width: ORIGINAL_MARKER_SIZE,
@@ -41,7 +55,10 @@ function createSvgStore(initial?: any) {
     if (initial) {
         svg.add("inherit", initial.toString())
     }
-    return svg;
+    return {
+        entities: initial ? [...initial.entities] : [],
+        sprite: svg
+    };
 }
 
 /**
@@ -52,14 +69,15 @@ function createSvgStore(initial?: any) {
  * @param spritesDir assets directory
  * @returns combined sprites
  */
-function createSpriteFromConfigObject(key: string, value: any, current: any /*svgstore*/, spritesDir: string) {
+function createSpriteFromConfigObject(key: string, value: any, current: MergedSprite, spritesDir: string): MergedSprite[] {
     const sprites: any[] = [];
     console.log(key)
 
-    current.add(key, fs.readFileSync(entityToPath(key, spritesDir)));
+    current.entities.push(entityToSymbolId(key));
+    current.sprite.add(key, fs.readFileSync(entityToPath(key, spritesDir)));
     if (typeof value === 'object') {
         for (const [newKey, newValue] of Object.entries(value)) {
-            sprites.push(...createSpriteFromConfigObject(newKey, newValue, createSvgStore(current), spritesDir))
+            sprites.push(...createSpriteFromConfigObject(newKey, newValue, createSprite(current), spritesDir))
         }
     } else {
         if (value == true) { // loose equality for more flexible config
@@ -75,7 +93,9 @@ function createSpriteFromConfigObject(key: string, value: any, current: any /*sv
  * @param sprites svgstore sprites
  * @returns strings of svg content
  */
-function removeSymbols(sprites: any[]) {
-    return sprites.map((sprite: any) =>
-        sprite.toString().replace(/<symbol\s+id=".*"\s+viewBox="\d+\s+\d+\s+\d+\s+\d+">/g, "").replace(/<\/symbol>/g, ""));
+function flattenMarkers(mergedSprites: MergedSprite[]) {
+    return mergedSprites.map((merged: MergedSprite) => ({
+        entities: merged.entities,
+        contents: merged.sprite.toString().replace(/<symbol\s+id=".*"\s+viewBox="\d+\s+\d+\s+\d+\s+\d+">/g, "").replace(/<\/symbol>/g, "")
+    }));
 }
