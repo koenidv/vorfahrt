@@ -50,7 +50,9 @@ function symbolNamesToSymbols(exports: exportsType[]) {
  * This function is included in the index.js file, not used during build
  */
 function findIcon(filetype, entities) {
-    const candidates = exports.filter(el => el.filetype === filetype && entities.every(i => el.entities.includes(i)));
+    const candidates = exports.filter(el => 
+        el.filetype === filetype && 
+        entities.every(i => el.entities.map(eli => eli.toLowerCase).includes(i.toLowerCase)));
     if (candidates.length === 0) {
         return;
     }
