@@ -21,7 +21,7 @@ export function getIndexFile(sprites: WrittenSprite[]) {
 
     for (const sprite of sprites) {
         const symbolName = sprite.filename + "__" + sprite.filetype;
-        importStatements.push(`import ${symbolName} from "${sprite.path.replace(/\\/g, "\\\\")}";`)
+        importStatements.push(`import ${symbolName} from "${sprite.path.replace(indexOutDir, "./").replace(/\\/g, "\\\\")}";`)
         exports.push({
             symbolName,
             entities: sprite.entities,
@@ -46,6 +46,7 @@ function symbolNamesToSymbols(exports: exportsType[]) {
 
 
 // todo: error handling if icon is not found
+// todo generate d.ts file
 /**
  * This function is included in the index.js file, not used during build
  */
