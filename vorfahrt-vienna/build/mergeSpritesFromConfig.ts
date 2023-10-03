@@ -21,6 +21,7 @@ export type MergedSpriteFlattened = {
  * @returns array of merged sprites, as svgs contents
  */
 export function mergeSpritesFromConfig(config: any, spritesDir: string): MergedSpriteFlattened[] {
+    console.info(`Merging sprites from config`)
     let markers: MergedSprite[] = [];
 
     for (const [key, value] of Object.entries(config)) {

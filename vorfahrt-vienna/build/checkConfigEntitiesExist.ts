@@ -2,6 +2,7 @@ import fs from "fs"
 import { entityToPath } from "./entityToPath";
 
 export async function checkConfigEntitiesExist(config: any, spritesDir: string) {
+    console.info(`Verifying that all entities exist in ${spritesDir}`)
     const entities = getAllKeys(config);
     for(const entity of entities) {
         if (entity === "none") continue;

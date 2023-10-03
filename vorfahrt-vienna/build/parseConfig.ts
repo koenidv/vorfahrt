@@ -8,6 +8,8 @@ import fs from "fs";
  * @returns Object of vehicle configs
  */
 export async function parseConfig(configName: string) {
+    console.info(`Reading config from ${configName}`);
+
     const configPath = join(spriteSheetDir, configName);
     const config = JSON.parse(await fs.promises.readFile(configPath, "utf8"));
     const allVehiclesConfig = config.allVehicles

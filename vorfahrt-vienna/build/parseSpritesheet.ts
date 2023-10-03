@@ -45,19 +45,17 @@ export default async function parseSpritesheet(spritesheetId: string) {
             }
             const sheetContainer = result.svg.g.find(i => i["$"].id === parse(spritesheetId).name);
 
-            console.info("spritesheet:", parse(spritesheetId).name);
-
             for (const spriteGroup of sheetContainer.g || []) {
                 const groupName = spriteGroup['$'].id;
                 const groupFolder = join(spritesheetOutDir, groupName);
 
-                console.info("parsing", spriteGroup.g.length, groupName);
+                console.info("Found sprites:", spriteGroup.g.length, groupName, "in", parse(spritesheetId).name);
 
                 for (const sprite of spriteGroup.g || []) {
 
                     const spriteName = sprite['$'].id;
 
-                    console.info("sprite:", spriteName);
+                    console.info("Found sprite:", spriteName);
 
                     const spriteX = sprite.rect?.[0]?.["$"]?.x;
                     const spriteY = sprite.rect?.[0]?.["$"]?.y;
