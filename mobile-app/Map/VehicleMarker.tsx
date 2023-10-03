@@ -1,43 +1,36 @@
 import * as React from "react";
-import {View} from "react-native";
-import Background from "../assets/icons/Marker/background.svg";
-import VehicleMarkerChargestate from "./VehicleMarkerChargestate";
-import VehicleMarkerType from "./VehicleMarkerType";
-import ChargingSymbol from "../assets/icons/Marker/isCharging.svg";
-import DiscountSymbol from "../assets/icons/Marker/isDiscounted.svg";
+import {Image, View} from "react-native";
 import {Vehicle} from "../lib/Miles/types";
-import Id3 from "@koenidv/vorfahrt-vienna/dist/png/markers/VW ID.3_electric_plus1.png";
+import findIcon from "@koenidv/vorfahrt-vienna";
 
 type VehicleMarkerProps = {
   vehicle: Vehicle;
 };
 
 const VehicleMarker = (props: VehicleMarkerProps) => {
+  const tags = [];
+  tags.push(props.vehicle.model)
+  if (props.vehicle.isElectric) {
+    switch (props.vehicle.charge) {
+      case 35: tags.push("electric_plus5"); break;
+      case 34: tags.push("electric_plus4"); break;
+      case 33: tags.push("electric_plus3"); break;
+      case 32: tags.push("electric_plus2"); break;
+      case 31: tags.push("electric_plus1"); break;
+      default: tags.push("electric"); break;
+    }
+  } else tags.push("fuel");
+  if (props.vehicle.isPlugged) tags.push("charging");
+  if (props.vehicle.isDiscounted) tags.push("discounted");
+
+  console.log(tags);
+  const icon = findIcon("png", tags);
+
   return (
     <View>
-      <Background style={{position: "absolute"}} width={40} height={40} />
-      <VehicleMarkerChargestate
-        isElectric={props.vehicle.isElectric}
-        chargeState={props.vehicle.charge}
-      />
-      <VehicleMarkerType type={props.vehicle.model} />
-      {props.vehicle.isPlugged && (
-        <ChargingSymbol style={{position: "absolute"}} width={40} height={40} />
-      )}
-      {props.vehicle.isDiscounted && (
-        <DiscountSymbol style={{position: "absolute"}} width={40} height={40} />
-      )}
-      <img src={vehicleToImageFileName()} style={{position: "absolute"}} width={40} height={40} />
+      <Image source={icon} style={{position: "absolute", width: 40, height: 40}} />
     </View>
   );
 };
-
-function vehicleToImageFileName(vehicle: Vehicle): string {
-  const markers = 
-
-
-
-  return ""
-}
 
 export default VehicleMarker;
