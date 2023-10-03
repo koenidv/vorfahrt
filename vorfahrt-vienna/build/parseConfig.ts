@@ -23,8 +23,6 @@ export async function parseConfig(configName: string) {
     }
 
     return vehicles;
-
-    // todo support "none" for entity node
 }
 
 /**

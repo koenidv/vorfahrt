@@ -4,6 +4,7 @@ import { entityToPath } from "./entityToPath";
 export async function checkConfigEntitiesExist(config: any, spritesDir: string) {
     const entities = getAllKeys(config);
     for(const entity of entities) {
+        if (entity === "none") continue;
         const exists = fs.existsSync(entityToPath(entity, spritesDir));
         if (!exists) {
             throw Error(`Entity "${entityToPath(entity, spritesDir)}" does not exist in spritesheet directory`);

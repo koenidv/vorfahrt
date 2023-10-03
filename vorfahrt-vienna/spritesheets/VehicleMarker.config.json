@@ -7,54 +7,54 @@
             "chargestates\\electric": {
                 "modifiers\\discounted": {
                     "modifiers\\charging": true,
-                    "modifiers\\nomodifier": true
+                    "none": true
                 },
                 "modifiers\\charging": true,
-                "modifiers\\nomodifier": true
+                "none": true
             },
             "chargestates\\electric_plus1": {
                 "modifiers\\discounted": {
                     "modifiers\\charging": true,
-                    "modifiers\\nomodifier": true
+                    "none": true
                 },
                 "modifiers\\charging": true,
-                "modifiers\\nomodifier": true
+                "none": true
             },
             "chargestates\\electric_plus2": {
                 "modifiers\\discounted": {
                     "modifiers\\charging": true,
-                    "modifiers\\nomodifier": true
+                    "none": true
                 },
                 "modifiers\\charging": true,
-                "modifiers\\nomodifier": true
+                "none": true
             },
             "chargestates\\electric_plus3": {
                 "modifiers\\discounted": {
                     "modifiers\\charging": true,
-                    "modifiers\\nomodifier": true
+                    "none": true
                 },
                 "modifiers\\charging": true,
-                "modifiers\\nomodifier": true
+                "none": true
             },
             "chargestates\\electric_plus4": {
                 "modifiers\\discounted": {
                     "modifiers\\charging": true,
-                    "modifiers\\nomodifier": true
+                    "none": true
                 },
                 "modifiers\\charging": true,
-                "modifiers\\nomodifier": true
+                "none": true
             },
             "chargestates\\electric_plus5": {
                 "modifiers\\discounted": {
                     "modifiers\\charging": true,
-                    "modifiers\\nomodifier": true
+                    "none": true
                 },
                 "modifiers\\charging": true,
-                "modifiers\\nomodifier": true
+                "none": true
             },
             "chargestates\\fuel": {
                 "modifiers\\discounted": true,
-                "modifiers\\nomodifier": true
+                "none": true
             }
         }
     },

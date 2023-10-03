@@ -54,23 +54,25 @@ function createSprite(initial?: MergedSprite): MergedSprite {
 
 /**
  * Recursively creates sprites from a config object
- * @param key entity name
- * @param value contained entities
+ * @param entity entity name (object key)
+ * @param children contained entities (object value)
  * @param current current state of the sprite
  * @param spritesDir assets directory
  * @returns combined sprites
  */
-function createSpriteFromConfigObject(key: string, value: any, current: MergedSprite, spritesDir: string): MergedSprite[] {
+function createSpriteFromConfigObject(entity: string, children: any, current: MergedSprite, spritesDir: string): MergedSprite[] {
     const sprites: any[] = [];
 
-    current.entities.push(entityToSymbolId(key));
-    current.sprite.add(key, fs.readFileSync(entityToPath(key, spritesDir)));
-    if (typeof value === 'object') {
-        for (const [newKey, newValue] of Object.entries(value)) {
+    if (entity !== "none") {
+        current.entities.push(entityToSymbolId(entity));
+        current.sprite.add(entity, fs.readFileSync(entityToPath(entity, spritesDir)));
+    }
+    if (typeof children === 'object') {
+        for (const [newKey, newValue] of Object.entries(children)) {
             sprites.push(...createSpriteFromConfigObject(newKey, newValue, createSprite(current), spritesDir))
         }
     } else {
-        if (value == true) { // loose equality for more flexible config
+        if (children == true) { // loose equality for more flexible config
             sprites.push(current)
         }
     }
