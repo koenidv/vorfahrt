@@ -6,10 +6,11 @@ import PreferencesIcon from "../assets/icons/preferences.svg";
 import ChargeIcon from "../assets/icons/charge.svg";
 import LottieView from "lottie-react-native";
 import {fetchChargeStationsCurrentRegionUpdateState} from "../lib/fetchRegionUpdateState";
-import { MapMethods } from "../Map/Map";
-import { useVehicles } from "../state/vehicles.state";
-import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../App";
+import {MapMethods} from "../Map/Map";
+import {useVehicles} from "../state/vehicles.state";
+import {useNavigation} from "@react-navigation/native";
+import {RootStackParamList} from "../App";
+import {useFilters} from "../state/filters.state";
 
 export interface ButtonBarProps {
   mapRef: RefObject<MapMethods>;
@@ -18,6 +19,7 @@ export interface ButtonBarProps {
 const ButtonBar = (props: ButtonBarProps) => {
   const [stationsLoading, setStationsLoading] = useState(false);
   const navigation = useNavigation() as any; // TODO: Fix type
+  const filters = useFilters();
 
   return (
     <View style={styles.container}>
@@ -33,23 +35,25 @@ const ButtonBar = (props: ButtonBarProps) => {
         }}>
         <RelocateIcon width={30} height={30} />
       </CircularButton>
-      <CircularButton
-        onPress={async () => {
-          setStationsLoading(true);
-          await fetchChargeStationsCurrentRegionUpdateState();
-          setStationsLoading(false);
-        }}>
-        {stationsLoading ? (
-          <LottieView
-            source={require("../assets/icons/loading.json")}
-            autoPlay
-            loop
-            style={{width: 30, height: 30}}
-          />
-        ) : (
-          <ChargeIcon width={30} height={30} />
-        )}
-      </CircularButton>
+      {!filters.alwaysShowChargingStations && (
+        <CircularButton
+          onPress={async () => {
+            setStationsLoading(true);
+            await fetchChargeStationsCurrentRegionUpdateState();
+            setStationsLoading(false);
+          }}>
+          {stationsLoading ? (
+            <LottieView
+              source={require("../assets/icons/loading.json")}
+              autoPlay
+              loop
+              style={{width: 30, height: 30}}
+            />
+          ) : (
+            <ChargeIcon width={30} height={30} />
+          )}
+        </CircularButton>
+      )}
     </View>
   );
 };
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
     bottom: 80,
     right: 20,
     gap: 20,
-  }
+  },
 });
 
 export default ButtonBar;
