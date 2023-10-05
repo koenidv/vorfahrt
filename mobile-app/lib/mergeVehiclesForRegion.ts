@@ -1,5 +1,6 @@
 import { Region } from "react-native-maps";
 import { Vehicle } from "./Miles/types";
+import { unionBy } from "lodash";
 
 export const mergeVehiclesForRegion = (currentVehicles: Vehicle[], newVehicles: Vehicle[], region: Region): Vehicle[] => {
 
@@ -17,9 +18,9 @@ export const mergeVehiclesForRegion = (currentVehicles: Vehicle[], newVehicles: 
         return !remove;
     });
 
-    return [
+    return unionBy([
         ...vehicles,
         ...newVehicles,
-    ];
+    ]);
 
 }
