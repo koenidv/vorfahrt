@@ -83,13 +83,14 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   return (
     <View
-      style={{backgroundColor: Colors.green, height: "100%", width: "100%"}}
+      style={{backgroundColor: "#000", height: "100%", width: "100%"}}
       onLayout={onContainerLayout}>
       {isMapReady && (
         <>
         <MapView
           ref={map}
           style={[{height: "100%", width: "100%"}]}
+          loadingBackgroundColor="#000"
           provider={PROVIDER_GOOGLE}
           initialRegion={initialRegion}
           onRegionChange={onRegionChange}
