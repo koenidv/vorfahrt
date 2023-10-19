@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Image, View} from "react-native";
-import {Vehicle} from "../lib/Miles/types";
+import {Vehicle} from "../../lib/Miles/types";
 import findIcon from "@koenidv/vorfahrt-vienna";
 
 type VehicleMarkerProps = {

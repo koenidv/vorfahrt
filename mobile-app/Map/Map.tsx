@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import VehicleMarker from "./VehicleMarker";
+import VehicleMarker from "./VehicleMarker/VehicleMarker";
 import ChargeStationMarker from "./ChargeStation/ChargeStationMarker";
 import Borders from "./Borders";
 import {debounce} from "lodash";
@@ -24,6 +24,7 @@ import {
 import {useFilters} from "../state/filters.state";
 import {Text, View} from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
+import VehicleCallout from "./VehicleMarker/VehicleCallout";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -111,6 +112,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                 description={`${pin.model}, ${pin.charge}%`}
                 tracksViewChanges={false}>
                 <VehicleMarker vehicle={pin} />
+                <VehicleCallout vehicle={pin} />
               </Marker>
             );
           })}
