@@ -23,7 +23,6 @@ const VehicleMarker = (props: VehicleMarkerProps) => {
   if (props.vehicle.isPlugged) tags.push("charging");
   if (props.vehicle.isDiscounted) tags.push("discounted");
 
-  console.log(tags);
   const icon = findIcon("png", tags);
 
   return (
