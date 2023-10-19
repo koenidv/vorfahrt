@@ -25,6 +25,7 @@ import {useFilters} from "../state/filters.state";
 import {Text, View} from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import VehicleCallout from "./VehicleMarker/VehicleCallout";
+import { useAppState } from "../state/app.state";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -37,6 +38,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   const vehicles = useVehicles(state => state.vehicles);
   const stations = useChargeStations(state => state.stations);
+  const appState = useAppState();
 
   const initialRegion = useRegion.getState().current;
 
@@ -108,6 +110,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                   latitude: pin.coordinates.lat,
                   longitude: pin.coordinates.lng,
                 }}
+                onPress={() => {appState.setSelectedVehicleId(pin.id)}}
                 key={"v_" + pin.id}
                 title={`${pin.licensePlate} (${pin.id})`}
                 description={`${pin.model}, ${pin.charge}%`}

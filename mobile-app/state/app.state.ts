@@ -6,8 +6,8 @@ import { Region } from "react-native-maps";
 interface VehiclesState {
     fetching: boolean;
     setFetching: (fetching: boolean) => void;
-    selectedVehicleId: string | undefined;
-    setSelectedVehicleId: (id: string) => void;
+    selectedVehicleId: number | undefined;
+    setSelectedVehicleId: (id: number | undefined) => void;
 }
 
 export const useAppState = create<VehiclesState>(
