@@ -1,10 +1,10 @@
 import {StyleSheet, View} from "react-native";
-import {ChargeStation, Vehicle} from "../../lib/Miles/types";
+import {Vehicle} from "../../lib/Miles/types";
 import {Callout} from "react-native-maps";
 import ShareIcon from "../../assets/icons/share.svg";
 import NavigatePedestrianIcon from "../../assets/icons/navigate_pedestrian.svg";
 import {Text, TouchableRipple} from "react-native-paper";
-import { shareLocation } from "../../lib/MapUtils";
+import { shareLocation } from "../../lib/mapUtils";
 
 export interface Props {
   vehicle: Vehicle;

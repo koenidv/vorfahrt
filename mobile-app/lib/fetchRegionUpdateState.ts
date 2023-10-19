@@ -16,6 +16,8 @@ import { useFilters } from "../state/filters.state";
 import { chargeFilter } from "./Miles/chargeFilter";
 import { Vehicle } from "./Miles/types";
 import { apiCluster } from "./Miles/apiTypes";
+import { DeviceKey } from "./Miles/DeviceKey";
+import { useAppState } from "../state/app.state";
 
 export const fetchVehiclesForRegionUpdateState = async (
   region: Region
@@ -23,6 +25,11 @@ export const fetchVehiclesForRegionUpdateState = async (
   const filters = useFilters.getState();
   const parsedVehicles: Vehicle[] = [];
   const clusters: apiCluster[] = [];
+  const appState = useAppState.getState();
+  appState.setFetching(true);
+
+  // make sure we have a devicekey to avoid creating multiple at once
+  await DeviceKey.getCurrent();
 
   await Promise.all(filters.engineType.map(async (engineType) => {
     const options: Partial<VehicleFetchOptions> = {
@@ -37,11 +44,16 @@ export const fetchVehiclesForRegionUpdateState = async (
   
   useVehicles.getState().updateVehicles(parsedVehicles, region);
   useClusters.getState().setClusters(clusters);
+
+  appState.setFetching(false);
 };
 
 export const fetchChargeStationsCurrentRegionUpdateState = async (
   options?: Partial<VehicleFetchOptions>,
 ) => {
+  const appState = useAppState.getState();
+  appState.setFetching(true);
+
   const region = useRegion.getState().current;
   const [stationsRaw, bsrAvailabilities, weAvailabilities] = await Promise.all([
     fetchChargeStationsForRegion(region, options),
@@ -63,4 +75,6 @@ export const fetchChargeStationsCurrentRegionUpdateState = async (
   );
 
   useChargeStations.getState().updateStations(merged);
+  
+  appState.setFetching(false);
 };
