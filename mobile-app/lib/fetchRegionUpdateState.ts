@@ -31,9 +31,11 @@ export const fetchVehiclesForRegionUpdateState = async (
   // make sure we have a devicekey to avoid creating multiple at once
   await DeviceKey.getCurrent();
 
+  // query each engine type separately to avoid a few clusters
   await Promise.all(filters.engineType.map(async (engineType) => {
     const options: Partial<VehicleFetchOptions> = {
       engine: [engineType],
+      size: filters.vehicleSize,
       maxFuel: chargeFilter(engineType, filters.chargeOverflow)
     }
     const response = await fetchVehiclesForRegion(region, options);

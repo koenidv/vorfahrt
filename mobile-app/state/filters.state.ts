@@ -7,8 +7,7 @@ interface FiltersState {
   engineType: VehicleEngine[];
   setEngineType: (engineType: VehicleEngine[]) => void;
   vehicleSize: VehicleSize[];
-  enableVehicleSize: (vehicleSize: VehicleSize) => void;
-  disableVehicleSize: (vehicleSize: VehicleSize) => void;
+  setVehicleSize: (vehicleSize: VehicleSize[]) => void;
   alwaysShowChargingStations: boolean;
   toggleAlwaysShowChargingStations: () => void;
   showNoParkingZones: boolean;
@@ -25,14 +24,7 @@ export const useFilters = create<FiltersState>(
     setEngineType: (engineType) => set({ engineType }),
 
     vehicleSize: [VehicleSize.small, VehicleSize.medium],
-    enableVehicleSize: (vehicleSize) =>
-      set((state) => ({
-        vehicleSize: [...state.vehicleSize, vehicleSize],
-      })),
-    disableVehicleSize: (vehicleSize) =>
-      set((state) => ({
-        vehicleSize: state.vehicleSize.filter((vs) => vs !== vehicleSize),
-      })),
+    setVehicleSize: (vehicleSize) => set({ vehicleSize }),
 
     alwaysShowChargingStations: false,
     toggleAlwaysShowChargingStations: () =>
