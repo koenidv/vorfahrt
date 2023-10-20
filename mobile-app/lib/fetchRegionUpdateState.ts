@@ -26,7 +26,7 @@ export const fetchVehiclesForRegionUpdateState = async (
   const parsedVehicles: Vehicle[] = [];
   const clusters: apiCluster[] = [];
   const appState = useAppState.getState();
-  appState.setFetching(true);
+  appState.startedFetching();
 
   // make sure we have a devicekey to avoid creating multiple at once
   await DeviceKey.getCurrent();
@@ -47,14 +47,14 @@ export const fetchVehiclesForRegionUpdateState = async (
   useVehicles.getState().updateVehicles(parsedVehicles, region);
   useClusters.getState().setClusters(clusters);
 
-  appState.setFetching(false);
+  appState.completedFetching();
 };
 
 export const fetchChargeStationsCurrentRegionUpdateState = async (
   options?: Partial<VehicleFetchOptions>,
 ) => {
   const appState = useAppState.getState();
-  appState.setFetching(true);
+  appState.startedFetching();
 
   const region = useRegion.getState().current;
   const [stationsRaw, bsrAvailabilities, weAvailabilities] = await Promise.all([
@@ -78,5 +78,5 @@ export const fetchChargeStationsCurrentRegionUpdateState = async (
 
   useChargeStations.getState().updateStations(merged);
   
-  appState.setFetching(false);
+  appState.completedFetching();
 };

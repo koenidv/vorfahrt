@@ -45,7 +45,7 @@ const MapScreen = () => {
       ) : (
         <ButtonBar mapRef={mapRef} />
       )}
-      {appState.fetching && (
+      {appState.fetching !== 0 && (
         <View style={{position: "absolute", top: 0, left: 0, right: 0}}>
           <ProgressBar indeterminate={true} color="white" />
         </View>
