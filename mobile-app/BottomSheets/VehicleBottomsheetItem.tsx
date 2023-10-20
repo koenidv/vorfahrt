@@ -1,11 +1,11 @@
-import {StyleSheet, View} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 import {Vehicle} from "../lib/Miles/types";
 import ShareIcon from "../assets/icons/share.svg";
 import NavigatePedestrianIcon from "../assets/icons/navigate_pedestrian.svg";
 import {Text, TouchableRipple} from "react-native-paper";
 import {Travelmodes, shareLocation, startNavigation} from "../lib/mapUtils";
-import { BottomSheetItem } from "./BottomSheetItem";
-import { AppStyles } from "../Map/styles";
+import {BottomSheetItem} from "./BottomSheetItem";
+import {AppStyles} from "../Map/styles";
 
 interface VehicleBottomSheetItemProps {
   vehicle: Vehicle;
@@ -14,11 +14,17 @@ interface VehicleBottomSheetItemProps {
 const VehicleBottomsheetItem = (props: VehicleBottomSheetItemProps) => {
   return (
     <BottomSheetItem>
-      <View style={styles.details}>
-        <Text variant="titleSmall">{props.vehicle.licensePlate}</Text>
-        <Text variant="bodyMedium">
-          {props.vehicle.charge}% ({props.vehicle.range})
-        </Text>
+      <View style={styles.row}>
+        <View style={styles.details}>
+          <Text variant="titleSmall">{props.vehicle.licensePlate}</Text>
+          <Text variant="bodyMedium">
+            {props.vehicle.charge}% ({props.vehicle.range})
+          </Text>
+        </View>
+        <Image
+          source={{uri: props.vehicle.image}}
+          style={{height: "100%", width: 100, resizeMode: "contain"}}
+        />
       </View>
       <View style={styles.actions}>
         <TouchableRipple
@@ -59,6 +65,13 @@ const VehicleBottomsheetItem = (props: VehicleBottomSheetItemProps) => {
 };
 
 const styles = StyleSheet.create({
+  row: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    gap: 12,
+  },
   details: {
     display: "flex",
     flexDirection: "column",
