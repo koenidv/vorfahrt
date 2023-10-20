@@ -113,8 +113,8 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                 }}
                 onPress={() => {appState.setSelectedVehicle(pin)}}
                 key={"v_" + pin.id}
-                tracksViewChanges={false}>
-                <VehicleMarker vehicle={pin} />
+                tracksViewChanges={appState.selectedVehicle?.id === pin.id}>
+                <VehicleMarker vehicle={pin} isSelected={appState.selectedVehicle?.id === pin.id} />
               </Marker>
             );
           })}

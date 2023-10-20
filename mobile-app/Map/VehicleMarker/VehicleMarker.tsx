@@ -5,6 +5,7 @@ import findIcon from "@koenidv/vorfahrt-vienna";
 
 type VehicleMarkerProps = {
   vehicle: Vehicle;
+  isSelected: boolean;
 };
 
 const VehicleMarker = (props: VehicleMarkerProps) => {
@@ -22,6 +23,7 @@ const VehicleMarker = (props: VehicleMarkerProps) => {
   } else tags.push("fuel");
   if (props.vehicle.isPlugged) tags.push("charging");
   if (props.vehicle.isDiscounted) tags.push("discounted");
+  if (props.isSelected) tags.push("selected");
 
   const icon = findIcon("png", tags);
 
