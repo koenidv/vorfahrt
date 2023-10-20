@@ -2,8 +2,9 @@ import {Image, StyleSheet, View} from "react-native";
 import {Vehicle} from "../lib/Miles/types";
 import ShareIcon from "../assets/icons/share.svg";
 import NavigatePedestrianIcon from "../assets/icons/navigate_pedestrian.svg";
+import MilesMIcon from "../assets/icons/miles_M.svg";
 import {Text, TouchableRipple} from "react-native-paper";
-import {Travelmodes, shareLocation, startNavigation} from "../lib/mapUtils";
+import {Travelmodes, openMilesApp, shareLocation, startNavigation} from "../lib/mapUtils";
 import {BottomSheetItem} from "./BottomSheetItem";
 import {AppStyles} from "../Map/styles";
 
@@ -52,10 +53,10 @@ const VehicleBottomsheetItem = (props: VehicleBottomSheetItemProps) => {
           </View>
         </TouchableRipple>
         <TouchableRipple
-          onPress={() => shareLocation(props.vehicle.coordinates)}
+          onPress={() => openMilesApp()}
           style={AppStyles.actionbuttoncontainer}>
           <View style={AppStyles.actionbutton}>
-            <NavigatePedestrianIcon width={20} height={20} />
+            <MilesMIcon width={20} height={20} />
             <Text variant="labelMedium">Open Miles</Text>
           </View>
         </TouchableRipple>
