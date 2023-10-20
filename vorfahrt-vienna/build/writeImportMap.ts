@@ -57,10 +57,9 @@ function findIcon(filetype, entities) {
         el.filetype === filetype && 
         entities.every(i => el.entities.map(eli => eli.toLowerCase()).includes(i.toLowerCase())));
     if (candidates.length === 0) {
-        console.log("no candidates found for", filetype, entities)
+        console.error("vorfahrt/vienna", "no candidates found for", filetype, entities)
         return;
     }
-    console.log(candidates)
     // select the candidate with the least entities → highest % match
     const bestCandidate = candidates.reduce((prev, curr) => prev.entities.length < curr.entities.length ? prev : curr);
     return bestCandidate.symbolName;
