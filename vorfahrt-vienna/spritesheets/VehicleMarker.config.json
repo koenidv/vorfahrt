@@ -10,6 +10,14 @@
                     "none": true
                 },
                 "modifiers/charging": true,
+                "modifiers/selected": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "none": true
+                },
                 "none": true
             },
             "chargestates/electric_plus1": {
@@ -18,6 +26,14 @@
                     "none": true
                 },
                 "modifiers/charging": true,
+                "modifiers/selected": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "none": true
+                },
                 "none": true
             },
             "chargestates/electric_plus2": {
@@ -26,6 +42,14 @@
                     "none": true
                 },
                 "modifiers/charging": true,
+                "modifiers/selected": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "none": true
+                },
                 "none": true
             },
             "chargestates/electric_plus3": {
@@ -34,6 +58,14 @@
                     "none": true
                 },
                 "modifiers/charging": true,
+                "modifiers/selected": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "none": true
+                },
                 "none": true
             },
             "chargestates/electric_plus4": {
@@ -42,6 +74,14 @@
                     "none": true
                 },
                 "modifiers/charging": true,
+                "modifiers/selected": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "none": true
+                },
                 "none": true
             },
             "chargestates/electric_plus5": {
@@ -50,10 +90,22 @@
                     "none": true
                 },
                 "modifiers/charging": true,
+                "modifiers/selected": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "none": true
+                },
                 "none": true
             },
             "chargestates/fuel": {
                 "modifiers/discounted": true,
+                "modifiers/selected": {
+                    "modifiers/charging": true,
+                    "none": true
+                },
                 "none": true
             }
         },
