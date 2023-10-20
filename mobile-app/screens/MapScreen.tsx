@@ -5,7 +5,9 @@ import {Colors} from "react-native/Libraries/NewAppScreen";
 import {useRef} from "react";
 import {ProgressBar} from "react-native-paper";
 import {useAppState} from "../state/app.state";
-import VehicleBottomsheet from "../Map/VehicleBottomsheet";
+import VehicleBottomsheetItem from "../BottomSheets/VehicleBottomsheetItem";
+import {BottomSheetContainer} from "../BottomSheets/BottomSheetContainer";
+import ChargeStationBottomsheetItem from "../BottomSheets/ChargeStationBottomsheetItem";
 
 const MapScreen = () => {
   const mapRef = useRef<MapMethods>(null);
@@ -21,7 +23,14 @@ const MapScreen = () => {
       }}>
       <Map ref={mapRef} />
       {appState.selectedVehicle ? (
-        <VehicleBottomsheet vehicle={appState.selectedVehicle} />
+        <BottomSheetContainer>
+          <VehicleBottomsheetItem vehicle={appState.selectedVehicle} />
+          {appState.selectedChargeStation && (
+            <ChargeStationBottomsheetItem
+              station={appState.selectedChargeStation}
+            />
+          )}
+        </BottomSheetContainer>
       ) : (
         <ButtonBar mapRef={mapRef} />
       )}
