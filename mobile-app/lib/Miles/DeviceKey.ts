@@ -1,9 +1,9 @@
 //@ts-ignore react-native-randombytes is not typed; just one function returning a number
 import { randomBytes } from "react-native-randombytes";
 import { BASE_URL } from './config';
+import { useDeviceKey } from "../../state/devicekey.state";
 
 export class DeviceKey {
-    private static deviceKey: string;
 
     private constructor() { }
 
@@ -11,12 +11,14 @@ export class DeviceKey {
      * Retrieves the current deviceKey or generates a new one
      * @returns enabled deviceKey for Miles API
      */
-    // fixme should only update once a day or so
     public static async getCurrent() {
-        if (!this.deviceKey) {
-            this.deviceKey = await this.generateDeviceKey();
+        const state = useDeviceKey.getState();
+        if (state.shouldBeUpdated()) {
+            const newkey = await this.generateDeviceKey();
+            state.setDeviceKey(newkey);
+            return newkey;
         }
-        return this.deviceKey;
+        return state.deviceKey;
     }
 
     /**
@@ -30,7 +32,7 @@ export class DeviceKey {
         await this.fetchUserHello(key);
         return key;
     }
-    
+
     /**
      * Call Miles' UserHello enpoint to enable key
      * @param key any deviceKey, for Android ID 64bit hex string

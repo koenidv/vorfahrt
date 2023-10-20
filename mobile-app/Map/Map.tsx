@@ -55,7 +55,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   const handleFetchVehicles = async () => {
     fetchVehiclesForRegionUpdateState(useRegion.getState().current);
-    if (useFilters.getState().alwaysShowChargingStations === true) {
+    if (filters.alwaysShowChargingStations === true) {
       fetchChargeStationsCurrentRegionUpdateState(useRegion.getState().current);
     }
   };

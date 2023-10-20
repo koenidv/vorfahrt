@@ -1,7 +1,4 @@
 import { create } from "zustand";
-import { type Vehicle } from "../lib/Miles/types";
-import { Region } from "react-native-maps";
-import { mergeVehiclesForRegion } from "../lib/mergeVehiclesForRegion";
 import { apiCluster } from "../lib/Miles/apiTypes";
 
 interface VehiclesState {
