@@ -23,15 +23,22 @@ const MapScreen = () => {
         backgroundColor: Colors.black,
       }}>
       <Map ref={mapRef} />
-      {appState.selectedVehicle ? (
+      {appState.selectedVehicle || appState.selectedChargeStation ? (
         <BottomSheetContainer>
-          <VehicleBottomsheetItem vehicle={appState.selectedVehicle} />
+          {appState.selectedVehicle && (
+            <VehicleBottomsheetItem vehicle={appState.selectedVehicle} />
+          )}
           {appState.selectedChargeStation && (
             <ChargeStationBottomsheetItem
               station={appState.selectedChargeStation}
             />
           )}
-          <View style={{alignSelf: "flex-end", paddingBottom: 8, paddingHorizontal: 12}}>
+          <View
+            style={{
+              alignSelf: "flex-end",
+              paddingBottom: 8,
+              paddingHorizontal: 12,
+            }}>
             <FetchChargingStationsButton />
           </View>
         </BottomSheetContainer>
