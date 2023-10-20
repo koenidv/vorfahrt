@@ -4,17 +4,17 @@ import { mergeVehiclesForRegion } from "../lib/mergeVehiclesForRegion";
 import { Region } from "react-native-maps";
 
 interface VehiclesState {
-    fetching: boolean;
+    fetching: boolean; // fixme this should be the # of running tasks / otherwise bug if one task finishes before another
     setFetching: (fetching: boolean) => void;
-    selectedVehicleId: number | undefined;
-    setSelectedVehicleId: (id: number | undefined) => void;
+    selectedVehicle: Vehicle | undefined;
+    setSelectedVehicle: (id: Vehicle | undefined) => void;
 }
 
 export const useAppState = create<VehiclesState>(
   (set) => ({
     fetching: false,
     setFetching: (fetching) => set({ fetching }),
-    selectedVehicleId: undefined,
-    setSelectedVehicleId: (id) => set({ selectedVehicleId: id }),
+    selectedVehicle: undefined,
+    setSelectedVehicle: (selectedVehicle: Vehicle | undefined) => set({ selectedVehicle }),
   }),
 );

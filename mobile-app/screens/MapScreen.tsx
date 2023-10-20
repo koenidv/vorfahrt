@@ -5,6 +5,7 @@ import {Colors} from "react-native/Libraries/NewAppScreen";
 import {useRef} from "react";
 import {ProgressBar} from "react-native-paper";
 import {useAppState} from "../state/app.state";
+import VehicleBottomsheet from "../Map/VehicleBottomsheet";
 
 const MapScreen = () => {
   const mapRef = useRef<MapMethods>(null);
@@ -19,7 +20,11 @@ const MapScreen = () => {
         backgroundColor: Colors.black,
       }}>
       <Map ref={mapRef} />
-      <ButtonBar mapRef={mapRef} />
+      {appState.selectedVehicle ? (
+        <VehicleBottomsheet vehicle={appState.selectedVehicle} />
+      ) : (
+        <ButtonBar mapRef={mapRef} />
+      )}
       {appState.fetching && (
         <View style={{position: "absolute", top: 0, left: 0, right: 0}}>
           <ProgressBar indeterminate={true} color="white" />

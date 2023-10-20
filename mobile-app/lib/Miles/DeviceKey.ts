@@ -11,6 +11,7 @@ export class DeviceKey {
      * Retrieves the current deviceKey or generates a new one
      * @returns enabled deviceKey for Miles API
      */
+    // fixme should only update once a day or so
     public static async getCurrent() {
         if (!this.deviceKey) {
             this.deviceKey = await this.generateDeviceKey();

@@ -3,7 +3,6 @@ import {apiCluster} from "../lib/Miles/apiTypes";
 import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
 import React, {
   forwardRef,
-  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -23,8 +22,6 @@ import {
 } from "../lib/fetchRegionUpdateState";
 import {useFilters} from "../state/filters.state";
 import {Text, View} from "react-native";
-import {Colors} from "react-native/Libraries/NewAppScreen";
-import VehicleCallout from "./VehicleMarker/VehicleCallout";
 import { useAppState } from "../state/app.state";
 
 export interface MapMethods {
@@ -92,6 +89,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
         <MapView
           ref={map}
           style={[{height: "100%", width: "100%"}]}
+          onPress={() => appState.setSelectedVehicle(undefined)}
           loadingBackgroundColor="#000"
           provider={PROVIDER_GOOGLE}
           initialRegion={initialRegion}
@@ -102,7 +100,10 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
           showsTraffic={false}
           showsIndoors={false}
           pitchEnabled={false}
-          rotateEnabled={false}>
+          rotateEnabled={false}
+          toolbarEnabled={false}
+          loadingEnabled={true}
+          moveOnMarkerPress={true}>
           {vehicles.map(pin => {
             return (
               <Marker
@@ -110,13 +111,10 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                   latitude: pin.coordinates.lat,
                   longitude: pin.coordinates.lng,
                 }}
-                onPress={() => {appState.setSelectedVehicleId(pin.id)}}
+                onPress={() => {appState.setSelectedVehicle(pin)}}
                 key={"v_" + pin.id}
-                title={`${pin.licensePlate} (${pin.id})`}
-                description={`${pin.model}, ${pin.charge}%`}
                 tracksViewChanges={false}>
                 <VehicleMarker vehicle={pin} />
-                <VehicleCallout vehicle={pin} />
               </Marker>
             );
           })}
