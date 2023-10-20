@@ -1,3 +1,24 @@
+# Vorfahrt/mobile aka MilesMoney
+
+## Running the App
+
+`npm start` to start Metro, then use `a` to launch on your connected Android device, or `i` for iOS.
+Note that this requires adb to be installed, or Xcode to be configured, respectively.
+
+## Unsigned Builds
+
+### Android
+
+Simply run `npm run build-android`.
+You'll find the build apk file at `.\android\app\build\outputs\apk\debug\app-debug.apk`.\
+*On windows, you might have to configure your npm script shell: [Stackoverflow](https://stackoverflow.com/questions/50998089/running-npm-script-on-windows-starting-with-a-period)*
+
+### iOS
+
+todo ios build script & fuck around with coco
+
+--
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
