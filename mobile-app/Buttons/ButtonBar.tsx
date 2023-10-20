@@ -1,25 +1,18 @@
 import {StyleSheet, View} from "react-native";
-import {RefObject, useState} from "react";
+import {RefObject} from "react";
 import CircularButton from "./CircularButton";
 import RelocateIcon from "../assets/icons/relocate.svg";
 import PreferencesIcon from "../assets/icons/preferences.svg";
-import ChargeIcon from "../assets/icons/charge.svg";
-import LottieView from "lottie-react-native";
-import {fetchChargeStationsCurrentRegionUpdateState} from "../lib/fetchRegionUpdateState";
 import {MapMethods} from "../Map/Map";
-import {useVehicles} from "../state/vehicles.state";
 import {useNavigation} from "@react-navigation/native";
-import {RootStackParamList} from "../App";
-import {useFilters} from "../state/filters.state";
+import { FetchChargingStationsButton } from "./FetchChargingStationsButton";
 
 export interface ButtonBarProps {
   mapRef: RefObject<MapMethods>;
 }
 
 const ButtonBar = (props: ButtonBarProps) => {
-  const [stationsLoading, setStationsLoading] = useState(false);
   const navigation = useNavigation() as any; // TODO: Fix type
-  const filters = useFilters();
 
   return (
     <View style={styles.container}>
@@ -35,25 +28,7 @@ const ButtonBar = (props: ButtonBarProps) => {
         }}>
         <RelocateIcon width={30} height={30} />
       </CircularButton>
-      {!filters.alwaysShowChargingStations && (
-        <CircularButton
-          onPress={async () => {
-            setStationsLoading(true);
-            await fetchChargeStationsCurrentRegionUpdateState();
-            setStationsLoading(false);
-          }}>
-          {stationsLoading ? (
-            <LottieView
-              source={require("../assets/icons/loading.json")}
-              autoPlay
-              loop
-              style={{width: 30, height: 30}}
-            />
-          ) : (
-            <ChargeIcon width={30} height={30} />
-          )}
-        </CircularButton>
-      )}
+      <FetchChargingStationsButton />
     </View>
   );
 };

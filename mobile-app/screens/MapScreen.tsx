@@ -8,6 +8,7 @@ import {useAppState} from "../state/app.state";
 import VehicleBottomsheetItem from "../BottomSheets/VehicleBottomsheetItem";
 import {BottomSheetContainer} from "../BottomSheets/BottomSheetContainer";
 import ChargeStationBottomsheetItem from "../BottomSheets/ChargeStationBottomsheetItem";
+import {FetchChargingStationsButton} from "../Buttons/FetchChargingStationsButton";
 
 const MapScreen = () => {
   const mapRef = useRef<MapMethods>(null);
@@ -30,6 +31,9 @@ const MapScreen = () => {
               station={appState.selectedChargeStation}
             />
           )}
+          <View style={{alignSelf: "flex-end", paddingBottom: 8, paddingHorizontal: 12}}>
+            <FetchChargingStationsButton />
+          </View>
         </BottomSheetContainer>
       ) : (
         <ButtonBar mapRef={mapRef} />

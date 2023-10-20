@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     flexDirection: "column-reverse",
+    justifyContent: "flex-end",
     bottom: 24,
     left: 8,
     right: 8,

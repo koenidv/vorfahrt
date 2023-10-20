@@ -74,7 +74,6 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
     handleFetchVehicles,
   }));
 
-  // fixme fetch charging stations button is hidden when a vehicle is selected
   return (
     <View
       style={{backgroundColor: "#000", height: "100%", width: "100%"}}
