@@ -10,14 +10,27 @@ Note that this requires adb to be installed, or Xcode to be configured, respecti
 ### Android
 
 Simply run `npm run build-android`.
-You'll find the build apk file at `.\android\app\build\outputs\apk\debug\app-debug.apk`.\
+You'll find the built apk file at `.\android\app\build\outputs\apk\debug\app-debug.apk`.\
 *On windows, you might have to configure your npm script shell: [Stackoverflow](https://stackoverflow.com/questions/50998089/running-npm-script-on-windows-starting-with-a-period)*
 
 ### iOS
 
 todo ios build script & fuck around with coco
 
+## Signed Builds
+
+### Android
+
+Please follow [this guide](https://reactnative.dev/docs/signed-apk-android) to create your keystore.
+Then run `npm run build-android-release`.
+You'll find the built aab file at `.\android\app\build\outputs\bundle\release\app-release.aab`.
+
+### iOS
+
+todo dings
+
 --
+
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 

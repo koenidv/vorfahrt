@@ -8,7 +8,9 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "build-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug && cd .."
+    "bundle-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "build-android": "npm run bundle-android && cd android && ./gradlew assembleDebug && cd ..",
+    "build-android-release": "npm run bundle-android && cd android && rm -rf ./app/src/main/res/drawable-* && ./gradlew bundleRelease && cd .."
   },
   "dependencies": {
     "@koenidv/vorfahrt-vienna": "^0.1.1",
