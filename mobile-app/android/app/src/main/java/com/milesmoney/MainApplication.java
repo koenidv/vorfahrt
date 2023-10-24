@@ -1,4 +1,4 @@
-package com.milesmoney;
+package de.koenidv.vorfahrt.mobile;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

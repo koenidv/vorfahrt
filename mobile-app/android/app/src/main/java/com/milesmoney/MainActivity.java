@@ -1,4 +1,4 @@
-package com.milesmoney;
+package de.koenidv.vorfahrt.mobile;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
