@@ -3,3 +3,4 @@ mobile-app/android/app/src/main/assets/index.android.bundle
 mobile-app/android/app/src/main/assets/index.android
 abfahrt/
 scraper/.env
+mobile-app/.env

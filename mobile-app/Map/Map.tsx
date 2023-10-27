@@ -1,6 +1,6 @@
 import mapStyle from "./mapStyle.json";
 import {apiCluster} from "../lib/Miles/apiTypes";
-import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
+import MapView, {Marker, PROVIDER_GOOGLE, Polyline} from "react-native-maps";
 import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
 import VehicleMarker from "./Markers/VehicleMarker";
 import ChargeStationMarker from "./Markers/ChargeStationMarker";
@@ -17,6 +17,8 @@ import {
 import {useFilters} from "../state/filters.state";
 import {Text, View} from "react-native";
 import {useAppState} from "../state/app.state";
+import {Route, Travelmodes, getDirections} from "../lib/Maps/directions";
+import { ChargeStation, Vehicle } from "../lib/Miles/types";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -34,6 +36,13 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   const initialRegion = useRegion.getState().current;
 
   const filters = useFilters();
+
+  const [walkingDirections, setWalkingDirections] = useState<Route | null>(
+    null,
+  );
+  const [drivingDirections, setDrivingDirections] = useState<Route | null>(
+    null,
+  );
 
   const [isMapReady, setIsMapReady] = useState(false);
   const onContainerLayout = () => {
@@ -69,6 +78,43 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
     debounceFetchVehicles();
   };
 
+  const fetchDrivingDirections = async (vehicle: Vehicle | undefined, station: ChargeStation | undefined) => {
+    if (!vehicle || !station) return;
+    const selfpos = await getLocation();
+    setDrivingDirections(
+      await getDirections(
+        vehicle.coordinates,
+        station.coordinates,
+        Travelmodes.DRIVING,
+      ),
+    );
+  };
+
+  const handleVehicleSelected = async (vehicle: any) => {
+    appState.setSelectedVehicle(vehicle);
+    const selfpos = await getLocation();
+    setWalkingDirections(
+      await getDirections(
+        {lat: selfpos.coords.latitude, lng: selfpos.coords.longitude},
+        vehicle.coordinates,
+        Travelmodes.DRIVING,
+      ),
+    );
+    fetchDrivingDirections(vehicle, appState.selectedChargeStation);
+  };
+
+  const handleChargeStationSelected = async (station: any) => {
+    appState.setSelectedChargeStation(station);
+    fetchDrivingDirections(appState.selectedVehicle, station);
+  };
+
+  const handleDeselect = () => {
+    appState.setSelectedVehicle(undefined);
+    appState.setSelectedChargeStation(undefined);
+    setWalkingDirections(null);
+    setDrivingDirections(null);
+  };
+
   useImperativeHandle(ref, () => ({
     gotoSelfLocation,
     handleFetchVehicles,
@@ -83,10 +129,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
           <MapView
             ref={map}
             style={[{height: "100%", width: "100%"}]}
-            onPress={() => {
-              appState.setSelectedVehicle(undefined);
-              appState.setSelectedChargeStation(undefined);
-            }}
+            onPress={handleDeselect}
             loadingBackgroundColor="#000"
             provider={PROVIDER_GOOGLE}
             initialRegion={initialRegion}
@@ -108,9 +151,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                     latitude: pin.coordinates.lat,
                     longitude: pin.coordinates.lng,
                   }}
-                  onPress={() => {
-                    appState.setSelectedVehicle(pin);
-                  }}
+                  onPress={handleVehicleSelected.bind(this, pin)}
                   key={"v_" + pin.id}
                   tracksViewChanges={appState.selectedVehicle?.id === pin.id}>
                   <VehicleMarker
@@ -142,7 +183,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                     latitude: station.coordinates.lat,
                     longitude: station.coordinates.lng,
                   }}
-                  onPress={() => appState.setSelectedChargeStation(station)}
+                  onPress={handleChargeStationSelected.bind(this, station)}
                   tracksViewChanges={false}
                   flat={true}
                   anchor={{x: 0.5, y: 0.5}}
@@ -151,6 +192,20 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                 </Marker>
               );
             })}
+            {walkingDirections && (
+              <Polyline
+                coordinates={walkingDirections.polyline}
+                strokeColor="white"
+                strokeWidth={2}
+              />
+            )}
+            {drivingDirections && (
+              <Polyline
+                coordinates={drivingDirections.polyline}
+                strokeColor={appState.selectedVehicle?.isElectric ? "#37DFA3" : "#429DF1"}
+                strokeWidth={2}
+              />
+            )}
             <Borders displayNoParking={filters.showNoParkingZones} />
           </MapView>
           <Text>Sache</Text>

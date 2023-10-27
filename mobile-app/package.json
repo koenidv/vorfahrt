@@ -13,6 +13,7 @@
     "build-android-release": "npm run bundle-android && cd android && rm -rf ./app/src/main/res/drawable-* && ./gradlew bundleRelease && cd .."
   },
   "dependencies": {
+    "@googlemaps/polyline-codec": "^1.0.28",
     "@koenidv/vorfahrt-vienna": "^0.1.1",
     "@miblanchard/react-native-slider": "^2.3.1",
     "@react-native-async-storage/async-storage": "^1.19.3",

@@ -1,5 +1,6 @@
 import { Linking, Share } from "react-native";
 import { Coordinate } from "./Miles/types";
+import { Travelmodes } from "./Maps/directions";
 
 export function shareLocation(location: Coordinate, title?: string) {
     const shareOptions = {
@@ -9,11 +10,6 @@ export function shareLocation(location: Coordinate, title?: string) {
     Share.share(shareOptions);
 }
 
-export enum Travelmodes {
-    DRIVING = "driving",
-    WALKING = "walking",
-    TRANSIT = "transit"
-}
 export function startNavigation(location: Coordinate, travelmode: Travelmodes, directStart: boolean = true) {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}&travelmode=${travelmode}${directStart ? "&dir_action=navigate" : ""}`;
     console.log(url)
