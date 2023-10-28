@@ -16,6 +16,13 @@ export type Route = {
     polyline: LatLng[];
 }
 
+export function shouldDisplayWalkingRoute(origin: Coordinate, destination: Coordinate) {
+    // estimated distance if the earth was flat
+    const distance = Math.sqrt(Math.pow(origin.lat - destination.lat, 2) + Math.pow(origin.lng - destination.lng, 2)) * 111000;
+    return distance < 2000;
+
+}
+
 export async function getDirections(origin: Coordinate, destination: Coordinate, travelmode: Travelmodes): Promise<Route|null> {
     // fixme use env and roll keya
     const res = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&mode=${travelmode}&key=AIzaSyCgn2vFW5B5EQckP9TLNMar5CW5-DuL6BQ`);

@@ -27,6 +27,8 @@ const VehicleMarker = (props: VehicleMarkerProps) => {
 
   const icon = findIcon("png", tags);
 
+  if (!icon) return null;
+
   return (
     <View>
       <Image source={icon} style={{position: "absolute", width: 40, height: 40}} />

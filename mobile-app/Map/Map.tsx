@@ -17,7 +17,12 @@ import {
 import {useFilters} from "../state/filters.state";
 import {Text, View} from "react-native";
 import {useAppState} from "../state/app.state";
-import {Route, Travelmodes, getDirections} from "../lib/Maps/directions";
+import {
+  Route,
+  Travelmodes,
+  getDirections,
+  shouldDisplayWalkingRoute,
+} from "../lib/Maps/directions";
 import {ChargeStation, Vehicle} from "../lib/Miles/types";
 
 export interface MapMethods {
@@ -76,7 +81,6 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
     station: ChargeStation | undefined,
   ) => {
     if (!vehicle || !station) return;
-    const selfpos = await getLocation();
     appState.setDrivingDirections(
       await getDirections(
         vehicle.coordinates,
@@ -88,19 +92,24 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   const handleVehicleSelected = async (vehicle: any) => {
     appState.setSelectedVehicle(vehicle);
-    const selfpos = await getLocation();
-    appState.setWalkingDirections(
-      await getDirections(
-        {lat: selfpos.coords.latitude, lng: selfpos.coords.longitude},
-        vehicle.coordinates,
-        Travelmodes.DRIVING,
-      ),
-    );
+    appState.setWalkingDirections(null);
+    appState.setDrivingDirections(null);
+    const geolocation = await getLocation();
+    const selfpos = {
+      lat: geolocation.coords.latitude,
+      lng: geolocation.coords.longitude,
+    };
+    if (shouldDisplayWalkingRoute(selfpos, vehicle.coordinates)) {
+      appState.setWalkingDirections(
+        await getDirections(selfpos, vehicle.coordinates, Travelmodes.DRIVING),
+      );
+    }
     fetchDrivingDirections(vehicle, appState.selectedChargeStation);
   };
 
   const handleChargeStationSelected = async (station: any) => {
     appState.setSelectedChargeStation(station);
+    appState.setDrivingDirections(null);
     fetchDrivingDirections(appState.selectedVehicle, station);
   };
 
