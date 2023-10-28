@@ -1,5 +1,5 @@
 import {StyleSheet, View} from "react-native";
-import {ChargeStation} from "../lib/Miles/types";
+import {ChargeStation, Vehicle} from "../lib/Miles/types";
 import ShareIcon from "../assets/icons/share.svg";
 import NavigateVehicleIcon from "../assets/icons/navigate_vehicle.svg";
 import {Text, TouchableRipple} from "react-native-paper";
@@ -9,6 +9,7 @@ import {AppStyles} from "../Map/styles";
 import {ChargeStationAvailability} from "../lib/ChargeStationAvailabilityType";
 import {useAppState} from "../state/app.state";
 import {Travelmodes} from "../lib/Maps/directions";
+import type {Route} from "../lib/Maps/directions";
 
 interface ChargeStationBottomSheetItemProps {
   station: ChargeStation &
@@ -16,6 +17,64 @@ interface ChargeStationBottomSheetItemProps {
       availability: ChargeStationAvailability;
     }>;
 }
+
+const AvailabilityTag = ({
+  availability,
+}: {
+  availability: ChargeStationAvailability;
+}) => {
+  if (!availability.statusKnown)
+    return (
+      <View style={styles.tagGrey}>
+        <Text variant="labelMedium">Unknown</Text>
+      </View>
+    );
+  if (availability.available === 0)
+    return (
+      <View style={styles.tagGrey}>
+        <Text variant="labelMedium">
+          {availability.available} / {availability.total}
+        </Text>
+      </View>
+    );
+  return (
+    <View style={styles.tagGreen}>
+      <Text variant="labelMedium" style={{color: "black"}}>
+        {availability.available} / {availability.total}
+      </Text>
+    </View>
+  );
+};
+
+const RouteInfo = ({route}: {route: Route}) => {
+  return (
+    <Text variant="bodyMedium">
+      {route.duration_display} ({route.distance_display})
+    </Text>
+  );
+};
+
+const PriceTag = ({route, vehicle}: {route: Route; vehicle: Vehicle}) => {
+  const km = Math.ceil(route.distance / 1000);
+  const kmPrice = ["S", "M"].includes(vehicle.size) ? 0.98 : 1.29;
+  let price = 1 + km * kmPrice;
+  if (vehicle.isElectric) price -= 10;
+  else price -= 5;
+
+  if (price <= 0) {
+    return (
+      <View style={styles.tagGreen}>
+        <Text variant="labelMedium" style={{color: "black"}}>+{Math.abs(price).toFixed(2)}€</Text>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.tagGrey}>
+        <Text variant="labelMedium">{price.toFixed(2)}€</Text>
+      </View>
+    );
+  }
+};
 
 const ChargeStationBottomsheetItem = (
   props: ChargeStationBottomSheetItemProps,
@@ -25,18 +84,26 @@ const ChargeStationBottomsheetItem = (
     <BottomSheetItem>
       <View style={styles.container}>
         <View style={styles.details}>
+          <View style={styles.row}>
           <Text variant="titleSmall">{props.station.name}</Text>
-          <Text variant="bodyMedium">
-            {props.station.availability?.statusKnown
-              ? `${props.station.availability?.available} / ${props.station.availability?.total} available`
-              : "Status unknown"}
-            {appState.drivingDirections &&
-              " • " +
-                appState.drivingDirections.duration_display +
-                " (" +
-                appState.drivingDirections.distance_display +
-                ")"}
-          </Text>
+          {appState.drivingDirections && props.station.availability && (
+            <AvailabilityTag availability={props.station.availability} />
+          )}
+          </View>
+          <View style={styles.row}>
+            {!appState.drivingDirections && props.station.availability && (
+              <AvailabilityTag availability={props.station.availability} />
+            )}
+            {appState.drivingDirections && (
+              <RouteInfo route={appState.drivingDirections} />
+            )}
+            {appState.drivingDirections && appState.selectedVehicle && (
+              <PriceTag
+                route={appState.drivingDirections}
+                vehicle={appState.selectedVehicle}
+              />
+            )}
+          </View>
         </View>
         <View style={styles.actions}>
           <TouchableRipple
@@ -75,14 +142,35 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
   },
+  row: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "baseline",
+  },
   details: {
     display: "flex",
     flexDirection: "column",
+    gap: 4,
   },
   actions: {
     display: "flex",
     flexDirection: "row",
     gap: 8,
+  },
+  tagGreen: {
+    backgroundColor: "#37DFA3",
+    color: "black",
+    borderRadius: 8,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+  },
+  tagGrey: {
+    backgroundColor: "#444",
+    color: "white",
+    borderRadius: 8,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
   },
 });
 
