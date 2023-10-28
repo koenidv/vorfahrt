@@ -18,7 +18,7 @@ import {useFilters} from "../state/filters.state";
 import {Text, View} from "react-native";
 import {useAppState} from "../state/app.state";
 import {Route, Travelmodes, getDirections} from "../lib/Maps/directions";
-import { ChargeStation, Vehicle } from "../lib/Miles/types";
+import {ChargeStation, Vehicle} from "../lib/Miles/types";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -71,7 +71,10 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
     debounceFetchVehicles();
   };
 
-  const fetchDrivingDirections = async (vehicle: Vehicle | undefined, station: ChargeStation | undefined) => {
+  const fetchDrivingDirections = async (
+    vehicle: Vehicle | undefined,
+    station: ChargeStation | undefined,
+  ) => {
     if (!vehicle || !station) return;
     const selfpos = await getLocation();
     appState.setDrivingDirections(
@@ -168,23 +171,25 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                 />
               );
             })}
-            {stations.map(station => {
-              return (
-                <Marker
-                  key={"p_" + station.milesId}
-                  coordinate={{
-                    latitude: station.coordinates.lat,
-                    longitude: station.coordinates.lng,
-                  }}
-                  onPress={handleChargeStationSelected.bind(this, station)}
-                  tracksViewChanges={false}
-                  flat={true}
-                  anchor={{x: 0.5, y: 0.5}}
-                  calloutAnchor={{x: 0.45, y: 0.25}}>
-                  <ChargeStationMarker station={station} />
-                </Marker>
-              );
-            })}
+            {(!appState.selectedVehicle ||
+              appState.selectedVehicle.isElectric) &&
+              stations.map(station => {
+                return (
+                  <Marker
+                    key={"p_" + station.milesId}
+                    coordinate={{
+                      latitude: station.coordinates.lat,
+                      longitude: station.coordinates.lng,
+                    }}
+                    onPress={handleChargeStationSelected.bind(this, station)}
+                    tracksViewChanges={false}
+                    flat={true}
+                    anchor={{x: 0.5, y: 0.5}}
+                    calloutAnchor={{x: 0.45, y: 0.25}}>
+                    <ChargeStationMarker station={station} />
+                  </Marker>
+                );
+              })}
             {appState.walkingDirections && (
               <Polyline
                 coordinates={appState.walkingDirections.polyline}
@@ -195,7 +200,9 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
             {appState.drivingDirections && (
               <Polyline
                 coordinates={appState.drivingDirections.polyline}
-                strokeColor={appState.selectedVehicle?.isElectric ? "#37DFA3" : "#429DF1"}
+                strokeColor={
+                  appState.selectedVehicle?.isElectric ? "#37DFA3" : "#429DF1"
+                }
                 strokeWidth={2}
               />
             )}
