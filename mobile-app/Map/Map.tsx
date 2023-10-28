@@ -37,13 +37,6 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   const filters = useFilters();
 
-  const [walkingDirections, setWalkingDirections] = useState<Route | null>(
-    null,
-  );
-  const [drivingDirections, setDrivingDirections] = useState<Route | null>(
-    null,
-  );
-
   const [isMapReady, setIsMapReady] = useState(false);
   const onContainerLayout = () => {
     console.log("Map is ready");
@@ -81,7 +74,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   const fetchDrivingDirections = async (vehicle: Vehicle | undefined, station: ChargeStation | undefined) => {
     if (!vehicle || !station) return;
     const selfpos = await getLocation();
-    setDrivingDirections(
+    appState.setDrivingDirections(
       await getDirections(
         vehicle.coordinates,
         station.coordinates,
@@ -93,7 +86,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   const handleVehicleSelected = async (vehicle: any) => {
     appState.setSelectedVehicle(vehicle);
     const selfpos = await getLocation();
-    setWalkingDirections(
+    appState.setWalkingDirections(
       await getDirections(
         {lat: selfpos.coords.latitude, lng: selfpos.coords.longitude},
         vehicle.coordinates,
@@ -111,8 +104,8 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
   const handleDeselect = () => {
     appState.setSelectedVehicle(undefined);
     appState.setSelectedChargeStation(undefined);
-    setWalkingDirections(null);
-    setDrivingDirections(null);
+    appState.setWalkingDirections(null);
+    appState.setDrivingDirections(null);
   };
 
   useImperativeHandle(ref, () => ({
@@ -192,16 +185,16 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                 </Marker>
               );
             })}
-            {walkingDirections && (
+            {appState.walkingDirections && (
               <Polyline
-                coordinates={walkingDirections.polyline}
+                coordinates={appState.walkingDirections.polyline}
                 strokeColor="white"
                 strokeWidth={2}
               />
             )}
-            {drivingDirections && (
+            {appState.drivingDirections && (
               <Polyline
-                coordinates={drivingDirections.polyline}
+                coordinates={appState.drivingDirections.polyline}
                 strokeColor={appState.selectedVehicle?.isElectric ? "#37DFA3" : "#429DF1"}
                 strokeWidth={2}
               />

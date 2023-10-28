@@ -9,8 +9,8 @@ export enum Travelmodes {
 }
 
 export type Route = {
-    length_display: string;
-    length: number;
+    distance_display: string;
+    distance: number;
     duration_display: string;
     duration: number;
     polyline: LatLng[];
@@ -31,8 +31,8 @@ export async function getDirections(origin: Coordinate, destination: Coordinate,
     }
 
     return {
-        length_display: firstroute.legs[0].distance.text,
-        length: firstroute.legs[0].distance.value,
+        distance_display: firstroute.legs[0].distance.text,
+        distance: firstroute.legs[0].distance.value,
         duration_display: firstroute.legs[0].duration.text,
         duration: firstroute.legs[0].duration.value,
         polyline: decode(firstroute.overview_polyline.points).map((c) => ({ latitude: c[0], longitude: c[1] }))

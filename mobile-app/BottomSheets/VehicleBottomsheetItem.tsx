@@ -4,15 +4,18 @@ import ShareIcon from "../assets/icons/share.svg";
 import NavigatePedestrianIcon from "../assets/icons/navigate_pedestrian.svg";
 import MilesMIcon from "../assets/icons/miles_M.svg";
 import {Text, TouchableRipple} from "react-native-paper";
-import {Travelmodes, openMilesApp, shareLocation, startNavigation} from "../lib/mapUtils";
+import {openMilesApp, shareLocation, startNavigation} from "../lib/mapUtils";
 import {BottomSheetItem} from "./BottomSheetItem";
 import {AppStyles} from "../Map/styles";
+import {useAppState} from "../state/app.state";
+import {Travelmodes} from "../lib/Maps/directions";
 
 interface VehicleBottomSheetItemProps {
   vehicle: Vehicle;
 }
 
 const VehicleBottomsheetItem = (props: VehicleBottomSheetItemProps) => {
+  const appState = useAppState();
   return (
     <BottomSheetItem>
       <View style={styles.row}>
@@ -20,6 +23,12 @@ const VehicleBottomsheetItem = (props: VehicleBottomSheetItemProps) => {
           <Text variant="titleSmall">{props.vehicle.licensePlate}</Text>
           <Text variant="bodyMedium">
             {props.vehicle.charge}% ({props.vehicle.range})
+            {appState.walkingDirections &&
+              " • " +
+                appState.walkingDirections.duration_display +
+                " (" +
+                appState.walkingDirections.distance_display +
+                ")"}
           </Text>
         </View>
         <Image

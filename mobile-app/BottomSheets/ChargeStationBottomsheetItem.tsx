@@ -3,10 +3,12 @@ import {ChargeStation} from "../lib/Miles/types";
 import ShareIcon from "../assets/icons/share.svg";
 import NavigateVehicleIcon from "../assets/icons/navigate_vehicle.svg";
 import {Text, TouchableRipple} from "react-native-paper";
-import {Travelmodes, shareLocation, startNavigation} from "../lib/mapUtils";
+import {shareLocation, startNavigation} from "../lib/mapUtils";
 import {BottomSheetItem} from "./BottomSheetItem";
 import {AppStyles} from "../Map/styles";
 import {ChargeStationAvailability} from "../lib/ChargeStationAvailabilityType";
+import {useAppState} from "../state/app.state";
+import {Travelmodes} from "../lib/Maps/directions";
 
 interface ChargeStationBottomSheetItemProps {
   station: ChargeStation &
@@ -18,6 +20,7 @@ interface ChargeStationBottomSheetItemProps {
 const ChargeStationBottomsheetItem = (
   props: ChargeStationBottomSheetItemProps,
 ) => {
+  const appState = useAppState();
   return (
     <BottomSheetItem>
       <View style={styles.container}>
@@ -27,6 +30,12 @@ const ChargeStationBottomsheetItem = (
             {props.station.availability?.statusKnown
               ? `${props.station.availability?.available} / ${props.station.availability?.total} available`
               : "Status unknown"}
+            {appState.drivingDirections &&
+              " • " +
+                appState.drivingDirections.duration_display +
+                " (" +
+                appState.drivingDirections.distance_display +
+                ")"}
           </Text>
         </View>
         <View style={styles.actions}>
