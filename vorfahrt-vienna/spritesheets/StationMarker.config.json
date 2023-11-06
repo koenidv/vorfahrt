@@ -1,0 +1,13 @@
+{
+    "config": {
+        "spritesheet": "StationMarker.spritesheet.svg"
+    },
+    "build": {
+        "chargestation/charger_unavailable": true,
+        "chargestation/charger_unknown": true,
+        "chargestation/charger_1": true,
+        "chargestation/charger_2": true,
+        "chargestation/charger_3": true,
+        "chargestation/gasstation": true
+    }
+}
