@@ -243,6 +243,16 @@
                 "chargestates/electric_plus5": false
             }
         },
+        "Audi A4 S-line": {
+            "backgrounds/default": {
+                "chargestates/electric": false,
+                "chargestates/electric_plus1": false,
+                "chargestates/electric_plus2": false,
+                "chargestates/electric_plus3": false,
+                "chargestates/electric_plus4": false,
+                "chargestates/electric_plus5": false
+            }
+        },
         "Audi Q2": {
             "backgrounds/default": {
                 "chargestates/electric": false,
