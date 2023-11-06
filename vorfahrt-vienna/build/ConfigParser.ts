@@ -47,10 +47,15 @@ export default class ConfigParser {
     }
 
     private parseOptionsGroup(group: GroupObject): ParsedGroup {
-        const { values, combine } = group;
+        const { values, combine, optional } = group;
         if (!values) throw new Error(`Values for group ${JSON.stringify(group)} may not be empty`);
-        if (combine) return this.combineGroupValues(values);
-        else return values.map(v => [v]);
+        let result: string[][];
+
+        if (combine) result = this.combineGroupValues(values);
+        else result = values.map(v => [v]);
+
+        if (optional) result.push(["none"])
+        return result;
     }
 
     private combineGroupValues(values: string[]): string[][] {

@@ -65,7 +65,7 @@ function createSpriteFromConfigObject(entity: string, children: any, current: Me
     const sprites: any[] = [];
 
     if (entity !== "none") {
-        current.entities.push(entityToSymbolId(entity));
+        current.entities.push(...entityToSymbolId(entity).split(","));
         current.sprite.add(entity, fs.readFileSync(entityToPath(entity, spritesDir)));
     }
     if (typeof children === 'object') {

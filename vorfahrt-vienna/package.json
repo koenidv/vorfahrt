@@ -1,9 +1,10 @@
 {
   "name": "@koenidv/vorfahrt-vienna",
-  "version": "0.1.1",
+  "version": "0.2.3",
   "description": "Assets for Vorfahrt - A micromobility insight platform.",
   "main": "dist/index.js",
   "scripts": {
+    "build-node": "tsx ./build/index.ts",
     "build": "bun run build/index.ts",
     "prepublishOnly": "npm run build"
   },

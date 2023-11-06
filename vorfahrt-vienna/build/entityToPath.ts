@@ -1,7 +1,7 @@
 import { join } from "path";
 
 export const entityToPath = (entityKey: string, spritesDir) => {
-    const modified = entityKey.replace(/[\s\.-]/g, "");
+    const modified = entityKey.replace(/[\s\.]/g, "").replace("-", "_");
     if (modified.indexOf("\\") === -1 && modified.indexOf("/") === -1) {
         return join(spritesDir, "vehicle_types", modified + ".svg")
     }

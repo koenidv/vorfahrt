@@ -24,10 +24,10 @@
             "electric_modifiers": {
                 "values": [
                     "modifiers/discounted",
-                    "modifiers/charging",
-                    "modifiers/selected"
+                    "modifiers/charging"
                 ],
-                "combine": true
+                "combine": true,
+                "optional": true
             },
             "combustion": {
                 "values": [
@@ -54,10 +54,10 @@
             },
             "combustion_modifiers": {
                 "values": [
-                    "modifiers/discounted",
-                    "modifiers/selected"
+                    "modifiers/discounted"
                 ],
-                "combine": true
+                "combine": true,
+                "optional": true
             },
             "internal_status": {
                 "values": [
@@ -94,6 +94,18 @@
     },
     "build": {
         "backgrounds/default": {
+            "$electric": {
+                "$electric_chargestates": {
+                    "$electric_modifiers": true
+                }
+            },
+            "$combustion": {
+                "chargestates/fuel": {
+                    "$combustion_modifiers": true
+                }
+            }
+        },
+        "backgrounds/default,selected": {
             "$electric": {
                 "$electric_chargestates": {
                     "$electric_modifiers": true
