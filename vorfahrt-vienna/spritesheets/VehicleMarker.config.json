@@ -10,362 +10,118 @@
                     "Tesla Model Y",
                     "Tesla Model 3"
                 ]
+            },
+            "electric_chargestates": {
+                "values": [
+                    "chargestates/electric",
+                    "chargestates/electric_plus1",
+                    "chargestates/electric_plus2",
+                    "chargestates/electric_plus3",
+                    "chargestates/electric_plus4",
+                    "chargestates/electric_plus5"
+                ]
+            },
+            "electric_modifiers": {
+                "values": [
+                    "modifiers/discounted",
+                    "modifiers/charging",
+                    "modifiers/selected"
+                ],
+                "combineValues": true,
+                "includeNone": true
+            },
+            "combustion": {
+                "values": [
+                    "VW Polo",
+                    "VW Polo GP 2022",
+                    "VW Taigo",
+                    "VW Crafter",
+                    "VW Crafter Automatic",
+                    "VW T6",
+                    "Audi A3",
+                    "Audi A4 Avant",
+                    "Audi A4 S-line",
+                    "Audi Q2",
+                    "Audi Q2 S line",
+                    "Opel Corsa Elegance",
+                    "Opel Corsa GS",
+                    "Ford Fiesta",
+                    "Seat Leon",
+                    "Opel Vivaro",
+                    "Ford Transit",
+                    "Ford Transit Custom 9 Seater",
+                    "Mercedes Sprinter"
+                ]
+            },
+            "combustion_modifiers": {
+                "values": [
+                    "modifiers/discounted",
+                    "modifiers/selected"
+                ],
+                "combineValues": true,
+                "includeNone": true
+            },
+            "internal_status": {
+                "values": [
+                    "internal_status/used_internally",
+                    "internal_status/in_ops",
+                    "internal_status/in_repair",
+                    "internal_status/lifecycle",
+                    "internal_status/decomissioned"
+                ]
+            },
+            "ride_status": {
+                "values": [
+                    "ride_status/kmh00_08",
+                    "ride_status/kmh08_16",
+                    "ride_status/kmh16_24",
+                    "ride_status/kmh24_32",
+                    "ride_status/kmh32_40",
+                    "ride_status/kmh40_48",
+                    "ride_status/kmh48_56",
+                    "ride_status/kmh56_64",
+                    "ride_status/kmh64_72",
+                    "ride_status/kmh72_80",
+                    "ride_status/paused",
+                    "ride_status/booked",
+                    "ride_status/booked_for_5",
+                    "ride_status/booked_for_6",
+                    "ride_status/booked_for_7",
+                    "ride_status/booked_for_8",
+                    "ride_status/booked_for_9",
+                    "ride_status/car_subscription"
+                ]
             }
         }
     },
     "build": {
         "backgrounds/default": {
             "$electric": {
-                "chargestates/electric": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "modifiers/selected": {
-                        "modifiers/discounted": {
-                            "modifiers/charging": true,
-                            "none": true
-                        },
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "none": true
-                },
-                "chargestates/electric_plus1": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "modifiers/selected": {
-                        "modifiers/discounted": {
-                            "modifiers/charging": true,
-                            "none": true
-                        },
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "none": true
-                },
-                "chargestates/electric_plus2": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "modifiers/selected": {
-                        "modifiers/discounted": {
-                            "modifiers/charging": true,
-                            "none": true
-                        },
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "none": true
-                },
-                "chargestates/electric_plus3": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "modifiers/selected": {
-                        "modifiers/discounted": {
-                            "modifiers/charging": true,
-                            "none": true
-                        },
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "none": true
-                },
-                "chargestates/electric_plus4": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "modifiers/selected": {
-                        "modifiers/discounted": {
-                            "modifiers/charging": true,
-                            "none": true
-                        },
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "none": true
-                },
-                "chargestates/electric_plus5": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "modifiers/selected": {
-                        "modifiers/discounted": {
-                            "modifiers/charging": true,
-                            "none": true
-                        },
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "none": true
-                },
-                "chargestates/fuel": {
-                    "modifiers/discounted": true,
-                    "modifiers/selected": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "none": true
+                "$electric_chargestates": {
+                    "$electric_modifiers": true
                 }
             },
-            "backgrounds/internal": {
-                "internal_status/used_internally": true,
-                "internal_status/in_ops": true,
-                "internal_status/in_repair": true,
-                "internal_status/lifecycle": true,
-                "internal_status/decomissioned": true
+            "$combustion": {
+                "chargestates/fuel": {
+                    "$combustion_modifiers": true
+                }
+            }
+        },
+        "backgrounds/internal": {
+            "$electric": {
+                "$internal_status": true
             },
-            "backgrounds/in_use": {
-                "ride_status/kmh00_08": true,
-                "ride_status/kmh08_16": true,
-                "ride_status/kmh16_24": true,
-                "ride_status/kmh24_32": true,
-                "ride_status/kmh32_40": true,
-                "ride_status/kmh40_48": true,
-                "ride_status/kmh48_56": true,
-                "ride_status/kmh56_64": true,
-                "ride_status/kmh64_72": true,
-                "ride_status/kmh72_80": true,
-                "ride_status/paused": true,
-                "ride_status/booked": true,
-                "ride_status/booked_for_5": true,
-                "ride_status/booked_for_6": true,
-                "ride_status/booked_for_7": true,
-                "ride_status/booked_for_8": true,
-                "ride_status/booked_for_9": true,
-                "ride_status/car_subscription": true
+            "$combustion": {
+                "$internal_status": true
+            }
+        },
+        "backgrounds/in_use": {
+            "$electric": {
+                "$ride_status": true
+            },
+            "$combustion": {
+                "$ride_status": true
             }
         }
-    },
-    "vehicles": {
-        "VW ID.3": {
-            "backgrounds/default": {
-                "chargestates/fuel": false
-            }
-        },
-        "VW ID.4 Pro": {
-            "backgrounds/default": {
-                "chargestates/fuel": false
-            }
-        },
-        "Cupra Born": {
-            "backgrounds/default": {
-                "chargestates/fuel": false
-            }
-        },
-        "Tesla Model Y": {
-            "backgrounds/default": {
-                "chargestates/fuel": false
-            }
-        },
-        "Tesla Model 3": {
-            "backgrounds/default": {
-                "chargestates/fuel": false
-            }
-        },
-        "VW Polo": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "VW Polo GP 2022": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "VW Taigo": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "VW Crafter": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "VW Crafter Automatic": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "VW T6": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Audi A3": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Audi A4 Avant": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Audi A4 S-line": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Audi Q2": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Audi Q2 S line": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Opel Corsa Elegance": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Opel Corsa GS": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Ford Fiesta": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Seat Leon": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Opel Vivaro": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Ford Transit": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Ford Transit Custom 9 Seater": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Mercedes Sprinter": {
-            "backgrounds/default": {
-                "chargestates/electric": false,
-                "chargestates/electric_plus1": false,
-                "chargestates/electric_plus2": false,
-                "chargestates/electric_plus3": false,
-                "chargestates/electric_plus4": false,
-                "chargestates/electric_plus5": false
-            }
-        },
-        "Fake Test Car": true
     }
 }
