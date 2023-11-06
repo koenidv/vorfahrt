@@ -1,36 +1,40 @@
-import AvailableUnknown from "../../assets/icons/Marker/chargestation/unknown.svg";
-import AvailableUnavailable from "../../assets/icons/Marker/chargestation/unavailable.svg";
-import Available1 from "../../assets/icons/Marker/chargestation/available_1.svg";
-import Available2 from "../../assets/icons/Marker/chargestation/available_2.svg";
-import Available3 from "../../assets/icons/Marker/chargestation/available_3.svg";
+import {Image, View} from "react-native";
 import {ChargeStationAvailability} from "../../lib/ChargeStationAvailabilityType";
 import {ChargeStation} from "../../lib/Miles/types";
+import findIcon from "@koenidv/vorfahrt-vienna";
 
 export interface ChargeStationMarkerProps {
   station: ChargeStation & Partial<{availability: ChargeStationAvailability}>;
+  isSelected: boolean;
 }
 
 const ChargeStationMarker = (props: ChargeStationMarkerProps) => {
   const availability = props.station.availability;
+  const iconTags = ["charger"];
   if (!availability || !availability.statusKnown) {
-    return (
-      <AvailableUnknown style={{position: "absolute"}} width={40} height={40} />
-    );
+    iconTags.push("unknown");
   } else if (availability.available === 0) {
-    return (
-      <AvailableUnavailable
-        style={{position: "absolute"}}
-        width={40}
-        height={40}
-      />
-    );
+    iconTags.push("unavailable");
   } else if (availability.available === 1) {
-    return <Available1 style={{position: "absolute"}} width={40} height={40} />;
+    iconTags.push("1");
   } else if (availability.available === 2) {
-    return <Available2 style={{position: "absolute"}} width={40} height={40} />;
+    iconTags.push("2");
   } else {
-    return <Available3 style={{position: "absolute"}} width={40} height={40} />;
+    iconTags.push("more");
   }
+  if (props.isSelected) iconTags.push("selected");
+
+  const icon = findIcon("png", iconTags);
+  if (!icon) return null;
+
+  return (
+    <View>
+      <Image
+        source={icon}
+        style={{position: "absolute", width: 40, height: 40}}
+      />
+    </View>
+  );
 };
 
 export default ChargeStationMarker;
