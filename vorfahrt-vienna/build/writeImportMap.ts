@@ -16,7 +16,7 @@ export async function writeIndexFile(sprites: WrittenSprite[]) {
 }
 
 export function getIndexFile(sprites: WrittenSprite[]) {
-    console.info("Generating index file");
+    console.log("\x1b[33mGenerating index file\x1b[0m")
     const importStatements: string[] = [];
     const exports: exportsType[] = [];
 
