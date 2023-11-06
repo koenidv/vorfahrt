@@ -19,7 +19,7 @@ export async function rasterizeWriteSprites(sprites: MergedSpriteFlattened[]): P
 
     const writtenSprites: WrittenSprite[] = [];
     for (const [index, sprite] of sprites.entries()) {
-        const filename = sprite.entities.join("_").replace(/[\s\.]/g, "");
+        const filename = sprite.entities.join("_").replace(/[\s\.]/g, "").replace("-", "_");
 
         if (OUTPUT_SVGS) {
             const svgPath = join(svgOutDir, filename + ".svg");
