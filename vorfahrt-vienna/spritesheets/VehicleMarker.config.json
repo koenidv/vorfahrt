@@ -27,7 +27,8 @@
                     "modifiers/charging",
                     "modifiers/selected"
                 ],
-                "combine": true
+                "combine": true,
+                "optional": true
             },
             "combustion": {
                 "values": [
@@ -57,7 +58,8 @@
                     "modifiers/discounted",
                     "modifiers/selected"
                 ],
-                "combine": true
+                "combine": true,
+                "optional": true
             },
             "internal_status": {
                 "values": [
