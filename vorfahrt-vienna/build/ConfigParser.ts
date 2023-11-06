@@ -91,7 +91,6 @@ export default class ConfigParser {
     }
 
     private addKeysRecursive(obj: any, keys: string[], value: any) {
-        console.log(keys)
         const key = keys.shift()!;
         if (keys.length === 0) {
             obj[key] = value;
