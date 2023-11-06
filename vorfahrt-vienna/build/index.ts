@@ -4,7 +4,7 @@ import parseSpritesheet from "./parseSpritesheet";
 import ConfigParser from "./ConfigParser";
 import { checkConfigEntitiesExist } from "./checkConfigEntitiesExist";
 import { mergeSpritesFromConfig } from "./mergeSpritesFromConfig";
-import { rasterizeWriteSprites } from "./rasterizeWriteSpites";
+import { WrittenSprite, rasterizeWriteSprites } from "./rasterizeWriteSpites";
 import { writeIndexFile } from "./writeImportMap";
 import { spriteSheetDir } from "./options";
 import { join } from "path";
@@ -17,6 +17,7 @@ async function main() {
 
     // todo codegen does not support multiple files yet
 
+    let allWrittenSprites: WrittenSprite[] = [];
     for (const configFile of files) {
         console.log("\x1b[33mProcessing", configFile, "\x1b[0m")
         const config = new ConfigParser(join(spriteSheetDir, configFile)).parseConfig();
@@ -26,9 +27,9 @@ async function main() {
         const merged = mergeSpritesFromConfig(config.build, spritesDir);
         const writtenSprites = await rasterizeWriteSprites(merged);
         // todo check if filenames are unique
-
-        await writeIndexFile(writtenSprites);
+        allWrittenSprites.push(...writtenSprites);
     }
+    await writeIndexFile(allWrittenSprites);
 
     console.info("Done!");
 }

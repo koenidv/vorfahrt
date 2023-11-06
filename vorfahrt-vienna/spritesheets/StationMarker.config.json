@@ -3,11 +3,17 @@
         "spritesheet": "StationMarker.spritesheet.svg"
     },
     "build": {
-        "chargestation/charger_unavailable": true,
-        "chargestation/charger_unknown": true,
-        "chargestation/charger_1": true,
-        "chargestation/charger_2": true,
-        "chargestation/charger_3": true,
-        "chargestation/gasstation": true
+        "chargestation/charger,unavailable": true,
+        "chargestation/charger,unknown": true,
+        "chargestation/charger,1": true,
+        "chargestation/charger,2": true,
+        "chargestation/charger,3,more": true,
+        "chargestation/gasstation": true,
+        "chargestation/charger,unavailable,selected": true,
+        "chargestation/charger,unknown,selected": true,
+        "chargestation/charger,1,selected": true,
+        "chargestation/charger,2,selected": true,
+        "chargestation/charger,3,more,selected": true,
+        "chargestation/gasstation,selected": true
     }
 }
