@@ -6,10 +6,10 @@ import * as xml2js from 'xml2js';
 import { SPRITESHEET_REGEX, spriteSheetDir } from "./options";
 
 import { checkObjectPropertiesRecursively } from "./checkObjectPropertiesRecursively"
-import { ImportMapItem, getTypescriptImportMap } from "./getImportMapOld";
 
-export interface Sprite extends ImportMapItem {
+export interface Sprite {
     contents: string,
+    importPath: string,
 }
 
 /**
@@ -109,8 +109,6 @@ export default async function parseSpritesheet(spritesheetPath: string) {
                         }
                     });
                     sprites.push({
-                        symbolName: spriteName.replace(/[\s\.-]/g, "_"),
-                        objPath: [groupName, spriteName],
                         importPath: join(groupName, spriteName.replace(/[\s\.-]/g, "") + ".svg"),
                         contents: spriteContent,
                     });
@@ -128,11 +126,6 @@ export default async function parseSpritesheet(spritesheetPath: string) {
         await fs.promises.mkdir(parse(join(outDir, sprite.importPath)).dir, { recursive: true });
         await fs.promises.writeFile(join(outDir, sprite.importPath), sprite.contents);
     }
-
-    await fs.promises.writeFile(join(outDir, "index.ts"), getTypescriptImportMap(spritesheetName, parsedSprites.map(i => ({
-        ...i,
-        importPath: "./" + i.importPath,
-    }))));
 
     return outDir;
 }
