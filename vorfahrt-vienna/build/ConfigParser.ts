@@ -47,17 +47,25 @@ export default class ConfigParser {
     }
 
     private parseOptionsGroup(group: GroupObject): ParsedGroup {
-        const { values, combineValues, includeNone } = group;
-        if (includeNone) values.push("none");
-        if (combineValues) return this.combineGroupValues(values);
+        const { values, combine } = group;
+        if (!values) throw new Error(`Values for group ${JSON.stringify(group)} may not be empty`);
+        if (combine) return this.combineGroupValues(values);
         else return values.map(v => [v]);
     }
 
     private combineGroupValues(values: string[]): string[][] {
+        // fixme this should work for any number of values, not just up to 3
         const result: string[][] = [];
         for (let i = 0; i < values.length; i++) {
+            const val = values[i];
+            result.push([val, "none"]);
             for (let j = i + 1; j < values.length; j++) {
-                result.push([values[i], values[j]]);
+                const val2 = values[j];
+                result.push([val, val2, "none"]);
+                for (let k = j + 1; k < values.length; k++) {
+                    const val3 = values[k];
+                    result.push([val, val2, val3, "none"]);
+                }
             }
         }
         return result;
@@ -65,23 +73,32 @@ export default class ConfigParser {
 
     private parseBuild(buildObject: BuildObject): BuildObject {
         // expand keys starting with $ into the keys of the group
+        if (typeof buildObject !== "object") return buildObject;
         const result: BuildObject = {};
         for (const [key, value] of Object.entries(buildObject)) {
-            if (typeof value !== "object") {
-                result[key] = value;
-            } else if (key.startsWith("$")) {
+            if (key.startsWith("$")) {
                 const groupName = key.slice(1);
                 const group = this.groups[groupName];
                 if (!group) throw new Error(`Group ${groupName} not found in config file`);
                 for (const groupKeys of group) {
-                    if (!groupKeys[0]) throw new Error(`Group ${groupName} contains an empty array`);
-                    result[groupKeys.shift()!] = groupKeys.reduceRight((acc, key) => ({ [key]: acc }), this.parseBuild(value));
+                    this.addKeysRecursive(result, [...groupKeys], this.parseBuild(value));
                 }
             } else {
                 result[key] = this.parseBuild(value);
             }
         }
         return result;
+    }
+
+    private addKeysRecursive(obj: any, keys: string[], value: any) {
+        console.log(keys)
+        const key = keys.shift()!;
+        if (keys.length === 0) {
+            obj[key] = value;
+        } else {
+            if (!obj[key]) obj[key] = {};
+            this.addKeysRecursive(obj[key], keys, value);
+        }
     }
 
 

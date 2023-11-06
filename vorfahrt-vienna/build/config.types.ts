@@ -1,6 +1,6 @@
 export type Config = { config: OptionsObject, build: BuildObject };
 export type OptionsObject = { spritesheet: string, groups: GroupObject[] };
-export type GroupObject = { values: string[], combineValues: boolean, includeNone: boolean };
+export type GroupObject = { values: string[], combine: boolean};
 export type GroupName = string; // groupnames are indicated by an $ prefix in build objects
 export type BuildObject = { [key: string | GroupName]: BuildObject } | boolean;
 
