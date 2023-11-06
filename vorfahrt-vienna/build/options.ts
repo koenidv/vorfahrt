@@ -16,7 +16,7 @@ export const spriteSheetDir = join(__dirname, "../spritesheets/");
 
 export const markerDir = join(spriteSheetDir, "VehicleMarker/");
 
-export const SPRITESHEET_REGEX = /^(.*)\.spritesheet\.svg$/;
+export const SPRITESHEET_REGEX = /([^\/\\]*)\.spritesheet\.svg$/;
 
 export const VALID_TYPESCRIPT_SYMBOL_REGEX = /^[^\d\s][\w$€£¥₹]*$/;
 

@@ -17,17 +17,16 @@ export interface Sprite extends ImportMapItem {
  * parseSpritesheet("VehicleMarker.spritesheet.svg");
  * ```
  */
-export default async function parseSpritesheet(spritesheetId: string) {
-    console.info(`Parsing spritesheet ${spritesheetId}`);
+export default async function parseSpritesheet(spritesheetPath: string) {
+    console.info(`Parsing spritesheet ${spritesheetPath}`);
 
-    const spritesheetName = spritesheetId.match(SPRITESHEET_REGEX)?.[1];
+    const spritesheetName = spritesheetPath.match(SPRITESHEET_REGEX)?.[1];
 
     if (!spritesheetName) {
-        console.error(`ERROR: not a valid spritesheet: "${spritesheetId}"`);
+        console.error(`ERROR: not a valid spritesheet: "${spritesheetPath}"`);
 
         throw new Error("INVALID_SPRITESHEET_ID");
     }
-    const spritesheetPath = join(spriteSheetDir, spritesheetId);
 
     const spritesheetOutDir = join(spriteSheetDir, spritesheetName);
 
@@ -43,19 +42,19 @@ export default async function parseSpritesheet(spritesheetId: string) {
 
                 throw new Error("SPRITESHEET_PARSE_FAILURE");
             }
-            const sheetContainer = result.svg.g.find(i => i["$"].id === parse(spritesheetId).name);
+            const sheetContainer = result.svg.g.find(i => i["$"].id === parse(spritesheetPath).name);
 
             for (const spriteGroup of sheetContainer.g || []) {
                 const groupName = spriteGroup['$'].id;
                 const groupFolder = join(spritesheetOutDir, groupName);
 
-                console.info("Found sprites:", spriteGroup.g.length, groupName, "in", parse(spritesheetId).name);
+                console.info("Found sprites:", spriteGroup.g.length, groupName, "in", parse(spritesheetPath).name);
 
                 for (const sprite of spriteGroup.g || []) {
 
                     const spriteName = sprite['$'].id;
 
-                    console.info("Found sprite:", spriteName);
+                    //console.info("Found sprite:", spriteName);
 
                     const spriteX = sprite.rect?.[0]?.["$"]?.x;
                     const spriteY = sprite.rect?.[0]?.["$"]?.y;
@@ -63,7 +62,7 @@ export default async function parseSpritesheet(spritesheetId: string) {
                     const spriteHeight = sprite.rect?.[0]?.["$"]?.height;
 
                     if (spriteX == null || spriteY == null || spriteWidth == null || spriteHeight == null) {
-                        console.error(`ERROR: no rect node found in sprite "${groupName}/${spriteName}".\neach sprite must include a rectangle in order to be able to determine its position and bouding box.\nto fix this, apply a visible stroke of any color (not transparent) to all your sprites in figma, and re-export spritesheet "${spritesheetId}".\ndon't worry, the stroke will not be visible on the rendered icons.`);
+                        console.error(`ERROR: no rect node found in sprite "${groupName}/${spriteName}".\neach sprite must include a rectangle in order to be able to determine its position and bouding box.\nto fix this, apply a visible stroke of any color (not transparent) to all your sprites in figma, and re-export spritesheet "${spritesheetPath}".\ndon't worry, the stroke will not be visible on the rendered icons.`);
 
                         throw new Error("MISSING_RECT_NODE_IN_SPRITE");
                     }
@@ -82,7 +81,7 @@ export default async function parseSpritesheet(spritesheetId: string) {
 
                     checkObjectPropertiesRecursively(sprite, (key) => {
                         if (key.toLowerCase() === "text") {
-                            console.error(`WARNING: text node found in sprite "${groupName}/${spriteName}".\nunflattened text will make the rendered icon look different from your figma design.\nto fix this, flatten the text layer in figma via right click => "Flatten", and re-export spritesheet "${spritesheetId}".`);
+                            console.error(`WARNING: text node found in sprite "${groupName}/${spriteName}".\nunflattened text will make the rendered icon look different from your figma design.\nto fix this, flatten the text layer in figma via right click => "Flatten", and re-export spritesheet "${spritesheetPath}".`);
                         }
                     });
                     /**
@@ -121,7 +120,7 @@ export default async function parseSpritesheet(spritesheetId: string) {
         });
     });
 
-    const outDir = join(__dirname, "../spritesheets/", spritesheetName);
+    const outDir = join(__dirname, "../tmp/spritesheets/", spritesheetName);
 
     await fs.promises.mkdir(outDir, { recursive: true });
 

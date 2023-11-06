@@ -1,140 +1,153 @@
 {
-    "options": {
-        "switchFirstAndSecondDepth": true
-    },
-    "allVehicles": {
-        "backgrounds/default": {
-            "chargestates/electric": {
-                "modifiers/discounted": {
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "modifiers/charging": true,
-                "modifiers/selected": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "none": true
-            },
-            "chargestates/electric_plus1": {
-                "modifiers/discounted": {
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "modifiers/charging": true,
-                "modifiers/selected": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "none": true
-            },
-            "chargestates/electric_plus2": {
-                "modifiers/discounted": {
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "modifiers/charging": true,
-                "modifiers/selected": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "none": true
-            },
-            "chargestates/electric_plus3": {
-                "modifiers/discounted": {
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "modifiers/charging": true,
-                "modifiers/selected": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "none": true
-            },
-            "chargestates/electric_plus4": {
-                "modifiers/discounted": {
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "modifiers/charging": true,
-                "modifiers/selected": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "none": true
-            },
-            "chargestates/electric_plus5": {
-                "modifiers/discounted": {
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "modifiers/charging": true,
-                "modifiers/selected": {
-                    "modifiers/discounted": {
-                        "modifiers/charging": true,
-                        "none": true
-                    },
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "none": true
-            },
-            "chargestates/fuel": {
-                "modifiers/discounted": true,
-                "modifiers/selected": {
-                    "modifiers/charging": true,
-                    "none": true
-                },
-                "none": true
+    "config": {
+        "spritesheet": "VehicleMarker.spritesheet.svg",
+        "groups": {
+            "electric": {
+                "values": [
+                    "VW ID.3",
+                    "VW ID.4 Pro",
+                    "Cupra Born",
+                    "Tesla Model Y",
+                    "Tesla Model 3"
+                ]
             }
-        },
-        "backgrounds/internal": {
-            "internal_status/used_internally": true,
-            "internal_status/in_ops": true,
-            "internal_status/in_repair": true,
-            "internal_status/lifecycle": true,
-            "internal_status/decomissioned": true
-        },
-        "backgrounds/in_use": {
-            "ride_status/kmh00_08": true,
-            "ride_status/kmh08_16": true,
-            "ride_status/kmh16_24": true,
-            "ride_status/kmh24_32": true,
-            "ride_status/kmh32_40": true,
-            "ride_status/kmh40_48": true,
-            "ride_status/kmh48_56": true,
-            "ride_status/kmh56_64": true,
-            "ride_status/kmh64_72": true,
-            "ride_status/kmh72_80": true,
-            "ride_status/paused": true,
-            "ride_status/booked": true,
-            "ride_status/booked_for_5": true,
-            "ride_status/booked_for_6": true,
-            "ride_status/booked_for_7": true,
-            "ride_status/booked_for_8": true,
-            "ride_status/booked_for_9": true,
-            "ride_status/car_subscription": true
+        }
+    },
+    "build": {
+        "backgrounds/default": {
+            "$electric": {
+                "chargestates/electric": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "modifiers/selected": {
+                        "modifiers/discounted": {
+                            "modifiers/charging": true,
+                            "none": true
+                        },
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "none": true
+                },
+                "chargestates/electric_plus1": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "modifiers/selected": {
+                        "modifiers/discounted": {
+                            "modifiers/charging": true,
+                            "none": true
+                        },
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "none": true
+                },
+                "chargestates/electric_plus2": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "modifiers/selected": {
+                        "modifiers/discounted": {
+                            "modifiers/charging": true,
+                            "none": true
+                        },
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "none": true
+                },
+                "chargestates/electric_plus3": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "modifiers/selected": {
+                        "modifiers/discounted": {
+                            "modifiers/charging": true,
+                            "none": true
+                        },
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "none": true
+                },
+                "chargestates/electric_plus4": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "modifiers/selected": {
+                        "modifiers/discounted": {
+                            "modifiers/charging": true,
+                            "none": true
+                        },
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "none": true
+                },
+                "chargestates/electric_plus5": {
+                    "modifiers/discounted": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "modifiers/charging": true,
+                    "modifiers/selected": {
+                        "modifiers/discounted": {
+                            "modifiers/charging": true,
+                            "none": true
+                        },
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "none": true
+                },
+                "chargestates/fuel": {
+                    "modifiers/discounted": true,
+                    "modifiers/selected": {
+                        "modifiers/charging": true,
+                        "none": true
+                    },
+                    "none": true
+                }
+            },
+            "backgrounds/internal": {
+                "internal_status/used_internally": true,
+                "internal_status/in_ops": true,
+                "internal_status/in_repair": true,
+                "internal_status/lifecycle": true,
+                "internal_status/decomissioned": true
+            },
+            "backgrounds/in_use": {
+                "ride_status/kmh00_08": true,
+                "ride_status/kmh08_16": true,
+                "ride_status/kmh16_24": true,
+                "ride_status/kmh24_32": true,
+                "ride_status/kmh32_40": true,
+                "ride_status/kmh40_48": true,
+                "ride_status/kmh48_56": true,
+                "ride_status/kmh56_64": true,
+                "ride_status/kmh64_72": true,
+                "ride_status/kmh72_80": true,
+                "ride_status/paused": true,
+                "ride_status/booked": true,
+                "ride_status/booked_for_5": true,
+                "ride_status/booked_for_6": true,
+                "ride_status/booked_for_7": true,
+                "ride_status/booked_for_8": true,
+                "ride_status/booked_for_9": true,
+                "ride_status/car_subscription": true
+            }
         }
     },
     "vehicles": {
