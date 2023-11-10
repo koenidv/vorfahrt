@@ -1,15 +1,17 @@
 import {Image, View} from "react-native";
 import {ChargeStationAvailability} from "../../lib/ChargeStationAvailabilityType";
-import {ChargeStation} from "../../lib/Miles/types";
 import findIcon from "@koenidv/vorfahrt-vienna";
+import {memo} from "react";
 
 export interface ChargeStationMarkerProps {
-  station: ChargeStation & Partial<{availability: ChargeStationAvailability}>;
+  availability: ChargeStationAvailability | undefined;
   isSelected: boolean;
 }
 
-const ChargeStationMarker = (props: ChargeStationMarkerProps) => {
-  const availability = props.station.availability;
+const ChargeStationMarker = ({
+  availability,
+  isSelected,
+}: ChargeStationMarkerProps) => {
   const iconTags = ["charger"];
   if (!availability || !availability.statusKnown) {
     iconTags.push("unknown");
@@ -22,7 +24,7 @@ const ChargeStationMarker = (props: ChargeStationMarkerProps) => {
   } else {
     iconTags.push("more");
   }
-  if (props.isSelected) iconTags.push("selected");
+  if (isSelected) iconTags.push("selected");
 
   const icon = findIcon("png", iconTags);
   if (!icon) return null;
@@ -37,4 +39,4 @@ const ChargeStationMarker = (props: ChargeStationMarkerProps) => {
   );
 };
 
-export default ChargeStationMarker;
+export default memo(ChargeStationMarker);

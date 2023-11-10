@@ -195,7 +195,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                     flat={true}
                     anchor={{x: 0.5, y: 0.5}}
                     calloutAnchor={{x: 0.45, y: 0.25}}>
-                    <ChargeStationMarker station={station} isSelected={appState.selectedChargeStation?.milesId === station.milesId} />
+                    <ChargeStationMarker availability={station.availability} isSelected={appState.selectedChargeStation?.milesId === station.milesId} />
                   </Marker>
                 );
               })}

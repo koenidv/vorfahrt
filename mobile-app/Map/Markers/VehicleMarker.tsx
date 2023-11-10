@@ -9,7 +9,7 @@ type VehicleMarkerProps = {
 };
 
 const VehicleMarker = (props: VehicleMarkerProps) => {
-  const tags = [];
+  const tags: string[] = [];
   tags.push(props.vehicle.model);
   if (props.vehicle.isElectric) {
     switch (props.vehicle.charge) {
@@ -37,7 +37,8 @@ const VehicleMarker = (props: VehicleMarkerProps) => {
   if (props.vehicle.isDiscounted) tags.push("discounted");
   if (props.isSelected) tags.push("selected");
 
-  const icon = findIcon("png", tags);
+  const icon = React.useMemo(() => findIcon("png", tags), [tags]);
+ 
   if (!icon) return null;
 
   return (
