@@ -101,7 +101,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
     };
     if (shouldDisplayWalkingRoute(selfpos, vehicle.coordinates)) {
       appState.setWalkingDirections(
-        await getDirections(selfpos, vehicle.coordinates, Travelmodes.DRIVING),
+        await getDirections(selfpos, vehicle.coordinates, Travelmodes.WALKING),
       );
     }
     fetchDrivingDirections(vehicle, appState.selectedChargeStation);

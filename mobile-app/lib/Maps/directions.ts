@@ -24,7 +24,7 @@ export function shouldDisplayWalkingRoute(origin: Coordinate, destination: Coord
 }
 
 export async function getDirections(origin: Coordinate, destination: Coordinate, travelmode: Travelmodes): Promise<Route|null> {
-    // fixme use env and roll keya
+    // dont-fixme use env and roll keys ... actually, will be embedded in the built app anyways, so no point to hide a restricted key from the repo
     const res = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&mode=${travelmode}&key=AIzaSyCgn2vFW5B5EQckP9TLNMar5CW5-DuL6BQ`);
     
     if (res.status !== 200) {
