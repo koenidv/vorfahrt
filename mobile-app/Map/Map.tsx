@@ -1,7 +1,13 @@
 import mapStyle from "./mapStyle.json";
 import {apiCluster} from "../lib/Miles/apiTypes";
 import MapView, {Marker, PROVIDER_GOOGLE, Polyline} from "react-native-maps";
-import React, {forwardRef, useImperativeHandle, useRef, useState} from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import VehicleMarker from "./Markers/VehicleMarker";
 import ChargeStationMarker from "./Markers/ChargeStationMarker";
 import Borders from "./Borders";
@@ -48,6 +54,16 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
     setIsMapReady(true);
     gotoSelfLocation();
   };
+
+  // fetch vehicles when filters change
+  useEffect(
+    useRef(
+      debounce(() => {
+        handleFetchVehicles();
+      }, 1000),
+    ).current,
+    [filters.vehicleSize, filters.chargeOverflow, filters.engineType],
+  );
 
   const gotoSelfLocation = async () => {
     const pos = await getLocation();
@@ -191,11 +207,20 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                       longitude: station.coordinates.lng,
                     }}
                     onPress={handleChargeStationSelected.bind(this, station)}
-                    tracksViewChanges={appState.selectedChargeStation?.milesId === station.milesId}
+                    tracksViewChanges={
+                      appState.selectedChargeStation?.milesId ===
+                      station.milesId
+                    }
                     flat={true}
                     anchor={{x: 0.5, y: 0.5}}
                     calloutAnchor={{x: 0.45, y: 0.25}}>
-                    <ChargeStationMarker availability={station.availability} isSelected={appState.selectedChargeStation?.milesId === station.milesId} />
+                    <ChargeStationMarker
+                      availability={station.availability}
+                      isSelected={
+                        appState.selectedChargeStation?.milesId ===
+                        station.milesId
+                      }
+                    />
                   </Marker>
                 );
               })}
