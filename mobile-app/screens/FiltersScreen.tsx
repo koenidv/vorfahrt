@@ -117,7 +117,7 @@ const MapScreen = () => {
               value={filters.chargeOverflow}
               onValueChange={value => filters.setChargeOverflow(value[0])}
               minimumValue={0}
-              maximumValue={5}
+              maximumValue={8}
               step={1}
               thumbTintColor={MD3Colors.primary70}
               minimumTrackTintColor={MD3Colors.primary70}
