@@ -3,8 +3,10 @@ import {apiCluster} from "../lib/Miles/apiTypes";
 import MapView, {Marker, PROVIDER_GOOGLE, Polyline} from "react-native-maps";
 import React, {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -30,6 +32,7 @@ import {
   shouldDisplayWalkingRoute,
 } from "../lib/Maps/directions";
 import {ChargeStation, Vehicle} from "../lib/Miles/types";
+import {getChargeStationIcon, getVehicleIcon} from "./getMarkerIcon";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
@@ -166,20 +169,21 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
             loadingEnabled={true}
             moveOnMarkerPress={true}>
             {vehicles.map(pin => {
+              const icon = getVehicleIcon(
+                pin,
+                appState.selectedVehicle?.id === pin.id,
+              );
               return (
                 <Marker
+                  key={icon}
                   coordinate={{
                     latitude: pin.coordinates.lat,
                     longitude: pin.coordinates.lng,
                   }}
                   onPress={handleVehicleSelected.bind(this, pin)}
-                  key={"v_" + pin.id}
-                  tracksViewChanges={appState.selectedVehicle?.id === pin.id}>
-                  <VehicleMarker
-                    vehicle={pin}
-                    isSelected={appState.selectedVehicle?.id === pin.id}
-                  />
-                </Marker>
+                  tracksViewChanges={false}
+                  icon={icon}
+                />
               );
             })}
             {clusters.map(cluster => {
@@ -199,29 +203,25 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
             {(!appState.selectedVehicle ||
               appState.selectedVehicle.isElectric) &&
               stations.map(station => {
+                const availability = station.availability;
+                const isSelected =
+                  appState.selectedChargeStation?.milesId === station.milesId;
+                const icon = getChargeStationIcon(availability, isSelected);
                 return (
                   <Marker
-                    key={"p_" + station.milesId}
+                    key={icon}
                     coordinate={{
                       latitude: station.coordinates.lat,
                       longitude: station.coordinates.lng,
                     }}
                     onPress={handleChargeStationSelected.bind(this, station)}
-                    tracksViewChanges={
-                      appState.selectedChargeStation?.milesId ===
-                      station.milesId
-                    }
+                    tracksViewChanges={false}
+                    icon={icon}
+                    style={{width: 20, height: 20}}
                     flat={true}
                     anchor={{x: 0.5, y: 0.5}}
-                    calloutAnchor={{x: 0.45, y: 0.25}}>
-                    <ChargeStationMarker
-                      availability={station.availability}
-                      isSelected={
-                        appState.selectedChargeStation?.milesId ===
-                        station.milesId
-                      }
-                    />
-                  </Marker>
+                    calloutAnchor={{x: 0.45, y: 0.25}}
+                  />
                 );
               })}
             {appState.walkingDirections && (
