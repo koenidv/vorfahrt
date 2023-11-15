@@ -1,18 +1,20 @@
-import * as React from "react";
-import {Image, View} from "react-native";
+import { memo, useState } from "react";
+import {Image} from "react-native";
 import {Vehicle} from "../../lib/Miles/types";
 import findIcon from "@koenidv/vorfahrt-vienna";
+import {Marker} from "react-native-maps";
 
 type VehicleMarkerProps = {
+  onPress: (vehicle: Vehicle) => void;
   vehicle: Vehicle;
   isSelected: boolean;
 };
 
-const VehicleMarker = (props: VehicleMarkerProps) => {
+function findIconForVehicle(vehicle: Vehicle, isSelected: boolean) {
   const tags: string[] = [];
-  tags.push(props.vehicle.model);
-  if (props.vehicle.isElectric) {
-    switch (props.vehicle.charge) {
+  tags.push(vehicle.model);
+  if (vehicle.isElectric) {
+    switch (vehicle.charge) {
       case 35:
         tags.push("electric_plus5");
         break;
@@ -33,22 +35,35 @@ const VehicleMarker = (props: VehicleMarkerProps) => {
         break;
     }
   } else tags.push("fuel");
-  if (props.vehicle.isPlugged) tags.push("charging");
-  if (props.vehicle.isDiscounted) tags.push("discounted");
-  if (props.isSelected) tags.push("selected");
+  if (vehicle.isPlugged) tags.push("charging");
+  if (vehicle.isDiscounted) tags.push("discounted");
+  if (isSelected) tags.push("selected");
 
-  const icon = React.useMemo(() => findIcon("png", tags), [tags]);
- 
+  return findIcon("png", tags);
+}
+
+const VehicleMarker = (props: VehicleMarkerProps) => {
+  const icon = findIconForVehicle(props.vehicle, props.isSelected);
   if (!icon) return null;
 
+  const [imageLoading, setImageLoading] = useState(true);
+
   return (
-    <View>
+    <Marker
+      coordinate={{
+        latitude: props.vehicle.coordinates.lat,
+        longitude: props.vehicle.coordinates.lng,
+      }}
+      onPress={props.onPress.bind(this, props.vehicle)}
+      key={"v_" + props.vehicle.id}
+      tracksViewChanges={imageLoading || props.isSelected}>
       <Image
+        onLoadEnd={() => setImageLoading(false)}
         source={icon}
         style={{position: "absolute", width: 40, height: 40}}
       />
-    </View>
+    </Marker>
   );
 };
 
-export default VehicleMarker;
+export default memo(VehicleMarker);

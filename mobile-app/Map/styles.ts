@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 export const AppStyles = StyleSheet.create({
     actionbuttoncontainer: {
         backgroundColor: "#1a1a1a",
+        height: 36,
     },
     actionbutton: {
         height: 36,

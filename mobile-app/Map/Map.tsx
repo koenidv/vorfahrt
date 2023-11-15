@@ -165,23 +165,17 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
             toolbarEnabled={false}
             loadingEnabled={true}
             moveOnMarkerPress={true}>
+            
             {vehicles.map(pin => {
               return (
-                <Marker
-                  coordinate={{
-                    latitude: pin.coordinates.lat,
-                    longitude: pin.coordinates.lng,
-                  }}
-                  onPress={handleVehicleSelected.bind(this, pin)}
-                  key={"v_" + pin.id}
-                  tracksViewChanges={appState.selectedVehicle?.id === pin.id}>
                   <VehicleMarker
+                    onPress={handleVehicleSelected.bind(this, pin)}
                     vehicle={pin}
                     isSelected={appState.selectedVehicle?.id === pin.id}
                   />
-                </Marker>
               );
             })}
+
             {clusters.map(cluster => {
               return (
                 <Marker
@@ -200,28 +194,14 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
               appState.selectedVehicle.isElectric) &&
               stations.map(station => {
                 return (
-                  <Marker
-                    key={"p_" + station.milesId}
-                    coordinate={{
-                      latitude: station.coordinates.lat,
-                      longitude: station.coordinates.lng,
-                    }}
+                  <ChargeStationMarker
                     onPress={handleChargeStationSelected.bind(this, station)}
-                    tracksViewChanges={
+                    station={station}
+                    isSelected={
                       appState.selectedChargeStation?.milesId ===
                       station.milesId
                     }
-                    flat={true}
-                    anchor={{x: 0.5, y: 0.5}}
-                    calloutAnchor={{x: 0.45, y: 0.25}}>
-                    <ChargeStationMarker
-                      availability={station.availability}
-                      isSelected={
-                        appState.selectedChargeStation?.milesId ===
-                        station.milesId
-                      }
-                    />
-                  </Marker>
+                  />
                 );
               })}
             {appState.walkingDirections && (

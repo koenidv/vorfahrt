@@ -1,17 +1,24 @@
-import {Image, View} from "react-native";
+import {Image} from "react-native";
 import {ChargeStationAvailability} from "../../lib/ChargeStationAvailabilityType";
 import findIcon from "@koenidv/vorfahrt-vienna";
-import {memo} from "react";
+import {memo, useState} from "react";
+import {ChargeStation, Coordinate} from "../../lib/Miles/types";
+import {Marker} from "react-native-maps";
+
+type ChargeStationAndAvailability = ChargeStation &
+  Partial<{availability: ChargeStationAvailability}>;
 
 export interface ChargeStationMarkerProps {
-  availability: ChargeStationAvailability | undefined;
+  onPress: (station: ChargeStationAndAvailability | undefined) => void;
+  station: ChargeStationAndAvailability | undefined;
   isSelected: boolean;
 }
 
-const ChargeStationMarker = ({
-  availability,
-  isSelected,
-}: ChargeStationMarkerProps) => {
+function findIconForStation(
+  station: ChargeStationAndAvailability,
+  isSelected: boolean,
+) {
+  const {availability} = station;
   const iconTags = ["charger"];
   if (!availability || !availability.statusKnown) {
     iconTags.push("unknown");
@@ -26,16 +33,39 @@ const ChargeStationMarker = ({
   }
   if (isSelected) iconTags.push("selected");
 
-  const icon = findIcon("png", iconTags);
+  return findIcon("png", iconTags);
+}
+
+const ChargeStationMarker = ({
+  onPress,
+  station,
+  isSelected,
+}: ChargeStationMarkerProps) => {
+  if (!station) return null;
+
+  const icon = findIconForStation(station, isSelected);
   if (!icon) return null;
 
+  const [imageLoading, setImageLoading] = useState(true);
+
   return (
-    <View>
+    <Marker
+      key={"p_" + station.milesId}
+      coordinate={{
+        latitude: station.coordinates.lat,
+        longitude: station.coordinates.lng,
+      }}
+      onPress={onPress.bind(this, station)}
+      tracksViewChanges={imageLoading || isSelected}
+      flat={true}
+      anchor={{x: 0.5, y: 0.5}}
+      calloutAnchor={{x: 0.45, y: 0.25}}>
       <Image
+        onLoadEnd={setImageLoading.bind(this, false)}
         source={icon}
         style={{position: "absolute", width: 40, height: 40}}
       />
-    </View>
+    </Marker>
   );
 };
 
