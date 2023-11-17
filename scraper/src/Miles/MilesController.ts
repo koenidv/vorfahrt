@@ -26,7 +26,9 @@ export default class MilesController {
     this.dataSource = appDataSource;
     this.dataHandler = new MilesDataHandler(this.dataSource, this.scraperVehicles);
 
-    this.scraperVehicles.addListener(vehicle => this.dataHandler.handleSingleVehicleResponse(vehicle));
+    this.scraperVehicles.addListener(
+      (vehicle, priority) =>
+        this.dataHandler.handleSingleVehicleResponse(vehicle, priority));
 
     this.prepareCities();
   }

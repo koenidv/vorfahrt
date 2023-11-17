@@ -12,7 +12,7 @@ export default class MilesScraperVehicles {
 
     interval = null;
 
-    listeners: ((vehicle: apiVehicleJsonParsed) => {})[] = [];
+    listeners: ((vehicle: apiVehicleJsonParsed, priority: QueryPriority) => {})[] = [];
 
     constructor(client: MilesClient, requestsPerSecond) {
         this.client = client;
@@ -22,7 +22,8 @@ export default class MilesScraperVehicles {
 
     start() {
         this.interval = setInterval(() => {
-            this.execute(this.selectNext());
+            const { id, priority } = this.selectNext();
+            this.execute(id, priority);
         }, 1000 / this.requestsPerSecond);
     }
 
@@ -30,14 +31,16 @@ export default class MilesScraperVehicles {
         clearInterval(this.interval);
     }
 
-    addListener(listener: (vehicle: apiVehicleJsonParsed) => {}) {
+    addListener(listener: (vehicle: apiVehicleJsonParsed, priority: QueryPriority) => {}) {
         this.listeners.push(listener);
     }
 
     register(vehicleId: number, priority: QueryPriority) {
         if (priority === QueryPriority.LOW) {
+            this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
             this.lowQueue.push(vehicleId);
         } else {
+            this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
             this.normalQueue.push(vehicleId);
         }
     }
@@ -47,24 +50,27 @@ export default class MilesScraperVehicles {
         this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
     }
 
-    private selectNext(): number {
+    private selectNext(): { id: number, priority: QueryPriority } {
         const random = Math.random() * (this.normalQueue.length + this.lowQueue.length);
 
-        let next: number;
+        let id: number;
+        let priority: QueryPriority;
         if (random < QueryPriority.LOW * this.lowQueue.length) {
-            next = this.lowQueue.shift();
-            this.lowQueue.push(next);
+            id = this.lowQueue.shift();
+            this.lowQueue.push(id);
+            priority = QueryPriority.LOW;
         } else {
-            next = this.normalQueue.shift();
-            this.normalQueue.push(next);
+            id = this.normalQueue.shift();
+            this.normalQueue.push(id);
+            priority = QueryPriority.NORMAL;
         }
 
-        if (next === undefined) throw new Error("No next vehicle found");
-        return next;
+        if (id === undefined) throw new Error("No next vehicle found");
+        return { id, priority };
     }
 
 
-    private async execute(vehicleId: number) {
+    private async execute(vehicleId: number, priority: QueryPriority) {
         console.log("Fetching single vehicle", vehicleId)
         const result = await this.client.vehicles.getVehicleById(vehicleId);
 
@@ -84,7 +90,7 @@ export default class MilesScraperVehicles {
         const vehicle = result.Data.vehicle[0]
         const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
 
-        this.listeners.forEach(listener => listener(vehicleParsed));
+        this.listeners.forEach(listener => listener(vehicleParsed,));
     }
 
 }
