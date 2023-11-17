@@ -1,16 +1,16 @@
 import { MilesClient } from "@koenidv/abfahrt";
 import { DataSource } from "typeorm";
-import MilesDatabase from "./MilesDatabase";
+import MilesDataHandler from "./DataStore/MilesDataHandler";
 import env from "../env";
-import MilesScraperCities from "./MilesScraperCities";
-import MilesScraperVehicles, { QueryPriority } from "./MilesScraperVehicles";
+import MilesScraperCities from "./Scraping/MilesScraperCities";
+import MilesScraperVehicles, { QueryPriority } from "./Scraping/MilesScraperVehicles";
 
 export default class MilesController {
   abfahrtClient: MilesClient;
   scraperCities: MilesScraperCities;
   scraperVehicles: MilesScraperVehicles;
   dataSource: DataSource;
-  database: MilesDatabase;
+  database: MilesDataHandler;
 
   constructor(appDataSource: DataSource) {
     console.log("miles account email:", env.milesAccountEmail);
@@ -21,7 +21,7 @@ export default class MilesController {
     this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 5);
 
     this.dataSource = appDataSource;
-    this.database = new MilesDatabase(this.dataSource);
+    this.database = new MilesDataHandler(this.dataSource);
   }
 
 }

@@ -1,5 +1,5 @@
 import { MilesClient } from "@koenidv/abfahrt"
-import MilesScraperVehicles, { QueryPriority } from "../../src/Miles/MilesScraperVehicles"
+import MilesScraperVehicles, { QueryPriority } from "../../src/Miles/Scraping/MilesScraperVehicles"
 
 describe("MilesScraperVehicles", () => {
 
