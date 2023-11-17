@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm"
 import { MilesCityMeta } from "../Miles.types";
 import { City } from "../../entity/Miles/City";
-import Point from "../utils/Point";
+import GeoPoint from "../utils/GeoPoint";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { VehicleSize } from "../../entity/Miles/VehicleSize";
@@ -29,7 +29,7 @@ export class MilesRelationalStore {
         const city = new City();
         city.milesId = data.idCity;
         city.name = data.name;
-        city.location = new Point(data.location_lat, data.location_long).toString();
+        city.location = new GeoPoint(data.location_lat, data.location_long).toString();
         return await this.manager.insert(City, city);
     }
 

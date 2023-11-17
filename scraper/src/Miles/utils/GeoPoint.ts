@@ -1,4 +1,4 @@
-export default class Point {
+export default class GeoPoint {
     lat: number;
     lng: number;
 
@@ -18,7 +18,7 @@ export default class Point {
         return new this(lat, lng);
     }
 
-    public equalsWithTolerance(compare: Point, tolerance: number = 0.005) {
+    public equalsWithTolerance(compare: GeoPoint, tolerance: number = 0.005) {
         return Math.abs(this.lat - compare.lat) < tolerance && Math.abs(this.lng - compare.lng) < tolerance;
     }
 

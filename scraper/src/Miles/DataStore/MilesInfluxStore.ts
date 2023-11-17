@@ -1,33 +1,51 @@
-import { WriteApi, Point } from "@influxdata/influxdb-client";
+import { WriteApi, Point, QueryApi } from "@influxdata/influxdb-client";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-
+import { FieldComparison, InfluxVehicleComparison } from "./InfluxVehicleComparison";
+import { VEHICLE_TRACKED_FIELDS } from "../../InfluxConfig";
 
 export class MilesInfluxStore {
-    influxClient: WriteApi;
+    writeClient: WriteApi;
+    queryClient: QueryApi;
 
-    constructor(influxClient: WriteApi) {
-        this.influxClient = influxClient;
+    constructor(writeClient: WriteApi, queryClient: QueryApi) {
+        this.writeClient = writeClient;
+        this.queryClient = queryClient;
     }
 
     handleVehicle(vehicle: apiVehicleJsonParsed) {
-        this.tempWriteVehicle(vehicle);
-    } 
-
-    async tempWriteVehicle(vehicle: apiVehicleJsonParsed) {
-        //fixme location point should be renamed
-        const location = new Point("location")
-        .tag("vehicleId", vehicle.idVehicle.toString())
-        .tag("licensePlate", vehicle.LicensePlate)
-        .tag("model", vehicle.VehicleType)
-        .tag("isCharity", vehicle.isCharity.toString())
-        .tag("vehicleSize", vehicle.VehicleSize)
-        .tag("state", vehicle.idVehicleStatus.toString())
-        .floatField("latitude", vehicle.Latitude)
-        .floatField("longitude", vehicle.Longitude)
-        .intField("charge", vehicle.FuelPct_parsed)
-        
-        this.influxClient.writePoint(location);
+        this.saveChangedVehicle(vehicle);
     }
 
-    
+    async saveChangedVehicle(newVehicle: apiVehicleJsonParsed) {
+        const currentVehicle = await this.queryCurrentVehicle(newVehicle.idVehicle) as any;
+        const basePoint = new Point("vehicle")
+            .tag("vehicleId", newVehicle.idVehicle.toString())
+
+        const modifiedPoint =
+            new InfluxVehicleComparison(currentVehicle, newVehicle, basePoint)
+                .applyLocationChange()
+                .applyDiscountedChange()
+                .applyDamageCountChange()
+                .applyChanges(VEHICLE_TRACKED_FIELDS)
+                .point
+
+        this.writeClient.writePoint(modifiedPoint);
+    }
+
+
+    async queryCurrentVehicle(vehicleId: number) {
+        const rows = await this.queryClient.collectRows(`
+            from(bucket: "miles")
+            |> range(start: -12h)
+            |> filter(fn: (r) => r.vehicleId == ${Number(vehicleId)}) 
+            |> group(columns: ["_field"]) 
+            |> last() 
+            |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")`
+        )
+        if (rows.length === 0) return {};
+        return rows[0];
+    }
+
+
+
 }

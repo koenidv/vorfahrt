@@ -4,7 +4,7 @@ import { MilesRelationalStore } from "./MilesRelationalStore";
 import { MilesCityMeta } from "../Miles.types";
 import MilesScraperVehicles, { QueryPriority } from "../Scraping/MilesScraperVehicles";
 import { MilesClient, MilesVehicleStatus, getInfoFromMilesVehicleStatus } from "@koenidv/abfahrt";
-import { WriteApi } from "@influxdata/influxdb-client";
+import { QueryApi, WriteApi } from "@influxdata/influxdb-client";
 import { MilesInfluxStore } from "./MilesInfluxStore";
 
 export default class MilesDataHandler {
@@ -12,9 +12,9 @@ export default class MilesDataHandler {
   influxStore: MilesInfluxStore;
   vehicleScraper: MilesScraperVehicles;
 
-  constructor(dataSource: DataSource, influxClient: WriteApi, vehicleScraper: MilesScraperVehicles) {
+  constructor(dataSource: DataSource, influxWriteClient: WriteApi, influxQueryClient: QueryApi, vehicleScraper: MilesScraperVehicles) {
     this.relationalStore = new MilesRelationalStore(dataSource.manager);
-    this.influxStore = new MilesInfluxStore(influxClient);
+    this.influxStore = new MilesInfluxStore(influxWriteClient, influxQueryClient);
     this.vehicleScraper = vehicleScraper;
   }
 

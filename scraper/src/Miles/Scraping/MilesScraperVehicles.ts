@@ -22,8 +22,9 @@ export default class MilesScraperVehicles {
 
     start() {
         this.interval = setInterval(() => {
-            const { id, priority } = this.selectNext();
-            this.execute(id, priority);
+            const next = this.selectNext()
+            if (next !== null)
+                this.execute(next.id, next.priority);
         }, 1000 / this.requestsPerSecond);
     }
 
@@ -50,7 +51,7 @@ export default class MilesScraperVehicles {
         this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
     }
 
-    private selectNext(): { id: number, priority: QueryPriority } {
+    private selectNext(): { id: number, priority: QueryPriority } | null {
         const random = Math.random() * (this.normalQueue.length + this.lowQueue.length);
 
         let id: number;
@@ -65,7 +66,10 @@ export default class MilesScraperVehicles {
             priority = QueryPriority.NORMAL;
         }
 
-        if (id === undefined) throw new Error("No next vehicle found");
+        if (id === undefined) {
+            console.warn("No vehicles in queue, single vehicle scraping will be skipped")
+            return null;
+        }
         return { id, priority };
     }
 
