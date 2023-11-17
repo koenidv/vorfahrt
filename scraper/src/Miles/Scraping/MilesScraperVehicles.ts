@@ -71,26 +71,29 @@ export default class MilesScraperVehicles {
 
 
     private async execute(vehicleId: number, priority: QueryPriority) {
-        console.log("Fetching single vehicle", vehicleId)
-        const result = await this.client.vehicles.getVehicleById(vehicleId);
+        try {
+            const result = await this.client.vehicles.getVehicleById(vehicleId);
 
-        if (result.ResponseText === "Vehicle ID not found") {
-            console.info("Vehicle", vehicleId, "not found and removed from future queue")
-            this.deregister(vehicleId);
-            return;
+            if (result.ResponseText === "Vehicle ID not found") {
+                console.info("Vehicle", vehicleId, "not found and removed from future queue")
+                this.deregister(vehicleId);
+                return;
+            }
+
+            if (result.Result !== "OK") {
+                console.warn("Vehicle", vehicleId, "returned error", result.Result);
+                console.warn(result);
+                return;
+            }
+
+
+            const vehicle = result.Data.vehicle[0]
+            const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
+
+            this.listeners.forEach(listener => listener(vehicleParsed, priority));
+        } catch (e) {
+            console.error(e);
         }
-
-        if (result.Result !== "OK") {
-            console.warn("Vehicle", vehicleId, "returned error", result.Result);
-            console.warn(result);
-            return;
-        }
-
-
-        const vehicle = result.Data.vehicle[0]
-        const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
-
-        this.listeners.forEach(listener => listener(vehicleParsed,));
     }
 
 }

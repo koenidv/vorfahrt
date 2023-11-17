@@ -5,6 +5,7 @@ import env from "../env";
 import MilesScraperCities from "./Scraping/MilesScraperCities";
 import MilesScraperVehicles, { QueryPriority } from "./Scraping/MilesScraperVehicles";
 import { MilesCityMeta } from "./Miles.types";
+import { InfluxDB, WriteApi } from "@influxdata/influxdb-client";
 
 export default class MilesController {
   abfahrtClient: MilesClient;
@@ -13,6 +14,7 @@ export default class MilesController {
   scraperVehicles: MilesScraperVehicles;
 
   dataSource: DataSource;
+  influxClient: WriteApi;
   dataHandler: MilesDataHandler;
 
   constructor(appDataSource: DataSource) {
@@ -21,10 +23,13 @@ export default class MilesController {
     this.abfahrtClient = new MilesClient();
 
     this.scraperCities = new MilesScraperCities(this.abfahrtClient, 120);
-    this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 2);
+    this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 0.1);
 
     this.dataSource = appDataSource;
-    this.dataHandler = new MilesDataHandler(this.dataSource, this.scraperVehicles);
+    const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken });
+    this.influxClient = influxdb.getWriteApi("vorfahrt", "miles");
+
+    this.dataHandler = new MilesDataHandler(this.dataSource, this.influxClient, this.scraperVehicles);
 
     this.scraperVehicles.addListener(
       (vehicle, priority) =>
@@ -40,7 +45,7 @@ export default class MilesController {
     await this.dataHandler.handleCitiesMeta(cities);
     // todo register cities with cities scraper
 
-    Array.from({ length: 200 }, (_, i) => 20300 + i).forEach(i => {
+    Array.from({ length: 1 }, (_, i) => 20002 + i).forEach(i => {
       this.scraperVehicles.register(i, QueryPriority.NORMAL);
     })
     this.scraperVehicles.start();

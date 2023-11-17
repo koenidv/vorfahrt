@@ -36,6 +36,8 @@
     "typescript": "4.5.2"
   },
   "dependencies": {
+    "@influxdata/influxdb-client": "^1.33.2",
+    "@influxdata/influxdb-client-apis": "^1.33.2",
     "@koenidv/abfahrt": "^0.0.14",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
