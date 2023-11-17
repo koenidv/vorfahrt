@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  In,
   Index,
   JoinColumn,
   ManyToOne,
@@ -13,7 +12,6 @@ import {
 import { VehicleModel } from "./VehicleModel";
 import { City } from "./City";
 import { VehicleDamage } from "./VehicleDamage";
-import { VehicleCurrent } from "./VehicleCurrent";
 
 @Entity({
   name: "MilesVehicleMeta",
@@ -36,9 +34,6 @@ export class VehicleMeta {
   model: VehicleModel;
   @Column()
   modelId: number;
-
-  @OneToOne(() => VehicleCurrent, (current) => current.vehicle, { cascade: ["insert"] })
-  current: VehicleCurrent;
 
   @Column()
   color: string;

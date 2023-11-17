@@ -8,7 +8,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { CityToCityPricing } from "./CityToCityPricing";
 import { VehicleSize } from "./VehicleSize";
 import { VehicleMeta } from "./VehicleMeta";
 import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
@@ -29,9 +28,6 @@ export class VehicleModel {
   size: VehicleSize;
   @Column()
   sizeId: number;
-
-  @OneToMany(() => CityToCityPricing, (pricing) => pricing.size)
-  cityToCityPricing: CityToCityPricing[];
 
   @Column("int2")
   seats: number;
