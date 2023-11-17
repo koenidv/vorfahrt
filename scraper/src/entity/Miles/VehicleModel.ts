@@ -41,7 +41,7 @@ export class VehicleModel {
   @Column("char")
   transmission: keyof typeof MilesVehicleTransmissionReturn;
 
-  @Column()
+  @Column("varchar")
   fuelType: keyof typeof MilesVehicleFuelReturn;
 
   @OneToMany(() => VehicleMeta, (meta) => meta.model)

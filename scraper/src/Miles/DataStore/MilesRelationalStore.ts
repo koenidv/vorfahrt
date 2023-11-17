@@ -6,6 +6,7 @@ import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { VehicleSize } from "../../entity/Miles/VehicleSize";
 import { VehicleModel } from "../../entity/Miles/VehicleModel";
+import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
 
 export class MilesRelationalStore {
     manager: EntityManager;
@@ -71,8 +72,21 @@ export class MilesRelationalStore {
         return await this.manager.save(VehicleSize, size);
     }
 
-    private async createVehicleModel(vehicle: apiVehicleJsonParsed, size: VehicleSize): Promise<VehicleModel {
+    private async createVehicleModel(vehicle: apiVehicleJsonParsed, size: VehicleSize): Promise<VehicleModel> {
         const existing = await this.manager.findOne(VehicleModel, { where: { name: vehicle.VehicleType } });
+        if (existing) return existing;
 
+        const vehicleDetails = vehicle.JSONFullVehicleDetails.vehicleDetails;
+        if (!vehicleDetails) throw new Error(`Cannot insert ${vehicle.idVehicle}, no vehicle details found`);
+
+        const model = new VehicleModel();
+        model.name = vehicle.VehicleType;
+        model.size = size;
+        model.seats = Number(vehicleDetails.find(d => d.key === "vehicle_details_seats").value);
+        model.electric = vehicle.isElectric;
+        model.enginePower = vehicle.EnginePower;
+        model.transmission = vehicleDetails.find(d => d.key === "vehicle_details_transmission").value as keyof typeof MilesVehicleTransmissionReturn;
+        model.fuelType = vehicleDetails.find(d => d.key === "vehicle_details_fuel").value as keyof typeof MilesVehicleFuelReturn;
+        return await this.manager.save(VehicleModel, model);
     }
 }

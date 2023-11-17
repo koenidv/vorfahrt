@@ -7,10 +7,13 @@ import MilesScraperVehicles, { QueryPriority } from "./Scraping/MilesScraperVehi
 
 export default class MilesController {
   abfahrtClient: MilesClient;
+
+  scraperMeta: MilesScraperCities;
   scraperCities: MilesScraperCities;
-  scraperVehicles: MilesScraperVehicles;
+  scraperVehicles: MilesScraperVehicles;  
+
   dataSource: DataSource;
-  database: MilesDataHandler;
+  dataHandler: MilesDataHandler;
 
   constructor(appDataSource: DataSource) {
     console.log("miles account email:", env.milesAccountEmail);
@@ -21,7 +24,7 @@ export default class MilesController {
     this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 5);
 
     this.dataSource = appDataSource;
-    this.database = new MilesDataHandler(this.dataSource);
+    this.dataHandler = new MilesDataHandler(this.dataSource);
   }
 
 }
