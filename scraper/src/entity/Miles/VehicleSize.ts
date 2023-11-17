@@ -24,6 +24,8 @@ export class VehicleSize {
   @OneToMany(() => VehicleModel, (model) => model.size)
   models: VehicleModel[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    precision: 0,
+  })
   added: Date;
 }

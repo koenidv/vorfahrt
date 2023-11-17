@@ -3,10 +3,8 @@ import {
   CreateDateColumn,
   Entity,
   Index,
-  JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { VehicleModel } from "./VehicleModel";
@@ -14,10 +12,10 @@ import { City } from "./City";
 import { VehicleDamage } from "./VehicleDamage";
 
 @Entity({
-  name: "MilesVehicleMeta",
+  name: "MilesVehicle",
 })
 export class VehicleMeta {
-  
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -30,29 +28,26 @@ export class VehicleMeta {
   licensePlate: string;
 
   @ManyToOne(() => VehicleModel, (model) => model.vehicles)
-  @JoinColumn({ name: "modelId" })
   model: VehicleModel;
-  @Column()
-  modelId: number;
 
   @Column()
   color: string;
 
   @ManyToOne(() => City)
-  @JoinColumn({ name: "firstCityId" })
-  firstCity: City;
-  @Column()
-  firstCityId: number;
+  firstFoundCity: City;
 
   @Column()
   isCharity: boolean;
 
   @Column()
-  imageUrl: string;
+  // prepend this with https://api.app.miles-mobility.com/static/img/cars/small/ for the url
+  image: string;
 
   @OneToMany(() => VehicleDamage, (damage) => damage.vehicle)
   damages: VehicleDamage[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    precision: 0,
+  })
   added: Date;
 }

@@ -3,8 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   Index,
-  ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -25,6 +23,8 @@ export class City {
   @Column("point")
   location: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    precision: 0,
+  })
   added: Date;
 }

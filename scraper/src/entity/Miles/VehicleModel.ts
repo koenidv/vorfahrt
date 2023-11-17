@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   Index,
-  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -24,10 +23,7 @@ export class VehicleModel {
   name: string;
 
   @ManyToOne(() => VehicleSize, (size) => size.models)
-  @JoinColumn({ name: "sizeId" })
   size: VehicleSize;
-  @Column()
-  sizeId: number;
 
   @Column("int2")
   seats: number;
@@ -38,7 +34,7 @@ export class VehicleModel {
   @Column("int2")
   enginePower: number;
 
-  @Column("char")
+  @Column("varchar")
   transmission: keyof typeof MilesVehicleTransmissionReturn;
 
   @Column("varchar")
@@ -47,6 +43,8 @@ export class VehicleModel {
   @OneToMany(() => VehicleMeta, (meta) => meta.model)
   vehicles: VehicleMeta[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    precision: 0,
+  })
   added: Date;
 }

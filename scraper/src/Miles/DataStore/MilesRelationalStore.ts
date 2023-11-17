@@ -52,11 +52,12 @@ export class MilesRelationalStore {
         newVehicle.milesId = vehicle.idVehicle;
         newVehicle.licensePlate = vehicle.LicensePlate;
         newVehicle.model = await this.createVehicleModel(vehicle,
-            await this.createVehicleSize(vehicle.VehicleType));
+            await this.createVehicleSize(vehicle.VehicleSize));
         newVehicle.color = vehicle.VehicleColor;
-        newVehicle.firstCity = firstCity;
+        newVehicle.firstFoundCity = firstCity;
         newVehicle.isCharity = vehicle.isCharity;
-        newVehicle.imageUrl = vehicle.URLVehicleImage;
+        newVehicle.image = vehicle.URLVehicleImage
+            .replace("https://api.app.miles-mobility.com/static/img/cars/small/", "");
 
         await this.manager.save(newVehicle);
     }

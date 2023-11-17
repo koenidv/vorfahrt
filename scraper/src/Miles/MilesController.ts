@@ -10,7 +10,7 @@ export default class MilesController {
   abfahrtClient: MilesClient;
 
   scraperCities: MilesScraperCities;
-  scraperVehicles: MilesScraperVehicles;  
+  scraperVehicles: MilesScraperVehicles;
 
   dataSource: DataSource;
   dataHandler: MilesDataHandler;
@@ -21,10 +21,12 @@ export default class MilesController {
     this.abfahrtClient = new MilesClient();
 
     this.scraperCities = new MilesScraperCities(this.abfahrtClient, 120);
-    this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 5);
+    this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 2);
 
     this.dataSource = appDataSource;
-    this.dataHandler = new MilesDataHandler(this.dataSource);
+    this.dataHandler = new MilesDataHandler(this.dataSource, this.scraperVehicles);
+
+    this.scraperVehicles.addListener(vehicle => this.dataHandler.handleSingleVehicleResponse(vehicle));
 
     this.prepareCities();
   }
@@ -35,6 +37,11 @@ export default class MilesController {
     console.info("Found", cities.length, "cities");
     await this.dataHandler.handleCitiesMeta(cities);
     // todo register cities with cities scraper
+
+    Array.from({ length: 200 }, (_, i) => 20300 + i).forEach(i => {
+      this.scraperVehicles.register(i, QueryPriority.NORMAL);
+    })
+    this.scraperVehicles.start();
   }
 
 }

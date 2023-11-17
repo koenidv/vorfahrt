@@ -1,4 +1,5 @@
-import { MilesClient } from "@koenidv/abfahrt";
+import { JsonParseBehaviour, MilesClient, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
+import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
 
@@ -11,6 +12,8 @@ export default class MilesScraperVehicles {
 
     interval = null;
 
+    listeners: ((vehicle: apiVehicleJsonParsed) => {})[] = [];
+
     constructor(client: MilesClient, requestsPerSecond) {
         this.client = client;
         this.requestsPerSecond = requestsPerSecond;
@@ -20,11 +23,15 @@ export default class MilesScraperVehicles {
     start() {
         this.interval = setInterval(() => {
             this.execute(this.selectNext());
-        }, 1000 / this.requestsPerSecond);            
+        }, 1000 / this.requestsPerSecond);
     }
 
     stop() {
         clearInterval(this.interval);
+    }
+
+    addListener(listener: (vehicle: apiVehicleJsonParsed) => {}) {
+        this.listeners.push(listener);
     }
 
     register(vehicleId: number, priority: QueryPriority) {
@@ -41,10 +48,10 @@ export default class MilesScraperVehicles {
     }
 
     private selectNext(): number {
-        const random = Math.random();
+        const random = Math.random() * (this.normalQueue.length + this.lowQueue.length);
 
         let next: number;
-        if (random < QueryPriority.LOW) {
+        if (random < QueryPriority.LOW * this.lowQueue.length) {
             next = this.lowQueue.shift();
             this.lowQueue.push(next);
         } else {
@@ -52,14 +59,32 @@ export default class MilesScraperVehicles {
             this.normalQueue.push(next);
         }
 
-        if (!next) throw new Error("No next vehicle found");
+        if (next === undefined) throw new Error("No next vehicle found");
         return next;
     }
 
 
     private async execute(vehicleId: number) {
-        console.log("executing", vehicleId)
-        // todo deregister vehicle if not found
+        console.log("Fetching single vehicle", vehicleId)
+        const result = await this.client.vehicles.getVehicleById(vehicleId);
+
+        if (result.ResponseText === "Vehicle ID not found") {
+            console.info("Vehicle", vehicleId, "not found and removed from future queue")
+            this.deregister(vehicleId);
+            return;
+        }
+
+        if (result.Result !== "OK") {
+            console.warn("Vehicle", vehicleId, "returned error", result.Result);
+            console.warn(result);
+            return;
+        }
+
+
+        const vehicle = result.Data.vehicle[0]
+        const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
+
+        this.listeners.forEach(listener => listener(vehicleParsed));
     }
 
 }
