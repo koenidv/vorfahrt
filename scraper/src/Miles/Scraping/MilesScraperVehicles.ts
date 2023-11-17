@@ -59,6 +59,7 @@ export default class MilesScraperVehicles {
 
     private async execute(vehicleId: number) {
         console.log("executing", vehicleId)
+        // todo deregister vehicle if not found
     }
 
 }

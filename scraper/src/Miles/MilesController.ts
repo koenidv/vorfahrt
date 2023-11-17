@@ -4,11 +4,11 @@ import MilesDataHandler from "./DataStore/MilesDataHandler";
 import env from "../env";
 import MilesScraperCities from "./Scraping/MilesScraperCities";
 import MilesScraperVehicles, { QueryPriority } from "./Scraping/MilesScraperVehicles";
+import { MilesCityMeta } from "./Miles.types";
 
 export default class MilesController {
   abfahrtClient: MilesClient;
 
-  scraperMeta: MilesScraperCities;
   scraperCities: MilesScraperCities;
   scraperVehicles: MilesScraperVehicles;  
 
@@ -25,6 +25,16 @@ export default class MilesController {
 
     this.dataSource = appDataSource;
     this.dataHandler = new MilesDataHandler(this.dataSource);
+
+    this.prepareCities();
+  }
+
+  async prepareCities() {
+    const citiesJson = (await this.abfahrtClient.getCityAreas()).Data.JSONCites;
+    const cities = JSON.parse(citiesJson) as MilesCityMeta[];
+    console.info("Found", cities.length, "cities");
+    await this.dataHandler.handleCitiesMeta(cities);
+    // todo register cities with cities scraper
   }
 
 }

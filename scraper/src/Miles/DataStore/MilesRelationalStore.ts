@@ -20,14 +20,16 @@ export class MilesRelationalStore {
      * @param cities Array of cities from UserHello
      */
     async insertCitiesMeta(...cities: MilesCityMeta[]) {
-        return await Promise.all(cities.map(city => this.insertCityMeta(city)));
+        return await Promise.all(cities.map(city => this.createCityMeta(city)));
     }
 
-    private async insertCityMeta(data: MilesCityMeta) {
+    private async createCityMeta(data: MilesCityMeta) {
+        if (await this.manager.exists(City, { where: { milesId: data.idCity } })) return;
+
         const city = new City();
-        city.milesId = data.milesId;
+        city.milesId = data.idCity;
         city.name = data.name;
-        city.location = new Point(data.latitude, data.longitude).toString();
+        city.location = new Point(data.location_lat, data.location_long).toString();
         return await this.manager.insert(City, city);
     }
 

@@ -1,6 +1,6 @@
 export type MilesCityMeta = {
-    milesId: string;
+    idCity: string;
     name: string;
-    latitude: number;
-    longitude: number;
+    location_lat: number;
+    location_long: number;
 }
