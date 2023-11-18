@@ -29,7 +29,8 @@ export class MilesInfluxStore {
                 .applyChanges(VEHICLE_TRACKED_FIELDS)
                 .point
 
-        this.writeClient.writePoint(modifiedPoint);
+        if (Object.keys(modifiedPoint.fields).length !== 0)
+            this.writeClient.writePoint(modifiedPoint);
     }
 
 
@@ -37,7 +38,7 @@ export class MilesInfluxStore {
         const rows = await this.queryClient.collectRows(`
             from(bucket: "miles")
             |> range(start: -12h)
-            |> filter(fn: (r) => r.vehicleId == ${Number(vehicleId)}) 
+            |> filter(fn: (r) => r.vehicleId == "${Number(vehicleId)}") 
             |> group(columns: ["_field"]) 
             |> last() 
             |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")`

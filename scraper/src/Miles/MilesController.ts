@@ -24,7 +24,7 @@ export default class MilesController {
     this.abfahrtClient = new MilesClient();
 
     this.scraperCities = new MilesScraperCities(this.abfahrtClient, 120);
-    this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 0.1);
+    this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 2);
 
     this.dataSource = appDataSource;
     const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken });
@@ -46,7 +46,7 @@ export default class MilesController {
     await this.dataHandler.handleCitiesMeta(cities);
     // todo register cities with cities scraper
 
-    Array.from({ length: 1 }, (_, i) => 20002 + i).forEach(i => {
+    Array.from({ length: 100 }, (_, i) => 20000 + i).forEach(i => {
       this.scraperVehicles.register(i, QueryPriority.NORMAL);
     })
     this.scraperVehicles.start();

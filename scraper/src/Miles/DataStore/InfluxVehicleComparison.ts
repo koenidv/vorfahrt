@@ -51,7 +51,7 @@ export class InfluxVehicleComparison {
     }
 
     applyDamageCountChange(): InfluxVehicleComparison {
-        const newDamageCount = this.newVehicle.JSONVehicleDamages.length;
+        const newDamageCount = this.newVehicle.JSONVehicleDamages?.length || 0;
         this.applyChange(this.currentVehicle["damageCount"], newDamageCount, "damageCount", FieldType.INT);
         return this;
     }

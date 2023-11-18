@@ -26,15 +26,19 @@ export default class MilesDataHandler {
     this.relationalStore.handleVehicle(vehicle);
     this.influxStore.handleVehicle(vehicle);
 
+    
+    //this.handleMoveQueues(vehicle, priority);
+  }
+  
+  private handleMoveQueues(vehicle: apiVehicleJsonParsed, priority: QueryPriority) {
     if (vehicle.idVehicleStatus === MilesVehicleStatus.DEPLOYED_FOR_RENTAL) {
       this.vehicleScraper.deregister(vehicle.idVehicle);
     }
-
+  
     if (priority !== QueryPriority.LOW &&
       getInfoFromMilesVehicleStatus(vehicle.idVehicleStatus as keyof typeof MilesVehicleStatus).isInLifecycle) {
       this.vehicleScraper.register(vehicle.idVehicle, QueryPriority.LOW);
     }
-
   }
 
 }
