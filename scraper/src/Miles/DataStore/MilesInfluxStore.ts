@@ -1,7 +1,7 @@
 import { WriteApi, Point, QueryApi } from "@influxdata/influxdb-client";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { FieldComparison, InfluxVehicleComparison } from "./InfluxVehicleComparison";
-import { VEHICLE_TRACKED_FIELDS } from "../../InfluxConfig";
+import { VEHICLE_TRACKED_FIELDS } from "../InfluxVehicleComparison.config";
 
 export class MilesInfluxStore {
     writeClient: WriteApi;
@@ -26,6 +26,7 @@ export class MilesInfluxStore {
             new InfluxVehicleComparison(currentVehicle, newVehicle, basePoint)
                 .checkForStatusChange()
                 .applyLocationChange()
+                .applyChargingChange()
                 .applyDiscountedChange()
                 .applyDamageCountChange()
                 .applyChanges(VEHICLE_TRACKED_FIELDS)

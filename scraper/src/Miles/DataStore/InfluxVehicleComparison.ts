@@ -28,7 +28,7 @@ export class InfluxVehicleComparison {
         this._point = point;
     }
 
-    checkForStatusChange(): InfluxVehicleComparison {
+    checkForStatusChange(): this {
         if (this.currentVehicle["status"] !== this.newVehicle.idVehicleStatus) {
             this.overrideAddAllFields = true;
             this._point.stringField("statusChangedFrom", this.currentVehicle["status"]);
@@ -36,7 +36,7 @@ export class InfluxVehicleComparison {
         return this;
     }
 
-    applyLocationChange(): InfluxVehicleComparison {
+    applyLocationChange(): this {
         if (!this.currentVehicle["latitude"] || !this.currentVehicle["longitude"]) {
             this.applyLocationFields();
             return this;
@@ -54,19 +54,27 @@ export class InfluxVehicleComparison {
         this.applyField(this.newVehicle.Longitude, "longitude", FieldType.FLOAT);
     }
 
-    applyDiscountedChange(): InfluxVehicleComparison {
+    applyChargingChange(): this {
+        const charging =
+            this.newVehicle.EVPlugged ||
+            this.newVehicle.JSONFullVehicleDetails.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged");
+        this.applyChange(this.currentVehicle["charging"], charging, "charging", FieldType.BOOLEAN);
+        return this;
+    }
+
+    applyDiscountedChange(): this {
         const isDiscounted = this.newVehicle.RentalPrice_discounted_parsed !== null;
         this.applyChange(this.currentVehicle["discounted"], isDiscounted, "discounted", FieldType.BOOLEAN);
         return this;
     }
 
-    applyDamageCountChange(): InfluxVehicleComparison {
+    applyDamageCountChange(): this {
         const newDamageCount = this.newVehicle.JSONVehicleDamages?.length || 0;
         this.applyChange(this.currentVehicle["damageCount"], newDamageCount, "damageCount", FieldType.INT);
         return this;
     }
 
-    applyChanges(comparisons: FieldComparison[]): InfluxVehicleComparison {
+    applyChanges(comparisons: FieldComparison[]): this {
         comparisons.forEach(this.applyComparison, this);
         return this;
     }
