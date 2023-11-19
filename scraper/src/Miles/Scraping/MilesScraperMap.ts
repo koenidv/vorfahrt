@@ -18,8 +18,10 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
 
     setAreas(cities: MilesCityAreaBounds[]) {
-        this.cities = cities;
-        this.cycle();
+        if (cities.toString() !== this.cities.toString()) {
+            this.cities = cities;
+            this.log("Now tracking", cities.length, "cities")
+        }
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[] } | null> {
@@ -101,7 +103,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             return acc;
         }, {} as { [key: string]: number });
 
-        return {
+        const status = {
             citiesCount: this.cities.length,
             requestsExecuted: this.requestsExecuted,
             vehiclesFound: this.vehiclesFound,
@@ -109,6 +111,12 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             OK: responseTypesCount["OK"] || 0,
             API_ERROR: responseTypesCount["API_ERROR"] || 0,
         }
+        this.requestsExecuted = 0;
+        this.vehiclesFound = 0;
+        this.responseTimes = [];
+        this.responseTypes = [];
+
+        return status;
     }
 
 }
