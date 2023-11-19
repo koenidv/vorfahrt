@@ -3,10 +3,10 @@ import { Scraper } from "../ScraperInterface";
 import { QueryPriority } from "./Scraping/MilesScraperVehicles";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 
-export abstract class BaseMilesScraper implements Scraper {
+export abstract class BaseMilesScraper<T> implements Scraper {
     public scraperId: string;
     protected abfahrt: MilesClient;
-    protected listeners: ((vehicle: any[], source: QueryPriority | string) => void)[] = [];
+    protected listeners: ((data: T[], source: QueryPriority | string) => void)[] = [];
 
     private cycleTime: number;
     private interval: NodeJS.Timeout;
@@ -15,7 +15,7 @@ export abstract class BaseMilesScraper implements Scraper {
         this.abfahrt = abfahrt;
         this.cycleTime = 1000 / (cyclesMinute / 60);
         this.scraperId = scraperId;
-        console.log(this.scraperId, `Initialized with ${cyclesMinute}c/min (${this.cycleTime}ms/c)`)
+        console.log(this.scraperId, `Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+this.cycleTime.toFixed(3)}ms/c)`)
 
     }
 
@@ -29,7 +29,7 @@ export abstract class BaseMilesScraper implements Scraper {
         return this;
     }
 
-    addListener(listener: (vehicles: apiVehicleJsonParsed[], source: QueryPriority | string) => void): this {
+    addListener(listener: (vehicles: T[], source: QueryPriority | string) => void): this {
         this.listeners.push(listener);
         return this;
     }

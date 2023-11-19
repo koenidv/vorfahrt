@@ -4,7 +4,7 @@ import { BaseMilesScraper } from "../BaseMilesScraper";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
 
-export default class MilesScraperVehicles extends BaseMilesScraper {
+export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJsonParsed> {
     private normalQueue: number[] = [];
     private lowQueue: number[] = [];
     
