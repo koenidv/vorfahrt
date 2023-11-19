@@ -7,9 +7,10 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityAr
     lastResponseTime: number;
     lastCitiesCount: number;
 
-    async cycle() {
-        const citiesMeta = await this.fetch();
-        this.listeners.forEach(listener => listener(citiesMeta, this.scraperId));
+    async cycle(): Promise<{ data: MilesCityAreaBounds[] } | null> {
+        const data = await this.fetch();
+        if (data === null) return null;
+        return { data }
     }
 
     async fetch(): Promise<MilesCityAreaBounds[]> {
@@ -25,7 +26,7 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityAr
 
         if (response.Result !== "OK") {
             this.logError("Error fetching city polygons:", response.Result);
-            return;
+            return null;
         }
         return JSON.parse(response.Data.JSONCityAreas).JSONCityAreas.areas as cityArea[];
     }

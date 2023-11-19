@@ -7,20 +7,16 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
     setAreas(cities: MilesCityAreaBounds[]) {
         this.cities = cities;
-        this.log(`Applied ${cities.length} cities`)
     }
-    
-    cycle() {
+
+    async cycle(): Promise<{ data: apiVehicleJsonParsed[] } | null> {
         throw new Error("Method not implemented.");
     }
 
     popSystemStatus(): { [key: string]: number; } {
-        throw new Error("Method not implemented.");
+        return {
+            citiesCount: this.cities.length
+        }
     }
-
-    private async execute(city: any) {
-
-    }
-
 
 }

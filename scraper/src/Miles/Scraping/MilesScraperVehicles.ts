@@ -29,11 +29,13 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
         return this;
     }
 
-    cycle() {
+    async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: QueryPriority; } | null> {
         const next = this.selectNext()
         if (next !== null) {
-            this.execute(next.id, next.priority);
+            const vehicle = await this.fetch(next.id);
+            return { data: [vehicle], source: next.priority };
         }
+        return null;
     }
 
     private selectNext(): { id: number, priority: QueryPriority } | null {
@@ -59,7 +61,7 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     }
 
 
-    private async execute(vehicleId: number, priority: QueryPriority) {
+    private async fetch(vehicleId: number): Promise<apiVehicleJsonParsed | null> {
         try {
             this.requestsExecuted++;
             const start = Date.now();
@@ -84,10 +86,11 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
             const vehicle = result.Data.vehicle[0]
             const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
 
-            this.listeners.forEach(listener => listener([vehicleParsed], priority));
+            return vehicleParsed;
         } catch (e) {
             this.responses.push("SCRAPER_ERROR");
             this.logError("Error occurred while scraping a vehicle", e);
+            return null;
         }
     }
 

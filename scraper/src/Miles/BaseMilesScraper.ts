@@ -21,7 +21,7 @@ export abstract class BaseMilesScraper<T> implements Scraper {
     }
 
     start(): this {
-        this.interval = setInterval(this.cycle.bind(this), this.cycleTime);
+        this.interval = setInterval(this.cycleNotifyListeners.bind(this), this.cycleTime);
         return this;
     }
 
@@ -30,12 +30,20 @@ export abstract class BaseMilesScraper<T> implements Scraper {
         return this;
     }
 
-    addListener(listener: (vehicles: T[], source: QueryPriority | string) => void): this {
+    addListener(listener: (data: T[], source: QueryPriority | string) => void): this {
         this.listeners.push(listener);
         return this;
     }
 
-    abstract cycle()
+    private async cycleNotifyListeners() {
+        const result = await this.cycle();
+        if (result !== null) {
+            if (result.source === undefined) result.source = this.scraperId;
+            this.listeners.forEach(listener => listener(result.data, this.scraperId));
+        }
+    }
+
+    abstract cycle(): Promise<{ data: T[], source?: QueryPriority | string } | null>;
 
     abstract popSystemStatus(): { [key: string]: number };
 
