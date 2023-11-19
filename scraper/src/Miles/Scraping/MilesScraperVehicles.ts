@@ -52,7 +52,7 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
         }
 
         if (id === undefined) {
-            console.warn(this.scraperId, "No vehicles in queue: cycle will be skipped")
+            this.logWarn("No vehicles in queue: cycle will be skipped")
             return null;
         }
         return { id, priority };
@@ -67,15 +67,15 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
             this.responseTimes.push(Date.now() - start);
 
             if (result.ResponseText === "Vehicle ID not found") {
-                console.info(this.scraperId, "Vehicle", vehicleId, "not found and removed from future queue")
+                this.log("Vehicle", vehicleId, "not found and removed from future queue")
                 this.deregister(vehicleId);
                 this.responses.push("NOT_FOUND");
                 return;
             }
 
             if (result.Result !== "OK") {
-                console.warn(this.scraperId, "Vehicle", vehicleId, "returned error", result.Result);
-                console.warn(result);
+                this.logError("Vehicle", vehicleId, "returned error", result.Result);
+                this.logError(result);
                 this.responses.push("API_ERROR");
                 return;
             }
@@ -87,7 +87,7 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
             this.listeners.forEach(listener => listener([vehicleParsed], priority));
         } catch (e) {
             this.responses.push("SCRAPER_ERROR");
-            console.error(this.scraperId, "Error occurred while scraping a vehicle", e);
+            this.logError("Error occurred while scraping a vehicle", e);
         }
     }
 

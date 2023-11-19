@@ -1,8 +1,8 @@
 import { MilesClient } from "@koenidv/abfahrt";
 import { Scraper } from "../ScraperInterface";
 import { QueryPriority } from "./Scraping/MilesScraperVehicles";
-import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { SystemObserver } from "../SystemObserver";
+import * as clc from "cli-color";
 
 export abstract class BaseMilesScraper<T> implements Scraper {
     public scraperId: string;
@@ -17,7 +17,7 @@ export abstract class BaseMilesScraper<T> implements Scraper {
         this.cycleTime = 1000 / (cyclesMinute / 60);
         this.scraperId = scraperId;
         SystemObserver.registerScraper(this);
-        console.log(this.scraperId, `Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+this.cycleTime.toFixed(3)}ms/c)`)
+        this.log(clc.blue(`Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+this.cycleTime.toFixed(3)}ms/c)`))
     }
 
     start(): this {
@@ -38,5 +38,17 @@ export abstract class BaseMilesScraper<T> implements Scraper {
     abstract cycle()
 
     abstract popSystemStatus(): { [key: string]: number };
+
+    protected log(...args: any[]) {
+        console.log(clc.bgBlackBright(this.scraperId), ...args);
+    }
+
+    protected logWarn(...args: any[]) {
+        console.warn(clc.bgBlackBright(this.scraperId), ...args);
+    }
+
+    protected logError(...args: any[]) {
+        console.error(clc.bgBlackBright(this.scraperId), ...args);
+    }
 
 }

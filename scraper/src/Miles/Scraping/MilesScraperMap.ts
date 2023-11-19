@@ -7,7 +7,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
     setAreas(cities: MilesCityAreaBounds[]) {
         this.cities = cities;
-        console.log(this.scraperId, `Applied ${cities.length} cities`)
+        this.log(`Applied ${cities.length} cities`)
     }
     
     cycle() {

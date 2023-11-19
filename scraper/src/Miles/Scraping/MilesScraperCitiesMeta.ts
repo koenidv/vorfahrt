@@ -24,7 +24,7 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityAr
         this.lastResponseTime = Date.now() - timeNow;
 
         if (response.Result !== "OK") {
-            console.error(this.scraperId, "Error fetching city polygons:", response.Result);
+            this.logError("Error fetching city polygons:", response.Result);
             return;
         }
         return JSON.parse(response.Data.JSONCityAreas).JSONCityAreas.areas as cityArea[];
