@@ -31,7 +31,7 @@ export class InfluxVehicleComparison {
     checkForStatusChange(): InfluxVehicleComparison {
         if (this.currentVehicle["status"] !== this.newVehicle.idVehicleStatus) {
             this.overrideAddAllFields = true;
-            this._point.tag("statusChangedFrom", this.currentVehicle["status"]);
+            this._point.stringField("statusChangedFrom", this.currentVehicle["status"]);
         }
         return this;
     }

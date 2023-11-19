@@ -27,16 +27,23 @@ export class SystemObserver {
     }
 
     private async saveScraperSystemStatus(scraper: Scraper) {
-        const status = scraper.popSystemStatus();
-        const statusPoint = new Point()
-            .tag("serviceType", "scraper")
-            .tag("serviceId", scraper.scraperId)
+        try {
+            const status = scraper.popSystemStatus();
+            const statusPoint = new Point("scraper_status")
+                .tag("serviceId", scraper.scraperId)
 
-        Object.entries(status).forEach(([key, value]) => {
-            statusPoint.floatField(key, value);
-        })
+            Object.entries(status).forEach(([key, value]) => {
+                if (typeof value === "number" && !isNaN(value)) {
+                    statusPoint.floatField(key, value);
+                } else {
+                    console.warn("SystemObserver", `System status value ${key} from ${scraper.scraperId} is not a number`, value);
+                }
+            })
 
-        this.writeClient.writePoint(statusPoint);
+            this.writeClient.writePoint(statusPoint);
+        } catch (e) {
+            console.error("SystemObserver", "Error while saving system status", e);
+        }
     }
 
 }

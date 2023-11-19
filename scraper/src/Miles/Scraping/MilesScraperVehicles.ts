@@ -23,7 +23,7 @@ export default class MilesScraperVehicles implements MilesScraper {
         this.client = client;
         this.requestsPerSecond = requestsPerSecond;
         this.scraperId = scraperId;
-        console.log(`Initialized ${this.scraperId} with ${this.requestsPerSecond}rps`)
+        console.log(this.scraperId, `Initialized with ${this.requestsPerSecond}rps`)
     }
 
     start(): this {
@@ -37,8 +37,9 @@ export default class MilesScraperVehicles implements MilesScraper {
         return this;
     }
 
-    addListener(listener: (vehicle: apiVehicleJsonParsed, priority: QueryPriority) => {}) {
+    addListener(listener: (vehicle: apiVehicleJsonParsed, priority: QueryPriority) => {}): this {
         this.listeners.push(listener);
+        return this;
     }
 
     register(vehicleId: number, priority: QueryPriority): this {
@@ -52,9 +53,10 @@ export default class MilesScraperVehicles implements MilesScraper {
         return this;
     }
 
-    deregister(vehicleId: number) {
+    deregister(vehicleId: number): this {
         this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
         this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
+        return this;
     }
 
     popSystemStatus(): { [key: string]: number; } {
@@ -62,7 +64,7 @@ export default class MilesScraperVehicles implements MilesScraper {
             acc[cur] = (acc[cur] ?? 0) + 1;
             return acc;
         }, {} as { [key: string]: number });
-        const averageResponseTime = this.responseTimes.reduce((acc, cur) => acc + cur, 0) / this.responseTimes.length;
+        const averageResponseTime = this.responseTimes.length ? this.responseTimes.reduce((acc, cur) => acc + cur, 0) / this.responseTimes.length : undefined;
         const requestsExecuted = this.requestsExecuted;
 
         this.resetSystemStatus();
@@ -93,7 +95,7 @@ export default class MilesScraperVehicles implements MilesScraper {
 
         let id: number;
         let priority: QueryPriority;
-        if (random < QueryPriority.LOW * this.lowQueue.length) {
+        if (random < QueryPriority.LOW * this.lowQueue.length || this.normalQueue.length === 0) {
             id = this.lowQueue.shift();
             this.lowQueue.push(id);
             priority = QueryPriority.LOW;
@@ -104,7 +106,7 @@ export default class MilesScraperVehicles implements MilesScraper {
         }
 
         if (id === undefined) {
-            console.warn("No vehicles in queue, single vehicle scraping will be skipped")
+            console.warn(this.scraperId, "No vehicles in queue: cycle will be skipped")
             return null;
         }
         return { id, priority };
@@ -119,14 +121,14 @@ export default class MilesScraperVehicles implements MilesScraper {
             this.responseTimes.push(Date.now() - start);
 
             if (result.ResponseText === "Vehicle ID not found") {
-                console.info("Vehicle", vehicleId, "not found and removed from future queue")
+                console.info(this.scraperId, "Vehicle", vehicleId, "not found and removed from future queue")
                 this.deregister(vehicleId);
                 this.responses.push("NOT_FOUND");
                 return;
             }
 
             if (result.Result !== "OK") {
-                console.warn("Vehicle", vehicleId, "returned error", result.Result);
+                console.warn(this.scraperId, "Vehicle", vehicleId, "returned error", result.Result);
                 console.warn(result);
                 this.responses.push("API_ERROR");
                 return;
@@ -139,7 +141,7 @@ export default class MilesScraperVehicles implements MilesScraper {
             this.listeners.forEach(listener => listener(vehicleParsed, priority));
         } catch (e) {
             this.responses.push("SCRAPER_ERROR");
-            console.error(e);
+            console.error(this.scraperId, "Error occurred while scraping a vehicle", e);
         }
     }
 
