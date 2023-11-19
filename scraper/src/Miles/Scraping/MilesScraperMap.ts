@@ -4,13 +4,17 @@ import { MilesCityAreaBounds } from "../Miles.types";
 import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesVehicleSearch";
 import { GetVehiclesResponse } from "@koenidv/abfahrt/dist/src/miles/net/getVehicles";
 import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
+import { Point } from "@influxdata/influxdb-client";
+import { SystemObserver } from "../../SystemObserver";
 
 export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed> {
     private cities: MilesCityAreaBounds[] = [];
 
     private _cycles = 0;
     private requestsExecuted = 0;
+    private vehiclesFound = 0;
     private responseTimes: number[] = [];
+    private responseTypes: ("OK" | "API_ERROR")[] = [];
 
 
     setAreas(cities: MilesCityAreaBounds[]) {
@@ -37,12 +41,13 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
         const mapped = this.mapFetchResults(results);
 
-        this.responseTimes.push(...mapped.responseTimes);
         this.requestsExecuted += results.length;
-        console.log(mapped.vehicles)
+        this.vehiclesFound += mapped.vehicles.length;
+        this.responseTimes.push(...mapped.responseTimes);
+        this.responseTypes.push(...mapped.responseTypes);
 
+        this.createLogPoint(city.cityId, mapped.vehicles.length, results.length, mapped.responseTimes, mapped.responseTypes);
         return mapped.vehicles.length === 0 ? null : mapped.vehicles;
-        // todo influx log point
     }
 
     mapFetchResults(results: FetchResult[]): { vehicles: apiVehicleJsonParsed[], responseTimes: number[], responseTypes: ("OK" | "API_ERROR")[] } {
@@ -71,10 +76,39 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         return { vehicles, responseTypes };
     }
 
+    createLogPoint(cityId: string, vehicleCount: number, requestCount: number, responseTimes: number[], responseTypes: ("OK" | "API_ERROR")[]) {
+        const averageResponseTime = responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
+        const responseTypesCount = responseTypes.reduce((acc, cur) => {
+            acc[cur] = (acc[cur] ?? 0) + 1;
+            return acc;
+        }, {} as { [key: string]: number });
+
+        const point = new Point(`${this.scraperId}-citylog`)
+            .tag("scraper", this.scraperId)
+            .tag("city", cityId)
+            .intField("vehicles", vehicleCount)
+            .intField("requests", requestCount)
+            .intField("averageResponseTime", averageResponseTime)
+            .intField("OK", responseTypesCount["OK"] || 0)
+            .intField("API_ERROR", responseTypesCount["API_ERROR"] || 0)
+
+        SystemObserver.savePoint(point);
+    }
 
     popSystemStatus(): { [key: string]: number; } {
+        const averageResponseTime = this.responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
+        const responseTypesCount = this.responseTypes.reduce((acc, cur) => {
+            acc[cur] = (acc[cur] ?? 0) + 1;
+            return acc;
+        }, {} as { [key: string]: number });
+
         return {
-            citiesCount: this.cities.length
+            citiesCount: this.cities.length,
+            requestsExecuted: this.requestsExecuted,
+            vehiclesFound: this.vehiclesFound,
+            averageResponseTime,
+            OK: responseTypesCount["OK"] || 0,
+            API_ERROR: responseTypesCount["API_ERROR"] || 0,
         }
     }
 

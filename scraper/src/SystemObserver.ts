@@ -28,9 +28,15 @@ export class SystemObserver {
         return this;
     }
 
-
     static registerScraper(scraper: Scraper) {
         this.scrapers.push(scraper);
+    }
+
+    static savePoint(point: Point) {
+        if (this.instance === undefined) {
+            throw new Error("SystemObserver not initialized");
+        }
+        this.instance.writeClient.writePoint(point);
     }
 
     private async saveSystemStatus() {
