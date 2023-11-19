@@ -32,7 +32,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             this.logWarn("No cities in queue: cycle will be skipped")
             return null;
         }
-        return this.cities[0];
+        return this.cities[this._cycles % this.cities.length];
     }
 
     async fetch(city: MilesCityAreaBounds): Promise<apiVehicleJsonParsed[] | null> {
@@ -64,7 +64,6 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
     }
 
     mapVehicleResponses(response: GetVehiclesResponse[]): { vehicles: apiVehicleJsonParsed[], responseTypes: ("OK" | "API_ERROR")[] } {
-        console.log(response)
         const responseTypes: ("OK" | "API_ERROR")[] = [];
 
         const vehicles = response.flatMap(result => {
@@ -96,7 +95,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
     }
 
     popSystemStatus(): { [key: string]: number; } {
-        const averageResponseTime = this.responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
+        const averageResponseTime = this.responseTimes.reduce((a, b) => a + b, 0) / this.responseTimes.length;
         const responseTypesCount = this.responseTypes.reduce((acc, cur) => {
             acc[cur] = (acc[cur] ?? 0) + 1;
             return acc;
