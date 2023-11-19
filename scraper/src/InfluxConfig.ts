@@ -1,12 +1,7 @@
 import { FieldComparison, FieldType } from "./Miles/DataStore/InfluxVehicleComparison";
 
 export const VEHICLE_TRACKED_FIELDS: FieldComparison[] = [
-    // location, discounted, damageCount are tracked separately
-    {
-        fieldName: "status",
-        fieldType: FieldType.STRING,
-        compareToKey: "idVehicleStatus"
-    },
+    // location, discounted, damageCount, status are tracked separately
     {
         fieldName: "charge",
         fieldType: FieldType.INT,
@@ -38,3 +33,14 @@ export const VEHICLE_TRACKED_FIELDS: FieldComparison[] = [
         compareToKey: "idCity"
     }
 ]
+
+// fixme the single vehicle response does not inlcude EVPlugged - however, FullVehicleDetails includes this banner:
+//     "vehicleBanner": [
+//     {
+//         "color": "#FFFFFF",
+//         "text": "⚡Vehicle plugged",
+//         "text2": "Please unplug before driving",
+//         "delay": "5",
+//         "clickAction": ""
+//     }
+// ],

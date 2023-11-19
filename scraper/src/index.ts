@@ -1,9 +1,26 @@
+import { DataSource } from "typeorm";
 import { AppDataSource } from "./dataSource";
 import MilesController from "./Miles/MilesController";
+import { InfluxDB, WriteApi } from "@influxdata/influxdb-client";
+import { SystemObserver } from "./SystemObserver";
+import env from "./env";
 
+class Main {
+  appDataSource: DataSource;
+  observabilityInfluxClient: WriteApi;
+  observer: SystemObserver;
+  milesController: MilesController;
 
-async function main() {
-  const appDataSource = await AppDataSource.initialize();
-  const milesController = new MilesController(appDataSource);
+  constructor() { }
+
+  async initialize() {
+    this.appDataSource = await AppDataSource.initialize();
+    const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken });
+    this.observabilityInfluxClient = influxdb.getWriteApi("vorfahrt", "system_scraper", "s");
+    this.observer = new SystemObserver(this.observabilityInfluxClient);
+    this.milesController = new MilesController(this.appDataSource, this.observer);
+  }
+
 }
-main();
+
+new Main().initialize();

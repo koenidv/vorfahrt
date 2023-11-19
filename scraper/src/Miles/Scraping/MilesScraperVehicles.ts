@@ -1,23 +1,29 @@
 import { JsonParseBehaviour, MilesClient, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
+import { MilesScraper } from "./MilesScraperInterface";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
 
-export default class MilesScraperVehicles {
+export default class MilesScraperVehicles implements MilesScraper {
     client: MilesClient;
     requestsPerSecond: number;
+    scraperId: string;
 
     normalQueue: number[] = [];
     lowQueue: number[] = [];
 
     interval = null;
-
     listeners: ((vehicle: apiVehicleJsonParsed, priority: QueryPriority) => {})[] = [];
 
-    constructor(client: MilesClient, requestsPerSecond) {
+    requestsExecuted = 0;
+    responses: ("OK" | "API_ERROR" | "NOT_FOUND" | "SCRAPER_ERROR")[] = [];
+    responseTimes: number[] = [];
+
+    constructor(client: MilesClient, requestsPerSecond, scraperId = "MilesScraperVehicles") {
         this.client = client;
         this.requestsPerSecond = requestsPerSecond;
-        console.log(`Initialized MilesScraperVehicles with ${this.requestsPerSecond}rps`)
+        this.scraperId = scraperId;
+        console.log(`Initialized ${this.scraperId} with ${this.requestsPerSecond}rps`)
     }
 
     start() {
@@ -51,6 +57,28 @@ export default class MilesScraperVehicles {
         this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
     }
 
+    popSystemStatus(): { [key: string]: number; } {
+        const responsesCount = this.responses.reduce((acc, cur) => {
+            acc[cur] = (acc[cur] ?? 0) + 1;
+            return acc;
+        }, {} as { [key: string]: number });
+        const averageResponseTime = this.responseTimes.reduce((acc, cur) => acc + cur, 0) / this.responseTimes.length;
+        const requestsExecuted = this.requestsExecuted;
+
+        this.resetSystemStatus();
+        return {
+            ...responsesCount,
+            requestsExecuted,
+            averageResponseTime
+        }
+    }
+
+    private resetSystemStatus() {
+        this.requestsExecuted = 0;
+        this.responses = [];
+        this.responseTimes = [];
+    }
+
     private selectNext(): { id: number, priority: QueryPriority } | null {
         const random = Math.random() * (this.normalQueue.length + this.lowQueue.length);
 
@@ -76,26 +104,32 @@ export default class MilesScraperVehicles {
 
     private async execute(vehicleId: number, priority: QueryPriority) {
         try {
+            this.requestsExecuted++;
+            const start = Date.now();
             const result = await this.client.vehicles.getVehicleById(vehicleId);
+            this.responseTimes.push(Date.now() - start);
 
             if (result.ResponseText === "Vehicle ID not found") {
                 console.info("Vehicle", vehicleId, "not found and removed from future queue")
                 this.deregister(vehicleId);
+                this.responses.push("NOT_FOUND");
                 return;
             }
 
             if (result.Result !== "OK") {
                 console.warn("Vehicle", vehicleId, "returned error", result.Result);
                 console.warn(result);
+                this.responses.push("API_ERROR");
                 return;
             }
 
-
+            this.responses.push("OK");
             const vehicle = result.Data.vehicle[0]
             const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
 
             this.listeners.forEach(listener => listener(vehicleParsed, priority));
         } catch (e) {
+            this.responses.push("SCRAPER_ERROR");
             console.error(e);
         }
     }

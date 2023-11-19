@@ -20,10 +20,20 @@ export class InfluxVehicleComparison {
         return this._point;
     }
 
+    private overrideAddAllFields = false;
+
     constructor(currentVehicle: object, newVehicle: apiVehicleJsonParsed, point: Point) {
         this.currentVehicle = currentVehicle;
         this.newVehicle = newVehicle;
         this._point = point;
+    }
+
+    checkForStatusChange(): InfluxVehicleComparison {
+        if (this.currentVehicle["status"] !== this.newVehicle.idVehicleStatus) {
+            this.overrideAddAllFields = true;
+            this._point.tag("statusChangedFrom", this.currentVehicle["status"]);
+        }
+        return this;
     }
 
     applyLocationChange(): InfluxVehicleComparison {
@@ -33,7 +43,7 @@ export class InfluxVehicleComparison {
         }
         const oldGeo = new GeoPoint(this.currentVehicle["latitude"], this.currentVehicle["longitude"])
         const newGeo = new GeoPoint(this.newVehicle.Latitude, this.newVehicle.Longitude)
-        if (!newGeo.equalsWithTolerance(oldGeo)) {
+        if (!newGeo.equalsWithTolerance(oldGeo) || this.overrideAddAllFields) {
             this.applyLocationFields();
         }
         return this;
@@ -68,8 +78,9 @@ export class InfluxVehicleComparison {
     }
 
     private applyChange(oldValue: unknown, newValue: unknown, fieldName: string, fieldType: FieldType) {
-        if (oldValue === newValue) return;
-        this.applyField(newValue, fieldName, fieldType)
+        if (this.overrideAddAllFields || oldValue === newValue) {
+            this.applyField(newValue, fieldName, fieldType)
+        }
     }
 
     private applyField(newValue: unknown, fieldName: string, fieldType: FieldType) {

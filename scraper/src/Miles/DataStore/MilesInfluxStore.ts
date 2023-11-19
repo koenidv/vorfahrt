@@ -18,11 +18,13 @@ export class MilesInfluxStore {
 
     async saveChangedVehicle(newVehicle: apiVehicleJsonParsed) {
         const currentVehicle = await this.queryCurrentVehicle(newVehicle.idVehicle) as any;
-        const basePoint = new Point("vehicle")
+        const basePoint = new Point("vehicle_data")
             .tag("vehicleId", newVehicle.idVehicle.toString())
+            .tag("status", newVehicle.idVehicleStatus.toString())
 
         const modifiedPoint =
             new InfluxVehicleComparison(currentVehicle, newVehicle, basePoint)
+                .checkForStatusChange()
                 .applyLocationChange()
                 .applyDiscountedChange()
                 .applyDamageCountChange()
