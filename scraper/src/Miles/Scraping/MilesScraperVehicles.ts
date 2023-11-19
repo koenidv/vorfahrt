@@ -1,46 +1,16 @@
 import { JsonParseBehaviour, MilesClient, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { MilesScraper } from "./MilesScraperInterface";
+import { BaseMilesScraper } from "../BaseMilesScraper";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
 
-export default class MilesScraperVehicles implements MilesScraper {
-    client: MilesClient;
-    requestsPerSecond: number;
-    scraperId: string;
-
-    normalQueue: number[] = [];
-    lowQueue: number[] = [];
-
-    interval = null;
-    listeners: ((vehicle: apiVehicleJsonParsed, priority: QueryPriority) => {})[] = [];
-
-    requestsExecuted = 0;
-    responses: ("OK" | "API_ERROR" | "NOT_FOUND" | "SCRAPER_ERROR")[] = [];
-    responseTimes: number[] = [];
-
-    constructor(client: MilesClient, requestsPerSecond, scraperId = "MilesScraperVehicles") {
-        this.client = client;
-        this.requestsPerSecond = requestsPerSecond;
-        this.scraperId = scraperId;
-        console.log(this.scraperId, `Initialized with ${this.requestsPerSecond}rps`)
-    }
-
-    start(): this {
-        const millis = 1000 / this.requestsPerSecond;
-        this.interval = setInterval(this.queryNext.bind(this), millis);
-        return this;
-    }
-
-    stop(): this {
-        clearInterval(this.interval);
-        return this;
-    }
-
-    addListener(listener: (vehicle: apiVehicleJsonParsed, priority: QueryPriority) => {}): this {
-        this.listeners.push(listener);
-        return this;
-    }
+export default class MilesScraperVehicles extends BaseMilesScraper {
+    private normalQueue: number[] = [];
+    private lowQueue: number[] = [];
+    
+    private requestsExecuted = 0;
+    private responses: ("OK" | "API_ERROR" | "NOT_FOUND" | "SCRAPER_ERROR")[] = [];
+    private responseTimes: number[] = [];
 
     register(vehicleId: number, priority: QueryPriority): this {
         if (priority === QueryPriority.LOW) {
@@ -59,31 +29,7 @@ export default class MilesScraperVehicles implements MilesScraper {
         return this;
     }
 
-    popSystemStatus(): { [key: string]: number; } {
-        const responsesCount = this.responses.reduce((acc, cur) => {
-            acc[cur] = (acc[cur] ?? 0) + 1;
-            return acc;
-        }, {} as { [key: string]: number });
-        const averageResponseTime = this.responseTimes.length ? this.responseTimes.reduce((acc, cur) => acc + cur, 0) / this.responseTimes.length : undefined;
-        const requestsExecuted = this.requestsExecuted;
-
-        this.resetSystemStatus();
-        return {
-            ...responsesCount,
-            requestsExecuted,
-            averageResponseTime,
-            normalQueueCount: this.normalQueue.length,
-            lowQueueCount: this.lowQueue.length,
-        }
-    }
-
-    private resetSystemStatus() {
-        this.requestsExecuted = 0;
-        this.responses = [];
-        this.responseTimes = [];
-    }
-
-    private queryNext() {
+    cycle() {
         const next = this.selectNext()
         if (next !== null) {
             this.execute(next.id, next.priority);
@@ -117,7 +63,7 @@ export default class MilesScraperVehicles implements MilesScraper {
         try {
             this.requestsExecuted++;
             const start = Date.now();
-            const result = await this.client.vehicles.getVehicleById(vehicleId);
+            const result = await this.abfahrt.vehicles.getVehicleById(vehicleId);
             this.responseTimes.push(Date.now() - start);
 
             if (result.ResponseText === "Vehicle ID not found") {
@@ -138,11 +84,35 @@ export default class MilesScraperVehicles implements MilesScraper {
             const vehicle = result.Data.vehicle[0]
             const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
 
-            this.listeners.forEach(listener => listener(vehicleParsed, priority));
+            this.listeners.forEach(listener => listener([vehicleParsed], priority));
         } catch (e) {
             this.responses.push("SCRAPER_ERROR");
             console.error(this.scraperId, "Error occurred while scraping a vehicle", e);
         }
+    }
+
+    popSystemStatus(): { [key: string]: number; } {
+        const responsesCount = this.responses.reduce((acc, cur) => {
+            acc[cur] = (acc[cur] ?? 0) + 1;
+            return acc;
+        }, {} as { [key: string]: number });
+        const averageResponseTime = this.responseTimes.length ? this.responseTimes.reduce((acc, cur) => acc + cur, 0) / this.responseTimes.length : undefined;
+        const requestsExecuted = this.requestsExecuted;
+
+        this.resetSystemStatus();
+        return {
+            ...responsesCount,
+            requestsExecuted,
+            averageResponseTime,
+            normalQueueCount: this.normalQueue.length,
+            lowQueueCount: this.lowQueue.length,
+        }
+    }
+
+    private resetSystemStatus() {
+        this.requestsExecuted = 0;
+        this.responses = [];
+        this.responseTimes = [];
     }
 
 }

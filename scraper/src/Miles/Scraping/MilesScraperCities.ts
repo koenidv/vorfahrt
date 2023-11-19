@@ -1,17 +1,19 @@
 import { MilesClient } from "@koenidv/abfahrt";
+import { BaseMilesScraper } from "../BaseMilesScraper";
+import { QueryPriority } from "./MilesScraperVehicles";
 
-export default class MilesScraperCities {
-    client: MilesClient;
-    secondsDelay: number; // City queries are executed synchronously - delay between each query
+export default class MilesScraperCities extends BaseMilesScraper {
+    private cities: any[] = [];
 
-    constructor(client: MilesClient, secondsDelay) {
-        this.client = client;
-        this.secondsDelay = secondsDelay;
-        console.log(`Initialized MilesScraperCities with ${this.secondsDelay}s cooldown`)
+    setCities(cities: any[]) {
+    }
+    
+    cycle() {
+        throw new Error("Method not implemented.");
     }
 
-
-    registerAll(...cities: any) {
+    popSystemStatus(): { [key: string]: number; } {
+        throw new Error("Method not implemented.");
     }
 
     private async execute(city: any) {

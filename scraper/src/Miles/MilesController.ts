@@ -9,8 +9,6 @@ import { InfluxDB, QueryApi, WriteApi } from "@influxdata/influxdb-client";
 import { SystemObserver } from "../SystemObserver";
 
 export default class MilesController {
-  abfahrtClient: MilesClient;
-
   scraperCities: MilesScraperCities;
   scraperVehicles: MilesScraperVehicles;
 
@@ -22,33 +20,35 @@ export default class MilesController {
   constructor(appDataSource: DataSource, observer: SystemObserver) {
     console.log("miles account email:", env.milesAccountEmail);
 
-    this.abfahrtClient = new MilesClient();
+    const abfahrt = new MilesClient();
 
-    this.scraperCities = new MilesScraperCities(this.abfahrtClient, 120);
-    this.scraperVehicles = new MilesScraperVehicles(this.abfahrtClient, 2);
+    const dataHandler = this.createDataHandler(appDataSource);
+    this.startVehiclesScraper(abfahrt, dataHandler, observer);
+    
+    
+    this.scraperCities = new MilesScraperCities(abfahrt, 0.5, "miles-cities");
+    this.prepareCities(abfahrt);
+  }
 
+  private createDataHandler(appDataSource: DataSource): MilesDataHandler {
     this.dataSource = appDataSource;
     const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken });
     this.influxWriteClient = influxdb.getWriteApi("vorfahrt", "miles", "s");
     this.influxQueryClient = influxdb.getQueryApi("vorfahrt");
     this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient, this.scraperVehicles);
-
-    this.setupObserver(observer);
-
-    this.scraperVehicles.addListener(
-      (vehicle, priority) =>
-        this.dataHandler.handleSingleVehicleResponse(vehicle, priority));
-
-    this.prepareCities();
+    return this.dataHandler;
   }
 
-  private setupObserver(observer: SystemObserver) {
-    // observer.registerScraper(this.scraperCities); - does not implement Scraper yet
+
+  private startVehiclesScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler, observer: SystemObserver): MilesScraperVehicles {
+    this.scraperVehicles = new MilesScraperVehicles(abfahrt, 2 * 60, "miles-vehicles")
+    this.scraperVehicles.addListener(dataHandler.handleVehicles);
     observer.registerScraper(this.scraperVehicles);
+    return this.scraperVehicles.start();
   }
 
-  async prepareCities() {
-    const citiesJson = (await this.abfahrtClient.getCityAreas()).Data.JSONCites;
+  async prepareCities(abfahrt: MilesClient) {
+    const citiesJson = (await abfahrt.getCityAreas()).Data.JSONCites;
     const cities = JSON.parse(citiesJson) as MilesCityMeta[];
     console.info("Found", cities.length, "cities");
     await this.dataHandler.handleCitiesMeta(cities);

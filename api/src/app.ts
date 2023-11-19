@@ -86,13 +86,13 @@ export class App {
         },
       },
       info: {
-        description: 'Generated with `routing-controllers-openapi`',
-        title: 'A sample API',
-        version: '1.0.0',
+        title: 'vorfahrt api',
+        description: '`shared mobility insights`',
+        version: '0.0.1',
       },
     });
 
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
+    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));
   }
 
   private initializeErrorHandling() {
