@@ -86,7 +86,7 @@ export class InfluxVehicleComparison {
     }
 
     private applyChange(oldValue: unknown, newValue: unknown, fieldName: string, fieldType: FieldType) {
-        if (this.overrideAddAllFields || oldValue === newValue) {
+        if (this.overrideAddAllFields || oldValue !== newValue) {
             this.applyField(newValue, fieldName, fieldType)
         }
     }
