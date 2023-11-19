@@ -2,13 +2,25 @@ import { Point, WriteApi } from "@influxdata/influxdb-client";
 import { Scraper } from "./ScraperInterface";
 
 export class SystemObserver {
+    private static _instance: SystemObserver = undefined;
+    public static get instance(): SystemObserver {
+        if (SystemObserver._instance === undefined) {
+            throw new Error("SystemObserver not initialized");
+        }
+        return SystemObserver._instance;
+    }
+
     writeClient: WriteApi;
 
-    scrapers: Scraper[] = []
+    static scrapers: Scraper[] = []
     interval: NodeJS.Timeout;
 
     constructor(writeClient: WriteApi) {
+        if (SystemObserver._instance !== undefined) {
+            console.warn("SystemObserver", "SystemObserver was already initialized. All SystemObservers obserce the same data.");
+        }
         this.writeClient = writeClient;
+        SystemObserver._instance = this;
     }
 
     start(): this {
@@ -17,13 +29,12 @@ export class SystemObserver {
     }
 
 
-    registerScraper(scraper: Scraper): this {
+    static registerScraper(scraper: Scraper) {
         this.scrapers.push(scraper);
-        return this;
     }
 
     private async saveSystemStatus() {
-        this.scrapers.forEach(this.saveScraperSystemStatus, this)
+        SystemObserver.scrapers.forEach(this.saveScraperSystemStatus, this)
     }
 
     private async saveScraperSystemStatus(scraper: Scraper) {

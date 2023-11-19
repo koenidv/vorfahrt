@@ -2,6 +2,7 @@ import { MilesClient } from "@koenidv/abfahrt";
 import { Scraper } from "../ScraperInterface";
 import { QueryPriority } from "./Scraping/MilesScraperVehicles";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
+import { SystemObserver } from "../SystemObserver";
 
 export abstract class BaseMilesScraper<T> implements Scraper {
     public scraperId: string;
@@ -15,8 +16,8 @@ export abstract class BaseMilesScraper<T> implements Scraper {
         this.abfahrt = abfahrt;
         this.cycleTime = 1000 / (cyclesMinute / 60);
         this.scraperId = scraperId;
+        SystemObserver.registerScraper(this);
         console.log(this.scraperId, `Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+this.cycleTime.toFixed(3)}ms/c)`)
-
     }
 
     start(): this {
