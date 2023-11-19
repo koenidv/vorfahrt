@@ -99,9 +99,17 @@ export class MilesRelationalStore {
         model.size = size;
         model.seats = Number(vehicleDetails.find(d => d.key === "vehicle_details_seats").value);
         model.electric = vehicle.isElectric;
-        model.enginePower = vehicle.EnginePower;
+        model.enginePower = vehicle.EnginePower ?? Number(vehicleDetails.find(d => d.key === "vehicle_details_engine_power").value.replace("PS", ""));
         model.transmission = vehicleDetails.find(d => d.key === "vehicle_details_transmission").value as keyof typeof MilesVehicleTransmissionReturn;
         model.fuelType = vehicleDetails.find(d => d.key === "vehicle_details_fuel").value as keyof typeof MilesVehicleFuelReturn;
-        return await this.manager.save(VehicleModel, model);
+
+        try {
+            return await this.manager.save(VehicleModel, model);
+        } catch (e) {
+            console.error(
+                clc.bgRedBright("MilesRelationalStore"),
+                clc.red(`Error saving vehicle ${vehicle.idVehicle}: ${e}`));
+            return;
+        }
     }
 }

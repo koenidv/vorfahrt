@@ -24,11 +24,16 @@ export default class MilesDataHandler {
   }
 
   async handleVehicles(vehicles: apiVehicleJsonParsed[], source: QueryPriority | string) {
-    await Promise.all(vehicles.map(vehicle => this.handleSingleVehicleResponse(vehicle, source)));
+    // fixme currently saving vehicles one after another - otherwise, insertion into postgres might fail
+    // todo to fit the above, move iteration to the stores - also use influx writePoints instead of writePoint
+    for (const vehicle of vehicles) {
+      await this.handleSingleVehicleResponse(vehicle, source);
+    }
+
   }
 
   private async handleSingleVehicleResponse(vehicle: apiVehicleJsonParsed, source: QueryPriority | string) {
-    this.relationalStore.handleVehicle(vehicle);
+    await this.relationalStore.handleVehicle(vehicle);
     this.influxStore.handleVehicle(vehicle);
 
 

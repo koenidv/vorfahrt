@@ -72,14 +72,14 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
                 this.log("Vehicle", vehicleId, "not found and removed from future queue")
                 this.deregister(vehicleId);
                 this.responses.push("NOT_FOUND");
-                return;
+                return null;
             }
 
             if (result.Result !== "OK") {
                 this.logError("Vehicle", vehicleId, "returned error", result.Result);
                 this.logError(result);
                 this.responses.push("API_ERROR");
-                return;
+                return null;
             }
 
             this.responses.push("OK");
