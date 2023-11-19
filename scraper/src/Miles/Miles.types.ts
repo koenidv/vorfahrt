@@ -11,3 +11,9 @@ export type MilesCityAreaBounds = {
     cityId: string;
     area: Area;
 }
+
+export type MilesVehicleDetails = {
+    value: string;
+    key: string;
+    item: string;
+}[]

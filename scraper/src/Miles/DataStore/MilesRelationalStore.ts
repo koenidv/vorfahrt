@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { MilesCityMeta } from "../Miles.types";
+import { MilesCityMeta, MilesVehicleDetails } from "../Miles.types";
 import { City } from "../../entity/Miles/City";
 import GeoPoint from "../utils/GeoPoint";
 import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
@@ -54,15 +54,24 @@ export class MilesRelationalStore {
             return;
         }
 
+        const vehicleDetails = vehicle.JSONFullVehicleDetails;
+        if (!vehicleDetails) {
+            console.error(
+                clc.bgRedBright("MilesRelationalStore"),
+                clc.red(`Skipping vehicle ${vehicle.idVehicle} - No details found`));
+            return;
+        }
+
         const newVehicle = new VehicleMeta();
         newVehicle.milesId = vehicle.idVehicle;
         newVehicle.licensePlate = vehicle.LicensePlate;
         newVehicle.model = await this.createVehicleModel(
             vehicle,
-            await this.createVehicleSize(vehicle.VehicleSize));
+            await this.createVehicleSize(vehicle.VehicleSize),
+            vehicleDetails.vehicleDetails);
         newVehicle.color = vehicle.VehicleColor;
         newVehicle.firstFoundCity = firstCity;
-        newVehicle.isCharity = vehicle.isCharity;
+        newVehicle.isCharity = typeof vehicle.isCharity === "boolean" ? vehicle.isCharity : vehicleDetails.vehicleDescriptors.isCharity;
         newVehicle.image = vehicle.URLVehicleImage
             .replace("https://api.app.miles-mobility.com/static/img/cars/small/", "");
 
@@ -82,26 +91,18 @@ export class MilesRelationalStore {
         return await this.manager.save(VehicleSize, size);
     }
 
-    private async createVehicleModel(vehicle: apiVehicleJsonParsed, size: VehicleSize): Promise<VehicleModel> {
+    private async createVehicleModel(vehicle: apiVehicleJsonParsed, size: VehicleSize, details: MilesVehicleDetails): Promise<VehicleModel> {
         const existing = await this.manager.findOne(VehicleModel, { where: { name: vehicle.VehicleType } });
         if (existing) return existing;
-
-        const vehicleDetails = vehicle.JSONFullVehicleDetails.vehicleDetails;
-        if (!vehicleDetails) {
-            console.error(
-                clc.bgRedBright("MilesRelationalStore"),
-                clc.red(`Skipping vehicle ${vehicle.idVehicle} - No details found`));
-            return;
-        }
 
         const model = new VehicleModel();
         model.name = vehicle.VehicleType;
         model.size = size;
-        model.seats = Number(vehicleDetails.find(d => d.key === "vehicle_details_seats").value);
+        model.seats = Number(details.find(d => d.key === "vehicle_details_seats").value);
         model.electric = vehicle.isElectric;
-        model.enginePower = vehicle.EnginePower ?? Number(vehicleDetails.find(d => d.key === "vehicle_details_engine_power").value.replace("PS", ""));
-        model.transmission = vehicleDetails.find(d => d.key === "vehicle_details_transmission").value as keyof typeof MilesVehicleTransmissionReturn;
-        model.fuelType = vehicleDetails.find(d => d.key === "vehicle_details_fuel").value as keyof typeof MilesVehicleFuelReturn;
+        model.enginePower = vehicle.EnginePower ?? Number(details.find(d => d.key === "vehicle_details_engine_power").value.replace("PS", ""));
+        model.transmission = details.find(d => d.key === "vehicle_details_transmission").value as keyof typeof MilesVehicleTransmissionReturn;
+        model.fuelType = details.find(d => d.key === "vehicle_details_fuel").value as keyof typeof MilesVehicleFuelReturn;
 
         try {
             return await this.manager.save(VehicleModel, model);

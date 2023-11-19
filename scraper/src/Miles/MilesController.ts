@@ -29,7 +29,7 @@ export default class MilesController {
 
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
     // todo properly populate singlevehicles from relational
-    Array.from({ length: 10000 }, (_, i) => 10000 + i).forEach(i => {
+    Array.from({ length: 10 }, (_, i) => 10161 + i).forEach(i => {
       this.scraperVehicles.register(i, QueryPriority.NORMAL);
     })
 
