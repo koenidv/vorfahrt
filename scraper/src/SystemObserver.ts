@@ -12,7 +12,7 @@ export class SystemObserver {
     }
 
     start(): this {
-        this.interval = setInterval(this.saveSystemStatus, 10000);
+        this.interval = setInterval(this.saveSystemStatus.bind(this), 10000);
         return this;
     }
 

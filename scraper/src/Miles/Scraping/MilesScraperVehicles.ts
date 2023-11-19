@@ -27,11 +27,8 @@ export default class MilesScraperVehicles implements MilesScraper {
     }
 
     start(): this {
-        this.interval = setInterval(() => {
-            const next = this.selectNext()
-            if (next !== null)
-                this.execute(next.id, next.priority);
-        }, 1000 / this.requestsPerSecond);
+        const millis = 1000 / this.requestsPerSecond;
+        this.interval = setInterval(this.queryNext.bind(this), millis);
         return this;
     }
 
@@ -72,7 +69,9 @@ export default class MilesScraperVehicles implements MilesScraper {
         return {
             ...responsesCount,
             requestsExecuted,
-            averageResponseTime
+            averageResponseTime,
+            normalQueueCount: this.normalQueue.length,
+            lowQueueCount: this.lowQueue.length,
         }
     }
 
@@ -80,6 +79,13 @@ export default class MilesScraperVehicles implements MilesScraper {
         this.requestsExecuted = 0;
         this.responses = [];
         this.responseTimes = [];
+    }
+
+    private queryNext() {
+        const next = this.selectNext()
+        if (next !== null) {
+            this.execute(next.id, next.priority);
+        }
     }
 
     private selectNext(): { id: number, priority: QueryPriority } | null {
