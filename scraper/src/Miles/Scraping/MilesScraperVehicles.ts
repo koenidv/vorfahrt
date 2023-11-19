@@ -26,23 +26,25 @@ export default class MilesScraperVehicles implements MilesScraper {
         console.log(`Initialized ${this.scraperId} with ${this.requestsPerSecond}rps`)
     }
 
-    start() {
+    start(): this {
         this.interval = setInterval(() => {
             const next = this.selectNext()
             if (next !== null)
                 this.execute(next.id, next.priority);
         }, 1000 / this.requestsPerSecond);
+        return this;
     }
 
-    stop() {
+    stop(): this {
         clearInterval(this.interval);
+        return this;
     }
 
     addListener(listener: (vehicle: apiVehicleJsonParsed, priority: QueryPriority) => {}) {
         this.listeners.push(listener);
     }
 
-    register(vehicleId: number, priority: QueryPriority) {
+    register(vehicleId: number, priority: QueryPriority): this {
         if (priority === QueryPriority.LOW) {
             this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
             this.lowQueue.push(vehicleId);
@@ -50,6 +52,7 @@ export default class MilesScraperVehicles implements MilesScraper {
             this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
             this.normalQueue.push(vehicleId);
         }
+        return this;
     }
 
     deregister(vehicleId: number) {

@@ -11,13 +11,15 @@ export class SystemObserver {
         this.writeClient = writeClient;
     }
 
-    start() {
+    start(): this {
         this.interval = setInterval(this.saveSystemStatus, 10000);
+        return this;
     }
 
 
-    registerScraper(scraper: Scraper) {
+    registerScraper(scraper: Scraper): this {
         this.scrapers.push(scraper);
+        return this;
     }
 
     private async saveSystemStatus() {

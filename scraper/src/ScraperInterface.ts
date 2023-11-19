@@ -1,6 +1,6 @@
 export interface Scraper {
     scraperId: string;
-    start(): void;
-    stop(): void;
+    start(): Scraper;
+    stop(): Scraper;
     popSystemStatus(): { [key: string]: number };
 }
