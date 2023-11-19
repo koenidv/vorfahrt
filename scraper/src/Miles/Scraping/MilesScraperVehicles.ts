@@ -33,7 +33,7 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
         const next = this.selectNext()
         if (next !== null) {
             const vehicle = await this.fetch(next.id);
-            return { data: [vehicle], source: next.priority };
+            return vehicle === null ? null : { data: [vehicle], source: next.priority };
         }
         return null;
     }

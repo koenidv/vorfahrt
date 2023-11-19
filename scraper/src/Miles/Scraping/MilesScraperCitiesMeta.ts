@@ -9,8 +9,7 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityAr
 
     async cycle(): Promise<{ data: MilesCityAreaBounds[] } | null> {
         const data = await this.fetch();
-        if (data === null) return null;
-        return { data }
+        return data === null ? null : { data };
     }
 
     async fetch(): Promise<MilesCityAreaBounds[]> {
