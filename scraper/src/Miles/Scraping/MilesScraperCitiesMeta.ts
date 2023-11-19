@@ -7,6 +7,8 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityAr
     lastResponseTime: number;
     lastCitiesCount: number;
 
+    // todo this also needs to parse JSONCities to get Name and Location
+
     async cycle(): Promise<{ data: MilesCityAreaBounds[] } | null> {
         const data = await this.fetch();
         return data === null ? null : { data };

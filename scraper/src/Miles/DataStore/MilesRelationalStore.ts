@@ -7,6 +7,7 @@ import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { VehicleSize } from "../../entity/Miles/VehicleSize";
 import { VehicleModel } from "../../entity/Miles/VehicleModel";
 import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
+import * as clc from "cli-color";
 
 export class MilesRelationalStore {
     manager: EntityManager;
@@ -46,12 +47,18 @@ export class MilesRelationalStore {
         if (await this.vehicleExists(vehicle.idVehicle)) return;
 
         const firstCity = await this.findCity(vehicle.idCity);
-        if (!firstCity) throw new Error(`Cannot insert vehicle with city ${vehicle.idCity} before inserting the city`);
+        if (!firstCity) {
+            console.error(
+                clc.bgRedBright("MilesRelationalStore"),
+                clc.red(`Skipping vehicle ${vehicle.idVehicle}: City ${vehicle.idCity} not found`));
+            return;
+        }
 
         const newVehicle = new VehicleMeta();
         newVehicle.milesId = vehicle.idVehicle;
         newVehicle.licensePlate = vehicle.LicensePlate;
-        newVehicle.model = await this.createVehicleModel(vehicle,
+        newVehicle.model = await this.createVehicleModel(
+            vehicle,
             await this.createVehicleSize(vehicle.VehicleSize));
         newVehicle.color = vehicle.VehicleColor;
         newVehicle.firstFoundCity = firstCity;
@@ -80,7 +87,12 @@ export class MilesRelationalStore {
         if (existing) return existing;
 
         const vehicleDetails = vehicle.JSONFullVehicleDetails.vehicleDetails;
-        if (!vehicleDetails) throw new Error(`Cannot insert ${vehicle.idVehicle}, no vehicle details found`);
+        if (!vehicleDetails) {
+            console.error(
+                clc.bgRedBright("MilesRelationalStore"),
+                clc.red(`Skipping vehicle ${vehicle.idVehicle} - No details found`));
+            return;
+        }
 
         const model = new VehicleModel();
         model.name = vehicle.VehicleType;

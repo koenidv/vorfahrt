@@ -52,8 +52,6 @@ export class SystemObserver {
             Object.entries(status).forEach(([key, value]) => {
                 if (typeof value === "number" && !isNaN(value)) {
                     statusPoint.floatField(key, value);
-                } else {
-                    console.warn("SystemObserver", `System status value ${key} from ${scraper.scraperId} is not a number`, value);
                 }
             })
 
