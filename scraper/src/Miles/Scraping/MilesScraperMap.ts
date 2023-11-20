@@ -6,6 +6,7 @@ import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/a
 import { Point } from "@influxdata/influxdb-client";
 import { SystemObserver } from "../../SystemObserver";
 import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
+import { applyMilesMapScrapingFilters } from "./applyMilesMapScrapingFilters";
 
 export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed> {
     private cities: MilesCityAreaBounds[] = [];
@@ -19,7 +20,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
     setAreas(cities: MilesCityAreaBounds[]) {
         if (cities.toString() !== this.cities.toString()) {
-            this.cities = cities.filter(city => city.cityId === "BER");
+            this.cities = cities;
             this.log("Now tracking", this.cities.length, "cities")
         }
     }
@@ -56,7 +57,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
         const request = this.abfahrt.createVehicleSearch(city.area)
             .setMaxConcurrent(10)
-            .setTaskDelay(1000)
+        applyMilesMapScrapingFilters(city, request);
 
         request.addEventListener("fetchCompleted", handleFetchResult);
         request.addEventListener("fetchRetry", () => this.requestsExecuted++)
@@ -75,8 +76,6 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
     handleFetchResult(result: FetchResult, cityId: string): { vehicles: apiVehicleJsonParsed[], responseTime: number, responseTypes: ("OK" | "API_ERROR")[] } {
         const responseTime = result.resDate.getTime() - result.reqDate.getTime();
         const mapped = this.mapVehicleResponses(result.data);
-
-        this.log(`Fetched ${mapped.vehicles.length} vehicles in ${responseTime}ms from ${result.data.length} requests at ${new Date().toLocaleTimeString()}`)
 
         this.listeners.forEach(listener => listener(mapped.vehicles, cityId));
         return { vehicles: mapped.vehicles, responseTime, responseTypes: mapped.responseTypes };
