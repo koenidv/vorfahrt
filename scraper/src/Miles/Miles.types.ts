@@ -5,6 +5,7 @@ export type MilesCityMeta = {
     name: string;
     location_lat: number;
     location_long: number;
+    area: Area;
 }
 
 export type MilesCityAreaBounds = {

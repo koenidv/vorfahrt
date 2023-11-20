@@ -29,8 +29,6 @@ export default class MilesController {
     const abfahrt = new MilesClient();
     const dataHandler = this.createDataHandler(appDataSource);
 
-    this.tempPrepareCities(abfahrt);
-
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
     // todo properly populate singlevehicles from relational
     Array.from({ length: 10 }, (_, i) => 10161 + i).forEach(i => {
@@ -67,19 +65,9 @@ export default class MilesController {
 
   private startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): MilesScraperCitiesMeta {
     this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta");
-    // todo remove this once cities are properly populated
-    this.scraperCitiesMeta.fetch().then(mapScraper.setAreas.bind(mapScraper));
     this.scraperCitiesMeta.addListener(mapScraper.setAreas.bind(mapScraper));
-    // todo datahandler listener
-    return this.scraperCitiesMeta.start();
-  }
-
-
-  async tempPrepareCities(abfahrt: MilesClient) {
-    const citiesJson = (await abfahrt.getCityAreas()).Data.JSONCites;
-    const cities = JSON.parse(citiesJson) as MilesCityMeta[];
-    console.info("Found", cities.length, "cities");
-    await this.dataHandler.handleCitiesMeta(cities);
+    this.scraperCitiesMeta.addListener(this.dataHandler.handleCitiesMeta.bind(this.dataHandler));
+    return this.scraperCitiesMeta.start().executeNow();
   }
 
 }

@@ -31,6 +31,11 @@ export abstract class BaseMilesScraper<T> implements Scraper {
         return this;
     }
 
+    executeNow(): this {
+        this.cycleNotifyListeners();
+        return this;
+    }
+
     addListener(listener: (data: T[], source: QueryPriority | string) => void): this {
         this.listeners.push(listener);
         return this;
