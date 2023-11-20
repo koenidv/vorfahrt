@@ -17,7 +17,7 @@ export abstract class BaseMilesScraper<T> implements Scraper {
         this.cycleTime = 1000 / (cyclesMinute / 60);
         this.scraperId = scraperId;
         SystemObserver.registerScraper(this);
-        this.log(clc.blue(`Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+this.cycleTime.toFixed(3)}ms/c)`))
+        this.log(clc.blue(`Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+(this.cycleTime/1000).toFixed(4)}s/c)`))
     }
 
     start(): this {

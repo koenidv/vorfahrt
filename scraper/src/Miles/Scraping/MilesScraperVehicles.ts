@@ -7,7 +7,7 @@ export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
 export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJsonParsed> {
     private normalQueue: number[] = [];
     private lowQueue: number[] = [];
-    
+
     private requestsExecuted = 0;
     private responses: ("OK" | "API_ERROR" | "NOT_FOUND" | "SCRAPER_ERROR")[] = [];
     private responseTimes: number[] = [];
@@ -64,8 +64,17 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     private async fetch(vehicleId: number): Promise<apiVehicleJsonParsed | null> {
         try {
             this.requestsExecuted++;
-            const start = Date.now();
-            const result = await this.abfahrt.vehicles.getVehicleById(vehicleId);
+            let start = Date.now();
+
+            const onRetry = () => {
+                this.requestsExecuted++;
+                this.responses.push("API_ERROR");
+                this.responseTimes.push(Date.now() - start);
+                start = Date.now() // todo requests times should be handled by abfahrt
+            }
+
+            const result = await this.abfahrt.createGetVehicle(vehicleId).onRequestRetry(onRetry).execute();
+
             this.responseTimes.push(Date.now() - start);
 
             if (result.ResponseText === "Vehicle ID not found") {

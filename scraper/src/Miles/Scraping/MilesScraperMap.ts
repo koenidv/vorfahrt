@@ -1,11 +1,11 @@
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraper } from "../BaseMilesScraper";
 import { MilesCityAreaBounds } from "../Miles.types";
-import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesVehicleSearch";
 import { GetVehiclesResponse } from "@koenidv/abfahrt/dist/src/miles/net/getVehicles";
 import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { Point } from "@influxdata/influxdb-client";
 import { SystemObserver } from "../../SystemObserver";
+import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 
 export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed> {
     private cities: MilesCityAreaBounds[] = [];
@@ -19,8 +19,8 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
     setAreas(cities: MilesCityAreaBounds[]) {
         if (cities.toString() !== this.cities.toString()) {
-            this.cities = cities;
-            this.log("Now tracking", cities.length, "cities")
+            this.cities = cities.filter(city => city.cityId === "BER");
+            this.log("Now tracking", this.cities.length, "cities")
         }
     }
 
@@ -39,17 +39,47 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
     async fetch(city: MilesCityAreaBounds): Promise<apiVehicleJsonParsed[] | null> {
         this._cycles++;
-        const results = await this.abfahrt.createVehicleSearch(city.area).execute();
+        const responseTimes: number[] = [];
+        const responseTypes: ("OK" | "API_ERROR")[] = [];
+        const vehicles: apiVehicleJsonParsed[] = [];
 
-        const mapped = this.mapFetchResults(results);
+        const handleFetchResult = (result: FetchResult) => {
+            const {
+                vehicles: thisVehicles,
+                responseTime: thisResponseTime,
+                responseTypes: thisResponseTypes
+            } = this.handleFetchResult(result, city.cityId);
+            vehicles.push(...thisVehicles);
+            responseTimes.push(thisResponseTime);
+            responseTypes.push(...thisResponseTypes);
+        }
+
+        const request = this.abfahrt.createVehicleSearch(city.area)
+            .setMaxConcurrent(10)
+            .setTaskDelay(1000)
+
+        request.addEventListener("fetchCompleted", handleFetchResult);
+        request.addEventListener("fetchRetry", () => this.requestsExecuted++)
+
+        const results = await request.execute();
 
         this.requestsExecuted = (this.requestsExecuted ?? 0) + results.length;
-        this.vehiclesFound = (this.vehiclesFound ?? 0) + mapped.vehicles.length;
-        this.responseTimes.push(...mapped.responseTimes);
-        this.responseTypes.push(...mapped.responseTypes);
+        this.vehiclesFound = (this.vehiclesFound ?? 0) + vehicles.length;
+        this.responseTimes.push(...responseTimes);
+        this.responseTypes.push(...responseTypes);
 
-        this.createLogPoint(city.cityId, mapped.vehicles.length, results.length, mapped.responseTimes, mapped.responseTypes);
-        return mapped.vehicles.length === 0 ? null : mapped.vehicles;
+        this.createLogPoint(city.cityId, vehicles.length, results.length, responseTimes, responseTypes);
+        return null; // listeners are already called per request result
+    }
+
+    handleFetchResult(result: FetchResult, cityId: string): { vehicles: apiVehicleJsonParsed[], responseTime: number, responseTypes: ("OK" | "API_ERROR")[] } {
+        const responseTime = result.resDate.getTime() - result.reqDate.getTime();
+        const mapped = this.mapVehicleResponses(result.data);
+
+        this.log(`Fetched ${mapped.vehicles.length} vehicles in ${responseTime}ms from ${result.data.length} requests at ${new Date().toLocaleTimeString()}`)
+
+        this.listeners.forEach(listener => listener(mapped.vehicles, cityId));
+        return { vehicles: mapped.vehicles, responseTime, responseTypes: mapped.responseTypes };
     }
 
     mapFetchResults(results: FetchResult[]): { vehicles: apiVehicleJsonParsed[], responseTimes: number[], responseTypes: ("OK" | "API_ERROR")[] } {

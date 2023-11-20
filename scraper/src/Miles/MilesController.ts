@@ -9,6 +9,10 @@ import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta";
 import * as clc from "cli-color";
 import { MilesCityMeta } from "./Miles.types";
 
+const RPM_VEHICLE = 60;
+const RPM_MAP = 1;
+const RPM_CITES = 1 / (60 * 12);
+
 export default class MilesController {
   scraperMap: MilesScraperMap;
   scraperVehicles: MilesScraperVehicles;
@@ -48,21 +52,21 @@ export default class MilesController {
   }
 
   private startVehiclesScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperVehicles {
-    this.scraperVehicles = new MilesScraperVehicles(abfahrt, 2 * 60, "miles-vehicles")
+    this.scraperVehicles = new MilesScraperVehicles(abfahrt, RPM_VEHICLE, "miles-vehicles")
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
       .start();
     return this.scraperVehicles;
   }
 
   private startMapScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperMap {
-    this.scraperMap = new MilesScraperMap(abfahrt, 1, "miles-map")
+    this.scraperMap = new MilesScraperMap(abfahrt, RPM_MAP, "miles-map")
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
       .start();
     return this.scraperMap;
   }
 
   private startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): MilesScraperCitiesMeta {
-    this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, 1 / (60 * 12), "miles-cities-meta");
+    this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta");
     // todo remove this once cities are properly populated
     this.scraperCitiesMeta.fetch().then(mapScraper.setAreas.bind(mapScraper));
     this.scraperCitiesMeta.addListener(mapScraper.setAreas.bind(mapScraper));
