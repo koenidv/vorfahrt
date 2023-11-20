@@ -6,8 +6,7 @@ import MilesScraperMap from "./Scraping/MilesScraperMap";
 import MilesScraperVehicles, { QueryPriority } from "./Scraping/MilesScraperVehicles";
 import { InfluxDB, QueryApi, WriteApi } from "@influxdata/influxdb-client";
 import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta";
-import * as clc from "cli-color";
-import { MilesCityMeta } from "./Miles.types";
+import clc from "cli-color";
 
 const RPM_VEHICLE = 60;
 const RPM_MAP = 1;

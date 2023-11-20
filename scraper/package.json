@@ -25,6 +25,8 @@
   "homepage": "https://github.com/koenidv/vorfahrt#readme",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "@types/cli-color": "^2.0.5",
+    "@types/express": "^4.17.21",
     "@types/jest": "^29.5.4",
     "@types/node": "^16.11.10",
     "dotenv": "^16.3.1",
@@ -40,6 +42,7 @@
     "@influxdata/influxdb-client-apis": "^1.33.2",
     "@koenidv/abfahrt": "^0.0.23",
     "cli-color": "^2.0.3",
+    "express": "^4.18.2",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.17"

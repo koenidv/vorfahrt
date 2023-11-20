@@ -2,7 +2,7 @@ import { MilesClient } from "@koenidv/abfahrt";
 import { Scraper } from "../ScraperInterface";
 import { QueryPriority } from "./Scraping/MilesScraperVehicles";
 import { SystemObserver } from "../SystemObserver";
-import * as clc from "cli-color";
+import clc from "cli-color";
 
 export abstract class BaseMilesScraper<T> implements Scraper {
     public scraperId: string;
@@ -10,7 +10,7 @@ export abstract class BaseMilesScraper<T> implements Scraper {
     protected listeners: ((data: T[], source: QueryPriority | string) => void)[] = [];
     protected observer: SystemObserver;
 
-    private cycleTime: number;
+    public cycleTime: number;
     private interval: NodeJS.Timeout;
 
     constructor(abfahrt: MilesClient, cyclesMinute: number, scraperId: string, observer = SystemObserver.instance()) {

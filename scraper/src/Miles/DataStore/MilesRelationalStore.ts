@@ -7,7 +7,7 @@ import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { VehicleSize } from "../../entity/Miles/VehicleSize";
 import { VehicleModel } from "../../entity/Miles/VehicleModel";
 import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
-import * as clc from "cli-color";
+import clc from "cli-color";
 
 export class MilesRelationalStore {
     manager: EntityManager;

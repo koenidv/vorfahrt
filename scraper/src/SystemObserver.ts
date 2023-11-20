@@ -1,6 +1,6 @@
 import { Point, WriteApi } from "@influxdata/influxdb-client";
 import { Scraper } from "./ScraperInterface";
-import * as clc from "cli-color";
+import clc from "cli-color";
 
 type ObservedScraper = {
     instance: Scraper,
