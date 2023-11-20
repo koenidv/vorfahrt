@@ -4,9 +4,6 @@ import { MilesCityAreaBounds } from "../Miles.types";
 import { polygonToArea } from "@koenidv/abfahrt";
 
 export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityAreaBounds> {
-    lastResponseTime: number;
-    lastCitiesCount: number;
-
     // todo this also needs to parse JSONCities to get Name and Location
 
     async cycle(): Promise<{ data: MilesCityAreaBounds[] } | null> {
@@ -21,14 +18,14 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityAr
     private async fetchCityPolygons() {
         const today = new Date();
         const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
-        const timeNow = Date.now();
         const response = await this.abfahrt.getCityAreas({ cityAreasDate: lastWeek })
-        this.lastResponseTime = Date.now() - timeNow;
+        this.observer.requestExecuted(this, response.Result === "OK" ? "OK" : "API_ERROR", response._time);
 
         if (response.Result !== "OK") {
             this.logError("Error fetching city polygons:", response.Result);
             return null;
         }
+
         return JSON.parse(response.Data.JSONCityAreas).JSONCityAreas.areas as cityArea[];
     }
 
@@ -38,19 +35,8 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityAr
             cityId: polygon.idCity,
             area: polygonToArea(polygon)
         }));
-        this.lastCitiesCount = bounds.length;
+        this.observer.measure(this, "cities", bounds.length)
         return bounds;
     }
-
-    popSystemStatus(): { [key: string]: number; } {
-        const status = {
-            lastResponseTime: this.lastResponseTime,
-            lastCitiesCount: this.lastCitiesCount
-        }
-        this.lastResponseTime = undefined;
-        this.lastCitiesCount = undefined;
-        return status;
-    }
-
 
 }

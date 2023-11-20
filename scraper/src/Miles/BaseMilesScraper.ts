@@ -8,15 +8,16 @@ export abstract class BaseMilesScraper<T> implements Scraper {
     public scraperId: string;
     protected abfahrt: MilesClient;
     protected listeners: ((data: T[], source: QueryPriority | string) => void)[] = [];
+    protected observer: SystemObserver;
 
     private cycleTime: number;
     private interval: NodeJS.Timeout;
 
-    constructor(abfahrt: MilesClient, cyclesMinute: number, scraperId: string) {
+    constructor(abfahrt: MilesClient, cyclesMinute: number, scraperId: string, observer = SystemObserver.instance()) {
         this.abfahrt = abfahrt;
         this.cycleTime = 1000 / (cyclesMinute / 60);
         this.scraperId = scraperId;
-        SystemObserver.registerScraper(this);
+        this.observer = observer.registerScraper(this);
         this.log(clc.blue(`Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+(this.cycleTime/1000).toFixed(4)}s/c)`))
     }
 
@@ -44,8 +45,6 @@ export abstract class BaseMilesScraper<T> implements Scraper {
     }
 
     abstract cycle(): Promise<{ data: T[], source?: QueryPriority | string } | null>;
-
-    abstract popSystemStatus(): { [key: string]: number };
 
     protected log(...args: any[]) {
         console.log(clc.bgBlackBright(this.scraperId), ...args);

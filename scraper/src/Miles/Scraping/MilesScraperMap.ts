@@ -10,19 +10,14 @@ import { applyMilesMapScrapingFilters } from "./applyMilesMapScrapingFilters";
 
 export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed> {
     private cities: MilesCityAreaBounds[] = [];
-
     private _cycles = 0;
-    private requestsExecuted: number = undefined;
-    private vehiclesFound: number = undefined;
-    private responseTimes: number[] = [];
-    private responseTypes: ("OK" | "API_ERROR")[] = [];
-
 
     setAreas(cities: MilesCityAreaBounds[]) {
         if (cities.toString() !== this.cities.toString()) {
             this.cities = cities;
-            this.log("Now tracking", this.cities.length, "cities")
+            this.log("Now tracking", this.cities.length, "cities");
         }
+        this.observer.measure(this, "cities", this.cities.length);
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[] } | null> {
@@ -47,11 +42,10 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         const handleFetchResult = (result: FetchResult) => {
             const {
                 vehicles: thisVehicles,
-                responseTime: thisResponseTime,
                 responseTypes: thisResponseTypes
             } = this.handleFetchResult(result, city.cityId);
             vehicles.push(...thisVehicles);
-            responseTimes.push(thisResponseTime);
+            responseTimes.push(result._time);
             responseTypes.push(...thisResponseTypes);
         }
 
@@ -60,25 +54,21 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         applyMilesMapScrapingFilters(city, request);
 
         request.addEventListener("fetchCompleted", handleFetchResult);
-        request.addEventListener("fetchRetry", () => this.requestsExecuted++)
+        request.addEventListener("fetchRetry", (_: any, time: number) => this.observer.requestExecuted(this, "API_ERROR", time));
 
         const results = await request.execute();
 
-        this.requestsExecuted = (this.requestsExecuted ?? 0) + results.length;
-        this.vehiclesFound = (this.vehiclesFound ?? 0) + vehicles.length;
-        this.responseTimes.push(...responseTimes);
-        this.responseTypes.push(...responseTypes);
-
+        this.observer.measure(this, "vehicles", vehicles.length);
         this.createLogPoint(city.cityId, vehicles.length, results.length, responseTimes, responseTypes);
         return null; // listeners are already called per request result
     }
 
-    handleFetchResult(result: FetchResult, cityId: string): { vehicles: apiVehicleJsonParsed[], responseTime: number, responseTypes: ("OK" | "API_ERROR")[] } {
-        const responseTime = result.resDate.getTime() - result.reqDate.getTime();
+    handleFetchResult(result: FetchResult, cityId: string): { vehicles: apiVehicleJsonParsed[], responseTypes: ("OK" | "API_ERROR")[] } {
         const mapped = this.mapVehicleResponses(result.data);
 
+        this.observer.requestExecuted(this, "OK", result._time); // todo "OK" status isn't checked
         this.listeners.forEach(listener => listener(mapped.vehicles, cityId));
-        return { vehicles: mapped.vehicles, responseTime, responseTypes: mapped.responseTypes };
+        return { vehicles: mapped.vehicles, responseTypes: mapped.responseTypes };
     }
 
     mapFetchResults(results: FetchResult[]): { vehicles: apiVehicleJsonParsed[], responseTimes: number[], responseTypes: ("OK" | "API_ERROR")[] } {
@@ -122,30 +112,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             .intField("OK", responseTypesCount["OK"] || 0)
             .intField("API_ERROR", responseTypesCount["API_ERROR"] || 0)
 
-        SystemObserver.savePoint(point);
-    }
-
-    popSystemStatus(): { [key: string]: number; } {
-        const averageResponseTime = this.responseTimes.reduce((a, b) => a + b, 0) / this.responseTimes.length;
-        const responseTypesCount = this.responseTypes.reduce((acc, cur) => {
-            acc[cur] = (acc[cur] ?? 0) + 1;
-            return acc;
-        }, {} as { [key: string]: number });
-
-        const status = {
-            citiesCount: this.cities.length,
-            requestsExecuted: this.requestsExecuted,
-            vehiclesFound: this.vehiclesFound,
-            averageResponseTime,
-            OK: responseTypesCount["OK"] || 0,
-            API_ERROR: responseTypesCount["API_ERROR"] || 0,
-        }
-        this.requestsExecuted = undefined;
-        this.vehiclesFound = undefined;
-        this.responseTimes = [];
-        this.responseTypes = [];
-
-        return status;
+        this.observer.savePoint(point);
     }
 
 }

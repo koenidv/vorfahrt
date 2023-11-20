@@ -17,7 +17,7 @@ class Main {
     this.appDataSource = await AppDataSource.initialize();
     const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken, timeout: 60000 });
     this.observabilityInfluxClient = influxdb.getWriteApi("vorfahrt", "system_scraper", "s");
-    this.observer = new SystemObserver(this.observabilityInfluxClient).start();
+    this.observer = SystemObserver.createInstance(this.observabilityInfluxClient).start();
     this.milesController = new MilesController(this.appDataSource);
   }
 

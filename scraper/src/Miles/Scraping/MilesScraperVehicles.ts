@@ -8,17 +8,15 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     private normalQueue: number[] = [];
     private lowQueue: number[] = [];
 
-    private requestsExecuted = 0;
-    private responses: ("OK" | "API_ERROR" | "NOT_FOUND" | "SCRAPER_ERROR")[] = [];
-    private responseTimes: number[] = [];
-
     register(vehicleId: number, priority: QueryPriority): this {
         if (priority === QueryPriority.LOW) {
             this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
             this.lowQueue.push(vehicleId);
+            this.observer.measure(this, "queue-low", this.lowQueue.length);
         } else {
             this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
             this.normalQueue.push(vehicleId);
+            this.observer.measure(this, "queue-normal", this.normalQueue.length);
         }
         return this;
     }
@@ -26,6 +24,8 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     deregister(vehicleId: number): this {
         this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
         this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
+        this.observer.measure(this, "queue-low", this.lowQueue.length);
+        this.observer.measure(this, "queue-normal", this.normalQueue.length);
         return this;
     }
 
@@ -63,68 +63,34 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
 
     private async fetch(vehicleId: number): Promise<apiVehicleJsonParsed | null> {
         try {
-            this.requestsExecuted++;
-            let start = Date.now();
-
-            const onRetry = () => {
-                this.requestsExecuted++;
-                this.responses.push("API_ERROR");
-                this.responseTimes.push(Date.now() - start);
-                start = Date.now() // todo requests times should be handled by abfahrt
-            }
-
-            const result = await this.abfahrt.createGetVehicle(vehicleId).onRequestRetry(onRetry).execute();
-
-            this.responseTimes.push(Date.now() - start);
+            const result = await this.abfahrt.createGetVehicle(vehicleId)
+                .onRequestRetry((_: any, time: number) => this.observer.requestExecuted(this, "API_ERROR", time))
+                .execute();
 
             if (result.ResponseText === "Vehicle ID not found") {
                 this.log("Vehicle", vehicleId, "not found and removed from future queue")
                 this.deregister(vehicleId);
-                this.responses.push("NOT_FOUND");
+                this.observer.requestExecuted(this, "NOT_FOUND", result._time);
                 return null;
             }
 
             if (result.Result !== "OK") {
                 this.logError("Vehicle", vehicleId, "returned error", result.Result);
                 this.logError(result);
-                this.responses.push("API_ERROR");
+                this.observer.requestExecuted(this, "API_ERROR", result._time);
                 return null;
             }
 
-            this.responses.push("OK");
+            this.observer.requestExecuted(this, "OK", result._time);
             const vehicle = result.Data.vehicle[0]
             const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
 
             return vehicleParsed;
         } catch (e) {
-            this.responses.push("SCRAPER_ERROR");
             this.logError("Error occurred while scraping a vehicle", e);
+            this.observer.requestExecuted(this, "SCRAPER_ERROR", 0);
             return null;
         }
-    }
-
-    popSystemStatus(): { [key: string]: number; } {
-        const responsesCount = this.responses.reduce((acc, cur) => {
-            acc[cur] = (acc[cur] ?? 0) + 1;
-            return acc;
-        }, {} as { [key: string]: number });
-        const averageResponseTime = this.responseTimes.length ? this.responseTimes.reduce((acc, cur) => acc + cur, 0) / this.responseTimes.length : undefined;
-        const requestsExecuted = this.requestsExecuted;
-
-        this.resetSystemStatus();
-        return {
-            ...responsesCount,
-            requestsExecuted,
-            averageResponseTime,
-            normalQueueCount: this.normalQueue.length,
-            lowQueueCount: this.lowQueue.length,
-        }
-    }
-
-    private resetSystemStatus() {
-        this.requestsExecuted = 0;
-        this.responses = [];
-        this.responseTimes = [];
     }
 
 }
