@@ -11,8 +11,8 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
     private cities: MilesCityAreaBounds[] = [];
 
     private _cycles = 0;
-    private requestsExecuted = 0;
-    private vehiclesFound = 0;
+    private requestsExecuted: number = undefined;
+    private vehiclesFound: number = undefined;
     private responseTimes: number[] = [];
     private responseTypes: ("OK" | "API_ERROR")[] = [];
 
@@ -43,8 +43,8 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
         const mapped = this.mapFetchResults(results);
 
-        this.requestsExecuted += results.length;
-        this.vehiclesFound += mapped.vehicles.length;
+        this.requestsExecuted = (this.requestsExecuted ?? 0) + results.length;
+        this.vehiclesFound = (this.vehiclesFound ?? 0) + mapped.vehicles.length;
         this.responseTimes.push(...mapped.responseTimes);
         this.responseTypes.push(...mapped.responseTypes);
 
@@ -89,7 +89,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             .tag("city", cityId)
             .intField("vehicles", vehicleCount)
             .intField("requests", requestCount)
-            .intField("averageResponseTime", averageResponseTime)
+            .intField("averageResponseTime", averageResponseTime || 0)
             .intField("OK", responseTypesCount["OK"] || 0)
             .intField("API_ERROR", responseTypesCount["API_ERROR"] || 0)
 
@@ -111,8 +111,8 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             OK: responseTypesCount["OK"] || 0,
             API_ERROR: responseTypesCount["API_ERROR"] || 0,
         }
-        this.requestsExecuted = 0;
-        this.vehiclesFound = 0;
+        this.requestsExecuted = undefined;
+        this.vehiclesFound = undefined;
         this.responseTimes = [];
         this.responseTypes = [];
 

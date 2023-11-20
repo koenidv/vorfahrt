@@ -40,7 +40,7 @@ export default class MilesController {
 
   private createDataHandler(appDataSource: DataSource): MilesDataHandler {
     this.dataSource = appDataSource;
-    const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken });
+    const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken, timeout: 60000 });
     this.influxWriteClient = influxdb.getWriteApi("vorfahrt", "miles", "s");
     this.influxQueryClient = influxdb.getQueryApi("vorfahrt");
     this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient, this.scraperVehicles);

@@ -87,7 +87,12 @@ export class InfluxVehicleComparison {
     }
 
     private applyChange(oldValue: unknown, newValue: unknown, fieldName: string, fieldType: FieldType) {
-        if (this.overrideAddAllFields || oldValue !== newValue) {
+        // todo how should we handle null values?
+        if ((this.overrideAddAllFields || oldValue !== newValue)) {
+            if (newValue === null || newValue === undefined) {
+                console.error("newValue is null or undefined", newValue, fieldName, fieldType)
+                return;
+            }
             this.applyField(newValue, fieldName, fieldType)
         }
     }
