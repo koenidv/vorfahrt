@@ -7,12 +7,15 @@ import MilesScraperVehicles, { QueryPriority } from "./Scraping/MilesScraperVehi
 import { InfluxDB, QueryApi, WriteApi } from "@influxdata/influxdb-client";
 import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta";
 import clc from "cli-color";
+import { SystemController } from "../SystemController";
 
 const RPM_VEHICLE = 60;
 const RPM_MAP = 1;
 const RPM_CITES = 1 / (60 * 12);
 
 export default class MilesController {
+  private systemController: SystemController;
+
   scraperMap: MilesScraperMap;
   scraperVehicles: MilesScraperVehicles;
   scraperCitiesMeta: MilesScraperCitiesMeta
@@ -22,8 +25,9 @@ export default class MilesController {
   influxQueryClient: QueryApi;
   dataHandler: MilesDataHandler;
 
-  constructor(appDataSource: DataSource) {
+  constructor(systemController: SystemController, appDataSource: DataSource) {
     console.log(clc.bgBlackBright("MilesController"), clc.blue("Initializing"));
+    this.systemController = systemController;
 
     const abfahrt = new MilesClient();
     const dataHandler = this.createDataHandler(appDataSource);
@@ -49,24 +53,26 @@ export default class MilesController {
   }
 
   private startVehiclesScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperVehicles {
-    this.scraperVehicles = new MilesScraperVehicles(abfahrt, RPM_VEHICLE, "miles-vehicles")
+    this.scraperVehicles = new MilesScraperVehicles(abfahrt, RPM_VEHICLE, "miles-vehicles", this.systemController)
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
       .start();
     return this.scraperVehicles;
   }
 
   private startMapScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperMap {
-    this.scraperMap = new MilesScraperMap(abfahrt, RPM_MAP, "miles-map")
+    this.scraperMap = new MilesScraperMap(abfahrt, RPM_MAP, "miles-map", this.systemController)
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
       .start();
     return this.scraperMap;
   }
 
   private startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): MilesScraperCitiesMeta {
-    this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta");
-    this.scraperCitiesMeta.addListener(mapScraper.setAreas.bind(mapScraper));
-    this.scraperCitiesMeta.addListener(this.dataHandler.handleCitiesMeta.bind(this.dataHandler));
-    return this.scraperCitiesMeta.start().executeNow();
+    this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta", this.systemController)
+      .addListener(mapScraper.setAreas.bind(mapScraper))
+      .addListener(this.dataHandler.handleCitiesMeta.bind(this.dataHandler))
+      .start()
+      .executeNow();
+    return this.scraperCitiesMeta;
   }
 
 }
