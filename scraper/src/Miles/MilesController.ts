@@ -53,23 +53,25 @@ export default class MilesController {
   private startVehiclesScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperVehicles {
     this.scraperVehicles = new MilesScraperVehicles(abfahrt, RPM_VEHICLE, "miles-vehicles", this.systemController)
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
-      .start();
+    if (process.argv.includes("--start")) this.scraperVehicles.start();
     return this.scraperVehicles;
   }
 
   private startMapScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperMap {
     this.scraperMap = new MilesScraperMap(abfahrt, RPM_MAP, "miles-map", this.systemController)
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
-      .start();
+    if (process.argv.includes("--start")) this.scraperMap.start();
     return this.scraperMap;
   }
 
   private startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): MilesScraperCitiesMeta {
     this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta", this.systemController)
       .addListener(mapScraper.setAreas.bind(mapScraper))
-      .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler))
-      .start()
-      .executeNow();
+      .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler));
+    if (process.argv.includes("--start")) {
+      this.scraperCitiesMeta.start()
+        .executeNow();
+    }
     return this.scraperCitiesMeta;
   }
 
