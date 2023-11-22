@@ -3,6 +3,7 @@
   import { signOut } from "@auth/sveltekit/client";
 
   export let data;
+
 </script>
 
 <div class="m-4">
@@ -11,7 +12,7 @@
     <div class="btn btn-secondary" on:click={() => goto("/")}>Back to Public Page</div>
     <div class="flex-grow" />
     <div class="btn btn-outline" on:click={() => signOut({ callbackUrl: "/" })}>Sign Out</div>
-    <div class="btn btn-error">Kill Scraper</div>
+    <div class="btn btn-error">Kill Server</div>
   </div>
 </div>
 
@@ -25,6 +26,9 @@
       <div class="divider my-2">Influx Clients</div>
       to be developed
     </ul>
-    <div class="flex-grow bg-base-200 rounded-box p-4"></div>
+    <div class="flex-grow bg-base-200 rounded-box p-4">
+      {data?.session?.accessToken}
+
+    </div>
   </div>
 </div>
