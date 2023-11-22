@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Timestamped } from "../../types"
 
 /**
@@ -8,8 +9,7 @@ import { Timestamped } from "../../types"
  * @returns List of values \<T> with timestamp between startTime and endTime
  */
 export function sliceMetrics<T>(values: (Timestamped & T)[], startTime: number, endTime: number): (Timestamped & T)[] {
-    // todo lodash binary search. values are sorted by timestamp
-    return values.filter((value) => {
-        return value.timestamp >= startTime && value.timestamp <= endTime;
-    });
+    const startIndex = _.sortedIndexBy(values, { timestamp: startTime }, "timestamp");
+    const endIndex = _.sortedLastIndexBy(values, { timestamp: endTime }, "timestamp");
+    return values.slice(startIndex, endIndex);
 } 
