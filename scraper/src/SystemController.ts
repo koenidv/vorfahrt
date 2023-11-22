@@ -1,32 +1,37 @@
 import { DataSource } from "typeorm";
 import MilesController from "./Miles/MilesController";
 import { Scraper } from "./BaseScraper";
-import { SystemObserver } from "./SystemObserver";
+import { Observer } from "./Observer";
+import { WriteApi } from "@influxdata/influxdb-client";
+
+type ObservedScraper = {
+    scraper: Scraper;
+    observer: Observer;
+}
 
 export class SystemController {
-    private _observer: SystemObserver;
-    public get observer(): SystemObserver {
-        // todo observer should be readonly, create a new one for each scraper
-        return this._observer;
-    }
-    private _scrapers = new Map<string, Scraper>();
+    private _observerWriteClient: WriteApi;
+    private _scrapers = new Map<string, ObservedScraper>();
     public get scrapers() {
         return this._scrapers;
     }
 
     private milesController: MilesController;
 
-    constructor(observer: SystemObserver) {
-        this._observer = observer;
+    constructor(observerWriteClient: WriteApi) {
+        this._observerWriteClient = observerWriteClient;
     }
 
-    registerScraper(scraper: Scraper): SystemObserver {
+    registerScraper(scraper: Scraper): Observer {
         if (this.scrapers.has(scraper.scraperId)) {
             throw new Error(`Scraper ${scraper.scraperId} already registered`);
         }
-        this.scrapers.set(scraper.scraperId, scraper);
-        this.observer.registerScraper(scraper);
-        return this.observer;
+        const observer = new Observer(scraper.scraperId, this._observerWriteClient);
+        this.scrapers.set(scraper.scraperId, {
+            scraper,
+            observer
+        });
+        return observer;
     }
 
     createMilesScraper(appDataSource: DataSource): this {

@@ -23,8 +23,8 @@ export class RequestsRoutes {
 
     private aggregateRequests() {
         const requests: { [scraperId: string]: RequestMetric[] } = {};
-        for (const [scraperId, observed] of this.systemController.observer.scrapers) {
-            requests[scraperId] = observed.requests;
+        for (const [scraperId, observed] of this.systemController.scrapers) {
+            requests[scraperId] = observed.observer.requests;
         }
         const aggregateWindow = 1000;
         const startDate = Date.now() - 1000 * 60 * 60 * 2;

@@ -4,7 +4,7 @@ import { MilesCityAreaBounds } from "../Miles.types";
 import { GetVehiclesResponse } from "@koenidv/abfahrt/dist/src/miles/net/getVehicles";
 import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { Point } from "@influxdata/influxdb-client";
-import { SystemObserver } from "../../SystemObserver";
+import { Observer } from "../../Observer";
 import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 import { applyMilesMapScrapingFilters } from "./applyMilesMapScrapingFilters";
 
@@ -54,7 +54,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         applyMilesMapScrapingFilters(city, request);
 
         request.addEventListener("fetchCompleted", handleFetchResult);
-        request.addEventListener("fetchRetry", (_: any, time: number) => this.observer.requestExecuted(this, "API_ERROR", time));
+        request.addEventListener("fetchRetry", (_: any, time: number) => this.observer.requestExecuted("API_ERROR", time));
 
         const results = await request.execute();
 
@@ -66,7 +66,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
     handleFetchResult(result: FetchResult, cityId: string): { vehicles: apiVehicleJsonParsed[], responseTypes: ("OK" | "API_ERROR")[] } {
         const mapped = this.mapVehicleResponses(result.data);
 
-        this.observer.requestExecuted(this, "OK", result._time); // todo "OK" status isn't checked
+        this.observer.requestExecuted("OK", result._time); // todo "OK" status isn't checked
         this.listeners.forEach(listener => listener(mapped.vehicles, cityId));
         return { vehicles: mapped.vehicles, responseTypes: mapped.responseTypes };
     }

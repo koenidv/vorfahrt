@@ -6,6 +6,7 @@ type byType<T> = keyof (Timestamped & T) | ((value: T) => number);
 
 /**
  * Aggregates metrics by summing them up. **Entries must be sorted by timestamp.**
+ * Will only include *complete* aggregate windows, i.e. will return [] if aggregateWindow > endTime-startTime
  * @param data List of objects \<T> with a timestamp property
  * @param by key to aggregate or function to get a number from the object
  * @param aggregateWindow Aggregate window in milliseconds
@@ -17,6 +18,7 @@ export function aggregateSumBy<T>(data: (Timestamped & T)[], by: byType<T>, aggr
 
 /**
  * Aggregates metrics by their mean value across a window. **Entries must be sorted by timestamp.**
+ * Will only include *complete* aggregate windows, i.e. will return [] if aggregateWindow > endTime-startTime
  * @param data List of objects \<T> with a timestamp property
  * @param by key to aggregate or function to get a number from the object
  * @param aggregateWindow Aggregate window in milliseconds
@@ -28,6 +30,7 @@ export function aggregateMeanBy<T>(data: (Timestamped & T)[], by: byType<T>, agg
 
 /**
  * Aggregates metrics
+ * Will only include *complete* aggregate windows, i.e. will return [] if aggregateWindow > endTime-startTime
  * @param aggregateFn Function to aggregate values
  * @param data List of objects \<T> with a timestamp property
  * @param by key to aggregate or function to get a number from the object

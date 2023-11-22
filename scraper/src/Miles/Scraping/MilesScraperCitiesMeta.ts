@@ -35,9 +35,9 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityMe
     async fetchUserHello() {
         const today = new Date();
         const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
-        const onRetry = (_: any, time: number) => this.observer.requestExecuted(this, "API_ERROR", time);
+        const onRetry = (_: any, time: number) => this.observer.requestExecuted("API_ERROR", time);
         const response = await this.abfahrt.getCityAreas({ cityAreasDate: lastWeek, onRetry })
-        this.observer.requestExecuted(this, response.Result === "OK" ? "OK" : "API_ERROR", response._time);
+        this.observer.requestExecuted(response.Result === "OK" ? "OK" : "API_ERROR", response._time);
 
         if (response.Result !== "OK") {
             this.logError("Error fetching city polygons:", response.Result);

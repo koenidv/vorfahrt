@@ -1,8 +1,5 @@
 import { MilesClient } from "@koenidv/abfahrt";
-import { BaseScraper, Scraper } from "../BaseScraper";
-import { QueryPriority } from "./Scraping/MilesScraperVehicles";
-import { SystemObserver } from "../SystemObserver";
-import clc from "cli-color";
+import { BaseScraper } from "../BaseScraper";
 import { SystemController } from "../SystemController";
 
 export abstract class BaseMilesScraper<T> extends BaseScraper<T> {

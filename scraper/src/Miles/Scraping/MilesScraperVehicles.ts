@@ -64,31 +64,31 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     private async fetch(vehicleId: number): Promise<apiVehicleJsonParsed | null> {
         try {
             const result = await this.abfahrt.createGetVehicle(vehicleId)
-                .onRequestRetry((_: any, time: number) => this.observer.requestExecuted(this, "API_ERROR", time))
+                .onRequestRetry((_: any, time: number) => this.observer.requestExecuted("API_ERROR", time))
                 .execute();
 
             if (result.ResponseText === "Vehicle ID not found") {
                 this.log("Vehicle", vehicleId, "not found and removed from future queue")
                 this.deregister(vehicleId);
-                this.observer.requestExecuted(this, "NOT_FOUND", result._time);
+                this.observer.requestExecuted("NOT_FOUND", result._time);
                 return null;
             }
 
             if (result.Result !== "OK") {
                 this.logError("Vehicle", vehicleId, "returned error", result.Result);
                 this.logError(result);
-                this.observer.requestExecuted(this, "API_ERROR", result._time);
+                this.observer.requestExecuted("API_ERROR", result._time);
                 return null;
             }
 
-            this.observer.requestExecuted(this, "OK", result._time);
+            this.observer.requestExecuted("OK", result._time);
             const vehicle = result.Data.vehicle[0]
             const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
 
             return vehicleParsed;
         } catch (e) {
             this.logError("Error occurred while scraping a vehicle", e);
-            this.observer.requestExecuted(this, "SCRAPER_ERROR", 0);
+            this.observer.requestExecuted("SCRAPER_ERROR", 0);
             return null;
         }
     }

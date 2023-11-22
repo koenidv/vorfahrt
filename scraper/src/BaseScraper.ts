@@ -1,6 +1,6 @@
 import clc, { yellow } from "cli-color";
 import { SystemController } from "./SystemController";
-import { SystemObserver } from "./SystemObserver";
+import { Observer } from "./Observer";
 import { QueryPriority } from "./Miles/Scraping/MilesScraperVehicles";
 
 export interface Scraper {
@@ -14,7 +14,7 @@ export abstract class BaseScraper<T> implements Scraper {
 
     public scraperId: string;
     public cycleTime: number;
-    protected observer: SystemObserver;
+    protected observer: Observer;
     private interval: NodeJS.Timeout;
 
     protected listeners: ((data: T[], source: string) => void)[] = [];

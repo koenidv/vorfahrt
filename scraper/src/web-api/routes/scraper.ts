@@ -18,7 +18,7 @@ export class ScraperRoutes {
     }
 
     private listScrapers() {
-        return Array.from(this.systemController.observer.scrapers.keys());
+        return Array.from(this.systemController.scrapers.keys());
     }
 
 

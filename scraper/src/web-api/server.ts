@@ -1,5 +1,5 @@
 import express from "express";
-import { SystemObserver } from "../SystemObserver";
+import { Observer } from "../Observer";
 import { SystemController } from "../SystemController";
 import { ScraperRoutes } from "./routes/scraper";
 import { RequestsRoutes } from "./routes/requests";
