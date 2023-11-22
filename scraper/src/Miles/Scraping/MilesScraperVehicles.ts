@@ -41,15 +41,15 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     private selectNext(): { id: number, priority: QueryPriority } | null {
         const random = Math.random() * (this.normalQueue.length + this.lowQueue.length);
 
-        let id: number;
+        let id: number | undefined;
         let priority: QueryPriority;
         if (random < QueryPriority.LOW * this.lowQueue.length || this.normalQueue.length === 0) {
-            id = this.lowQueue.shift();
+            id = this.lowQueue.shift() as number;
             this.lowQueue.push(id);
             priority = QueryPriority.LOW;
         } else {
             id = this.normalQueue.shift();
-            this.normalQueue.push(id);
+            if (id !== undefined) this.normalQueue.push(id);
             priority = QueryPriority.NORMAL;
         }
 

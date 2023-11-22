@@ -16,14 +16,14 @@ const RPM_CITES = 1 / (60 * 12);
 export default class MilesController {
   private systemController: SystemController;
 
-  scraperMap: MilesScraperMap;
-  scraperVehicles: MilesScraperVehicles;
-  scraperCitiesMeta: MilesScraperCitiesMeta
+  scraperMap: MilesScraperMap | undefined;
+  scraperVehicles: MilesScraperVehicles | undefined;
+  scraperCitiesMeta: MilesScraperCitiesMeta | undefined;
 
-  dataSource: DataSource;
-  influxWriteClient: WriteApi;
-  influxQueryClient: QueryApi;
-  dataHandler: MilesDataHandler;
+  dataSource: DataSource | undefined;
+  influxWriteClient: WriteApi | undefined;
+  influxQueryClient: QueryApi | undefined;
+  dataHandler: MilesDataHandler | undefined;
 
   constructor(systemController: SystemController, appDataSource: DataSource) {
     console.log(clc.bgBlackBright("MilesController"), clc.blue("Initializing"));
@@ -34,7 +34,7 @@ export default class MilesController {
 
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
     // todo properly populate singlevehicles from relational
-    this.scraperVehicles.register(Array.from({ length: 10 }, (_, i) => 10161 + i), QueryPriority.NORMAL);
+    this.scraperVehicles!.register(Array.from({ length: 10 }, (_, i) => 10161 + i), QueryPriority.NORMAL);
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
     // todo populate cities from relational
@@ -46,7 +46,7 @@ export default class MilesController {
     const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken, timeout: 60000 });
     this.influxWriteClient = influxdb.getWriteApi("vorfahrt", "miles", "s");
     this.influxQueryClient = influxdb.getQueryApi("vorfahrt");
-    this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient, this.scraperVehicles);
+    this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient, this.scraperVehicles!);
     return this.dataHandler;
   }
 
@@ -67,7 +67,7 @@ export default class MilesController {
   private startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): MilesScraperCitiesMeta {
     this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta", this.systemController)
       .addListener(mapScraper.setAreas.bind(mapScraper))
-      .addListener(this.dataHandler.handleCitiesMeta.bind(this.dataHandler))
+      .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler))
       .start()
       .executeNow();
     return this.scraperCitiesMeta;

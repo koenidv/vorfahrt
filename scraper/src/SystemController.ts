@@ -16,7 +16,7 @@ export class SystemController {
         return this._scrapers;
     }
 
-    private milesController: MilesController;
+    private milesController: MilesController | undefined;
 
     constructor(observerWriteClient: WriteApi) {
         this._observerWriteClient = observerWriteClient;

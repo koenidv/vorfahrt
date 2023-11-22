@@ -7,9 +7,9 @@ import { WebApiServer } from "./web-api/server";
 import { SystemController } from "./SystemController";
 
 class Main {
-  appDataSource: DataSource;
-  systemController: SystemController;
-  apiServer: WebApiServer;
+  appDataSource: DataSource | undefined;
+  systemController: SystemController | undefined;
+  apiServer: WebApiServer | undefined;
 
   constructor() { }
 

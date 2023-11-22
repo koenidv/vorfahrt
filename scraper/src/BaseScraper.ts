@@ -15,9 +15,9 @@ export abstract class BaseScraper<T> implements Scraper {
 
     public scraperId: string;
     public cycleTime: number;
-    public running: boolean;
+    public running: boolean = false;
     protected observer: Observer;
-    private interval: NodeJS.Timeout;
+    private interval: NodeJS.Timeout | undefined;
 
     protected listeners: ((data: T[], source: string) => void)[] = [];
 

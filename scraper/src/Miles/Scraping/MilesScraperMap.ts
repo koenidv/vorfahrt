@@ -1,6 +1,6 @@
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraper } from "../BaseMilesScraper";
-import { MilesCityAreaBounds } from "../Miles.types";
+import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
 import { GetVehiclesResponse } from "@koenidv/abfahrt/dist/src/miles/net/getVehicles";
 import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { Point } from "@influxdata/influxdb-client";
@@ -9,10 +9,10 @@ import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 import { applyMilesMapScrapingFilters } from "./applyMilesMapScrapingFilters";
 
 export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed> {
-    private cities: MilesCityAreaBounds[] = [];
+    private cities: MilesCityMeta[] = [];
     private _cycles = 0;
 
-    setAreas(cities: MilesCityAreaBounds[]) {
+    setAreas(cities: MilesCityMeta[]) {
         if (cities.toString() !== this.cities.toString()) {
             this.cities = cities;
             this.log("Now tracking", this.cities.length, "cities");
@@ -21,11 +21,13 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[] } | null> {
-        const vehicles = await this.fetch(this.selectNextCity());
+        const next = this.selectNextCity();
+        if (next === null) return null;
+        const vehicles = await this.fetch(next);
         return vehicles === null ? null : { data: vehicles };
     }
 
-    selectNextCity(): MilesCityAreaBounds | null {
+    selectNextCity(): MilesCityMeta | null {
         if (this.cities.length === 0) {
             this.logWarn("No cities in queue: cycle will be skipped")
             return null;
@@ -33,7 +35,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         return this.cities[this._cycles % this.cities.length];
     }
 
-    async fetch(city: MilesCityAreaBounds): Promise<apiVehicleJsonParsed[] | null> {
+    async fetch(city: MilesCityMeta): Promise<apiVehicleJsonParsed[] | null> {
         this._cycles++;
         const responseTimes: number[] = [];
         const responseTypes: ("OK" | "API_ERROR")[] = [];
@@ -43,7 +45,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             const {
                 vehicles: thisVehicles,
                 responseTypes: thisResponseTypes
-            } = this.handleFetchResult(result, city.cityId);
+            } = this.handleFetchResult(result, city.idCity);
             vehicles.push(...thisVehicles);
             responseTimes.push(result._time);
             responseTypes.push(...thisResponseTypes);
@@ -59,7 +61,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         const results = await request.execute();
 
         this.observer.measure("vehicles", vehicles.length);
-        this.createLogPoint(city.cityId, vehicles.length, results.length, responseTimes, responseTypes);
+        this.createLogPoint(city.idCity, vehicles.length, results.length, responseTimes, responseTypes);
         return null; // listeners are already called per request result
     }
 

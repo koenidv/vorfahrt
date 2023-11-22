@@ -11,7 +11,7 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityMe
         return data === null ? null : { data };
     }
 
-    async fetch(): Promise<MilesCityMeta[]> {
+    async fetch(): Promise<MilesCityMeta[] | null> {
         const data = await this.fetchUserHello();
         if (data === null) return null;
 
@@ -26,7 +26,7 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityMe
             }
             (city as MilesCityMeta).area = area.area;
             return city as MilesCityMeta;
-        }).filter(city => city.area !== undefined);
+        }).filter(city => city?.area !== undefined) as MilesCityMeta[];
 
         this.observer.measure("cities", meta.length)
         return meta;
