@@ -3,6 +3,7 @@ import { SystemController } from "../SystemController";
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { createCreateContext } from "./trpc";
 import { appRouter } from "./appRouter";
+import cors from "cors";
 
 export class WebApiServer {
     private app: express.Application;
@@ -11,6 +12,11 @@ export class WebApiServer {
     constructor(systemController: SystemController) {
         this.app = express();
         this.systemController = systemController;
+
+        this.app.use(cors({
+            origin: "*",
+            methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        }))
 
         this.app.use(
             "/",
