@@ -1,22 +1,27 @@
 import express from "express";
 import { SystemObserver } from "../SystemObserver";
+import { SystemController } from "../SystemController";
+import { ScraperRoutes } from "./routes/scraper";
+import { RequestsRoutes } from "./routes/requests";
 
 export class WebApiServer {
     private app: express.Application;
-    private observer: SystemObserver;
+    private systemController: SystemController;
 
-    constructor(observer: SystemObserver) {
+    constructor(systemController: SystemController) {
         this.app = express();
-        this.observer = observer;
-        this.prepareRoutes();
+        this.systemController = systemController;
+        this.createIndexRoute();
+
+        this.app.use("/scraper", new ScraperRoutes(systemController).router);
+        this.app.use("/requests", new RequestsRoutes(systemController).router);
     }
 
-    private prepareRoutes() {
+    private createIndexRoute() {
         this.app.get('/', (req, res) => {
-
-            // todo Maps are not iterable and thus not serialized by JSON.stringify
-            res.send({});
+            res.send('vorfahrt api');
         });
+
     }
 
     public start(port: number = 3000): this {

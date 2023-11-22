@@ -1,6 +1,7 @@
 import clc, { yellow } from "cli-color";
 import { SystemController } from "./SystemController";
 import { SystemObserver } from "./SystemObserver";
+import { QueryPriority } from "./Miles/Scraping/MilesScraperVehicles";
 
 export interface Scraper {
     scraperId: string;
@@ -13,7 +14,7 @@ export abstract class BaseScraper<T> implements Scraper {
 
     public scraperId: string;
     public cycleTime: number;
-    private observer: SystemObserver;
+    protected observer: SystemObserver;
     private interval: NodeJS.Timeout;
 
     protected listeners: ((data: T[], source: string) => void)[] = [];
@@ -61,7 +62,7 @@ export abstract class BaseScraper<T> implements Scraper {
      * This method is called every and should return the scraped data.
      * @returns scraped data or null if no data was scraped
      */
-    abstract cycle(): Promise<{ data: T[], source?: string } | null>;
+    abstract cycle(): Promise<{ data: T[], source?: string | QueryPriority } | null>;
 
     /*
      * Logging

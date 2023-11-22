@@ -1,25 +1,12 @@
 import { Point, WriteApi } from "@influxdata/influxdb-client";
-import { Scraper } from "./ScraperInterface";
+import { Scraper } from "./BaseScraper";
 import clc from "cli-color";
+import { GenericNumberMetric, RequestMetric, RequestStatus } from "./types";
 
-type ObservedScraper = {
-    instance: Scraper,
+type Observed = {
     requests: RequestMetric[],
     metrics: { [key: string]: GenericNumberMetric[] },
 }
-
-type GenericNumberMetric = {
-    value: number,
-    timestamp: number,
-}
-
-type RequestMetric = {
-    status: RequestStatus,
-    responseTime: number,
-    timestamp: number,
-}
-
-export type RequestStatus = "OK" | "API_ERROR" | "NOT_FOUND" | "SCRAPER_ERROR";
 
 const SAVE_INTERVAL = 10000;
 
@@ -46,7 +33,7 @@ export class SystemObserver {
 
     writeClient: WriteApi;
 
-    scrapers = new Map<string, ObservedScraper>();
+    scrapers = new Map<string, Observed>();
     interval: NodeJS.Timeout;
 
     start(): this {
@@ -59,7 +46,6 @@ export class SystemObserver {
             throw new Error(`Scraper "${scraper.scraperId}" already registered`);
         }
         this.scrapers.set(scraper.scraperId, {
-            instance: scraper,
             requests: [],
             metrics: {},
         });
@@ -108,8 +94,8 @@ export class SystemObserver {
 
     private async saveSystemStatus() {
         const points = []
-        this.scrapers.forEach((observable) => {
-            const point = this.createScraperStatusPoint(observable, SAVE_INTERVAL);
+        this.scrapers.forEach((observable, key) => {
+            const point = this.createScraperStatusPoint(key, observable, SAVE_INTERVAL);
             if (point !== null) {
                 points.push(point);
             }
@@ -117,7 +103,7 @@ export class SystemObserver {
         this.writeClient.writePoints(points);
     }
 
-    private createScraperStatusPoint(observable: ObservedScraper, timeframeMs: number): Point | null {
+    private createScraperStatusPoint(scraperId: string, observable: Observed, timeframeMs: number): Point | null {
         try {
             const requests = observable.requests.filter(request => request.timestamp > Date.now() - timeframeMs);
             const measures = (Object.entries(observable.metrics) as Array<[string, GenericNumberMetric[]]>)
@@ -127,14 +113,14 @@ export class SystemObserver {
                     const average = this.average(values.map(metric => metric.value));
                     if (isNaN(average)) {
                         console.error(clc.bgRed("SystemObserver"), clc.red("could not calculate average of", key),
-                            observable.instance.scraperId, values.map(metric => metric.value));
+                            scraperId, values.map(metric => metric.value));
                         return agg;
                     }
                     agg[key] = average;
                 }, {} as { [key: string]: number });
 
             const statusPoint = new Point("scraper_status")
-                .tag("serviceId", observable.instance.scraperId)
+                .tag("serviceId", scraperId)
 
             if (requests.length !== 0) {
                 statusPoint
