@@ -1,8 +1,8 @@
 import express from "express";
-import { Observer } from "../Observer";
 import { SystemController } from "../SystemController";
-import { ScraperRoutes } from "./routes/scraper";
-import { RequestsRoutes } from "./routes/requests";
+import * as trpcExpress from '@trpc/server/adapters/express';
+import { createCreateContext } from "./trpc";
+import { appRouter } from "./appRouter";
 
 export class WebApiServer {
     private app: express.Application;
@@ -11,18 +11,16 @@ export class WebApiServer {
     constructor(systemController: SystemController) {
         this.app = express();
         this.systemController = systemController;
-        this.createIndexRoute();
 
-        this.app.use("/scraper", new ScraperRoutes(systemController).router);
-        this.app.use("/requests", new RequestsRoutes(systemController).router);
+        this.app.use(
+            "/",
+            trpcExpress.createExpressMiddleware({
+                router: appRouter,
+                createContext: createCreateContext(systemController),
+            })
+        )
     }
 
-    private createIndexRoute() {
-        this.app.get('/', (req, res) => {
-            res.send('vorfahrt api');
-        });
-
-    }
 
     public start(port: number = 3000): this {
         this.app.listen(port, () => {

@@ -14,6 +14,9 @@ dependencies:
   '@sveltejs/adapter-node':
     specifier: ^1.3.1
     version: 1.3.1(@sveltejs/kit@1.27.6)
+  '@trpc/client':
+    specifier: ^10.44.0
+    version: 10.44.0(@trpc/server@10.44.0)
 
 devDependencies:
   '@sveltejs/adapter-auto':
@@ -477,6 +480,19 @@ packages:
       vitefu: 0.2.5(vite@4.5.0)
     transitivePeerDependencies:
       - supports-color
+
+  /@trpc/client@10.44.0(@trpc/server@10.44.0):
+    resolution: {integrity: sha512-6PAL5rXMGTMlsKKGW9aBsij8XFBbLUbOCJ7jNVX3IripGqiQG3b/VJyTsHRWkss/oaz/sZMOn62amhfev1UVfg==}
+    peerDependencies:
+      '@trpc/server': 10.44.0
+    dependencies:
+      '@trpc/server': 10.44.0
+    dev: false
+
+  /@trpc/server@10.44.0:
+    resolution: {integrity: sha512-QBq/FnjyU6a7CAl9p2dv6kApn2i8MFuPt8uVLyGr0oa2aFv31rHaX0m+ibdsviE/3fOJIC8EUOfMYOJma5uK2w==}
+    engines: {node: '>=18.0.0'}
+    dev: false
 
   /@types/cookie@0.5.4:
     resolution: {integrity: sha512-7z/eR6O859gyWIAjuvBWFzNURmf2oPBmJlfVWkwehU5nzIyjwBsTh7WMmEEV4JFnHuQ3ex4oyTvfKzcyJVDBNA==}

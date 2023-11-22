@@ -1,6 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "../$types";
 import { PUBLIC_ADMIN_URL } from "$env/static/public";
+import { trpc } from "$lib/trpc";
 
 export const load: LayoutServerLoad = async (event) => {
   const session = await event.locals.getSession();
@@ -10,13 +11,9 @@ export const load: LayoutServerLoad = async (event) => {
   try {
     // todo trpc
     const session = await event.locals.getSession();
-    const scrapersRes = await fetch(PUBLIC_ADMIN_URL + "/scraper", {
-      headers: {
-        "Authorization": "Bearer " + session!.accessToken
-      }
-    })
-    const scrapers = await scrapersRes.json();
-    return { scrapers };
+    const scrapers = await trpc.services.list.query();
+    console.log(scrapers)
+    return { services: scrapers };
   } catch (e) {
     console.error(e);
     return {

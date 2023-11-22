@@ -5,7 +5,10 @@ import { aggregateSumBy } from "../utils/aggregate";
 import { sliceMetrics } from "../utils/slice";
 import { slice } from "lodash";
 
+// todo replace with trpc version
+
 export class RequestsRoutes {
+
     systemController: SystemController;
     router = express.Router();
 

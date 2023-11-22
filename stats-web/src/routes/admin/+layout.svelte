@@ -19,7 +19,7 @@
       <ul class="menu bg-base-200 rounded-box w-56 pb-3 h-fit flex-shrink-0">
         <li><a href="/admin" class={$page?.route?.id === "/admin" ? "active" : ""}>Overview</a></li>
         <div class="divider my-2">Scrapers</div>
-        {#each $page.data.scrapers as scraper}
+        {#each $page.data.services.scrapers as scraper}
           <li>
             <a
               href={"/admin/scraper/" + scraper.name}
