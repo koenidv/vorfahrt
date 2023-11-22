@@ -30,7 +30,7 @@ const config: SvelteKitAuthConfig = {
     secret: AUTH_SECRET,
     session: {
         strategy: "jwt",
-        maxAge: 1800 // 30 mins
+        maxAge: 3600
     },
     callbacks: {
         async jwt({ token, account }) {
