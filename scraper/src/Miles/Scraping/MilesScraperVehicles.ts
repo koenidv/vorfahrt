@@ -12,11 +12,11 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
         if (priority === QueryPriority.LOW) {
             this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
             this.lowQueue.push(vehicleId);
-            this.observer.measure(this, "queue-low", this.lowQueue.length);
+            this.observer.measure("queue-low", this.lowQueue.length);
         } else {
             this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
             this.normalQueue.push(vehicleId);
-            this.observer.measure(this, "queue-normal", this.normalQueue.length);
+            this.observer.measure("queue-normal", this.normalQueue.length);
         }
         return this;
     }
@@ -24,8 +24,8 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     deregister(vehicleId: number): this {
         this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
         this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
-        this.observer.measure(this, "queue-low", this.lowQueue.length);
-        this.observer.measure(this, "queue-normal", this.normalQueue.length);
+        this.observer.measure("queue-low", this.lowQueue.length);
+        this.observer.measure("queue-normal", this.normalQueue.length);
         return this;
     }
 

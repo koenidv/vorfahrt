@@ -28,7 +28,7 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityMe
             return city as MilesCityMeta;
         }).filter(city => city.area !== undefined);
 
-        this.observer.measure(this, "cities", meta.length)
+        this.observer.measure("cities", meta.length)
         return meta;
     }
 

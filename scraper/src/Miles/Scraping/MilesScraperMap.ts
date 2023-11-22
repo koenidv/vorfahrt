@@ -17,7 +17,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             this.cities = cities;
             this.log("Now tracking", this.cities.length, "cities");
         }
-        this.observer.measure(this, "cities", this.cities.length);
+        this.observer.measure("cities", this.cities.length);
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[] } | null> {
@@ -58,7 +58,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
         const results = await request.execute();
 
-        this.observer.measure(this, "vehicles", vehicles.length);
+        this.observer.measure("vehicles", vehicles.length);
         this.createLogPoint(city.cityId, vehicles.length, results.length, responseTimes, responseTypes);
         return null; // listeners are already called per request result
     }
