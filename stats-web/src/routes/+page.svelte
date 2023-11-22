@@ -11,6 +11,20 @@
       signIn("auth0", { callbackUrl: "/admin" });
     }
   }
+
+  async function postsache() {
+    const res = await fetch("https://koenidv.eu.auth0.com/oauth/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        grant_type: "client_credentials",
+        audience: "https://api.admin.vorfahrt.dev",
+      }),
+    });
+    console.log(await res.json());
+  }
 </script>
 
 <div class="flex flex-col w-full items-center">
@@ -21,5 +35,6 @@
     </div>
 
     <button class="btn btn-primary w-full" on:click={gotoAdmin}>Admin Panel</button>
+    <button class="btn btn-primary w-full" on:click={postsache}>Dings</button>
   </div>
 </div>

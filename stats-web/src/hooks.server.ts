@@ -4,7 +4,7 @@ import type { Provider } from "@auth/core/providers";
 import type { Handle } from "@sveltejs/kit";
 import { AUTH_SECRET, AUTH0_BASE_URL, AUTH0_CLIENT_ID, AUTH0_SECRET } from "$env/static/private"
 
-// fixme authjs session interface
+// fixme authjs session interface - https://next-auth.js.org/getting-started/typescript
 declare module "@auth/core" {
     interface Session {
         accessToken: string;
@@ -19,7 +19,12 @@ const config: SvelteKitAuthConfig = {
             clientId: AUTH0_CLIENT_ID,
             clientSecret: AUTH0_SECRET,
             issuer: AUTH0_BASE_URL,
-            wellKnown: AUTH0_BASE_URL + ".well-known/openid-configuration"
+            wellKnown: AUTH0_BASE_URL + ".well-known/openid-configuration",
+            authorization: {
+                params: {
+                    audience: "https://api.admin.vorfahrt.dev",
+                }
+            }
         }) as Provider
     ],
     secret: AUTH_SECRET,
@@ -38,7 +43,7 @@ const config: SvelteKitAuthConfig = {
             session.accessToken = token.accessToken as string;
             return session;
         }
-      }
+    }
 };
 
 export const handle = SvelteKitAuth(config) satisfies Handle;

@@ -3,7 +3,6 @@
   import { signOut } from "@auth/sveltekit/client";
 
   export let data;
-
 </script>
 
 <div class="m-4">
@@ -17,8 +16,8 @@
 </div>
 
 <div class="m-4">
-  <div class="flex flex-row w-100 gap-3 min-h-[80vh]">
-    <ul class="menu bg-base-200 rounded-box w-56 pb-3 h-fit">
+  <div class="flex flex-row w-100 max-w gap-3 min-h-[80vh] overflow-hidden">
+    <ul class="menu bg-base-200 rounded-box w-56 pb-3 h-fit flex-shrink-0">
       <div class="divider my-2">Scrapers</div>
       <li><p on:click={() => true}>Dings 1</p></li>
       <li><p on:click={() => true}>Dings 2</p></li>
@@ -26,9 +25,10 @@
       <div class="divider my-2">Influx Clients</div>
       to be developed
     </ul>
-    <div class="flex-grow bg-base-200 rounded-box p-4">
-      {data?.session?.accessToken}
-
+    <div class="flex-grow bg-base-200 rounded-box p-4 overflow-hidden">
+      <p class="break-words">
+        <a class="btn btn-accent" href={"https://jwt.io?value=" + data?.session?.accessToken} target="_blank">Analyse Access Token</a>
+      </p>
     </div>
   </div>
 </div>
