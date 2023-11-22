@@ -6,6 +6,7 @@ import { QueryPriority } from "./Miles/Scraping/MilesScraperVehicles";
 export interface Scraper {
     scraperId: string;
     cycleTime: number;
+    running: boolean;
     start(): this;
     stop(): this;
 }
@@ -14,6 +15,7 @@ export abstract class BaseScraper<T> implements Scraper {
 
     public scraperId: string;
     public cycleTime: number;
+    public running: boolean;
     protected observer: Observer;
     private interval: NodeJS.Timeout;
 
@@ -27,12 +29,18 @@ export abstract class BaseScraper<T> implements Scraper {
     }
 
     start(): this {
+        if (this.running) {
+            this.logWarn("Already running");
+            return this;
+        }
         this.interval = setInterval(this.cycleNotifyListeners.bind(this), this.cycleTime);
+        this.running = true;
         return this;
     }
 
     stop(): this {
         clearInterval(this.interval);
+        this.running = false;
         return this;
     }
 

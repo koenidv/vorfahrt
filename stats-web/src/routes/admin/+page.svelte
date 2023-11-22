@@ -19,9 +19,9 @@
   <div class="flex flex-row w-100 max-w gap-3 min-h-[80vh] overflow-hidden">
     <ul class="menu bg-base-200 rounded-box w-56 pb-3 h-fit flex-shrink-0">
       <div class="divider my-2">Scrapers</div>
-      <li><p on:click={() => true}>Dings 1</p></li>
-      <li><p on:click={() => true}>Dings 2</p></li>
-      <li><p on:click={() => true}>Dings 3</p></li>
+      {#each data?.scrapers as scraper}
+      <li><p on:click={() => true}>{scraper.name}</p></li>
+      {/each}
       <div class="divider my-2">Influx Clients</div>
       to be developed
     </ul>

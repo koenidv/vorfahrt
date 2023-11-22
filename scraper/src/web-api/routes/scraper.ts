@@ -18,7 +18,17 @@ export class ScraperRoutes {
     }
 
     private listScrapers() {
-        return Array.from(this.systemController.scrapers.keys());
+        const scrapers = [];
+        for (const [scraperId, observed] of this.systemController.scrapers) {
+            scrapers.push({
+                name: scraperId,
+                cyclesMinute: observed.scraper.cycleTime,
+                requests: observed.observer.requests,
+                running: observed.scraper.running
+            });
+        }
+
+        return scrapers;
     }
 
 
