@@ -62,13 +62,16 @@ export class MilesRelationalStore {
             return;
         }
 
-        const newVehicle = new VehicleMeta();
-        newVehicle.milesId = vehicle.idVehicle;
-        newVehicle.licensePlate = vehicle.LicensePlate;
-        newVehicle.model = await this.createVehicleModel(
+        const model = await this.createVehicleModel(
             vehicle,
             await this.createVehicleSize(vehicle.VehicleSize),
             vehicleDetails.vehicleDetails);
+        if (model === undefined) return;
+
+        const newVehicle = new VehicleMeta();
+        newVehicle.milesId = vehicle.idVehicle;
+        newVehicle.licensePlate = vehicle.LicensePlate;
+        newVehicle.model = model;
         newVehicle.color = vehicle.VehicleColor;
         newVehicle.firstFoundCity = firstCity;
         newVehicle.isCharity = typeof vehicle.isCharity === "boolean" ? vehicle.isCharity : vehicleDetails.vehicleDescriptors.isCharity;
@@ -91,18 +94,18 @@ export class MilesRelationalStore {
         return await this.manager.save(VehicleSize, size);
     }
 
-    private async createVehicleModel(vehicle: apiVehicleJsonParsed, size: VehicleSize, details: MilesVehicleDetails): Promise<VehicleModel> {
+    private async createVehicleModel(vehicle: apiVehicleJsonParsed, size: VehicleSize, details: MilesVehicleDetails): Promise<VehicleModel | undefined> {
         const existing = await this.manager.findOne(VehicleModel, { where: { name: vehicle.VehicleType } });
         if (existing) return existing;
 
         const model = new VehicleModel();
         model.name = vehicle.VehicleType;
         model.size = size;
-        model.seats = Number(details.find(d => d.key === "vehicle_details_seats").value);
+        model.seats = Number(details.find(d => d.key === "vehicle_details_seats")!.value);
         model.electric = vehicle.isElectric;
-        model.enginePower = vehicle.EnginePower ?? Number(details.find(d => d.key === "vehicle_details_engine_power").value.replace("PS", ""));
-        model.transmission = details.find(d => d.key === "vehicle_details_transmission").value as keyof typeof MilesVehicleTransmissionReturn;
-        model.fuelType = details.find(d => d.key === "vehicle_details_fuel").value as keyof typeof MilesVehicleFuelReturn;
+        model.enginePower = vehicle.EnginePower ?? Number(details.find(d => d.key === "vehicle_details_engine_power")!.value.replace("PS", ""));
+        model.transmission = details.find(d => d.key === "vehicle_details_transmission")!.value as keyof typeof MilesVehicleTransmissionReturn;
+        model.fuelType = details.find(d => d.key === "vehicle_details_fuel")!.value as keyof typeof MilesVehicleFuelReturn;
 
         try {
             return await this.manager.save(VehicleModel, model);

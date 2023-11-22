@@ -1,11 +1,11 @@
+// @ts-nocheck
+
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { VehicleModel } from "./VehicleModel";

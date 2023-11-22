@@ -13,7 +13,7 @@ export type FieldComparison = {
 }
 
 export class InfluxVehicleComparison {
-    private currentVehicle: object;
+    private currentVehicle: any;
     private newVehicle: apiVehicleJsonParsed;
     private _point: Point;
     public get point(): Point {
@@ -58,7 +58,7 @@ export class InfluxVehicleComparison {
     applyChargingChange(): this {
         const charging =
             this.newVehicle.EVPlugged ||
-            this.newVehicle.JSONFullVehicleDetails.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged");
+            this.newVehicle.JSONFullVehicleDetails!.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged");
         this.applyChange(this.currentVehicle["charging"], charging, "charging", FieldType.BOOLEAN);
         return this;
     }
