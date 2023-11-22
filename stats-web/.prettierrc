@@ -2,7 +2,10 @@
 	"useTabs": false,
 	"tabWidth": 2,
 	"singleQuote": false,
-	"trailingComma": "none",
+	"trailingComma": "es5",
+	"svelteBracketNewLine": false,
+	"bracketSameLine": true,
+	"svelteSortOrder": "options-scripts-markup-styles",
 	"printWidth": 100,
 	"plugins": ["prettier-plugin-svelte"],
 	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
