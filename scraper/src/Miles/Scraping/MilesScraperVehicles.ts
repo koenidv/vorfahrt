@@ -8,14 +8,14 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     private normalQueue: number[] = [];
     private lowQueue: number[] = [];
 
-    register(vehicleId: number, priority: QueryPriority): this {
+    register(vehicleIds: number[], priority: QueryPriority): this {
         if (priority === QueryPriority.LOW) {
-            this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
-            this.lowQueue.push(vehicleId);
+            this.normalQueue = this.normalQueue.filter(el => !vehicleIds.includes(el));
+            this.lowQueue.push(...vehicleIds);
             this.observer.measure("queue-low", this.lowQueue.length);
         } else {
-            this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
-            this.normalQueue.push(vehicleId);
+            this.lowQueue = this.lowQueue.filter(el => !vehicleIds.includes(el));
+            this.normalQueue.push(...vehicleIds);
             this.observer.measure("queue-normal", this.normalQueue.length);
         }
         return this;

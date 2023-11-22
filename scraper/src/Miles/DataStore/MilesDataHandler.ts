@@ -47,7 +47,7 @@ export default class MilesDataHandler {
 
     if (source !== QueryPriority.LOW &&
       getInfoFromMilesVehicleStatus(vehicle.idVehicleStatus as keyof typeof MilesVehicleStatus).isInLifecycle) {
-      this.vehicleScraper.register(vehicle.idVehicle, QueryPriority.LOW);
+      this.vehicleScraper.register([vehicle.idVehicle], QueryPriority.LOW);
     }
   }
 }
