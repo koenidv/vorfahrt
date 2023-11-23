@@ -2,6 +2,7 @@ import clc, { yellow } from "cli-color";
 import { SystemController } from "./SystemController";
 import { Observer } from "./Observer";
 import { QueryPriority } from "./Miles/Scraping/MilesScraperVehicles";
+import { eventEmitter } from "./EventEmitter";
 
 export interface Scraper {
     scraperId: string;
@@ -15,7 +16,14 @@ export abstract class BaseScraper<T> implements Scraper {
 
     public scraperId: string;
     public cycleTime: number;
-    public running: boolean = false;
+    private _running: boolean = false;
+    public get running(): boolean {
+        return this._running;
+    }
+    public set running(value: boolean) {
+        eventEmitter.emit("service-status-changed", this.scraperId, value);
+        this._running = value;
+    }
     protected observer: Observer;
     private interval: NodeJS.Timeout | undefined;
 

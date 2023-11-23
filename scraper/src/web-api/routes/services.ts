@@ -1,21 +1,34 @@
 import { z } from "zod";
-import { SystemController } from "../../SystemController";
 import { publicProcedure, router } from "../trpc";
+import { eventEmitter } from "../../EventEmitter";
+import { observable } from "@trpc/server/observable";
 
 export const servicesRouter = router({
     list: publicProcedure.query(({ ctx }) => {
-
-        const scrapers = [];
+        const services = [];
         for (const [scraperId, observed] of ctx.systemController.scrapers) {
-            scrapers.push({
-                name: scraperId,
+            services.push({
+                id: scraperId,
+                running: observed.scraper.running,
                 cycleMs: observed.scraper.cycleTime,
-                requests: observed.observer.requests,
-                running: observed.scraper.running
+                type: "scraper",
             });
         }
 
-        return { scrapers: scrapers };
+        return services;
+    }),
+    status: publicProcedure.subscription(() => {
+        return observable<{ id: string, running: boolean }>((emit) => {
+            const query = (id: string, running: boolean) => {
+                emit.next({ id, running });
+            }
+
+            eventEmitter.on("service-status-changed", query);
+
+            return () => {
+                eventEmitter.off("service-status-changed", query);
+            }
+        });
     }),
     start: publicProcedure
         .input(z.string())

@@ -3,7 +3,6 @@ import { SystemController } from "../../SystemController";
 import { RequestMetric } from "../../types";
 import { aggregateSumBy } from "../utils/aggregate";
 import { sliceMetrics } from "../utils/slice";
-import { slice } from "lodash";
 
 // todo replace with trpc version
 

@@ -17,7 +17,7 @@ class Main {
     this.appDataSource = await AppDataSource.initialize();
 
     this.systemController = new SystemController(this.getObserverWriteClient());
-    this.apiServer = new WebApiServer(this.systemController).start();
+    this.apiServer = new WebApiServer(this.systemController).start().startWs();
 
     this.systemController.createMilesScraper(this.appDataSource);
   }

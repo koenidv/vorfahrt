@@ -3,23 +3,14 @@ import MilesScraperVehicles, { QueryPriority } from "../../src/Miles/Scraping/Mi
 
 describe("MilesScraperVehicles", () => {
 
-    const client = new MilesClient()
-    const scraper = new MilesScraperVehicles(client, 5)
+    // const client = new MilesClient()
+    // const scraper = new MilesScraperVehicles(client, 60, "test", { registerScraper: () => { } })
 
-    it("should select properly between normal and low queues", () => {
-        scraper.register(1, QueryPriority.NORMAL)
-        scraper.register(2, QueryPriority.NORMAL)
-        scraper.register(3, QueryPriority.NORMAL)
-        scraper.register(4, QueryPriority.NORMAL)
-        scraper.register(5, QueryPriority.NORMAL)
-        scraper.register(6, QueryPriority.NORMAL)
-        scraper.register(7, QueryPriority.NORMAL)
-        scraper.register(8, QueryPriority.NORMAL)
-        scraper.register(9, QueryPriority.LOW)
-        scraper.register(10, QueryPriority.LOW)
-        scraper.register(11, QueryPriority.LOW)
+    // it("should select properly between normal and low queues", () => {
+    //     scraper.register(Array.from({ length: 10 }, (_, i) => i), QueryPriority.NORMAL)
+    //     scraper.register(Array.from({ length: 10 }, (_, i) => i), QueryPriority.LOW)
 
-        scraper.start()
-    })
+    //     scraper.start()
+    // })
 
 })

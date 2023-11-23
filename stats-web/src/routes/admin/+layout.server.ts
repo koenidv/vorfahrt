@@ -1,23 +1,22 @@
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "../$types";
-import { PUBLIC_ADMIN_URL } from "$env/static/public";
+import { Readable } from "stream";
 import { trpc } from "$lib/trpc";
 
 export const load: LayoutServerLoad = async (event) => {
   const session = await event.locals.getSession();
   if (!session?.user) throw redirect(303, "/login?redirect=" + event.route.id);
 
-  // fixme not reaching the admin api will result in 500
+  const readable = new Readable({ objectMode: true })
+
   try {
-    // todo trpc
     const session = await event.locals.getSession();
-    const scrapers = await trpc.services.list.query();
-    console.log(scrapers)
-    return { services: scrapers };
+    const services = await trpc.services.list.query();
+    return { services };
   } catch (e) {
     console.error(e);
     return {
-      scrapers: [],
+      services: [],
       error: {
         message: "Admin API not reachable",
         error: e?.toString?.() || JSON.stringify(e)
