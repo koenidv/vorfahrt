@@ -5,9 +5,9 @@ import { observable } from "@trpc/server/observable";
 
 export const servicesRouter = router({
     list: publicProcedure.query(({ ctx }) => {
-        const services = [];
+        const services: { [key: string]: { id: string, running: boolean, cycleMs: number, type: "scraper" } } = {};
         for (const [scraperId, observed] of ctx.systemController.scrapers) {
-            services.push({
+            services[scraperId] = ({
                 id: scraperId,
                 running: observed.scraper.running,
                 cycleMs: observed.scraper.cycleTime,
@@ -48,4 +48,27 @@ export const servicesRouter = router({
             }
             return { success: true };
         }),
+    details: publicProcedure
+        .input(z.string())
+        .subscription(({ ctx, input }) => {
+            return observable<{ id: string, running: boolean, cycleMs: number, type: string }>((emit) => {
+
+                const scraper = ctx.systemController.scrapers.get(input);
+                if (!scraper) {
+                    emit.error("No service with this id");
+                    return;
+                }
+
+                const query = (id: string, running: boolean) => {
+                    emit.next({ id, running, cycleMs: scraper!.scraper.cycleTime, type: "scraper" });
+                }
+
+                eventEmitter.on("service-status-changed", query);
+                query(input, scraper?.scraper.running ?? false);
+
+                return () => {
+                    eventEmitter.off("service-status-changed", query);
+                }
+            });
+        })
 });

@@ -5,27 +5,23 @@
   import AdminHeader from "./AdminHeader.svelte";
   import AdminSidebar from "./AdminSidebar.svelte";
   import { writable } from "svelte/store";
+  import { services } from "$lib/adminStore";
 
   export let data;
-  let services = writable(data.services);
-
+  
   onMount(() => {
+    $services = data.services;
+
     trpc.services.status.subscribe(undefined, {
       onData(update) {
         console.log(update);
         services.update((s) => {
-          s.filter((s) => s.id === update.id)[0].running = update.running;
+          s[update.id].running = update.running;
           return s;
         });
       },
       onError(error) {
         console.log(error);
-      },
-      onComplete() {
-        console.log("complete");
-      },
-      onStopped() {
-        console.log("stopped");
       },
     });
   });
@@ -36,9 +32,9 @@
 {#if !$page.data.error}
   <div class="m-4">
     <div class="flex flex-row w-100 max-w gap-3 min-h-[80vh] overflow-hidden">
-      <AdminSidebar {services} />
+      <AdminSidebar services={services} />
       <div class="flex-grow bg-base-200 rounded-box p-4 overflow-hidden">
-        <slot />
+        <slot services={services} />
       </div>
     </div>
   </div>

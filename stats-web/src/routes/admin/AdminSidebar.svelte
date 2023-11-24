@@ -3,13 +3,13 @@
   import type { Writable } from "svelte/store";
   import "iconify-icon";
 
-  export let services: Writable<Service[]>;
+  export let services: Writable<{[key: string]: Service}>;
 </script>
 
 <ul class="menu bg-base-200 rounded-box w-56 pb-3 h-fit flex-shrink-0">
   <li><a href="/admin" class={$page?.route?.id === "/admin" ? "active" : ""}>Overview</a></li>
   <div class="divider my-2">Scrapers</div>
-  {#each $services.filter((s) => s.type === "scraper") as scraper}
+  {#each Object.entries($services).filter((s) => s[1].type === "scraper") as [id, scraper]}
     <li>
       <a
         href={"/admin/scraper/" + scraper.id}

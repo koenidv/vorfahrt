@@ -12,11 +12,11 @@ export const load: LayoutServerLoad = async (event) => {
   try {
     const session = await event.locals.getSession();
     const services = await trpc.services.list.query();
-    return { services };
+    return { services: services as { [key: string]: Service } };
   } catch (e) {
     console.error(e);
     return {
-      services: [],
+      services: {} as { [key: string]: Service },
       error: {
         message: "Admin API not reachable",
         error: e?.toString?.() || JSON.stringify(e)
