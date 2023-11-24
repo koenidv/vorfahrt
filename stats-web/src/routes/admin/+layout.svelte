@@ -8,9 +8,9 @@
   import { services } from "$lib/adminStore";
 
   export let data;
+  $services = data.services;
   
   onMount(() => {
-    $services = data.services;
 
     trpc.services.status.subscribe(undefined, {
       onData(update) {
@@ -32,7 +32,7 @@
 {#if !$page.data.error}
   <div class="m-4">
     <div class="flex flex-row w-100 max-w gap-3 min-h-[80vh] overflow-hidden">
-      <AdminSidebar services={services} />
+      <AdminSidebar services={$services} />
       <div class="flex-grow bg-base-200 rounded-box p-4 overflow-hidden">
         <slot services={services} />
       </div>
