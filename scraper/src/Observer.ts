@@ -2,6 +2,7 @@ import { Point, WriteApi } from "@influxdata/influxdb-client";
 import { Scraper } from "./BaseScraper";
 import clc from "cli-color";
 import { GenericNumberMetric, RequestMetric, RequestStatus } from "./types";
+import { eventEmitter } from "./EventEmitter";
 
 const LOG_ON_MEAUSRE = true;
 
@@ -35,6 +36,7 @@ export class Observer {
         if (LOG_ON_MEAUSRE) {
             console.log(clc.bgBlackBright(`Observer | ${this.scraperId}`), `Request executed: ${status} in`, responseTime, "ms");
         }
+        eventEmitter.emit("request-executed", this.scraperId, status, responseTime);
     }
 
     measure(metricName: string, value: number) {

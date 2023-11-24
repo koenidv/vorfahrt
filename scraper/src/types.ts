@@ -1,5 +1,5 @@
 export type AggregatedMetric = {
-    value: number,
+    data: { [key: string]: number },
     _start: number,
     _end: number,
 }

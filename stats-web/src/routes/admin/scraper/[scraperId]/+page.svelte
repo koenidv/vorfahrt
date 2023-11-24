@@ -1,18 +1,27 @@
 <script lang="ts">
   import { trpc } from "$lib/trpc.js";
   import { writable } from "svelte/store";
+  import { VisXYContainer, VisLine, VisAxis, VisArea } from "@unovis/svelte";
+  import { browser } from "$app/environment";
+  import { page } from "$app/stores";
+  import type { AggregatedMetric } from "../../../../../../scraper/src/types";
 
-  export let data;
   let service = writable<Service | undefined>(undefined);
+  let requests = writable<AggregatedMetric[] | undefined>(undefined);
   let subscribed: any;
 
-  $: subscribe(data.serviceId);
+  $: subscribe($page.params.scraperId);
 
   function subscribe(serviceId: string) {
+    if (!browser) return;
     if (subscribed) subscribed.unsubscribe();
+    service.set(undefined);
+    requests.set(undefined);
     subscribed = trpc.services.details.subscribe(serviceId, {
       onData(update) {
         service.set(update);
+        requests.set(update.requests);
+        console.log(update.requests)
       },
       onError(error) {
         console.log(error);
@@ -38,7 +47,6 @@
 {#if $service !== undefined}
   <div class="flex flex-col gap-8 px-4 py-2">
     <div class="flex flex-row gap-8 items-center">
-
       <div class="flex flex-col gap-0">
         <h1 class="font-title text-3xl font-bold tracking-wide">{$service.id}</h1>
         <p class="font-mono">
@@ -70,6 +78,22 @@
           }}>Adjust Speed</button>
       </div>
     </div>
-    <div class="w-full max-w-4xl h-96 skeleton rounded-box"></div>
+    <div class="w-full max-w-4xl">
+      {#if $requests !== undefined}
+        <VisXYContainer>
+          <VisArea
+            data={$requests}
+            x={(d) => d._start}
+            y={[
+              (d) => d.data["OK"],
+              (d) => d.data["API_ERROR"],
+              (d) => d.data["NOT_FOUND"],
+              (d) => d.data["SCRAPER_ERROR"],
+            ]} />
+          <VisAxis type="x" />
+          <VisAxis type="y" />
+        </VisXYContainer>
+      {/if}
+    </div>
   </div>
 {/if}

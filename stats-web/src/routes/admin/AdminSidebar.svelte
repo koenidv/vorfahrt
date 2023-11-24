@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import type { Writable } from "svelte/store";
   import "iconify-icon";
 
   export let services: { [key: string]: Service };

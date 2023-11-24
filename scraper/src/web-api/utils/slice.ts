@@ -8,8 +8,13 @@ import { Timestamped } from "../../types"
  * @param endTime latest timestamp to include (inclusive)
  * @returns List of values \<T> with timestamp between startTime and endTime
  */
-export function sliceMetrics<T>(values: (Timestamped & T)[], startTime: number, endTime: number): (Timestamped & T)[] {
+export function sliceMetricsValues<T>(values: (Timestamped & T)[], startTime: number, endTime: number): (Timestamped & T)[] {
     const startIndex = _.sortedIndexBy(values, { timestamp: startTime }, "timestamp");
     const endIndex = _.sortedLastIndexBy(values, { timestamp: endTime }, "timestamp");
     return values.slice(startIndex, endIndex);
-} 
+}
+
+export const sliceMetrics =
+    (start: number, end: number) =>
+        <T>(values: (Timestamped & T)[]) =>
+            sliceMetricsValues(values, start, end);

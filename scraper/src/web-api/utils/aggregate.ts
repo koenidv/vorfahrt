@@ -1,6 +1,6 @@
 import { AggregatedMetric, RequestMetric, RequestStatus, Timestamped } from "../../types";
 import { sliceMetrics } from "./slice";
-import _ from "lodash";
+import _ from "lodash/fp";
 
 type byType<T> = keyof (Timestamped & T) | ((value: T) => number);
 
@@ -12,20 +12,20 @@ type byType<T> = keyof (Timestamped & T) | ((value: T) => number);
  * @param aggregateWindow Aggregate window in milliseconds
  * @param endTime The end time of the last aggregate window. If not specified, will use the last entry's timestamp.
  */
-export function aggregateSumBy<T>(data: (Timestamped & T)[], by: byType<T>, aggregateWindow: number, endTime?: number): AggregatedMetric[] {
-    return aggregateBy(_.sumBy, data, by, aggregateWindow, endTime);
+export function aggregateSumByCategory<T>(data: (Timestamped & T)[], category: keyof T, value: byType<T>, aggregateWindow: number, startTime?: number, endTime?: number): AggregatedMetric[] {
+    return aggregateCategories(_.sumBy, data, category, value, aggregateWindow, startTime, endTime);
 }
 
 /**
  * Aggregates metrics by their mean value across a window. **Entries must be sorted by timestamp.**
  * Will only include *complete* aggregate windows, i.e. will return [] if aggregateWindow > endTime-startTime
  * @param data List of objects \<T> with a timestamp property
- * @param by key to aggregate or function to get a number from the object
+ * @param value key to aggregate or function to get a number from the object
  * @param aggregateWindow Aggregate window in milliseconds
  * @param endTime The end time of the last aggregate window. If not specified, will use the last entry's timestamp.
  */
-export function aggregateMeanBy<T>(data: (Timestamped & T)[], by: byType<T>, aggregateWindow: number, endTime?: number): AggregatedMetric[] {
-    return aggregateBy(_.meanBy, data, by, aggregateWindow, endTime);
+export function aggregateMeanByCategory<T>(data: (Timestamped & T)[], category: keyof T, value: byType<T>, aggregateWindow: number, startTime?: number, endTime?: number): AggregatedMetric[] {
+    return aggregateCategories(_.meanBy, data, category, value, aggregateWindow, startTime, endTime);
 }
 
 /**
@@ -33,31 +33,36 @@ export function aggregateMeanBy<T>(data: (Timestamped & T)[], by: byType<T>, agg
  * Will only include *complete* aggregate windows, i.e. will return [] if aggregateWindow > endTime-startTime
  * @param aggregateFn Function to aggregate values
  * @param data List of objects \<T> with a timestamp property
- * @param by key to aggregate or function to get a number from the object
+ * @param value key to aggregate or function to get a number from the object
  * @param aggregateWindow Aggregate window in milliseconds
  * @param endTime The end time of the last aggregate window. If not specified, will use the last entry's timestamp.
  */
-export function aggregateBy<T>(
+export function aggregateCategories<T>(
     aggregateFn: typeof _.sumBy,
     data: (Timestamped & T)[],
-    by: byType<T>,
+    category: keyof T,
+    value: byType<T>,
     aggregateWindow: number,
+    startTime?: number,
     endTime?: number
 ): AggregatedMetric[] {
     if (data.length === 0) return [];
 
-    endTime = endTime || data[data.length - 1].timestamp;
-    const startTime = data[0].timestamp-1;
+    endTime = endTime ?? data[data.length - 1].timestamp;
+    startTime = startTime ?? data[0].timestamp - 1;
     const windows: AggregatedMetric[] = [];
 
     for (let windowStart = endTime - aggregateWindow; windowStart >= startTime; windowStart -= aggregateWindow) {
-        const end = windowStart + aggregateWindow;
-        const values = sliceMetrics(data, windowStart, end);
-        const aggregatedValue = aggregateFn(values, typeof by === "function" ? by : by as string);
+        const aggregated = _.flow(
+            sliceMetrics(windowStart, windowStart + aggregateWindow),
+            _.groupBy(category),
+            _.mapValues(aggregateFn(typeof value === "function" ? value : value as string))
+        )(data);
+
         windows.push({
-            value: aggregatedValue,
-            _start: windowStart+1,
-            _end: end,
+            data: aggregated,
+            _start: windowStart + 1,
+            _end: windowStart + aggregateWindow,
         });
     }
 
