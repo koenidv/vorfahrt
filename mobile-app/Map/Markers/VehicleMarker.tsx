@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import {memo, useState} from "react";
 import {Image} from "react-native";
 import {Vehicle} from "../../lib/Miles/types";
 import findIcon from "@koenidv/vorfahrt-vienna";
@@ -13,28 +13,37 @@ type VehicleMarkerProps = {
 function findIconForVehicle(vehicle: Vehicle, isSelected: boolean) {
   const tags: string[] = [];
   tags.push(vehicle.model);
-  if (vehicle.isElectric) {
-    switch (vehicle.charge) {
-      case 35:
-        tags.push("electric_plus5");
-        break;
-      case 34:
-        tags.push("electric_plus4");
-        break;
-      case 33:
-        tags.push("electric_plus3");
-        break;
-      case 32:
-        tags.push("electric_plus2");
-        break;
-      case 31:
-        tags.push("electric_plus1");
-        break;
-      default:
-        tags.push("electric");
-        break;
-    }
-  } else tags.push("fuel");
+  if (vehicle.isElectric) tags.push("electric");
+  else tags.push("fuel");
+  switch (vehicle.charge - 30) {
+    case 1:
+      tags.push("plus1");
+      break;
+    case 2:
+      tags.push("plus2");
+      break;
+    case 3:
+      tags.push("plus3");
+      break;
+    case 4:
+      tags.push("plus4");
+      break;
+    case 5:
+      tags.push("plus5");
+      break;
+    case 6:
+      tags.push("plus6");
+      break;
+    case 7:
+      tags.push("plus7");
+      break;
+    case 8:
+      tags.push("plus8");
+      break;
+    case 9:
+      tags.push("plus9");
+      break;
+  }
   if (vehicle.isPlugged) tags.push("charging");
   if (vehicle.isDiscounted) tags.push("discounted");
   if (isSelected) tags.push("selected");
