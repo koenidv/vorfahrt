@@ -14,11 +14,15 @@
             "electric_chargestates": {
                 "values": [
                     "chargestates/electric",
-                    "chargestates/electric_plus1",
-                    "chargestates/electric_plus2",
-                    "chargestates/electric_plus3",
-                    "chargestates/electric_plus4",
-                    "chargestates/electric_plus5"
+                    "chargestates/electric,plus1",
+                    "chargestates/electric,plus2",
+                    "chargestates/electric,plus3",
+                    "chargestates/electric,plus4",
+                    "chargestates/electric,plus5",
+                    "chargestates/electric,plus6",
+                    "chargestates/electric,plus7",
+                    "chargestates/electric,plus8",
+                    "chargestates/electric,plus9"
                 ]
             },
             "electric_modifiers": {
