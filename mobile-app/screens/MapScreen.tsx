@@ -9,10 +9,12 @@ import VehicleBottomsheetItem from "../BottomSheets/VehicleBottomsheetItem";
 import {BottomSheetContainer} from "../BottomSheets/BottomSheetContainer";
 import ChargeStationBottomsheetItem from "../BottomSheets/ChargeStationBottomsheetItem";
 import {FetchChargingStationsButton} from "../Buttons/FetchChargingStationsButton";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const MapScreen = () => {
   const mapRef = useRef<MapMethods>(null);
   const appState = useAppState();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
@@ -37,7 +39,7 @@ const MapScreen = () => {
             style={{
               alignSelf: "flex-end",
               paddingBottom: 8,
-              paddingHorizontal: 12,
+              paddingHorizontal: insets.right + 8,
             }}>
             <FetchChargingStationsButton />
           </View>

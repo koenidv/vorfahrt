@@ -1,11 +1,23 @@
 import {StyleSheet, View} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface BottomSheetContainerProps {
   children?: React.ReactNode;
 }
 
 export function BottomSheetContainer(props: BottomSheetContainerProps) {
-  return <View style={styles.container}>{props.children}</View>;
+  const insets = useSafeAreaInsets();
+  return (
+    <View 
+      style={{
+        ...styles.container,
+        bottom: insets.bottom + 8,
+        left: insets.left + 8,
+        right: insets.right + 8,
+      }}>
+        {props.children}
+      </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -15,9 +27,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     flexDirection: "column-reverse",
     justifyContent: "flex-end",
-    bottom: 24,
-    left: 8,
-    right: 8,
     gap: 8,
   },
 });

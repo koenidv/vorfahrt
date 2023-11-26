@@ -209,6 +209,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
                 coordinates={appState.walkingDirections.polyline}
                 strokeColor="white"
                 strokeWidth={2}
+                lineJoin="round"
               />
             )}
             {appState.drivingDirections && (
