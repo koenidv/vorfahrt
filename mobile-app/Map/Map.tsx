@@ -1,6 +1,6 @@
 import mapStyle from "./mapStyle.json";
 import {apiCluster} from "../lib/Miles/apiTypes";
-import MapView, {Marker, PROVIDER_GOOGLE, Polyline} from "react-native-maps";
+import MapView, {Marker, PROVIDER_GOOGLE, Polyline, Region} from "react-native-maps";
 import React, {
   forwardRef,
   useEffect,
@@ -33,6 +33,7 @@ import {ChargeStation, Vehicle} from "../lib/Miles/types";
 
 export interface MapMethods {
   gotoSelfLocation: () => void;
+  gotoRegion: (region: Region) => void;
   handleFetchVehicles: () => void;
 }
 
@@ -74,6 +75,10 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
       },
       zoom: 15,
     });
+  };
+
+  const gotoRegion = (region: Region) => {
+    map.current?.animateToRegion(region);
   };
 
   const handleFetchVehicles = async () => {
@@ -138,6 +143,7 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   useImperativeHandle(ref, () => ({
     gotoSelfLocation,
+    gotoRegion,
     handleFetchVehicles,
   }));
 
@@ -165,14 +171,13 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
             toolbarEnabled={false}
             loadingEnabled={true}
             moveOnMarkerPress={true}>
-            
             {vehicles.map(pin => {
               return (
-                  <VehicleMarker
-                    onPress={handleVehicleSelected.bind(this, pin)}
-                    vehicle={pin}
-                    isSelected={appState.selectedVehicle?.id === pin.id}
-                  />
+                <VehicleMarker
+                  onPress={handleVehicleSelected.bind(this, pin)}
+                  vehicle={pin}
+                  isSelected={appState.selectedVehicle?.id === pin.id}
+                />
               );
             })}
 

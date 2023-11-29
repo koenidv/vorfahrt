@@ -10,6 +10,7 @@ import {BottomSheetContainer} from "../BottomSheets/BottomSheetContainer";
 import ChargeStationBottomsheetItem from "../BottomSheets/ChargeStationBottomsheetItem";
 import {FetchChargingStationsButton} from "../Buttons/FetchChargingStationsButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SavedLocations from "../Map/SavedLocations";
 
 const MapScreen = () => {
   const mapRef = useRef<MapMethods>(null);
@@ -47,6 +48,7 @@ const MapScreen = () => {
       ) : (
         <ButtonBar mapRef={mapRef} />
       )}
+      <SavedLocations mapRef={mapRef} />
       {appState.fetching !== 0 && (
         <View style={{position: "absolute", top: 0, left: 0, right: 0}}>
           <ProgressBar indeterminate={true} color="white" />
