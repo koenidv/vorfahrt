@@ -1,6 +1,11 @@
 import mapStyle from "./mapStyle.json";
 import {apiCluster} from "../lib/Miles/apiTypes";
-import MapView, {Marker, PROVIDER_GOOGLE, Polyline, Region} from "react-native-maps";
+import MapView, {
+  Marker,
+  PROVIDER_GOOGLE,
+  Polyline,
+  Region,
+} from "react-native-maps";
 import React, {
   forwardRef,
   useEffect,
@@ -79,12 +84,18 @@ const Map = forwardRef<MapMethods>((_props, ref) => {
 
   const gotoRegion = (region: Region) => {
     map.current?.animateToRegion(region);
+    handleFetchVehicles(region);
   };
 
-  const handleFetchVehicles = async () => {
-    fetchVehiclesForRegionUpdateState(useRegion.getState().current);
-    if (filters.alwaysShowChargingStations === true) {
-      fetchChargeStationsCurrentRegionUpdateState(useRegion.getState().current);
+  const handleFetchVehicles = async (region = useRegion.getState().current) => {
+    fetchVehiclesForRegionUpdateState(region);
+    console.log(filters)
+    console.log(filters.alwaysShowChargingStations)
+    if (
+      useFilters.getState().alwaysShowChargingStations === true ||
+      useAppState.getState().selectedVehicle?.isElectric === true
+    ) {
+      fetchChargeStationsCurrentRegionUpdateState(region);
     }
   };
 
