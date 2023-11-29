@@ -2,7 +2,8 @@ import {StyleSheet, View} from "react-native";
 import {ChargeStation, Vehicle} from "../lib/Miles/types";
 import ShareIcon from "../assets/icons/share.svg";
 import NavigateVehicleIcon from "../assets/icons/navigate_vehicle.svg";
-import {Text, TouchableRipple} from "react-native-paper";
+import NextIcon from "../assets/icons/next.svg";
+import {Menu, Text, TouchableRipple} from "react-native-paper";
 import {shareLocation, startNavigation} from "../lib/mapUtils";
 import {BottomSheetItem} from "./BottomSheetItem";
 import {AppStyles} from "../Map/styles";
@@ -10,6 +11,9 @@ import {ChargeStationAvailability} from "../lib/ChargeStationAvailabilityType";
 import {useAppState} from "../state/app.state";
 import {Travelmodes} from "../lib/Maps/directions";
 import type {Route} from "../lib/Maps/directions";
+import {useState} from "react";
+import {useUserdata} from "../state/userdata.state";
+import {useChargeStations} from "../state/chargestations.state";
 
 interface ChargeStationBottomSheetItemProps {
   station: ChargeStation &
@@ -64,7 +68,9 @@ const PriceTag = ({route, vehicle}: {route: Route; vehicle: Vehicle}) => {
   if (price <= 0) {
     return (
       <View style={styles.tagGreen}>
-        <Text variant="labelMedium" style={{color: "black"}}>+{Math.abs(price).toFixed(2)}€</Text>
+        <Text variant="labelMedium" style={{color: "black"}}>
+          +{Math.abs(price).toFixed(2)}€
+        </Text>
       </View>
     );
   } else {
@@ -80,15 +86,19 @@ const ChargeStationBottomsheetItem = (
   props: ChargeStationBottomSheetItemProps,
 ) => {
   const appState = useAppState();
+  const chargeStations = useChargeStations();
+  const userdataState = useUserdata();
+  const [overflowVisible, setOverflowVisible] = useState(false);
+
   return (
     <BottomSheetItem>
       <View style={styles.container}>
         <View style={styles.details}>
           <View style={styles.row}>
-          <Text variant="titleSmall">{props.station.name}</Text>
-          {appState.drivingDirections && props.station.availability && (
-            <AvailabilityTag availability={props.station.availability} />
-          )}
+            <Text variant="titleSmall">{props.station.name}</Text>
+            {appState.drivingDirections && props.station.availability && (
+              <AvailabilityTag availability={props.station.availability} />
+            )}
           </View>
           <View style={styles.row}>
             {!appState.drivingDirections && props.station.availability && (
@@ -129,6 +139,28 @@ const ChargeStationBottomsheetItem = (
               <ShareIcon width={20} height={20} />
             </View>
           </TouchableRipple>
+          <Menu
+            visible={overflowVisible}
+            onDismiss={() => setOverflowVisible(false)}
+            anchor={
+              <TouchableRipple
+                onPress={() => setOverflowVisible(true)}
+                style={AppStyles.actionbuttoncontainer}>
+                <View style={AppStyles.actionbutton}>
+                  <NextIcon width={20} height={20} />
+                </View>
+              </TouchableRipple>
+            }>
+            <Menu.Item
+              onPress={() => {
+                setOverflowVisible(false);
+                userdataState.addHiddenChargeStation(props.station);
+                appState.selectedChargeStation = undefined;
+                chargeStations.removeStation(props.station.milesId);
+              }}
+              title="Hide this station"
+            />
+          </Menu>
         </View>
       </View>
     </BottomSheetItem>

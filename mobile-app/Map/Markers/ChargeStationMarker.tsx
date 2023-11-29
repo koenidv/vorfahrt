@@ -41,12 +41,12 @@ const ChargeStationMarker = ({
   station,
   isSelected,
 }: ChargeStationMarkerProps) => {
+  const [imageLoading, setImageLoading] = useState(true);
+
   if (!station) return null;
 
   const icon = findIconForStation(station, isSelected);
   if (!icon) return null;
-
-  const [imageLoading, setImageLoading] = useState(true);
 
   return (
     <Marker
