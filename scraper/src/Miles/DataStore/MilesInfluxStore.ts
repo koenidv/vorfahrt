@@ -21,6 +21,7 @@ export class MilesInfluxStore {
         const basePoint = new Point("vehicle_data")
             .tag("vehicleId", newVehicle.idVehicle.toString())
             .tag("status", newVehicle.idVehicleStatus.toString())
+            .tag("city", newVehicle.idCity.toString())
 
         const modifiedPoint =
             new InfluxVehicleComparison(currentVehicle, newVehicle, basePoint)
@@ -37,6 +38,7 @@ export class MilesInfluxStore {
     }
 
 
+    // fixme this needs to be a lot more efficient on the db (batch query vehicles)
     async queryCurrentVehicle(vehicleId: number) {
         const rows = await this.queryClient.collectRows(`
             from(bucket: "miles")
