@@ -35,6 +35,14 @@ const env = {
     process.env.DB_NAME,
     "DB_NAME",
   ),
+  influxUrl: assertString(
+    process.env.INFLUX_URL,
+    "INFLUX_URL",
+  ),
+  influxToken: assertString(
+    process.env.INFLUX_TOKEN,
+    "INFLUX_TOKEN",
+  ),
 } as const;
 
 export default env;

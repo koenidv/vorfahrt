@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   Column,
   CreateDateColumn,
@@ -21,7 +23,7 @@ export class VehicleDamage {
   vehicle: VehicleMeta;
   @Index()
   @Column()
-  vehicleMetaId: number;
+  vehicleId: number;
 
   @Column()
   title: string;
@@ -29,6 +31,8 @@ export class VehicleDamage {
   @Column("varchar", { array: true, default: "{}" })
   damages: string[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    precision: 0,
+  })
   added: Date;
 }

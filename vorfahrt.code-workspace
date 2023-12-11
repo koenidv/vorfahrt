@@ -1,9 +1,6 @@
 {
 	"folders": [
 		{
-			"path": "."
-		},
-		{
 			"name": "mobile-app",
 			"path": "mobile-app"
 		},
@@ -14,12 +11,17 @@
 		{
 			"name": "web-client",
 			"path": "web-client"
+		},
+		{
+			"name": "stats-web",
+			"path": "stats-web"
 		}
 	],
 	"settings": {
 		"jest.disabledWorkspaceFolders": [
 			"vorfahrt",
-			"web-client"
+			"web-client",
+			"stats-web"
 		]
 	}
 }
