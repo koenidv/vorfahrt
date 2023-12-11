@@ -6,6 +6,7 @@ import PreferencesIcon from "../assets/icons/preferences.svg";
 import {MapMethods} from "../Map/Map";
 import {useNavigation} from "@react-navigation/native";
 import { FetchChargingStationsButton } from "./FetchChargingStationsButton";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export interface ButtonBarProps {
   mapRef: RefObject<MapMethods>;
@@ -13,9 +14,14 @@ export interface ButtonBarProps {
 
 const ButtonBar = (props: ButtonBarProps) => {
   const navigation = useNavigation() as any; // TODO: Fix type
+  const insets = useSafeAreaInsets();
 
   return (
-    <View style={styles.container}>
+    <View style={{
+      ...styles.container,
+      bottom: insets.bottom + 64,
+      right: insets.right + 16,
+    }}>
       <CircularButton
         onPress={() => {
           navigation.navigate("Filters");

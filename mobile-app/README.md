@@ -1,5 +1,9 @@
 # Vorfahrt/mobile aka MilesMoney
 
+## Development
+
+Use npm or [pnpm in hoisted mode](https://github.com/pnpm/pnpm/releases/tag/v6.25.0-2), react native doesn't understand symlinks.
+
 ## Running the App
 
 `npm start` to start Metro, then use `a` to launch on your connected Android device, or `i` for iOS.
@@ -19,13 +23,13 @@ todo ios build script & fuck around with coco
 
 ## Signed Builds
 
-### Android
+### Android Release
 
 Please follow [this guide](https://reactnative.dev/docs/signed-apk-android) to create your keystore.
 Then run `npm run build-android-release`.
 You'll find the built aab file at `.\android\app\build\outputs\bundle\release\app-release.aab`.
 
-### iOS
+### iOS Release
 
 todo dings
 

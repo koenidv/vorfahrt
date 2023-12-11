@@ -7,6 +7,7 @@ interface ChargeStationsState {
   stations:
     (ChargeStation & Partial<{ "availability": ChargeStationAvailability }>)[];
   updateStations: (stations: ChargeStation[]) => void;
+  removeStation: (stationId: number) => void;
   // updateStationsAvailabilities for when availabilities are updated seperately
   clearStations: () => void;
 }
@@ -18,6 +19,13 @@ export const useChargeStations = create<ChargeStationsState>(
       set((current) => ({
         stations: tempMergeStations(current.stations, stations),
       })),
+    removeStation: (stationId: number) => {
+      set((current) => ({
+        stations: current.stations.filter(
+          (s) => s.milesId !== stationId,
+        ),
+      }));
+    },
     clearStations: () => set({ stations: [] }),
   }),
 );

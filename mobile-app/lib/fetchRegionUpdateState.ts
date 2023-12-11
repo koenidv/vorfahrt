@@ -18,6 +18,7 @@ import { Vehicle } from "./Miles/types";
 import { apiCluster } from "./Miles/apiTypes";
 import { DeviceKey } from "./Miles/DeviceKey";
 import { useAppState } from "../state/app.state";
+import { useUserdata } from "../state/userdata.state";
 
 export const fetchVehiclesForRegionUpdateState = async (
   region: Region
@@ -51,12 +52,12 @@ export const fetchVehiclesForRegionUpdateState = async (
 };
 
 export const fetchChargeStationsCurrentRegionUpdateState = async (
+  region: Region,
   options?: Partial<VehicleFetchOptions>,
 ) => {
   const appState = useAppState.getState();
   appState.startedFetching();
 
-  const region = useRegion.getState().current;
   const [stationsRaw, bsrAvailabilities, weAvailabilities] = await Promise.all([
     fetchChargeStationsForRegion(region, options),
     bswChargeAvailability(region),
@@ -76,7 +77,9 @@ export const fetchChargeStationsCurrentRegionUpdateState = async (
     CHARGE_LOCATION_TOLERANCE.WECHARGE,
   );
 
-  useChargeStations.getState().updateStations(merged);
+  const filtered = useUserdata.getState().filterChargeStations(merged);
+
+  useChargeStations.getState().updateStations(filtered);
   
   appState.completedFetching();
 };

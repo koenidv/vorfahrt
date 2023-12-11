@@ -1,6 +1,4 @@
-
 import parseSpritesheet from "./parseSpritesheet";
-
 import ConfigParser from "./ConfigParser";
 import { checkConfigEntitiesExist } from "./checkConfigEntitiesExist";
 import { mergeSpritesFromConfig } from "./mergeSpritesFromConfig";
