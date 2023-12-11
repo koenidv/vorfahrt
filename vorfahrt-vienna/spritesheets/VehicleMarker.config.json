@@ -28,7 +28,9 @@
             "electric_modifiers": {
                 "values": [
                     "modifiers/discounted",
-                    "modifiers/charging"
+                    "modifiers/charging",
+                    "modifiers/favorite"
+
                 ],
                 "combine": true,
                 "optional": true
