@@ -21,5 +21,5 @@ export const VEHICLE_TRACKED_FIELDS: FieldComparison[] = [
         fieldName: "coverageGps",
         fieldType: FieldType.INT,
         compareToKey: "SatelliteNumber"
-    },s
+    },
 ]
