@@ -65,11 +65,12 @@ const VehicleMarker = (props: VehicleMarkerProps) => {
       }}
       onPress={props.onPress.bind(this, props.vehicle)}
       key={"v_" + props.vehicle.id}
+      anchor={{x: 0.5, y: 0.85}}
       tracksViewChanges={imageLoading || props.isSelected}>
       <Image
         onLoadEnd={() => setImageLoading(false)}
         source={icon}
-        style={{position: "absolute", width: 40, height: 40}}
+        style={{position: "absolute", width: 45, height: 45}}
       />
     </Marker>
   );

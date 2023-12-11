@@ -22,7 +22,7 @@ const VehicleBottomsheetItem = (props: VehicleBottomSheetItemProps) => {
         <View style={styles.details}>
           <Text variant="titleSmall">{props.vehicle.licensePlate}</Text>
           <Text variant="bodyMedium">
-            {props.vehicle.charge}% ({props.vehicle.range})
+            {props.vehicle.isPlugged && "⚡ "}{props.vehicle.charge}% ({props.vehicle.range})
             {appState.walkingDirections &&
               " • " +
                 appState.walkingDirections.duration_display +
