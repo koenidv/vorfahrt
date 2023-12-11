@@ -55,8 +55,11 @@ export const fetchChargeStationsCurrentRegionUpdateState = async (
   region: Region,
   options?: Partial<VehicleFetchOptions>,
 ) => {
+
   const appState = useAppState.getState();
   appState.startedFetching();
+  region = region || useRegion.getState().current;
+  console.log(region)
 
   const [stationsRaw, bsrAvailabilities, weAvailabilities] = await Promise.all([
     fetchChargeStationsForRegion(region, options),
