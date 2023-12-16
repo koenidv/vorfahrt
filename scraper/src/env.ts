@@ -10,14 +10,6 @@ const assertString = (value: unknown, key: string) => {
 };
 
 const env = {
-  milesAccountEmail: assertString(
-    process.env.MILES_ACCOUNT_EMAIL,
-    "MILES_ACCOUNT_EMAIL",
-  ),
-  milesAccountPassword: assertString(
-    process.env.MILES_ACCOUNT_PASSWORD,
-    "MILES_ACCOUNT_PASSWORD",
-  ),
   dbHost: assertString(
     process.env.DB_HOST,
     "DB_HOST",
