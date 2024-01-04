@@ -27,7 +27,7 @@ export abstract class BaseScraper<T> implements Scraper {
     protected observer: Observer;
     private interval: NodeJS.Timeout | undefined;
 
-    protected listeners: ((data: T[], source: string) => void)[] = [];
+    protected listeners: ((data: T[], source: string) => Promise<void>)[] = [];
 
     constructor(cyclesMinute: number, scraperId: string, systemController: SystemController) {
         this.cycleTime = 1000 / (cyclesMinute / 60);
@@ -57,17 +57,18 @@ export abstract class BaseScraper<T> implements Scraper {
         return this;
     }
 
-    addListener(listener: (data: T[], source: string) => void): this {
+    addListener(listener: (data: T[], source: string) => Promise<void>): this {
         this.listeners.push(listener);
         return this;
     }
 
     private async cycleNotifyListeners() {
-        const result = await this.cycle();
+        let result = await this.cycle();
         if (result !== null) {
             if (result.source === undefined) result.source = this.scraperId;
-            this.listeners.forEach(listener => listener(result.data, this.scraperId));
+            Promise.allSettled(this.listeners.map(async listener => await listener(result!.data, result!.source as string)))
         }
+        result = null;
     }
 
     /*

@@ -22,10 +22,12 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     }
 
     deregister(vehicleId: number): this {
+        const lowQueueLenghtBefore = this.lowQueue.length;
+        const normalQueueLenghtBefore = this.normalQueue.length;
         this.lowQueue = this.lowQueue.filter(el => el !== vehicleId);
         this.normalQueue = this.normalQueue.filter(el => el !== vehicleId);
-        this.observer.measure("queue-low", this.lowQueue.length);
-        this.observer.measure("queue-normal", this.normalQueue.length);
+        if (this.lowQueue.length !== lowQueueLenghtBefore) this.observer.measure("queue-low", this.lowQueue.length);
+        if (this.normalQueue.length !== normalQueueLenghtBefore) this.observer.measure("queue-normal", this.normalQueue.length);
         return this;
     }
 

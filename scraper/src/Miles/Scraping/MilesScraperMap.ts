@@ -12,12 +12,11 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
     private cities: MilesCityMeta[] = [];
     private _cycles = 0;
 
-    setAreas(cities: MilesCityMeta[]) {
+    async setAreas(cities: MilesCityMeta[]) {
         if (cities.toString() !== this.cities.toString()) {
             this.cities = cities;
-            this.log("Now tracking", this.cities.length, "cities");
+            this.observer.measure("cities", this.cities.length);
         }
-        this.observer.measure("cities", this.cities.length);
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[] } | null> {
