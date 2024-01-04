@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 ENV DB_HOST \
     DB_PORT \
@@ -10,21 +10,18 @@ ENV DB_HOST \
 
 WORKDIR /dist
 
-# install pnpm
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
-
-COPY package.json pnpm-lock.yaml ./
-RUN exec sh && pnpm install --frozen-lockfile --prod
+COPY package.json package-lock.json .npmrc ./
+RUN npm ci
 
 COPY . .
-RUN exec sh && pnpm run build
-RUN exec sh && pnpm prune --production
+RUN npm run build
+RUN npm prune --production
 
 
-FROM node:20-alpine
+FROM node:20-slim
 
 WORKDIR /dist
-COPY --from=builder /dist/build build/
+COPY --from=builder /dist/build/src build/
 COPY --from=builder /dist/node_modules node_modules/
 COPY package.json .
 EXPOSE 3000
