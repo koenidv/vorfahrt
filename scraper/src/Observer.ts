@@ -40,9 +40,10 @@ export class Observer {
     }
 
     measure(metricName: string, value: number) {
+        if (process.argv.includes("--no-measure")) return;
         if (typeof value !== "number" || isNaN(value)) {
             console.error(clc.bgRed(`Observer | ${this.scraperId}`), clc.red(metricName, "is not a number"), this.scraperId);
-            return;  
+            return;
         }
         if (!this.metrics[metricName]) {
             this.metrics[metricName] = [];

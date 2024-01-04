@@ -7,6 +7,8 @@ import { MilesVehicleStatus, getInfoFromMilesVehicleStatus } from "@koenidv/abfa
 import { QueryApi, WriteApi } from "@influxdata/influxdb-client";
 import { MilesInfluxStore } from "./MilesInfluxStore";
 import clc from "cli-color";
+import { MilesVehiclesPerCityCache } from "./MilesVehiclesPerCityCache";
+import { MapFiltersSource } from "../Scraping/MilesScraperMap";
 
 export default class MilesDataHandler {
   private relationalStore: MilesRelationalStore;
@@ -15,6 +17,7 @@ export default class MilesDataHandler {
   set vehicleScraper(value: MilesScraperVehicles) {
     this._vehicleScraper = value;
   }
+  private vehiclesPerCity = new MilesVehiclesPerCityCache();
 
   constructor(dataSource: DataSource, influxWriteClient: WriteApi, influxQueryClient: QueryApi) {
     this.relationalStore = new MilesRelationalStore(dataSource.manager);
@@ -25,37 +28,52 @@ export default class MilesDataHandler {
     await this.relationalStore.insertCitiesMeta(...cities);
   }
 
-  async handleVehicles(vehicles: apiVehicleJsonParsed[], source: QueryPriority | string) {
+  async handleVehicles(vehicles: apiVehicleJsonParsed[], source: QueryPriority | MapFiltersSource) {
     // fixme currently saving vehicles one after another - otherwise, insertion into postgres might fail
     // todo to fit the above, move iteration to the stores - also use influx writePoints instead of writePoint
     for (const vehicle of vehicles) {
       await this.handleSingleVehicleResponse(vehicle, source);
     }
 
+    if ((source as MapFiltersSource).source === "map") {
+      // source is Map Scraper
+      const disappearedIds = this.vehiclesPerCity.saveVehiclesDiffDisappeared(source as MapFiltersSource, vehicles);
+      if (disappearedIds.length) console.log(clc.bgBlackBright("MilesDataHandler"), disappearedIds.length, "vehicles became invisible in", (source as MapFiltersSource).cityId);
+      this.handleEnqueueDisappearedVehicles(disappearedIds);
+    } else {
+      // source is a QueryPriority from Vehicle Scraper
+      for (const vehicle of vehicles) {
+        this.handleMoveQueues(vehicle, source);
+      }
+    }
   }
 
-  private async handleSingleVehicleResponse(vehicle: apiVehicleJsonParsed, source: QueryPriority | string) {
+  private async handleSingleVehicleResponse(vehicle: apiVehicleJsonParsed, source: QueryPriority | MapFiltersSource) {
     await this.relationalStore.handleVehicle(vehicle);
     this.influxStore.handleVehicle(vehicle);
-
-
-    this.handleMoveQueues(vehicle, source);
-    // todo if a vehicle isn't found at its last location on the map, add to single vehicle queue. this will require passing the region as source
   }
 
-  private handleMoveQueues(vehicle: apiVehicleJsonParsed, source: QueryPriority | string) {
+  private handleMoveQueues(vehicle: apiVehicleJsonParsed, source: QueryPriority | MapFiltersSource) {
     if (!this._vehicleScraper) {
       console.error(clc.bgRed("MilesDataHandler"), clc.red("MilesVehicleScraper is undefined"));
       return;
     }
 
-    if (vehicle.idVehicleStatus === MilesVehicleStatus.DEPLOYED_FOR_RENTAL) {
-      this._vehicleScraper.deregister(vehicle.idVehicle); //fixme vehiclescraper measures should only be taken if a vehicle was actually removed
+    if (typeof source === "number" && vehicle.idVehicleStatus === MilesVehicleStatus.DEPLOYED_FOR_RENTAL) {
+      this._vehicleScraper.deregister(vehicle.idVehicle);
     }
 
     if (source !== QueryPriority.LOW &&
       getInfoFromMilesVehicleStatus(vehicle.idVehicleStatus as keyof typeof MilesVehicleStatus).isInLifecycle) {
       this._vehicleScraper.register([vehicle.idVehicle], QueryPriority.LOW);
     }
+  }
+
+  private handleEnqueueDisappearedVehicles(vehicleIds: number[]) {
+    if (!this._vehicleScraper) {
+      console.error(clc.bgRed("MilesDataHandler"), clc.red("MilesVehicleScraper is undefined"));
+      return;
+    }
+    this._vehicleScraper.register(vehicleIds, QueryPriority.NORMAL);
   }
 }

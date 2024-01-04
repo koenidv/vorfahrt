@@ -36,7 +36,7 @@ export default class MilesController {
     dataHandler.vehicleScraper = scraperVehicles;
 
     // todo properly populate singlevehicles from relational
-    this.scraperVehicles!.register(Array.from({ length: 10 }, (_, i) => 10161 + i), QueryPriority.NORMAL);
+    this.scraperVehicles!.register(Array.from({ length: 5000 }, (_, i) => 21000 + i), QueryPriority.NORMAL);
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
     // todo populate cities from relational

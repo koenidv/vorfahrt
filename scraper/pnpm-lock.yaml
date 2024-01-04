@@ -12,8 +12,8 @@ dependencies:
     specifier: ^1.33.2
     version: 1.33.2(@influxdata/influxdb-client@1.33.2)
   '@koenidv/abfahrt':
-    specifier: 0.0.24
-    version: 0.0.24
+    specifier: 0.0.25
+    version: 0.0.25
   '@trpc/server':
     specifier: ^10.44.0
     version: 10.44.0
@@ -755,8 +755,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@koenidv/abfahrt@0.0.24:
-    resolution: {integrity: sha512-J48qVljetWUg2lHnO+80ehAX6hxl3tlZsh615BnsOnE5S6dGINqoeduUosALNmwTYWuA2FUjs5cAksjgFgNkXA==, tarball: https://npm.pkg.github.com/download/@koenidv/abfahrt/0.0.24/023cb6c3f7a85e4beaf18cffd18befb983ddcd14}
+  /@koenidv/abfahrt@0.0.25:
+    resolution: {integrity: sha512-/Xs59BYh9ml73jJx6EODL4ToiYCIokuzGULwFs3dVUDRoONIZikTRVz8FAoap22xJjR6UO5PfJwgETy1EYlZYg==, tarball: https://npm.pkg.github.com/download/@koenidv/abfahrt/0.0.25/1a417c58bf5080b0efd7e7132156be048186618f}
     engines: {node: '>=18.0.0'}
     dependencies:
       zod: 3.22.4

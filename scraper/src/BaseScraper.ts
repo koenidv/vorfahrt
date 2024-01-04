@@ -12,7 +12,7 @@ export interface Scraper {
     stop(): this;
 }
 
-export abstract class BaseScraper<T> implements Scraper {
+export abstract class BaseScraper<T, SourceType> implements Scraper {
 
     public scraperId: string;
     public cycleTime: number;
@@ -27,7 +27,7 @@ export abstract class BaseScraper<T> implements Scraper {
     protected observer: Observer;
     private interval: NodeJS.Timeout | undefined;
 
-    protected listeners: ((data: T[], source: string) => Promise<void>)[] = [];
+    protected listeners: ((data: T[], source: SourceType) => Promise<void>)[] = [];
 
     constructor(cyclesMinute: number, scraperId: string, systemController: SystemController) {
         this.cycleTime = 1000 / (cyclesMinute / 60);
@@ -57,7 +57,7 @@ export abstract class BaseScraper<T> implements Scraper {
         return this;
     }
 
-    addListener(listener: (data: T[], source: string) => Promise<void>): this {
+    addListener(listener: (data: T[], source: SourceType) => Promise<void>): this {
         this.listeners.push(listener);
         return this;
     }
@@ -65,8 +65,10 @@ export abstract class BaseScraper<T> implements Scraper {
     private async cycleNotifyListeners() {
         let result = await this.cycle();
         if (result !== null) {
-            if (result.source === undefined) result.source = this.scraperId;
-            Promise.allSettled(this.listeners.map(async listener => await listener(result!.data, result!.source as string)))
+            this.listeners.map(listener => {
+                const copy = Object.assign({}, result); // deep copy (https://sematext.com/blog/nodejs-memory-leaks/#properly-using-closures-timers-and-event-handlers)
+                listener(copy.data, copy.source);
+            });
         }
         result = null;
     }
@@ -79,7 +81,7 @@ export abstract class BaseScraper<T> implements Scraper {
      * This method is called every and should return the scraped data.
      * @returns scraped data or null if no data was scraped
      */
-    abstract cycle(): Promise<{ data: T[], source?: string | QueryPriority } | null>;
+    abstract cycle(): Promise<{ data: T[], source: SourceType } | null>;
 
     /*
      * Logging

@@ -4,11 +4,11 @@ import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
 import { polygonToArea } from "@koenidv/abfahrt";
 import { GetCityAreasResponse } from "@koenidv/abfahrt/dist/src/miles/net/getCityAreas";
 
-export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityMeta> {
+export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityMeta, string> {
 
-    async cycle(): Promise<{ data: MilesCityMeta[] } | null> {
+    async cycle(): Promise<{ source: string, data: MilesCityMeta[] } | null> {
         const data = await this.fetch();
-        return data === null ? null : { data };
+        return data === null ? null : { source: this.scraperId, data };
     }
 
     async fetch(): Promise<MilesCityMeta[] | null> {
