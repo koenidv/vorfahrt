@@ -30,9 +30,11 @@ export default class MilesController {
     this.systemController = systemController;
 
     const abfahrt = new MilesClient();
-    const dataHandler = this.createDataHandler(appDataSource);
+    const dataHandler = this.createDataHandler(appDataSource); // fixme scraperVehicles is not yet defined here
 
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
+    dataHandler.vehicleScraper = scraperVehicles;
+
     // todo properly populate singlevehicles from relational
     this.scraperVehicles!.register(Array.from({ length: 10 }, (_, i) => 10161 + i), QueryPriority.NORMAL);
 
@@ -46,7 +48,7 @@ export default class MilesController {
     const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken, timeout: 60000 });
     this.influxWriteClient = influxdb.getWriteApi("vorfahrt", "miles", "s");
     this.influxQueryClient = influxdb.getQueryApi("vorfahrt");
-    this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient, this.scraperVehicles!);
+    this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient);
     return this.dataHandler;
   }
 
@@ -67,11 +69,9 @@ export default class MilesController {
   private startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): MilesScraperCitiesMeta {
     this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta", this.systemController)
       .addListener(mapScraper.setAreas.bind(mapScraper))
-      .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler));
-    if (process.argv.includes("--start")) {
-      this.scraperCitiesMeta.start()
-        .executeNow();
-    }
+      .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler))
+      .executeNow(); // Cities meta is always executed once on start
+    if (process.argv.includes("--start")) this.scraperCitiesMeta.start();
     return this.scraperCitiesMeta;
   }
 

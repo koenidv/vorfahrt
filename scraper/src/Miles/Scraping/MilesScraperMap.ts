@@ -106,7 +106,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         }, {} as { [key: string]: number });
 
         const point = new Point(`${this.scraperId}-citylog`)
-            .tag("scraper", this.scraperId)
+            .tag("serviceId", this.scraperId)
             .tag("city", cityId)
             .intField("vehicles", vehicleCount)
             .intField("requests", requestCount)

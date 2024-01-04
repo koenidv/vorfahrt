@@ -42,7 +42,7 @@ export class MilesInfluxStore {
     async queryCurrentVehicle(vehicleId: number) {
         const rows = await this.queryClient.collectRows(`
             from(bucket: "miles")
-            |> range(start: -12h)
+            |> range(start: -6h)
             |> filter(fn: (r) => r.vehicleId == "${Number(vehicleId)}") 
             |> group(columns: ["_field"]) 
             |> last() 
