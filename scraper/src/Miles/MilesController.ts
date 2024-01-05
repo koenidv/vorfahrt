@@ -30,16 +30,14 @@ export default class MilesController {
     this.systemController = systemController;
 
     const abfahrt = new MilesClient();
-    const dataHandler = this.createDataHandler(appDataSource); // fixme scraperVehicles is not yet defined here
+    const dataHandler = this.createDataHandler(appDataSource);
 
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
     dataHandler.vehicleScraper = scraperVehicles;
 
-    // todo properly populate singlevehicles from relational
-    this.scraperVehicles!.register(Array.from({ length: 26000 }, (_, i) => i), QueryPriority.NORMAL);
+    this.populateVehiclesQueue(scraperVehicles, dataHandler);
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
-    // todo populate cities from relational
     const scraperCitiesMeta = this.startCitiesMetaScraper(abfahrt, scraperMap);
   }
 
@@ -73,6 +71,14 @@ export default class MilesController {
       .executeNow(); // Cities meta is always executed once on start
     if (process.argv.includes("--start")) this.scraperCitiesMeta.start();
     return this.scraperCitiesMeta;
+  }
+
+  private async populateVehiclesQueue(vehicleScraper: MilesScraperVehicles, dataHandler: MilesDataHandler) {
+    const values = await dataHandler.restoreVehicleQueue();
+    vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL);
+    vehicleScraper.register(values.slowQueue, QueryPriority.LOW);
+    // also register the next 2000 vehicles to normal queue
+    vehicleScraper.register(Array.from({ length: 2000 }, (_, i) => values.highestId + i), QueryPriority.NORMAL);
   }
 
 }

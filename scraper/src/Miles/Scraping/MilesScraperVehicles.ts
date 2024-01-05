@@ -9,6 +9,7 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     private lowQueue: number[] = [];
 
     register(vehicleIds: number[], priority: QueryPriority): this {
+        // fixme duplicate values can be pushed to the same queue (but not to both)
         if (priority === QueryPriority.LOW) {
             this.normalQueue = this.normalQueue.filter(el => !vehicleIds.includes(el));
             this.lowQueue.push(...vehicleIds);

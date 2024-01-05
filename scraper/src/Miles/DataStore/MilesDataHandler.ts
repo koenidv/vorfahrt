@@ -24,6 +24,10 @@ export default class MilesDataHandler {
     this.influxStore = new MilesInfluxStore(influxWriteClient, influxQueryClient);
   }
 
+  async restoreVehicleQueue() {
+    return await this.relationalStore.restoreVehicleQueue();
+  }
+
   async handleCitiesMeta(cities: MilesCityMeta[]) {
     await this.relationalStore.insertCitiesMeta(...cities);
   }
@@ -40,6 +44,7 @@ export default class MilesDataHandler {
       const disappearedIds = this.vehiclesPerCity.saveVehiclesDiffDisappeared(source as MapFiltersSource, vehicles);
       if (disappearedIds.length) console.log(clc.bgBlackBright("MilesDataHandler"), disappearedIds.length, "vehicles became invisible in", (source as MapFiltersSource).cityId);
       this.handleEnqueueDisappearedVehicles(disappearedIds);
+      // todo remove vehicles from map query from queue
     } else {
       // source is a QueryPriority from Vehicle Scraper
       for (const vehicle of vehicles) {
@@ -59,7 +64,7 @@ export default class MilesDataHandler {
       return;
     }
 
-    if (typeof source === "number" && vehicle.idVehicleStatus === MilesVehicleStatus.DEPLOYED_FOR_RENTAL) {
+    if (vehicle.idVehicleStatus === MilesVehicleStatus.DEPLOYED_FOR_RENTAL) {
       this._vehicleScraper.deregister(vehicle.idVehicle);
     }
 

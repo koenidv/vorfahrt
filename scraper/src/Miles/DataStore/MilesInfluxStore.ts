@@ -20,7 +20,7 @@ export class MilesInfluxStore {
         const currentVehicle = await this.queryCurrentVehicle(newVehicle.idVehicle) as any;
         const basePoint = new Point("vehicle_data")
             .tag("vehicleId", newVehicle.idVehicle.toString())
-            .tag("status", newVehicle.idVehicleStatus.toString())
+            .tag("status", newVehicle.idVehicleStatus.toString().trim())
             .tag("city", newVehicle.idCity.toString())
 
         const modifiedPoint =

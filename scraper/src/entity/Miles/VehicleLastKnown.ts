@@ -48,10 +48,10 @@ export class VehicleLastKnown {
   @Column()
   damageCount: number;
 
-  @Column()
+  @Column({ nullable: true })
   coverageGsm: number;
 
-  @Column()
+  @Column({ nullable: true })
   coverageGps: number;
 
   @UpdateDateColumn({
