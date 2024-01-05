@@ -34,7 +34,7 @@ export default class MilesDataHandler {
 
   async handleVehicles(vehicles: apiVehicleJsonParsed[], source: QueryPriority | MapFiltersSource) {
     // fixme currently saving vehicles one after another - otherwise, insertion into postgres might fail
-    // todo to fit the above, move iteration to the stores - also use influx writePoints instead of writePoint
+    // todo to fix the above, move iteration to the stores - also use influx writePoints instead of writePoint
     for (const vehicle of vehicles) {
       await this.handleSingleVehicleResponse(vehicle, source);
     }
@@ -43,8 +43,8 @@ export default class MilesDataHandler {
       // source is Map Scraper
       const disappearedIds = this.vehiclesPerCity.saveVehiclesDiffDisappeared(source as MapFiltersSource, vehicles);
       if (disappearedIds.length) console.log(clc.bgBlackBright("MilesDataHandler"), disappearedIds.length, "vehicles became invisible in", (source as MapFiltersSource).cityId);
-      this.handleEnqueueDisappearedVehicles(disappearedIds);
-      // todo remove vehicles from map query from queue
+      this.handleEnqueueDisappearedIds(disappearedIds);
+      this.handleDisenqueuedVehicles(vehicles);
     } else {
       // source is a QueryPriority from Vehicle Scraper
       for (const vehicle of vehicles) {
@@ -65,7 +65,7 @@ export default class MilesDataHandler {
     }
 
     if (vehicle.idVehicleStatus === MilesVehicleStatus.DEPLOYED_FOR_RENTAL) {
-      this._vehicleScraper.deregister(vehicle.idVehicle);
+      this._vehicleScraper.deregister([vehicle.idVehicle]);
     }
 
     if (source !== QueryPriority.LOW &&
@@ -74,11 +74,19 @@ export default class MilesDataHandler {
     }
   }
 
-  private handleEnqueueDisappearedVehicles(vehicleIds: number[]) {
+  private handleEnqueueDisappearedIds(vehicleIds: number[]) {
     if (!this._vehicleScraper) {
       console.error(clc.bgRed("MilesDataHandler"), clc.red("MilesVehicleScraper is undefined"));
       return;
     }
     this._vehicleScraper.register(vehicleIds, QueryPriority.NORMAL);
+  }
+
+  private handleDisenqueuedVehicles(vehicles: apiVehicleJsonParsed[]) {
+    if (!this._vehicleScraper) {
+      console.error(clc.bgRed("MilesDataHandler"), clc.red("MilesVehicleScraper is undefined"));
+      return;
+    }
+    this._vehicleScraper.deregister(vehicles.map(el => el.idVehicle));
   }
 }
