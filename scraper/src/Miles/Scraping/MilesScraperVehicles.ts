@@ -9,14 +9,19 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
     private lowQueue: number[] = [];
 
     register(vehicleIds: number[], priority: QueryPriority): this {
-        // fixme duplicate values can be pushed to the same queue (but not to both)
+        const notAlreadyInQueue = vehicleIds.filter(el =>
+            priority === QueryPriority.LOW
+                ? !this.lowQueue.includes(el)
+                : !this.normalQueue.includes(el)
+        );
+        if (notAlreadyInQueue.length === 0) return this;
         if (priority === QueryPriority.LOW) {
-            this.normalQueue = this.normalQueue.filter(el => !vehicleIds.includes(el));
-            this.lowQueue.push(...vehicleIds);
+            this.normalQueue = this.normalQueue.filter(el => !notAlreadyInQueue.includes(el));
+            this.lowQueue.push(...notAlreadyInQueue);
             this.observer.measure("queue-low", this.lowQueue.length);
         } else {
-            this.lowQueue = this.lowQueue.filter(el => !vehicleIds.includes(el));
-            this.normalQueue.push(...vehicleIds);
+            this.lowQueue = this.lowQueue.filter(el => !notAlreadyInQueue.includes(el));
+            this.normalQueue.push(...notAlreadyInQueue);
             this.observer.measure("queue-normal", this.normalQueue.length);
         }
         return this;
