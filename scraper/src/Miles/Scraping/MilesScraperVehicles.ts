@@ -77,7 +77,7 @@ export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJso
 
             if (result.ResponseText === "Vehicle ID not found") {
                 this.log("Vehicle", vehicleId, "not found and removed from future queue")
-                this.deregister(vehicleId);
+                this.deregister([vehicleId]);
                 this.observer.requestExecuted("NOT_FOUND", result._time);
                 return null;
             }
