@@ -7,23 +7,25 @@ import {
   Index,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  OneToOne,
+  PrimaryColumn,
+  JoinColumn,
 } from "typeorm";
 import { VehicleModel } from "./VehicleModel";
 import { City } from "./City";
 import { VehicleDamage } from "./VehicleDamage";
+import { VehicleLastKnown } from "./VehicleLastKnown";
 
 @Entity({
   name: "MilesVehicle",
 })
 export class VehicleMeta {
 
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  @Index({ unique: true })
+  @PrimaryColumn()
   milesId: number;
+
+  @OneToOne(() => VehicleLastKnown)
+  lastKnown: VehicleLastKnown;
 
   @Column()
   @Index({ unique: true })

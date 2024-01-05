@@ -8,6 +8,7 @@ import { VehicleSize } from "../../entity/Miles/VehicleSize";
 import { VehicleModel } from "../../entity/Miles/VehicleModel";
 import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
 import clc from "cli-color";
+import { VehicleLastKnown } from "../../entity/Miles/VehicleLastKnown";
 
 export class MilesRelationalStore {
     manager: EntityManager;
@@ -41,6 +42,7 @@ export class MilesRelationalStore {
     async handleVehicle(vehicle: apiVehicleJsonParsed) {
         await this.createVehicleMeta(vehicle);
         // todo insert damages here
+        await this.saveLastKnown(vehicle);
     }
 
     private async createVehicleMeta(vehicle: apiVehicleJsonParsed) {
@@ -115,5 +117,24 @@ export class MilesRelationalStore {
                 clc.red(`Error saving vehicle ${vehicle.idVehicle}: ${e}`));
             return;
         }
+    }
+
+    private async saveLastKnown(vehicle: apiVehicleJsonParsed) {
+        const lastKnown = new VehicleLastKnown();
+        lastKnown.milesId = vehicle.idVehicle;
+        lastKnown.status = vehicle.idVehicleStatus;
+        lastKnown.latitude = vehicle.Latitude;
+        lastKnown.longitude = vehicle.Longitude;
+        const charging =
+            vehicle.EVPlugged ||
+            vehicle.JSONFullVehicleDetails!.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged");
+        lastKnown.charging = charging;
+        lastKnown.charge = vehicle.FuelPct_parsed!;
+        lastKnown.range = vehicle.RemainingRange_parsed!;
+        lastKnown.discounted = vehicle.RentalPrice_discounted_parsed !== null;
+        lastKnown.damageCount = vehicle.JSONVehicleDamages?.length ?? 0;
+        lastKnown.coverageGsm = vehicle.GSMCoverage!;
+        lastKnown.coverageGps = vehicle.SatelliteNumber!;
+        return await this.manager.save(VehicleLastKnown, lastKnown);
     }
 }

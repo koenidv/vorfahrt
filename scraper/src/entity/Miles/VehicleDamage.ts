@@ -19,11 +19,11 @@ export class VehicleDamage {
   id: number;
 
   @ManyToOne(() => VehicleMeta, (meta) => meta.damages)
-  @JoinColumn({ name: "vehicleMetaId" })
+  @JoinColumn({ name: "milesId" })
   vehicle: VehicleMeta;
   @Index()
   @Column()
-  vehicleId: number;
+  milesId: number;
 
   @Column()
   title: string;
