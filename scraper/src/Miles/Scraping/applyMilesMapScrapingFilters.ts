@@ -39,7 +39,7 @@ function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
 }
 
 
-const TARGET_CITY_TIME = 1000 * 60 * 2;
+const TARGET_CITY_TIME = 1000 * 60 * 3;
 const MIN_DELAY = 1000 / 5;
 const MAX_DELAY = 1000 / 1;
 

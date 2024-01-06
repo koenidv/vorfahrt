@@ -26,7 +26,7 @@ COPY --from=builder /dist/node_modules node_modules/
 COPY package.json .
 EXPOSE 3000
 ENV NODE_ENV=production
-CMD [ "node", "build" ]
+CMD [ "node", "build", "--start" ]
 
 
 LABEL org.opencontainers.image.source="https://github.com/koenidv/vorfahrt/tree/main/scraper"
