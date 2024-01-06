@@ -1,5 +1,6 @@
 import MilesAreaSearch from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
+import { OVERRIDE_FUEL_FILTERS } from "./applyMilesScrapingFilters.config";
 
 export function applyMilesMapScrapingFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
     applyFuelFilters(city, mapSearch);
@@ -31,7 +32,9 @@ const smallFuelFilters = [
 ]
 
 function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
-    if (city.area.latitudeDelta > 0.2 || city.area.longitudeDelta > 0.2) {
+    if (OVERRIDE_FUEL_FILTERS.hasOwnProperty(city.idCity)) {
+        mapSearch.setFuelFilters(OVERRIDE_FUEL_FILTERS[city.idCity]);
+    } else if (city.area.latitudeDelta > 0.2 || city.area.longitudeDelta > 0.2) {
         mapSearch.setFuelFilters(largeFuelFilters);
     } else {
         mapSearch.setFuelFilters(smallFuelFilters);
