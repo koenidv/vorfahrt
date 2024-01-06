@@ -1,6 +1,5 @@
-import { apiVehicle, apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
+import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { MapFiltersSource } from "../Scraping/MilesScraperMap";
-import { Area } from "@koenidv/abfahrt/dist/src/miles/tools/areas";
 
 type IdAndLocation = { id: number, lat: number, lon: number, charge: number };
 
@@ -20,7 +19,7 @@ export class MilesVehiclesPerCityCache {
         const disappeared = previousInArea.filter(previous => !vehicles.some(vehicle => vehicle.idVehicle === previous.id));
 
         const newCache = this.cache.get(source.cityId)?.filter(
-            previous => !disappeared.includes(previous) || vehicles.some(v => previous.id === v.idVehicle)
+            previous => !disappeared.includes(previous) && !vehicles.some(v => previous.id === v.idVehicle)
         ) ?? [];
         newCache.push(...vehicles.map(vehicle => (
             { id: vehicle.idVehicle, lat: vehicle.Latitude, lon: vehicle.Longitude, charge: vehicle.FuelPct_parsed! }
