@@ -1,8 +1,8 @@
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraper } from "../BaseMilesScraper";
-import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
+import { MilesCityMeta } from "../Miles.types";
 import { GetVehiclesResponse } from "@koenidv/abfahrt/dist/src/miles/net/getVehicles";
-import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
+import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle, areasToKML } from "@koenidv/abfahrt";
 import { Point } from "@influxdata/influxdb-client";
 import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 import { applyMilesMapScrapingFilters } from "./applyMilesMapScrapingFilters";
@@ -122,6 +122,10 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
             .intField("API_ERROR", responseTypesCount["API_ERROR"] || 0)
 
         this.observer.savePoint(point);
+    }
+
+    generateAreasKML(): string {
+        return areasToKML(`Scraped areas at ${Date.now().toLocaleString}`, this.cities.map(city => ({ ...city.area, name: city.idCity })));
     }
 
 }
