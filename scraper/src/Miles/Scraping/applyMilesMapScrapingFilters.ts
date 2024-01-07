@@ -31,8 +31,8 @@ function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
 
 
 const TARGET_CITY_TIME = 1000 * 60 * 3;
-const MIN_DELAY = 1000 / 5;
-const MAX_DELAY = 1000 / 1;
+const MIN_DELAY = 200;
+const MAX_DELAY = 1000;
 
 function applyDelay(mapSearch: MilesAreaSearch) {
     let maxEnqueued = 0;

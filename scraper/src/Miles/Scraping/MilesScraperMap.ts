@@ -57,11 +57,11 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         applyMilesMapScrapingFilters(city, request);
 
         request.addEventListener("fetchCompleted", handleFetchResult);
-        request.addEventListener("fetchRetry", (_: any, time: number) => this.observer.requestExecuted("API_ERROR", time));
+        request.addEventListener("fetchRetry", (_: any, time: number) => this.observer.requestExecuted("API_ERROR", time, city.idCity));
 
         const results = await request.execute();
 
-        this.observer.measure("vehicles", vehicles.length);
+        this.observer.measure("vehicles", vehicles.length, city.idCity);
         this.createLogPoint(city.idCity, vehicles, results.length, responseTimes, responseTypes);
     }
 
@@ -69,7 +69,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         const mapped = this.mapVehicleResponses(result.data);
         if (!result.filters.location) this.logWarn("No location filter in fetch result");
 
-        this.observer.requestExecuted("OK", result._time); // todo "OK" status isn't checked
+        this.observer.requestExecuted("OK", result._time, cityId); // todo "OK" status isn't checked
         this.listeners.forEach(listener => listener(mapped.vehicles, {
             source: "map",
             cityId,
