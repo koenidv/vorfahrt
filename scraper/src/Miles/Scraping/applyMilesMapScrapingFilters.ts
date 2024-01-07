@@ -1,6 +1,6 @@
 import MilesAreaSearch from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
-import { OVERRIDE_FUEL_FILTERS } from "./applyMilesScrapingFilters.config";
+import { FUEL_FILTERS_5, FUEL_FILTERS_EACH, OVERRIDE_FUEL_FILTERS } from "./applyMilesScrapingFilters.config";
 
 export function applyMilesMapScrapingFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
     applyFuelFilters(city, mapSearch);
@@ -8,36 +8,24 @@ export function applyMilesMapScrapingFilters(city: MilesCityMeta, mapSearch: Mil
 }
 
 
-const largeFirstIntervalSize = 15;
-const largeRemainingPercentages = Array(100 - largeFirstIntervalSize)
-    .fill(null)
-    .map((_, idx) => idx + largeFirstIntervalSize + 1);
-export const largeFuelFilters = [
-    {
-        minFuel: 0,
-        maxFuel: largeFirstIntervalSize,
-    },
-    ...largeRemainingPercentages.map((percentage) => ({
-        minFuel: percentage,
-        maxFuel: percentage,
-    })),
-];
 
-const smallFuelFilters = [
-    { minFuel: 0, maxFuel: 25 },
-    { minFuel: 26, maxFuel: 46 },
-    { minFuel: 47, maxFuel: 68 },
-    { minFuel: 69, maxFuel: 88 },
-    { minFuel: 89, maxFuel: 100 },
-]
 
 function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
+
+    // todo as seen in abfahrt research, fuel filters are not effective. remove them, and possibly replace with predictive subareas
+    // possibly consider doing percentages globally, without further subareas, additionally
+    // todo when no fuel filter is applied (only 0-100), check quadrants for clusters, not vehicles
+
+    if (process.argv.includes("--use-old-fuel-filters")) {
+        if (city.area.latitudeDelta > 0.2 || city.area.longitudeDelta > 0.2) mapSearch.setFuelFilters(FUEL_FILTERS_EACH);
+        else mapSearch.setFuelFilters(FUEL_FILTERS_5);
+        return;
+    }
+
     if (OVERRIDE_FUEL_FILTERS.hasOwnProperty(city.idCity)) {
         mapSearch.setFuelFilters(OVERRIDE_FUEL_FILTERS[city.idCity]);
-    } else if (city.area.latitudeDelta > 0.2 || city.area.longitudeDelta > 0.2) {
-        mapSearch.setFuelFilters(largeFuelFilters);
     } else {
-        mapSearch.setFuelFilters(smallFuelFilters);
+        mapSearch.setFuelFilters([{ minFuel: 0, maxFuel: 100 }]);
     }
 }
 
