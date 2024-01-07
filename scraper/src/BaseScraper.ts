@@ -23,11 +23,10 @@ export abstract class BaseScraper<T, SourceType> implements Scraper {
     }
     public set running(value: boolean) {
         eventEmitter.emit("service-status-changed", this.scraperId, value);
+        this.log(`Service ${value ? "started" : "stopped"}`);
         this._running = value;
     }
     protected observer: Observer;
-    private interval: NodeJS.Timeout | undefined;
-
     protected listeners: ((data: T[], source: SourceType) => Promise<void>)[] = [];
 
     constructor(cyclesMinute: number, scraperId: string, systemController: SystemController) {
@@ -37,52 +36,21 @@ export abstract class BaseScraper<T, SourceType> implements Scraper {
         this.log(clc.blue(`Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+(this.cycleTime / 1000).toFixed(4)}s/c)`))
     }
 
-    start(): this {
-        if (this.running) {
-            this.logWarn("Already running");
-            return this;
-        }
-        this.interval = setInterval(this.cycleNotifyListeners.bind(this), this.cycleTime);
-        this.running = true;
-        return this;
-    }
-
-    stop(): this {
-        clearInterval(this.interval);
-        this.running = false;
-        return this;
-    }
-
-    executeNow(): this {
-        this.cycleNotifyListeners();
-        return this;
-    }
+    abstract start(): this;
+    abstract stop(): this;
+    abstract executeOnce(): this;
 
     addListener(listener: (data: T[], source: SourceType) => Promise<void>): this {
         this.listeners.push(listener);
         return this;
     }
 
-    private async cycleNotifyListeners() {
-        let result = await this.cycle();
-        if (result !== null) {
-            this.listeners.map(listener => {
-                const copy = Object.assign({}, result); // deep copy (https://sematext.com/blog/nodejs-memory-leaks/#properly-using-closures-timers-and-event-handlers)
-                listener(copy.data, copy.source);
-            });
-        }
-        result = null;
+    protected notifyListeners(data: T[], source: SourceType) {
+        // deep copy (https://sematext.com/blog/nodejs-memory-leaks/#properly-using-closures-timers-and-event-handlers)
+        const copy = Object.assign({}, { data, source });
+        data = [];
+        this.listeners.map(listener => listener(copy.data, copy.source));
     }
-
-    /*
-     * Abstract methods
-     */
-
-    /**
-     * This method is called every and should return the scraped data.
-     * @returns scraped data or null if no data was scraped
-     */
-    abstract cycle(): Promise<{ data: T[], source: SourceType } | null>;
 
     /*
      * Logging

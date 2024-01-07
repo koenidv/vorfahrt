@@ -1,5 +1,5 @@
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { BaseMilesScraper } from "../BaseMilesScraper";
+import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { MilesCityMeta } from "../Miles.types";
 import { GetVehiclesResponse } from "@koenidv/abfahrt/dist/src/miles/net/getVehicles";
 import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle, areasToKML } from "@koenidv/abfahrt";
@@ -10,7 +10,9 @@ import { Area } from "@koenidv/abfahrt/dist/src/miles/tools/areas";
 
 export type MapFiltersSource = { source: "map", cityId: string, area: Area, chargeMin: number, chargeMax: number };
 
-export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed, MapFiltersSource> {
+// todo use target city scraping duration (or request RPM) instead of city RPM for speed control, just scrape one city after another
+
+export default class MilesScraperMap extends BaseMilesScraperCycled<apiVehicleJsonParsed, MapFiltersSource> {
     private cities: MilesCityMeta[] = [];
     private _cycles = 0;
 

@@ -1,10 +1,10 @@
-import { JsonParseBehaviour, MilesClient, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
+import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { BaseMilesScraper } from "../BaseMilesScraper";
+import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
 
-export default class MilesScraperVehicles extends BaseMilesScraper<apiVehicleJsonParsed, QueryPriority> {
+export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, QueryPriority> {
     private normalQueue: number[] = [];
     private lowQueue: number[] = [];
 

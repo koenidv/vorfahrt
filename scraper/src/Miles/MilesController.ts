@@ -68,7 +68,7 @@ export default class MilesController {
     this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta", this.systemController)
       .addListener(mapScraper.setAreas.bind(mapScraper))
       .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler))
-      .executeNow(); // Cities meta is always executed once on start
+      .executeOnce(); // Cities meta is always executed once on start
     if (process.argv.includes("--start")) this.scraperCitiesMeta.start();
     return this.scraperCitiesMeta;
   }
