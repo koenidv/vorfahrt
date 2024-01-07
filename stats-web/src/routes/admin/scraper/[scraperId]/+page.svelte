@@ -5,6 +5,7 @@
   import { browser } from "$app/environment";
   import { page } from "$app/stores";
   import type { AggregatedMetric } from "../../../../../../scraper/src/types";
+  import SpeedAdjustButton from "./SpeedAdjustButton.svelte";
 
   let service = writable<Service | undefined>(undefined);
   let requests = writable<AggregatedMetric[] | undefined>(undefined);
@@ -83,11 +84,7 @@
               if ($service) trpc.services.stop.mutate($service.id);
             }}>Stop Scraper</button>
         {/if}
-        <button
-          class="btn {$service.running ? 'btn-neutral' : 'btn-outline'}"
-          on:click={() => {
-            if ($service) true; // todo: open modal to adjust speed
-          }}>Adjust Speed</button>
+            <SpeedAdjustButton service={service} />
         {#if $service.id === "miles-map"}
           <button class="btn btn-neutral" on:click={downloadKML}>Download Areas KML</button>
         {/if}

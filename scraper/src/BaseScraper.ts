@@ -16,7 +16,7 @@ export interface Scraper {
 export abstract class BaseScraper<T, SourceType> implements Scraper {
 
     public scraperId: string;
-    public cycleTime: number;
+    public cycleTime: number = -1;
     private _running: boolean = false;
     public get running(): boolean {
         return this._running;
@@ -30,10 +30,9 @@ export abstract class BaseScraper<T, SourceType> implements Scraper {
     protected listeners: ((data: T[], source: SourceType) => Promise<void>)[] = [];
 
     constructor(cyclesMinute: number, scraperId: string, systemController: SystemController) {
-        this.cycleTime = 1000 / (cyclesMinute / 60);
+        this.setSpeed(cyclesMinute);
         this.scraperId = scraperId;
         this.observer = systemController.registerScraper(this);
-        this.log(clc.blue(`Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+(this.cycleTime / 1000).toFixed(4)}s/c)`))
     }
 
     abstract start(): this;
@@ -42,6 +41,12 @@ export abstract class BaseScraper<T, SourceType> implements Scraper {
 
     addListener(listener: (data: T[], source: SourceType) => Promise<void>): this {
         this.listeners.push(listener);
+        return this;
+    }
+
+    setSpeed(cyclesMinute: number): this {
+        this.cycleTime = 1000 / (cyclesMinute / 60);
+        this.log(clc.blue(`Speed set to ${+cyclesMinute.toFixed(3)}c/min (${+(this.cycleTime / 1000).toFixed(4)}s/c)`))
         return this;
     }
 

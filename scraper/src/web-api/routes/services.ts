@@ -51,6 +51,18 @@ export const servicesRouter = router({
             }
             return { success: true };
         }),
+    speed: publicProcedure
+        .input(z.object({
+            id: z.string(),
+            cyclesMinute: z.number(),
+        }))
+        .mutation(({ ctx, input: { id, cyclesMinute } }) => {
+            const result = ctx.systemController.setServiceSpeed(id, cyclesMinute);
+            if (result instanceof Error) {
+                return { success: false, error: result.message }
+            }
+            return { success: true };
+        }),
     details: publicProcedure
         .input(z.string())
         .subscription(({ ctx, input: serviceId }) => {

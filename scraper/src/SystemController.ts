@@ -59,4 +59,14 @@ export class SystemController {
         observed.scraper.stop();
         return this;
     }
+
+    setServiceSpeed(serviceId: string, cyclesMinute: number): this | Error {
+        const observed = this.scrapers.get(serviceId);
+        if (!observed) {
+            console.warn(clc.bgRedBright("SystemController"), clc.red(`Tried to set speed of unknown scraper ${serviceId}`));
+            return new Error(`No scraper with id ${serviceId} registered`);
+        }
+        observed.scraper.setSpeed(cyclesMinute);
+        return this;
+    }
 }
