@@ -5,6 +5,7 @@ import { QueryPriority } from "./Miles/Scraping/MilesScraperVehicles";
 import { eventEmitter } from "./EventEmitter";
 
 export interface Scraper {
+    [x: string]: any;
     scraperId: string;
     cycleTime: number;
     running: boolean;
@@ -12,7 +13,7 @@ export interface Scraper {
     stop(): this;
 }
 
-export abstract class BaseScraper<T> implements Scraper {
+export abstract class BaseScraper<T, SourceType> implements Scraper {
 
     public scraperId: string;
     public cycleTime: number;
@@ -21,13 +22,12 @@ export abstract class BaseScraper<T> implements Scraper {
         return this._running;
     }
     public set running(value: boolean) {
+        this.log(clc.blue(`Service ${value ? "started" : "stopped"}`));
         eventEmitter.emit("service-status-changed", this.scraperId, value);
         this._running = value;
     }
     protected observer: Observer;
-    private interval: NodeJS.Timeout | undefined;
-
-    protected listeners: ((data: T[], source: string) => void)[] = [];
+    protected listeners: ((data: T[], source: SourceType) => Promise<void>)[] = [];
 
     constructor(cyclesMinute: number, scraperId: string, systemController: SystemController) {
         this.cycleTime = 1000 / (cyclesMinute / 60);
@@ -36,49 +36,21 @@ export abstract class BaseScraper<T> implements Scraper {
         this.log(clc.blue(`Initialized with ${+cyclesMinute.toFixed(3)}c/min (${+(this.cycleTime / 1000).toFixed(4)}s/c)`))
     }
 
-    start(): this {
-        if (this.running) {
-            this.logWarn("Already running");
-            return this;
-        }
-        this.interval = setInterval(this.cycleNotifyListeners.bind(this), this.cycleTime);
-        this.running = true;
-        return this;
-    }
+    abstract start(): this;
+    abstract stop(): this;
+    abstract executeOnce(): Promise<boolean>; // success boolean
 
-    stop(): this {
-        clearInterval(this.interval);
-        this.running = false;
-        return this;
-    }
-
-    executeNow(): this {
-        this.cycleNotifyListeners();
-        return this;
-    }
-
-    addListener(listener: (data: T[], source: string) => void): this {
+    addListener(listener: (data: T[], source: SourceType) => Promise<void>): this {
         this.listeners.push(listener);
         return this;
     }
 
-    private async cycleNotifyListeners() {
-        const result = await this.cycle();
-        if (result !== null) {
-            if (result.source === undefined) result.source = this.scraperId;
-            this.listeners.forEach(listener => listener(result.data, this.scraperId));
-        }
+    protected notifyListeners(data: T[], source: SourceType) {
+        // deep copy (https://sematext.com/blog/nodejs-memory-leaks/#properly-using-closures-timers-and-event-handlers)
+        const copy = Object.assign({}, { data, source });
+        data = [];
+        this.listeners.map(listener => listener(copy.data, copy.source));
     }
-
-    /*
-     * Abstract methods
-     */
-
-    /**
-     * This method is called every and should return the scraped data.
-     * @returns scraped data or null if no data was scraped
-     */
-    abstract cycle(): Promise<{ data: T[], source?: string | QueryPriority } | null>;
 
     /*
      * Logging

@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+
+  scraper:
+    image: ghcr.io/koenidv/vorfahrt/scraper:main
   
   postgres:
     image: postgres:15.4

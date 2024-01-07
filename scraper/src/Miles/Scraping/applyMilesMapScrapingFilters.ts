@@ -1,55 +1,48 @@
 import MilesAreaSearch from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
-import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
+import { MilesCityMeta } from "../Miles.types";
+import { FUEL_FILTERS_5, FUEL_FILTERS_EACH, OVERRIDE_FUEL_FILTERS } from "./applyMilesScrapingFilters.config";
 
-export function applyMilesMapScrapingFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
+export function applyMilesMapScrapingFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch, cycleTime: number) {
     applyFuelFilters(city, mapSearch);
-    applyDelay(mapSearch);
+    applyDelay(mapSearch, cycleTime);
 }
 
-
-const largeFirstIntervalSize = 15;
-const largeRemainingPercentages = Array(100 - largeFirstIntervalSize)
-    .fill(null)
-    .map((_, idx) => idx + largeFirstIntervalSize + 1);
-export const largeFuelFilters = [
-    {
-        minFuel: 0,
-        maxFuel: largeFirstIntervalSize,
-    },
-    ...largeRemainingPercentages.map((percentage) => ({
-        minFuel: percentage,
-        maxFuel: percentage,
-    })),
-];
-
-const smallFuelFilters = [
-    { minFuel: 0, maxFuel: 25 },
-    { minFuel: 26, maxFuel: 46 },
-    { minFuel: 47, maxFuel: 68 },
-    { minFuel: 69, maxFuel: 88 },
-    { minFuel: 89, maxFuel: 100 },
-]
 
 function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
-    if (city.area.latitudeDelta > 0.2 || city.area.longitudeDelta > 0.2) {
-        mapSearch.setFuelFilters(largeFuelFilters);
+
+    // todo as seen in abfahrt research, fuel filters are not effective. remove them, and possibly replace with predictive subareas
+    // possibly consider doing percentages globally, without further subareas, additionally
+    // todo when no fuel filter is applied (only 0-100), check quadrants for clusters, not vehicles
+
+    if (process.argv.includes("--use-old-fuel-filters")) {
+        if (city.area.latitudeDelta > 0.2 || city.area.longitudeDelta > 0.2) mapSearch.setFuelFilters(FUEL_FILTERS_EACH);
+        else mapSearch.setFuelFilters(FUEL_FILTERS_5);
+        return;
+    }
+
+    if (OVERRIDE_FUEL_FILTERS.hasOwnProperty(city.idCity)) {
+        mapSearch.setFuelFilters(OVERRIDE_FUEL_FILTERS[city.idCity]);
     } else {
-        mapSearch.setFuelFilters(smallFuelFilters);
+        mapSearch.setFuelFilters([{ minFuel: 0, maxFuel: 100 }]);
     }
 }
 
 
-const TARGET_CITY_TIME = 60 * 1000;
-const MIN_DELAY = 1000 / 5;
-const MAX_DELAY = 1000 / 1;
+const TARGET_CITY_TIME = 1000 * 60 * 3;
+const MIN_DELAY = 200;
+const MAX_DELAY = 1000;
 
-function applyDelay(mapSearch: MilesAreaSearch) {
+function applyDelay(mapSearch: MilesAreaSearch, cycleTime: number) {
     let maxEnqueued = 0;
 
-    const delayFn = (enqueued: number) => {
-        maxEnqueued = Math.max(maxEnqueued, enqueued);
-        return Math.min(Math.max(TARGET_CITY_TIME / maxEnqueued, MIN_DELAY), MAX_DELAY);
+    if (process.argv.includes("--use-dynamic-map-throttling")) {
+        const delayFn = (enqueued: number) => {
+            maxEnqueued = Math.max(maxEnqueued, enqueued);
+            return Math.min(Math.max(TARGET_CITY_TIME / maxEnqueued, MIN_DELAY), MAX_DELAY);
+        }
+        mapSearch.setTaskDelay(delayFn);
+        return;
     }
 
-    mapSearch.setTaskDelay(delayFn);
+    mapSearch.setTaskDelay(cycleTime);
 }

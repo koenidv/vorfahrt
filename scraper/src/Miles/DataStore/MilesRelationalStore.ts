@@ -8,6 +8,8 @@ import { VehicleSize } from "../../entity/Miles/VehicleSize";
 import { VehicleModel } from "../../entity/Miles/VehicleModel";
 import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
 import clc from "cli-color";
+import { VehicleLastKnown } from "../../entity/Miles/VehicleLastKnown";
+import { RESTORE_NORMAL_STATES, RESTORE_SLOW_STATES } from "./MilesRelationalStore.config";
 
 export class MilesRelationalStore {
     manager: EntityManager;
@@ -22,6 +24,26 @@ export class MilesRelationalStore {
      */
     async insertCitiesMeta(...cities: MilesCityMeta[]) {
         return await Promise.all(cities.map(city => this.createCityMeta(city)));
+    }
+
+    async restoreVehicleQueue(): Promise<{ normalQueue: number[], slowQueue: number[], highestId: number }> {
+        const normalQueue = (await this.manager.createQueryBuilder()
+            .select("v.milesId").from(VehicleLastKnown, "v")
+            .where("v.status IN (:...statuses)", { statuses: RESTORE_NORMAL_STATES })
+            .getRawMany()
+        ).map((el: { v_milesId: string }) => Number(el.v_milesId));
+        const slowQueue = (await this.manager.createQueryBuilder()
+            .select("v.milesId").from(VehicleLastKnown, "v")
+            .where("v.status IN (:...statuses)", { statuses: RESTORE_SLOW_STATES })
+            .getRawMany()
+        ).map((el: { v_milesId: string }) => Number(el.v_milesId));
+        const highestId = Number(
+            (await this.manager.createQueryBuilder()
+                .select("MAX(v.milesId)", "maxId").from(VehicleLastKnown, "v")
+                .getRawOne()
+            ).maxId);
+
+        return { normalQueue, slowQueue, highestId };
     }
 
     private async createCityMeta(data: MilesCityMeta) {
@@ -41,6 +63,7 @@ export class MilesRelationalStore {
     async handleVehicle(vehicle: apiVehicleJsonParsed) {
         await this.createVehicleMeta(vehicle);
         // todo insert damages here
+        await this.saveLastKnown(vehicle);
     }
 
     private async createVehicleMeta(vehicle: apiVehicleJsonParsed) {
@@ -115,5 +138,24 @@ export class MilesRelationalStore {
                 clc.red(`Error saving vehicle ${vehicle.idVehicle}: ${e}`));
             return;
         }
+    }
+
+    private async saveLastKnown(vehicle: apiVehicleJsonParsed) {
+        const lastKnown = new VehicleLastKnown();
+        lastKnown.milesId = vehicle.idVehicle;
+        lastKnown.status = vehicle.idVehicleStatus.trim();
+        lastKnown.latitude = vehicle.Latitude;
+        lastKnown.longitude = vehicle.Longitude;
+        const charging =
+            vehicle.EVPlugged ||
+            vehicle.JSONFullVehicleDetails!.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged");
+        lastKnown.charging = charging;
+        lastKnown.charge = vehicle.FuelPct_parsed!;
+        lastKnown.range = vehicle.RemainingRange_parsed!;
+        lastKnown.discounted = vehicle.RentalPrice_discounted_parsed !== null;
+        lastKnown.damageCount = vehicle.JSONVehicleDamages?.length ?? 0;
+        lastKnown.coverageGsm = vehicle.GSMCoverage!;
+        lastKnown.coverageGps = vehicle.SatelliteNumber!;
+        return await this.manager.save(VehicleLastKnown, lastKnown);
     }
 }

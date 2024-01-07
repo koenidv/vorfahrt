@@ -1,14 +1,14 @@
-import { cityArea } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { BaseMilesScraper } from "../BaseMilesScraper";
+import { ZoneCoordinates, cityArea } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
+import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
 import { polygonToArea } from "@koenidv/abfahrt";
 import { GetCityAreasResponse } from "@koenidv/abfahrt/dist/src/miles/net/getCityAreas";
 
-export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityMeta> {
+export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<MilesCityMeta, string> {
 
-    async cycle(): Promise<{ data: MilesCityMeta[] } | null> {
+    async cycle(): Promise<{ source: string, data: MilesCityMeta[] } | null> {
         const data = await this.fetch();
-        return data === null ? null : { data };
+        return data === null ? null : { source: this.scraperId, data };
     }
 
     async fetch(): Promise<MilesCityMeta[] | null> {
@@ -50,6 +50,15 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraper<MilesCityMe
     private parseCityPolygons(raw: GetCityAreasResponse["Data"]): MilesCityAreaBounds[] {
         const polygons = JSON.parse(raw.JSONCityAreas).JSONCityAreas.areas as cityArea[];
         const filtered = polygons.filter(polygon => polygon.idCityLayerType === "CITY_SERVICE_AREA");
+
+        // remove one polygon from CGN. this is a super tiny area next to RWTH Aachen, probably used for research
+        const cologneIndex = filtered.findIndex(polygon => polygon.idCity === "CGN");
+        filtered[cologneIndex].coordinates = filtered[cologneIndex].coordinates.filter(subarea => {
+            if (typeof subarea[0][0] === "number") return true;
+            if ((subarea[0] as ZoneCoordinates)[0][0] === 6.07327048) return false;
+            return true;
+        }) as [ZoneCoordinates][];
+
         const bounds = filtered.map(polygon => ({
             cityId: polygon.idCity,
             area: polygonToArea(polygon)

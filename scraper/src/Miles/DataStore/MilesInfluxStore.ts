@@ -20,7 +20,7 @@ export class MilesInfluxStore {
         const currentVehicle = await this.queryCurrentVehicle(newVehicle.idVehicle) as any;
         const basePoint = new Point("vehicle_data")
             .tag("vehicleId", newVehicle.idVehicle.toString())
-            .tag("status", newVehicle.idVehicleStatus.toString())
+            .tag("status", newVehicle.idVehicleStatus.toString().trim())
             .tag("city", newVehicle.idCity.toString())
 
         const modifiedPoint =
@@ -42,7 +42,7 @@ export class MilesInfluxStore {
     async queryCurrentVehicle(vehicleId: number) {
         const rows = await this.queryClient.collectRows(`
             from(bucket: "miles")
-            |> range(start: -12h)
+            |> range(start: -6h)
             |> filter(fn: (r) => r.vehicleId == "${Number(vehicleId)}") 
             |> group(columns: ["_field"]) 
             |> last() 

@@ -18,7 +18,7 @@ export class Observer {
         this.writeClient = writeClient;
     };
 
-    requestExecuted(status: RequestStatus, responseTime: number) {
+    requestExecuted(status: RequestStatus, responseTime: number, info?: string | number) {
         if (typeof responseTime !== "number" || isNaN(responseTime)) {
             console.error(clc.bgRed(`Observer | ${this.scraperId}`), clc.red("responseTime is not a number"), this.scraperId);
             return;
@@ -28,21 +28,23 @@ export class Observer {
             responseTime,
             timestamp: Date.now()
         })
-        this.writeClient.writePoint(
-            new Point("requests")
-                .tag("serviceId", this.scraperId)
-                .tag("status", status)
-                .intField("responseTime", responseTime))
+        const logPoint = new Point("requests")
+            .tag("serviceId", this.scraperId)
+            .tag("status", status)
+            .intField("responseTime", responseTime)
+        if (info) logPoint.tag("info", info.toString());
+        this.writeClient.writePoint(logPoint)
         if (LOG_ON_MEAUSRE) {
-            console.log(clc.bgBlackBright(`Observer | ${this.scraperId}`), `Request executed: ${status} in`, responseTime, "ms");
+            console.log(clc.bgBlackBright(`Observer | ${this.scraperId}`), `Request executed${info ? ` (${info})` : ""}: ${status} in`, responseTime, "ms");
         }
         eventEmitter.emit("request-executed", this.scraperId, status, responseTime);
     }
 
-    measure(metricName: string, value: number) {
+    measure(metricName: string, value: number, info?: string | number) {
+        if (process.argv.includes("--no-measure")) return;
         if (typeof value !== "number" || isNaN(value)) {
             console.error(clc.bgRed(`Observer | ${this.scraperId}`), clc.red(metricName, "is not a number"), this.scraperId);
-            return;  
+            return;
         }
         if (!this.metrics[metricName]) {
             this.metrics[metricName] = [];
@@ -51,12 +53,13 @@ export class Observer {
             value,
             timestamp: Date.now()
         })
-        this.writeClient.writePoint(
-            new Point("measures")
-                .tag("serviceId", this.scraperId)
-                .intField(metricName, value))
+        const logPoint = new Point("measures")
+            .tag("serviceId", this.scraperId)
+            .intField(metricName, value)
+        if (info) logPoint.tag("info", info.toString());
+        this.writeClient.writePoint(logPoint);
         if (LOG_ON_MEAUSRE) {
-            console.log(clc.bgBlackBright(`Observer | ${this.scraperId}`), `Measured ${metricName}:`, value);
+            console.log(clc.bgBlackBright(`Observer | ${this.scraperId}`), `Measured ${metricName}${info ? ` (${info})` : ""}:`, value);
         }
     }
 

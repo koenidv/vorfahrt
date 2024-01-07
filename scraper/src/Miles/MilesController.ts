@@ -10,7 +10,7 @@ import clc from "cli-color";
 import { SystemController } from "../SystemController";
 
 const RPM_VEHICLE = 60;
-const RPM_MAP = 1;
+const RPM_MAP = 120;
 const RPM_CITES = 1 / (60 * 12);
 
 export default class MilesController {
@@ -33,12 +33,12 @@ export default class MilesController {
     const dataHandler = this.createDataHandler(appDataSource);
 
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
-    // todo properly populate singlevehicles from relational
-    this.scraperVehicles!.register(Array.from({ length: 10 }, (_, i) => 10161 + i), QueryPriority.NORMAL);
+    dataHandler.vehicleScraper = scraperVehicles;
+
+    this.populateVehiclesQueue(scraperVehicles, dataHandler);
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
-    // todo populate cities from relational
-    const scraperCitiesMeta = this.startCitiesMetaScraper(abfahrt, scraperMap);
+    this.startCitiesMetaScraper(abfahrt, scraperMap);
   }
 
   private createDataHandler(appDataSource: DataSource): MilesDataHandler {
@@ -46,7 +46,7 @@ export default class MilesController {
     const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken, timeout: 60000 });
     this.influxWriteClient = influxdb.getWriteApi("vorfahrt", "miles", "s");
     this.influxQueryClient = influxdb.getQueryApi("vorfahrt");
-    this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient, this.scraperVehicles!);
+    this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient);
     return this.dataHandler;
   }
 
@@ -64,15 +64,21 @@ export default class MilesController {
     return this.scraperMap;
   }
 
-  private startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): MilesScraperCitiesMeta {
+  private async startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): Promise<MilesScraperCitiesMeta> {
     this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta", this.systemController)
       .addListener(mapScraper.setAreas.bind(mapScraper))
-      .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler));
-    if (process.argv.includes("--start")) {
-      this.scraperCitiesMeta.start()
-        .executeNow();
-    }
+      .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler))
+    await this.scraperCitiesMeta.executeOnce(); // Cities meta is always executed once on start
+    if (process.argv.includes("--start")) this.scraperCitiesMeta.start();
     return this.scraperCitiesMeta;
+  }
+
+  private async populateVehiclesQueue(vehicleScraper: MilesScraperVehicles, dataHandler: MilesDataHandler) {
+    const values = await dataHandler.restoreVehicleQueue();
+    vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL);
+    vehicleScraper.register(values.slowQueue, QueryPriority.LOW);
+    // also register the next 2000 vehicles to normal queue
+    vehicleScraper.register(Array.from({ length: 2000 }, (_, i) => values.highestId + i), QueryPriority.NORMAL);
   }
 
 }

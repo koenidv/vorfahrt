@@ -79,7 +79,7 @@ export const servicesRouter = router({
                     //     status,
                     //     responseTime,
                     // });
-                    if (lastUpdate < Date.now() - 5000) {
+                    if (lastUpdate < Date.now() - 1000) {
                         emitCurrent();
                     }
                 }
@@ -87,7 +87,7 @@ export const servicesRouter = router({
 
                 const emitCurrent = () => {
                     lastUpdate = Date.now();
-                    const requestsAggregated = aggregateSumByCategory(requests, "status", () => 1, 5000, Date.now() - 60 * 1000, Date.now());
+                    const requestsAggregated = aggregateSumByCategory(requests, "status", () => 1, 1000, Date.now() - 60 * 1000, Date.now());
                     emit.next({
                         id: scraper.scraper.scraperId,
                         running,
