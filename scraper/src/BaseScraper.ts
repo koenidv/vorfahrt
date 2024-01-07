@@ -5,6 +5,7 @@ import { QueryPriority } from "./Miles/Scraping/MilesScraperVehicles";
 import { eventEmitter } from "./EventEmitter";
 
 export interface Scraper {
+    [x: string]: any;
     scraperId: string;
     cycleTime: number;
     running: boolean;

@@ -21,7 +21,7 @@
       onData(update) {
         service.set(update);
         requests.set(update.requests);
-        console.log(update.requests)
+        console.log(update.requests);
       },
       onError(error) {
         console.log(error);
@@ -41,6 +41,18 @@
     } else {
       return `${+(1 / (cycleMs / (1000 * 60 * 60 * 24))).toFixed(2)}/day`;
     }
+  }
+
+  async function downloadKML() {
+    const kmlString = (await trpc.mapScrapingService.getKML.query($service!.id)).kml;
+    // now download this string as areas.kml
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(kmlString));
+    element.setAttribute("download", "areas.kml");
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 </script>
 
@@ -76,6 +88,9 @@
           on:click={() => {
             if ($service) true; // todo: open modal to adjust speed
           }}>Adjust Speed</button>
+        {#if $service.id === "miles-map"}
+          <button class="btn btn-neutral" on:click={downloadKML}>Download Areas KML</button>
+        {/if}
       </div>
     </div>
     <div class="w-full max-w-4xl">

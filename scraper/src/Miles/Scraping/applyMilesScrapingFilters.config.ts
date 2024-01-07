@@ -11,5 +11,6 @@ export const OVERRIDE_FUEL_FILTERS: { [key: string]: { minFuel: number, maxFuel:
     DUI: threeRequestFilters,
 }
 
-// fixme CGN area is HUGE because it includes a tiny area in Aachen. Maybe split this up manually?
+// todo Tiny area in CGN is manually removed, meaning it's not observed
+// todo Airport areas should not be included in city areas but scraped separately
 // todo STR is also hugely inefficient, but not yet sure why
