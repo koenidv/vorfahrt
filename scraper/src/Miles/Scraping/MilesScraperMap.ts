@@ -1,5 +1,5 @@
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { BaseMilesScraperCycled } from "../BaseMilesScraper";
+import { BaseMilesScraper } from "../BaseMilesScraper";
 import { MilesCityMeta } from "../Miles.types";
 import { GetVehiclesResponse } from "@koenidv/abfahrt/dist/src/miles/net/getVehicles";
 import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle, areasToKML } from "@koenidv/abfahrt";
@@ -12,9 +12,9 @@ export type MapFiltersSource = { source: "map", cityId: string, area: Area, char
 
 // todo use target city scraping duration (or request RPM) instead of city RPM for speed control, just scrape one city after another
 
-export default class MilesScraperMap extends BaseMilesScraperCycled<apiVehicleJsonParsed, MapFiltersSource> {
+export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed, MapFiltersSource> {
     private cities: MilesCityMeta[] = [];
-    private _cycles = 0;
+    private currentCityIndex = 0;
 
     async setAreas(cities: MilesCityMeta[]) {
         if (cities.toString() !== this.cities.toString()) {
@@ -23,23 +23,52 @@ export default class MilesScraperMap extends BaseMilesScraperCycled<apiVehicleJs
         }
     }
 
-    async cycle(): Promise<null> {
+    start(): this {
+        if (this.running) return this;
+        this.running = true;
+        this.cycle();
+        return this;
+    }
+
+    stop(): this {
+        if (!this.running) return this;
+        this.running = false;
+        return this;
+    }
+
+    async cycle() {
+        if (!this.running) return;
+        const success = await this.executeOnce();
+        if (!success) {
+            this.logWarn("Map scraping not successful, retrying in 15 seconds");
+            this.retryCycle(1000 * 15);
+            return;
+        }
+        await new Promise(resolve => setTimeout(resolve, this.cycleTime));
+        this.cycle();
+    }
+
+    async executeOnce(): Promise<boolean> {
         const next = this.selectNextCity();
-        if (next === null) return null;
-        const vehicles = await this.fetch(next);
-        return null;
+        if (next === null) return false;
+        await this.fetch(next);
+        return true;
+    }
+
+    async retryCycle(timeout: number) {
+        await new Promise(resolve => setTimeout(resolve, timeout));
+        this.cycle();
     }
 
     selectNextCity(): MilesCityMeta | null {
         if (this.cities.length === 0) {
-            this.logWarn("No cities in queue: cycle will be skipped")
             return null;
         }
-        return this.cities[this._cycles % this.cities.length];
+        this.currentCityIndex = (this.currentCityIndex + 1) % this.cities.length;
+        return this.cities[this.currentCityIndex];
     }
 
     async fetch(city: MilesCityMeta): Promise<void> {
-        this._cycles++;
         const responseTimes: number[] = [];
         const responseTypes: ("OK" | "API_ERROR")[] = [];
         const vehicles: apiVehicleJsonParsed[] = [];
@@ -55,8 +84,8 @@ export default class MilesScraperMap extends BaseMilesScraperCycled<apiVehicleJs
         }
 
         const request = this.abfahrt.createVehicleSearch(city.area)
-            .setMaxConcurrent(10)
-        applyMilesMapScrapingFilters(city, request);
+            .setMaxConcurrent(16)
+        applyMilesMapScrapingFilters(city, request, this.cycleTime);
 
         request.addEventListener("fetchCompleted", handleFetchResult);
         request.addEventListener("fetchRetry", (_: any, time: number) => this.observer.requestExecuted("API_ERROR", time, city.idCity));

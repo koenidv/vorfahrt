@@ -10,7 +10,7 @@ import clc from "cli-color";
 import { SystemController } from "../SystemController";
 
 const RPM_VEHICLE = 60;
-const RPM_MAP = 1;
+const RPM_MAP = 120;
 const RPM_CITES = 1 / (60 * 12);
 
 export default class MilesController {
@@ -38,7 +38,7 @@ export default class MilesController {
     this.populateVehiclesQueue(scraperVehicles, dataHandler);
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
-    const scraperCitiesMeta = this.startCitiesMetaScraper(abfahrt, scraperMap);
+    this.startCitiesMetaScraper(abfahrt, scraperMap);
   }
 
   private createDataHandler(appDataSource: DataSource): MilesDataHandler {
@@ -64,11 +64,11 @@ export default class MilesController {
     return this.scraperMap;
   }
 
-  private startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): MilesScraperCitiesMeta {
+  private async startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): Promise<MilesScraperCitiesMeta> {
     this.scraperCitiesMeta = new MilesScraperCitiesMeta(abfahrt, RPM_CITES, "miles-cities-meta", this.systemController)
       .addListener(mapScraper.setAreas.bind(mapScraper))
       .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler))
-      .executeOnce(); // Cities meta is always executed once on start
+    await this.scraperCitiesMeta.executeOnce(); // Cities meta is always executed once on start
     if (process.argv.includes("--start")) this.scraperCitiesMeta.start();
     return this.scraperCitiesMeta;
   }

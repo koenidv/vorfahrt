@@ -22,8 +22,8 @@ export abstract class BaseScraper<T, SourceType> implements Scraper {
         return this._running;
     }
     public set running(value: boolean) {
+        this.log(clc.blue(`Service ${value ? "started" : "stopped"}`));
         eventEmitter.emit("service-status-changed", this.scraperId, value);
-        this.log(`Service ${value ? "started" : "stopped"}`);
         this._running = value;
     }
     protected observer: Observer;
@@ -38,7 +38,7 @@ export abstract class BaseScraper<T, SourceType> implements Scraper {
 
     abstract start(): this;
     abstract stop(): this;
-    abstract executeOnce(): this;
+    abstract executeOnce(): Promise<boolean>; // success boolean
 
     addListener(listener: (data: T[], source: SourceType) => Promise<void>): this {
         this.listeners.push(listener);

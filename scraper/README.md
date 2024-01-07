@@ -14,3 +14,9 @@ vorfahrt org:
 - `system_scraper` (write)
 
 dockerfile uses npm because pnpm wouldn't behave. use `npm i --package-lock-only` then `docker build . --platform linux/arm64/v8`
+
+## options
+- --start
+- --no-measure
+- --use-old-fuel-filters
+- --use-dynamic-map-throttling

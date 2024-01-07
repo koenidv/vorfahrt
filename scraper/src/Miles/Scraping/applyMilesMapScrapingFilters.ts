@@ -1,13 +1,11 @@
 import MilesAreaSearch from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
-import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
+import { MilesCityMeta } from "../Miles.types";
 import { FUEL_FILTERS_5, FUEL_FILTERS_EACH, OVERRIDE_FUEL_FILTERS } from "./applyMilesScrapingFilters.config";
 
-export function applyMilesMapScrapingFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
+export function applyMilesMapScrapingFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch, cycleTime: number) {
     applyFuelFilters(city, mapSearch);
-    applyDelay(mapSearch);
+    applyDelay(mapSearch, cycleTime);
 }
-
-
 
 
 function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
@@ -34,13 +32,17 @@ const TARGET_CITY_TIME = 1000 * 60 * 3;
 const MIN_DELAY = 200;
 const MAX_DELAY = 1000;
 
-function applyDelay(mapSearch: MilesAreaSearch) {
+function applyDelay(mapSearch: MilesAreaSearch, cycleTime: number) {
     let maxEnqueued = 0;
 
-    const delayFn = (enqueued: number) => {
-        maxEnqueued = Math.max(maxEnqueued, enqueued);
-        return Math.min(Math.max(TARGET_CITY_TIME / maxEnqueued, MIN_DELAY), MAX_DELAY);
+    if (process.argv.includes("--use-dynamic-map-throttling")) {
+        const delayFn = (enqueued: number) => {
+            maxEnqueued = Math.max(maxEnqueued, enqueued);
+            return Math.min(Math.max(TARGET_CITY_TIME / maxEnqueued, MIN_DELAY), MAX_DELAY);
+        }
+        mapSearch.setTaskDelay(delayFn);
+        return;
     }
 
-    mapSearch.setTaskDelay(delayFn);
+    mapSearch.setTaskDelay(cycleTime);
 }

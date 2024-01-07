@@ -20,14 +20,16 @@ export abstract class BaseScraperCycled<T, SourceType> extends BaseScraper<T, So
         return this;
     }
 
-    executeOnce(): this {
-        this.cycleNotifyListeners();
-        return this;
+    async executeOnce(): Promise<boolean> {
+        return await this.cycleNotifyListeners();
     }
 
     private async cycleNotifyListeners() {
         let result = await this.cycle();
-        if (result !== null) this.notifyListeners(result.data, result.source);
+        if (result !== null) {
+            this.notifyListeners(result.data, result.source);
+            return true;
+        } else return false;
     }
 
     /*
