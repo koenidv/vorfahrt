@@ -62,7 +62,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         const results = await request.execute();
 
         this.observer.measure("vehicles", vehicles.length);
-        this.createLogPoint(city.idCity, vehicles.length, results.length, responseTimes, responseTypes);
+        this.createLogPoint(city.idCity, vehicles, results.length, responseTimes, responseTypes);
     }
 
     handleFetchResult(result: FetchResult, cityId: string): { vehicles: apiVehicleJsonParsed[], responseTypes: ("OK" | "API_ERROR")[] } {
@@ -105,7 +105,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         return { vehicles, responseTypes };
     }
 
-    createLogPoint(cityId: string, vehicleCount: number, requestCount: number, responseTimes: number[], responseTypes: ("OK" | "API_ERROR")[]) {
+    createLogPoint(cityId: string, vehicles: apiVehicleJsonParsed[], requestCount: number, responseTimes: number[], responseTypes: ("OK" | "API_ERROR")[]) {
         const averageResponseTime = responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
         const responseTypesCount = responseTypes.reduce((acc, cur) => {
             acc[cur] = (acc[cur] ?? 0) + 1;
@@ -115,7 +115,8 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         const point = new Point(`${this.scraperId}-citylog`)
             .tag("serviceId", this.scraperId)
             .tag("city", cityId)
-            .intField("vehicles", vehicleCount)
+            .intField("vehicles", [...new Set(vehicles.map(vehicle => vehicle.idVehicle))].length)
+            .intField("occurences", vehicles.length)
             .intField("requests", requestCount)
             .intField("averageResponseTime", averageResponseTime || 0)
             .intField("OK", responseTypesCount["OK"] || 0)
