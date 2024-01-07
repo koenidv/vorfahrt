@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { trpc } from "$lib/trpc";
   import { signOut } from "@auth/sveltekit/client";
 </script>
 
@@ -9,6 +10,6 @@
     <a class="btn btn-outline" href="/admin/vehicles">Vehicles</a>
     <div class="flex-grow" />
     <div class="btn btn-outline" on:click={() => signOut({ callbackUrl: "/" })}>Sign Out</div>
-    <div class="btn btn-error">Kill Server</div>
+    <div class="btn btn-error" on:click={() => trpc.system.kill.mutate()}>Kill Server</div>
   </div>
 </div>
