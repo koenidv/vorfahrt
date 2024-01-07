@@ -9,9 +9,9 @@ import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta";
 import clc from "cli-color";
 import { SystemController } from "../SystemController";
 
-const RPM_VEHICLE = 60;
-const RPM_MAP = 120;
-const RPM_CITES = 1 / (60 * 12);
+const RPM_VEHICLE = env.rpm_vehicle;
+const RPM_MAP = env.rpm_map;
+const RPM_CITES = env.rpm_cities;
 
 export default class MilesController {
   private systemController: SystemController;
