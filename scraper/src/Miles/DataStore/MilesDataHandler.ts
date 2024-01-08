@@ -41,12 +41,11 @@ export default class MilesDataHandler {
       await this.handleSingleVehicleResponse(vehicle, source);
     }
     if (source.source === SOURCE_TYPE.MAP) {
-      // fixme should only try to find disappeared vehicles in leaf queries (no further subareas required)
+      this.handleDisenqueuedVehicles(vehicles);
       if ((source as MilesMapSource).isFinal) {
         const disappearedIds = this.vehiclesPerCity.saveVehiclesDiffDisappeared(source as MilesMapSource, vehicles);
         if (disappearedIds.length) console.log(clc.bgBlackBright("MilesDataHandler"), disappearedIds.length, "vehicles became invisible in", (source as MilesMapSource).cityId);
         this.handleEnqueueDisappearedIds(disappearedIds);
-        this.handleDisenqueuedVehicles(vehicles);
       }
     } else if (source.source === SOURCE_TYPE.VEHICLE) {
       for (const vehicle of vehicles) {

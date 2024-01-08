@@ -35,11 +35,16 @@ function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch): { si
  * @param singleFilter wether a single fuel filter applied
  */
 function applyStrategy(mapSearch: MilesAreaSearch, singleFilter: boolean) {
-    if (singleFilter) {
-        mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_CLUSTERS);
-    } else {
-        mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_VEHICLES);
-    }
+    // todo QUADRANTS_WITH_CLUSTERS seems to not find all vehicles:
+    // Berlin QUADRANTS_WITH_VEHICLES: 5419 vehicles (5369 occurences) in 278 requests, 102s
+    // Berlin QUADRANTS_WITH_CLUSTERS: 4759 vehicles (4726 occurences) in 288 requests, 109s 
+    // Berlin QUADRANTS_ALL: 5507 vehicles (5456 occurences) in 335 requests, 120s
+    // if (singleFilter) {
+    //     mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_CLUSTERS);
+    // } else {
+    //     mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_VEHICLES);
+    // }
+    mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_VEHICLES);
 }
 
 const TARGET_CITY_TIME = 1000 * 60 * 3;
