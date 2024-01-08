@@ -13,9 +13,9 @@ const DEBE_AREA: MilesCityMeta = {
     location_long: 10,
     area: {
         latitude: 50,
-        latitudeDelta: 10,
+        latitudeDelta: 9.9, // Miles API will throw at Δ>=10
         longitude: 10,
-        longitudeDelta: 10,
+        longitudeDelta: 9.9, // Miles API will throw at Δ>=10
     }
 }
 
@@ -46,14 +46,15 @@ export default class MilesScraperPercentages extends BaseMilesScraperCycled<apiV
 
     private async fetch(percentage: number): Promise<apiVehicleJsonParsed[] | null> {
         try {
-            const results = await this.abfahrt
+            const search = this.abfahrt
                 .createVehicleSearch(DEBE_AREA.area)
                 .setFetchingStrategy(FETCHING_STRATEGY.ONESHOT)
-                .setFuelFilters([{ minFuel: percentage, maxFuel: percentage }])
-                .execute();
+                .setFuelFilters([{ minFuel: percentage, maxFuel: percentage }]);
+            search.addEventListener("fetchRetry", (_err, time) => this.observer.requestExecuted(RequestStatus.API_ERROR, time, percentage));
+            const results = await search.execute();
 
             if (!results[0]?.data?.[0]?.Data) {
-                this.observer.requestExecuted(RequestStatus.API_ERROR, results[0]?._time ?? 0, percentage)
+                this.observer.requestExecuted(RequestStatus.API_ERROR, results[0]?._time ?? -1, percentage)
                 return null;
             }
 
