@@ -2,9 +2,9 @@ import { FETCHING_STRATEGY, JsonParseBehaviour, applyJsonParseBehaviourToVehicle
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { MilesCityMeta } from "../Miles.types";
-import { RequestStatus } from "../../types";
+import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 
-export type PercentageSource = { source: "percentage", value: number };
+export interface PercentageSource extends ValueSource { source: SOURCE_TYPE.PERCENTAGE, value: number };
 
 const DEBE_AREA: MilesCityMeta = {
     idCity: "internal-germany-belgium",
@@ -29,7 +29,7 @@ export default class MilesScraperPercentages extends BaseMilesScraperCycled<apiV
         const percentage = this.selectNext()
         if (percentage !== null) {
             const results = await this.fetch(percentage);
-            return results === null ? null : { data: results, source: { source: "percentage", value: percentage } };
+            return results === null ? null : { data: results, source: { source: SOURCE_TYPE.PERCENTAGE, value: percentage } };
         }
         return null;
     }

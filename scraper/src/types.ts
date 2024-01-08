@@ -17,6 +17,16 @@ export type RequestMetric = Timestamped & {
     responseTime: number,
 }
 
+export type ValueSource = {
+    source: SOURCE_TYPE,
+}
+export enum SOURCE_TYPE {
+    PERCENTAGE = "percentage",
+    MAP = "map",
+    CITY_META = "city-meta",
+    VEHICLE = "vehicle",
+}
+
 export enum RequestStatus {
     OK = "OK",
     API_ERROR = "API_ERROR",

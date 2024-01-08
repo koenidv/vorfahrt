@@ -3,13 +3,15 @@ import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
 import { polygonToArea } from "@koenidv/abfahrt";
 import { GetCityAreasResponse } from "@koenidv/abfahrt/dist/src/miles/net/getCityAreas";
-import { RequestStatus } from "../../types";
+import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 
-export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<MilesCityMeta, string> {
+export interface CityMetaSource extends ValueSource { source: SOURCE_TYPE.CITY_META }
 
-    async cycle(): Promise<{ source: string, data: MilesCityMeta[] } | null> {
+export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<MilesCityMeta, CityMetaSource> {
+
+    async cycle(): Promise<{ data: MilesCityMeta[], source: CityMetaSource } | null> {
         const data = await this.fetch();
-        return data === null ? null : { source: this.scraperId, data };
+        return data === null ? null : { data, source: { source: SOURCE_TYPE.CITY_META } };
     }
 
     async fetch(): Promise<MilesCityMeta[] | null> {

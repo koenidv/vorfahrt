@@ -2,7 +2,7 @@ import { DataSource } from "typeorm";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { MilesRelationalStore } from "./MilesRelationalStore";
 import { MilesCityMeta } from "../Miles.types";
-import MilesScraperVehicles, { QueryPriority } from "../Scraping/MilesScraperVehicles";
+import MilesScraperVehicles, { QueryPriority, VehicleSource } from "../Scraping/MilesScraperVehicles";
 import { MilesVehicleStatus, getInfoFromMilesVehicleStatus } from "@koenidv/abfahrt";
 import { QueryApi, WriteApi } from "@influxdata/influxdb-client";
 import { MilesInfluxStore } from "./MilesInfluxStore";
@@ -10,6 +10,7 @@ import clc from "cli-color";
 import { MilesVehiclesPerCityCache } from "./MilesVehiclesPerCityCache";
 import { MapFiltersSource } from "../Scraping/MilesScraperMap";
 import { PercentageSource } from "../Scraping/MilesScraperPercentages";
+import { SOURCE_TYPE, ValueSource } from "../../types";
 
 export default class MilesDataHandler {
   private relationalStore: MilesRelationalStore;
@@ -33,34 +34,33 @@ export default class MilesDataHandler {
     await this.relationalStore.insertCitiesMeta(...cities);
   }
 
-  async handleVehicles(vehicles: apiVehicleJsonParsed[], source: QueryPriority | MapFiltersSource | PercentageSource) {
+  async handleVehicles(vehicles: apiVehicleJsonParsed[], source: ValueSource) {
     // fixme currently saving vehicles one after another - otherwise, insertion into postgres might fail
     // todo to fix the above, move iteration to the stores - also use influx writePoints instead of writePoint
     for (const vehicle of vehicles) {
       await this.handleSingleVehicleResponse(vehicle, source);
     }
-// todo extended source type
-// todo HANDLE PERCENTAGE SOURCE
-    if ((source as MapFiltersSource).source === "map") {
-      // source is Map Scraper
+    if (source.source === SOURCE_TYPE.MAP) {
+      // fixme should only try to find disappeared vehicles in leaf queries (no further subareas required)
       const disappearedIds = this.vehiclesPerCity.saveVehiclesDiffDisappeared(source as MapFiltersSource, vehicles);
       if (disappearedIds.length) console.log(clc.bgBlackBright("MilesDataHandler"), disappearedIds.length, "vehicles became invisible in", (source as MapFiltersSource).cityId);
       this.handleEnqueueDisappearedIds(disappearedIds);
       this.handleDisenqueuedVehicles(vehicles);
-    } else {
-      // source is a QueryPriority from Vehicle Scraper
+    } else if (source.source === SOURCE_TYPE.VEHICLE) {
       for (const vehicle of vehicles) {
-        this.handleMoveQueues(vehicle, source);
+        this.handleMoveQueues(vehicle);
       }
+    } else if (source.source === SOURCE_TYPE.PERCENTAGE) {
+      this.handleDisenqueuedVehicles(vehicles);
     }
   }
 
-  private async handleSingleVehicleResponse(vehicle: apiVehicleJsonParsed, source: QueryPriority | MapFiltersSource | PercentageSource) {
+  private async handleSingleVehicleResponse(vehicle: apiVehicleJsonParsed, source: ValueSource) {
     await this.relationalStore.handleVehicle(vehicle);
     this.influxStore.handleVehicle(vehicle);
   }
 
-  private handleMoveQueues(vehicle: apiVehicleJsonParsed, source: QueryPriority | MapFiltersSource | PercentageSource) {
+  private handleMoveQueues(vehicle: apiVehicleJsonParsed) {
     if (!this._vehicleScraper) {
       console.error(clc.bgRed("MilesDataHandler"), clc.red("MilesVehicleScraper is undefined"));
       return;
@@ -70,8 +70,7 @@ export default class MilesDataHandler {
       this._vehicleScraper.deregister([vehicle.idVehicle]);
     }
 
-    if (source !== QueryPriority.LOW &&
-      getInfoFromMilesVehicleStatus(vehicle.idVehicleStatus as keyof typeof MilesVehicleStatus).isInLifecycle) {
+    if (getInfoFromMilesVehicleStatus(vehicle.idVehicleStatus as keyof typeof MilesVehicleStatus).isInLifecycle) {
       this._vehicleScraper.register([vehicle.idVehicle], QueryPriority.LOW);
     }
   }

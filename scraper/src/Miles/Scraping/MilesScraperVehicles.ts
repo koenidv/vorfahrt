@@ -1,11 +1,12 @@
 import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraperCycled } from "../BaseMilesScraper";
-import { RequestStatus } from "../../types";
+import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
+export interface VehicleSource extends ValueSource { source: SOURCE_TYPE.VEHICLE, priority: QueryPriority }
 
-export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, QueryPriority> {
+export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, VehicleSource> {
     private normalQueue: number[] = [];
     private lowQueue: number[] = [];
 
@@ -38,11 +39,14 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
         return this;
     }
 
-    async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: QueryPriority; } | null> {
+    async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: VehicleSource; } | null> {
         const next = this.selectNext()
         if (next !== null) {
             const vehicle = await this.fetch(next.id);
-            return vehicle === null ? null : { data: [vehicle], source: next.priority };
+            return vehicle === null ? null : {
+                data: [vehicle],
+                source: { source: SOURCE_TYPE.VEHICLE, priority: next.priority }
+            };
         }
         return null;
     }

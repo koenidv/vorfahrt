@@ -7,11 +7,9 @@ import { Point } from "@influxdata/influxdb-client";
 import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 import { applyMilesMapScrapingFilters } from "./applyMilesMapScrapingFilters";
 import { Area } from "@koenidv/abfahrt/dist/src/miles/tools/areas";
-import { RequestStatus } from "../../types";
+import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 
-export type MapFiltersSource = { source: "map", cityId: string, area: Area, chargeMin: number, chargeMax: number };
-
-// todo use target city scraping duration (or request RPM) instead of city RPM for speed control, just scrape one city after another
+export interface MapFiltersSource extends ValueSource { source: SOURCE_TYPE.MAP, cityId: string, area: Area, chargeMin: number, chargeMax: number }
 
 export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed, MapFiltersSource> {
     private cities: MilesCityMeta[] = [];
@@ -103,7 +101,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
         this.observer.requestExecuted(RequestStatus.OK, result._time, cityId); // todo "OK" status isn't checked
         this.listeners.forEach(listener => listener(mapped.vehicles, {
-            source: "map",
+            source: SOURCE_TYPE.MAP,
             cityId,
             area: result.filters.location!,
             chargeMin: result.filters.fuel.minFuel,
