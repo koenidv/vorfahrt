@@ -3,7 +3,21 @@ version: '3.8'
 services:
 
   scraper:
-    image: ghcr.io/koenidv/vorfahrt/scraper:main
+    image: koenidv/vorfahrt-scraper:latest-arm
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=vorfahrt
+      - DB_USER=****
+      - DB_PASSWORD=****
+      - INFLUX_URL=http://influx:8086
+      - INFLUX_TOKEN=****
+      - RPM_VEHICLE=100
+      - RPM_MAP=120
+      - RPM_PERCENTAGES=20
   
   postgres:
     image: postgres:15.4
