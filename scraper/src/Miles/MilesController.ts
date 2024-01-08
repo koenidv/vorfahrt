@@ -8,10 +8,12 @@ import { InfluxDB, QueryApi, WriteApi } from "@influxdata/influxdb-client";
 import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta";
 import clc from "cli-color";
 import { SystemController } from "../SystemController";
+import MilesScraperPercentages from "./Scraping/MilesScraperPercentages";
 
 const RPM_VEHICLE = env.rpm_vehicle;
 const RPM_MAP = env.rpm_map;
 const RPM_CITES = env.rpm_cities;
+const RPM_PERCENTAGES = env.rpm_percentages;
 
 export default class MilesController {
   private systemController: SystemController;
@@ -19,6 +21,7 @@ export default class MilesController {
   scraperMap: MilesScraperMap | undefined;
   scraperVehicles: MilesScraperVehicles | undefined;
   scraperCitiesMeta: MilesScraperCitiesMeta | undefined;
+  scraperPercentages: MilesScraperPercentages | undefined;
 
   dataSource: DataSource | undefined;
   influxWriteClient: WriteApi | undefined;
@@ -39,6 +42,8 @@ export default class MilesController {
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
     this.startCitiesMetaScraper(abfahrt, scraperMap);
+
+    this.startPercentagesScraper(abfahrt, dataHandler);
   }
 
   private createDataHandler(appDataSource: DataSource): MilesDataHandler {
@@ -62,6 +67,13 @@ export default class MilesController {
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
     if (process.argv.includes("--start")) this.scraperMap.start();
     return this.scraperMap;
+  }
+
+  private startPercentagesScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperPercentages {
+    this.scraperPercentages = new MilesScraperPercentages(abfahrt, RPM_PERCENTAGES, "miles-percentages", this.systemController)
+      .addListener(dataHandler.handleVehicles.bind(dataHandler))
+    if (process.argv.includes("--start")) this.scraperPercentages.start();
+    return this.scraperPercentages;
   }
 
   private async startCitiesMetaScraper(abfahrt: MilesClient, mapScraper: MilesScraperMap): Promise<MilesScraperCitiesMeta> {

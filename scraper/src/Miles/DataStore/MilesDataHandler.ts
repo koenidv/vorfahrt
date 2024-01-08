@@ -9,6 +9,7 @@ import { MilesInfluxStore } from "./MilesInfluxStore";
 import clc from "cli-color";
 import { MilesVehiclesPerCityCache } from "./MilesVehiclesPerCityCache";
 import { MapFiltersSource } from "../Scraping/MilesScraperMap";
+import { PercentageSource } from "../Scraping/MilesScraperPercentages";
 
 export default class MilesDataHandler {
   private relationalStore: MilesRelationalStore;
@@ -32,13 +33,14 @@ export default class MilesDataHandler {
     await this.relationalStore.insertCitiesMeta(...cities);
   }
 
-  async handleVehicles(vehicles: apiVehicleJsonParsed[], source: QueryPriority | MapFiltersSource) {
+  async handleVehicles(vehicles: apiVehicleJsonParsed[], source: QueryPriority | MapFiltersSource | PercentageSource) {
     // fixme currently saving vehicles one after another - otherwise, insertion into postgres might fail
     // todo to fix the above, move iteration to the stores - also use influx writePoints instead of writePoint
     for (const vehicle of vehicles) {
       await this.handleSingleVehicleResponse(vehicle, source);
     }
-
+// todo extended source type
+// todo HANDLE PERCENTAGE SOURCE
     if ((source as MapFiltersSource).source === "map") {
       // source is Map Scraper
       const disappearedIds = this.vehiclesPerCity.saveVehiclesDiffDisappeared(source as MapFiltersSource, vehicles);
@@ -53,12 +55,12 @@ export default class MilesDataHandler {
     }
   }
 
-  private async handleSingleVehicleResponse(vehicle: apiVehicleJsonParsed, source: QueryPriority | MapFiltersSource) {
+  private async handleSingleVehicleResponse(vehicle: apiVehicleJsonParsed, source: QueryPriority | MapFiltersSource | PercentageSource) {
     await this.relationalStore.handleVehicle(vehicle);
     this.influxStore.handleVehicle(vehicle);
   }
 
-  private handleMoveQueues(vehicle: apiVehicleJsonParsed, source: QueryPriority | MapFiltersSource) {
+  private handleMoveQueues(vehicle: apiVehicleJsonParsed, source: QueryPriority | MapFiltersSource | PercentageSource) {
     if (!this._vehicleScraper) {
       console.error(clc.bgRed("MilesDataHandler"), clc.red("MilesVehicleScraper is undefined"));
       return;

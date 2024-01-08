@@ -1,10 +1,25 @@
-import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
+import { FETCHING_STRATEGY, JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraperCycled } from "../BaseMilesScraper";
+import { MilesCityMeta } from "../Miles.types";
+import { RequestStatus } from "../../types";
 
-type PercentageSource = { source: "percentage", value: number };
+export type PercentageSource = { source: "percentage", value: number };
 
-export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, PercentageSource> {
+const DEBE_AREA: MilesCityMeta = {
+    idCity: "internal-germany-belgium",
+    name: "Internal (DE & BE)",
+    location_lat: 50,
+    location_long: 10,
+    area: {
+        latitude: 50,
+        latitudeDelta: 10,
+        longitude: 10,
+        longitudeDelta: 10,
+    }
+}
+
+export default class MilesScraperPercentages extends BaseMilesScraperCycled<apiVehicleJsonParsed, PercentageSource> {
     private minimumCharge: number = 2;
     private maximumCharge: number = 100;
     private percentages = Array.from({ length: this.maximumCharge - this.minimumCharge + 1 }, (_, i) => i + this.minimumCharge);
@@ -31,11 +46,23 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
 
     private async fetch(percentage: number): Promise<apiVehicleJsonParsed[] | null> {
         try {
-            // todo implement
-            return null;
+            const results = await this.abfahrt
+                .createVehicleSearch(DEBE_AREA.area)
+                .setFetchingStrategy(FETCHING_STRATEGY.ONESHOT)
+                .setFuelFilters([{ minFuel: percentage, maxFuel: percentage }])
+                .execute();
+
+            if (!results[0]?.data?.[0]?.Data) {
+                this.observer.requestExecuted(RequestStatus.API_ERROR, results[0]?._time ?? 0, percentage)
+                return null;
+            }
+
+            const vehicles = results[0]?.data?.[0]?.Data?.vehicles
+            this.observer.requestExecuted(RequestStatus.OK, results[0]._time, percentage)
+            return vehicles.map(v => applyJsonParseBehaviourToVehicle(v, JsonParseBehaviour.PARSE));
         } catch (e) {
             this.logError("Error occurred while scraping a percentage", e);
-            this.observer.requestExecuted("SCRAPER_ERROR", 0, percentage);
+            this.observer.requestExecuted(RequestStatus.SCRAPER_ERROR, 0, percentage);
             return null;
         }
     }

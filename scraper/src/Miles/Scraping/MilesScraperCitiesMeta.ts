@@ -3,6 +3,7 @@ import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
 import { polygonToArea } from "@koenidv/abfahrt";
 import { GetCityAreasResponse } from "@koenidv/abfahrt/dist/src/miles/net/getCityAreas";
+import { RequestStatus } from "../../types";
 
 export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<MilesCityMeta, string> {
 
@@ -35,9 +36,9 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<Miles
     async fetchUserHello() {
         const today = new Date();
         const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
-        const onRetry = (_: any, time: number) => this.observer.requestExecuted("API_ERROR", time);
+        const onRetry = (_: any, time: number) => this.observer.requestExecuted(RequestStatus.API_ERROR, time);
         const response = await this.abfahrt.getCityAreas({ cityAreasDate: lastWeek, onRetry })
-        this.observer.requestExecuted(response.Result === "OK" ? "OK" : "API_ERROR", response._time);
+        this.observer.requestExecuted(response.Result === "OK" ? RequestStatus.OK : RequestStatus.API_ERROR, response._time);
 
         if (response.Result !== "OK") {
             this.logError("Error fetching city polygons:", response.Result);

@@ -7,6 +7,7 @@ import { Point } from "@influxdata/influxdb-client";
 import { FetchResult } from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 import { applyMilesMapScrapingFilters } from "./applyMilesMapScrapingFilters";
 import { Area } from "@koenidv/abfahrt/dist/src/miles/tools/areas";
+import { RequestStatus } from "../../types";
 
 export type MapFiltersSource = { source: "map", cityId: string, area: Area, chargeMin: number, chargeMax: number };
 
@@ -88,7 +89,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         applyMilesMapScrapingFilters(city, request, this.cycleTime);
 
         request.addEventListener("fetchCompleted", handleFetchResult);
-        request.addEventListener("fetchRetry", (_: any, time: number) => this.observer.requestExecuted("API_ERROR", time, city.idCity));
+        request.addEventListener("fetchRetry", (_: any, time: number) => this.observer.requestExecuted(RequestStatus.API_ERROR, time, city.idCity));
 
         const results = await request.execute();
 
@@ -100,7 +101,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         const mapped = this.mapVehicleResponses(result.data);
         if (!result.filters.location) this.logWarn("No location filter in fetch result");
 
-        this.observer.requestExecuted("OK", result._time, cityId); // todo "OK" status isn't checked
+        this.observer.requestExecuted(RequestStatus.OK, result._time, cityId); // todo "OK" status isn't checked
         this.listeners.forEach(listener => listener(mapped.vehicles, {
             source: "map",
             cityId,

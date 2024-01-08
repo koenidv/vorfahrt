@@ -1,6 +1,7 @@
 import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraperCycled } from "../BaseMilesScraper";
+import { RequestStatus } from "../../types";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
 
@@ -72,31 +73,31 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
     private async fetch(vehicleId: number): Promise<apiVehicleJsonParsed | null> {
         try {
             const result = await this.abfahrt.createGetVehicle(vehicleId)
-                .onRequestRetry((_: any, time: number) => this.observer.requestExecuted("API_ERROR", time, vehicleId))
+                .onRequestRetry((_: any, time: number) => this.observer.requestExecuted(RequestStatus.API_ERROR, time, vehicleId))
                 .execute();
 
             if (result.ResponseText === "Vehicle ID not found") {
                 this.log("Vehicle", vehicleId, "not found and removed from future queue")
                 this.deregister([vehicleId]);
-                this.observer.requestExecuted("NOT_FOUND", result._time, vehicleId);
+                this.observer.requestExecuted(RequestStatus.NOT_FOUND, result._time, vehicleId);
                 return null;
             }
 
             if (result.Result !== "OK") {
                 this.logError("Vehicle", vehicleId, "returned error", result.Result);
                 this.logError(result);
-                this.observer.requestExecuted("API_ERROR", result._time, vehicleId);
+                this.observer.requestExecuted(RequestStatus.API_ERROR, result._time, vehicleId);
                 return null;
             }
 
-            this.observer.requestExecuted("OK", result._time, vehicleId);
+            this.observer.requestExecuted(RequestStatus.OK, result._time, vehicleId);
             const vehicle = result.Data.vehicle[0]
             const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
 
             return vehicleParsed;
         } catch (e) {
             this.logError("Error occurred while scraping a vehicle", e);
-            this.observer.requestExecuted("SCRAPER_ERROR", 0, vehicleId);
+            this.observer.requestExecuted(RequestStatus.SCRAPER_ERROR, 0, vehicleId);
             return null;
         }
     }

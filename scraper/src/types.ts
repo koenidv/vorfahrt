@@ -17,4 +17,9 @@ export type RequestMetric = Timestamped & {
     responseTime: number,
 }
 
-export type RequestStatus = "OK" | "API_ERROR" | "NOT_FOUND" | "SCRAPER_ERROR";
+export enum RequestStatus {
+    OK = "OK",
+    API_ERROR = "API_ERROR",
+    NOT_FOUND = "NOT_FOUND",
+    SCRAPER_ERROR = "SCRAPER_ERROR",
+}
