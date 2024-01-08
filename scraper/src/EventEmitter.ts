@@ -1,8 +1,9 @@
 import EventEmitter from "events";
+import { RequestStatus } from "./types";
 
 export type EventTypes = {
     "service-status-changed": [serviceId: string, status: boolean],
-    "request-executed": [serviceId: string, status: "OK" | "API_ERROR" | "NOT_FOUND" | "SCRAPER_ERROR", responseTime: number],
+    "request-executed": [serviceId: string, status: RequestStatus, responseTime: number],
 }
 
 class TypedEventEmitter<TEvents extends Record<string, any>> {
