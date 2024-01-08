@@ -1,32 +1,46 @@
 import MilesAreaSearch from "@koenidv/abfahrt/dist/src/miles/MilesAreaSearch";
 import { MilesCityMeta } from "../Miles.types";
 import { FUEL_FILTERS_5, FUEL_FILTERS_EACH, OVERRIDE_FUEL_FILTERS } from "./applyMilesScrapingFilters.config";
+import { FETCHING_STRATEGY } from "@koenidv/abfahrt";
 
 export function applyMilesMapScrapingFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch, cycleTime: number) {
-    applyFuelFilters(city, mapSearch);
     applyDelay(mapSearch, cycleTime);
+    const { singleFilter } = applyFuelFilters(city, mapSearch);
+    applyStrategy(mapSearch, singleFilter);
 }
 
 
-function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch) {
+function applyFuelFilters(city: MilesCityMeta, mapSearch: MilesAreaSearch): { singleFilter: boolean } {
 
-    // todo as seen in abfahrt research, fuel filters are not effective. remove them, and possibly replace with predictive subareas
-    // possibly consider doing percentages globally, without further subareas, additionally
-    // todo when no fuel filter is applied (only 0-100), check quadrants for clusters, not vehicles
+    // todo possibly replace fuel filters with predictive subareas
 
     if (process.argv.includes("--use-old-fuel-filters")) {
         if (city.area.latitudeDelta > 0.2 || city.area.longitudeDelta > 0.2) mapSearch.setFuelFilters(FUEL_FILTERS_EACH);
         else mapSearch.setFuelFilters(FUEL_FILTERS_5);
-        return;
-    }
-
-    if (OVERRIDE_FUEL_FILTERS.hasOwnProperty(city.idCity)) {
-        mapSearch.setFuelFilters(OVERRIDE_FUEL_FILTERS[city.idCity]);
+        return { singleFilter: false };
     } else {
-        mapSearch.setFuelFilters([{ minFuel: 0, maxFuel: 100 }]);
+        if (OVERRIDE_FUEL_FILTERS.hasOwnProperty(city.idCity)) {
+            mapSearch.setFuelFilters(OVERRIDE_FUEL_FILTERS[city.idCity]);
+            return { singleFilter: OVERRIDE_FUEL_FILTERS[city.idCity].length === 1 };
+        } else {
+            mapSearch.setFuelFilters([{ minFuel: 0, maxFuel: 100 }]);
+            return { singleFilter: true };
+        }
     }
 }
 
+/**
+ * Clusters are not affected by fuel filters, therefore only use them when a single fuel filter is applied
+ * @param mapSearch Area search to apply strategy to
+ * @param singleFilter wether a single fuel filter applied
+ */
+function applyStrategy(mapSearch: MilesAreaSearch, singleFilter: boolean) {
+    if (singleFilter) {
+        mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_CLUSTERS);
+    } else {
+        mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_VEHICLES);
+    }
+}
 
 const TARGET_CITY_TIME = 1000 * 60 * 3;
 const MIN_DELAY = 200;
