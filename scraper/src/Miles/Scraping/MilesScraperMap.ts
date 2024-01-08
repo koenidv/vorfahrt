@@ -9,9 +9,9 @@ import { applyMilesMapScrapingFilters } from "./applyMilesMapScrapingFilters";
 import { Area } from "@koenidv/abfahrt/dist/src/miles/tools/areas";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 
-export interface MapFiltersSource extends ValueSource { source: SOURCE_TYPE.MAP, cityId: string, area: Area, chargeMin: number, chargeMax: number }
+export interface MilesMapSource extends ValueSource { source: SOURCE_TYPE.MAP, cityId: string, area: Area, chargeMin: number, chargeMax: number, isFinal: boolean }
 
-export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed, MapFiltersSource> {
+export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonParsed, MilesMapSource> {
     private cities: MilesCityMeta[] = [];
     private currentCityIndex = 0;
 
@@ -100,12 +100,14 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
         if (!result.filters.location) this.logWarn("No location filter in fetch result");
 
         this.observer.requestExecuted(RequestStatus.OK, result._time, cityId); // todo "OK" status isn't checked
+
         this.listeners.forEach(listener => listener(mapped.vehicles, {
             source: SOURCE_TYPE.MAP,
             cityId,
             area: result.filters.location!,
             chargeMin: result.filters.fuel.minFuel,
-            chargeMax: result.filters.fuel.maxFuel
+            chargeMax: result.filters.fuel.maxFuel,
+            isFinal: result._isFinal
         }));
         return { vehicles: mapped.vehicles, responseTypes: mapped.responseTypes };
     }

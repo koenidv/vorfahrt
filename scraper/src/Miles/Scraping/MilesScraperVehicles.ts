@@ -4,9 +4,9 @@ import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
-export interface VehicleSource extends ValueSource { source: SOURCE_TYPE.VEHICLE, priority: QueryPriority }
+export interface MilesVehicleSource extends ValueSource { source: SOURCE_TYPE.VEHICLE, priority: QueryPriority }
 
-export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, VehicleSource> {
+export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, MilesVehicleSource> {
     private normalQueue: number[] = [];
     private lowQueue: number[] = [];
 
@@ -39,7 +39,7 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
         return this;
     }
 
-    async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: VehicleSource; } | null> {
+    async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: MilesVehicleSource; } | null> {
         const next = this.selectNext()
         if (next !== null) {
             const vehicle = await this.fetch(next.id);

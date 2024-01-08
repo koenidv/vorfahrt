@@ -5,11 +5,11 @@ import { polygonToArea } from "@koenidv/abfahrt";
 import { GetCityAreasResponse } from "@koenidv/abfahrt/dist/src/miles/net/getCityAreas";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 
-export interface CityMetaSource extends ValueSource { source: SOURCE_TYPE.CITY_META }
+export interface MilesCityMetaSource extends ValueSource { source: SOURCE_TYPE.CITY_META }
 
-export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<MilesCityMeta, CityMetaSource> {
+export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<MilesCityMeta, MilesCityMetaSource> {
 
-    async cycle(): Promise<{ data: MilesCityMeta[], source: CityMetaSource } | null> {
+    async cycle(): Promise<{ data: MilesCityMeta[], source: MilesCityMetaSource } | null> {
         const data = await this.fetch();
         return data === null ? null : { data, source: { source: SOURCE_TYPE.CITY_META } };
     }

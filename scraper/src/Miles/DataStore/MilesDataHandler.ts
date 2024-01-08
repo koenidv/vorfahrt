@@ -2,14 +2,14 @@ import { DataSource } from "typeorm";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { MilesRelationalStore } from "./MilesRelationalStore";
 import { MilesCityMeta } from "../Miles.types";
-import MilesScraperVehicles, { QueryPriority, VehicleSource } from "../Scraping/MilesScraperVehicles";
+import MilesScraperVehicles, { QueryPriority, MilesVehicleSource } from "../Scraping/MilesScraperVehicles";
 import { MilesVehicleStatus, getInfoFromMilesVehicleStatus } from "@koenidv/abfahrt";
 import { QueryApi, WriteApi } from "@influxdata/influxdb-client";
 import { MilesInfluxStore } from "./MilesInfluxStore";
 import clc from "cli-color";
 import { MilesVehiclesPerCityCache } from "./MilesVehiclesPerCityCache";
-import { MapFiltersSource } from "../Scraping/MilesScraperMap";
-import { PercentageSource } from "../Scraping/MilesScraperPercentages";
+import { MilesMapSource } from "../Scraping/MilesScraperMap";
+import { MilesPercentageSource } from "../Scraping/MilesScraperPercentages";
 import { SOURCE_TYPE, ValueSource } from "../../types";
 
 export default class MilesDataHandler {
@@ -42,10 +42,12 @@ export default class MilesDataHandler {
     }
     if (source.source === SOURCE_TYPE.MAP) {
       // fixme should only try to find disappeared vehicles in leaf queries (no further subareas required)
-      const disappearedIds = this.vehiclesPerCity.saveVehiclesDiffDisappeared(source as MapFiltersSource, vehicles);
-      if (disappearedIds.length) console.log(clc.bgBlackBright("MilesDataHandler"), disappearedIds.length, "vehicles became invisible in", (source as MapFiltersSource).cityId);
-      this.handleEnqueueDisappearedIds(disappearedIds);
-      this.handleDisenqueuedVehicles(vehicles);
+      if ((source as MilesMapSource).isFinal) {
+        const disappearedIds = this.vehiclesPerCity.saveVehiclesDiffDisappeared(source as MilesMapSource, vehicles);
+        if (disappearedIds.length) console.log(clc.bgBlackBright("MilesDataHandler"), disappearedIds.length, "vehicles became invisible in", (source as MilesMapSource).cityId);
+        this.handleEnqueueDisappearedIds(disappearedIds);
+        this.handleDisenqueuedVehicles(vehicles);
+      }
     } else if (source.source === SOURCE_TYPE.VEHICLE) {
       for (const vehicle of vehicles) {
         this.handleMoveQueues(vehicle);

@@ -1,5 +1,5 @@
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { MapFiltersSource } from "../Scraping/MilesScraperMap";
+import { MilesMapSource } from "../Scraping/MilesScraperMap";
 
 type IdAndLocation = { id: number, lat: number, lon: number, charge: number };
 
@@ -13,7 +13,7 @@ export class MilesVehiclesPerCityCache {
      * @param city Miles City ID to save and diff (e.g. "BER")
      * @param vehicles list of Miles Vehicle IDs
      */
-    saveVehiclesDiffDisappeared(source: MapFiltersSource, vehicles: apiVehicleJsonParsed[]): number[] {
+    saveVehiclesDiffDisappeared(source: MilesMapSource, vehicles: apiVehicleJsonParsed[]): number[] {
 
         const previousInArea = this.cache.get(source.cityId)?.filter(this.cachedValueApplicable(source)) ?? [];
         const disappeared = previousInArea.filter(previous => !vehicles.some(vehicle => vehicle.idVehicle === previous.id));
@@ -29,7 +29,7 @@ export class MilesVehiclesPerCityCache {
         return disappeared.map(el => el.id);
     }
 
-    private cachedValueApplicable(filters: MapFiltersSource): (cachedValue: IdAndLocation) => boolean {
+    private cachedValueApplicable(filters: MilesMapSource): (cachedValue: IdAndLocation) => boolean {
         return (cachedValue: IdAndLocation) => {
             return (
                 cachedValue.charge >= filters.chargeMin &&

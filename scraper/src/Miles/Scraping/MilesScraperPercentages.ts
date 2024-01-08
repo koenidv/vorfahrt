@@ -4,7 +4,7 @@ import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { MilesCityMeta } from "../Miles.types";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 
-export interface PercentageSource extends ValueSource { source: SOURCE_TYPE.PERCENTAGE, value: number };
+export interface MilesPercentageSource extends ValueSource { source: SOURCE_TYPE.PERCENTAGE, value: number };
 
 const DEBE_AREA: MilesCityMeta = {
     idCity: "internal-germany-belgium",
@@ -19,13 +19,13 @@ const DEBE_AREA: MilesCityMeta = {
     }
 }
 
-export default class MilesScraperPercentages extends BaseMilesScraperCycled<apiVehicleJsonParsed, PercentageSource> {
+export default class MilesScraperPercentages extends BaseMilesScraperCycled<apiVehicleJsonParsed, MilesPercentageSource> {
     private minimumCharge: number = 2;
     private maximumCharge: number = 100;
     private percentages = Array.from({ length: this.maximumCharge - this.minimumCharge + 1 }, (_, i) => i + this.minimumCharge);
     private currentPercentageIndex: number = 0;
 
-    async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: PercentageSource; } | null> {
+    async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: MilesPercentageSource; } | null> {
         const percentage = this.selectNext()
         if (percentage !== null) {
             const results = await this.fetch(percentage);
