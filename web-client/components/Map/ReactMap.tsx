@@ -1,7 +1,6 @@
-import { doesContain } from "../../doesContain"
+import { doesContain } from "../../doesContain";
 
-
-import { Map as GoogleMap, GoogleApiWrapper, Marker } from 'google-maps-react';
+import { Map as GoogleMap, GoogleApiWrapper, Marker } from "google-maps-react";
 
 import {
   Abfahrt,
@@ -25,10 +24,7 @@ import dynamicMapStyles from "./dynamicMapStyles";
 
 const RENDER_VEHICLE_MARKERS = false;
 
-const Map = ({
-  hoveredArea,
-  onAreaHover,
-}: any) => {
+const Map = ({ hoveredArea, onAreaHover }: any) => {
   const [newVehicles, setVehicles] = useState<Abfahrt.Miles.Vehicle[]>([]);
 
   const mapRef = useRef<google.maps.Map>(null);
@@ -53,14 +49,23 @@ const Map = ({
       );
       setVehicles(newVehicles);
 
-      const districtToVehicles = Object.fromEntries(berlinDistricts.features.map(district => {
+      const districtToVehicles = Object.fromEntries(
+        berlinDistricts.features.map((district) => {
+          const vehiclesInThisDistrict = newVehicles.filter((vehicle) =>
+            doesContain(
+              district.geometry.coordinates[0][0] as [number, number][],
+              [vehicle.Longitude, vehicle.Latitude]
+            )
+          );
 
-        const vehiclesInThisDistrict = newVehicles.filter(vehicle => doesContain(district.geometry.coordinates[0][0] as [number, number][], [vehicle.Longitude, vehicle.Latitude]));
-
-        return [district.properties.name, {
-          vehicles: vehiclesInThisDistrict
-        }]
-      }));
+          return [
+            district.properties.name,
+            {
+              vehicles: vehiclesInThisDistrict,
+            },
+          ];
+        })
+      );
       setDistrictInfo(districtToVehicles);
 
       if (mapRef.current) {
@@ -85,7 +90,6 @@ const Map = ({
       }
     })();
   }, []);
-
 
   const loadMap = async () => {
     const loader = new Loader({
@@ -149,7 +153,6 @@ const Map = ({
       >((acc, i) => [...acc, ...i.data[0].Data.vehicles], []);
 
       for (const vehicle of hardcodedVehicles) {
-
         // new google.maps.Marker({
         //   position: {
         //     lat: vehicle.Latitude,
@@ -159,7 +162,6 @@ const Map = ({
         //   title: vehicle.LicensePlate,
         //   icon: {
         //     url: "http://localhost:3000/marker/background.svg", // url
-
         //     scaledSize: new google.maps.Size(50, 50), // scaled size
         //     origin: new google.maps.Point(0, 0), // origin
         //     anchor: new google.maps.Point(0, 0), // anchor
@@ -206,16 +208,18 @@ const Map = ({
     const layers = {
       "MILES:SERVICE_AREA": berlinMilesServiceAreas,
       "ABFAHRT:CITY_DISTRICT": refinedBerlinDistricts,
-    }
-    const activeLayers: (keyof typeof layers)[] = ["MILES:SERVICE_AREA", "ABFAHRT:CITY_DISTRICT"];
+    };
+    const activeLayers: (keyof typeof layers)[] = [
+      "MILES:SERVICE_AREA",
+      "ABFAHRT:CITY_DISTRICT",
+    ];
 
     for (const layer of activeLayers) {
-
       const dataLayer = new google.maps.Data();
 
       // dataLayer.setMap(map);
 
-      dataLayer.addGeoJson(layers[layer])
+      dataLayer.addGeoJson(layers[layer]);
 
       dataLayer.setStyle((feature) => {
         const featureData = feature.getProperty("abfahrt");
@@ -235,17 +239,16 @@ const Map = ({
           dynamicMapStyles[vendor][entityType].hover
         );
         if (featureData.type === "ABFAHRT:CITY_DISTRICT") {
-
           setHoveredDistrict(featureData.districtId);
         }
       });
       dataLayer.addListener("mouseout", (e) => {
-
         const featureData = e.feature.getProperty("abfahrt");
 
         dataLayer.revertStyle();
 
-        if (featureData.type === "ABFAHRT:CITY_DISTRICT") { }
+        if (featureData.type === "ABFAHRT:CITY_DISTRICT") {
+        }
       });
     }
   };
@@ -254,15 +257,12 @@ const Map = ({
     loadMap();
   }, []);
 
-
   const onMapReady = async (mapProps, map) => {
-
-
     // map.setMapId("7b1a9a576c1da12f");
 
     // Styling the map
     map.setOptions({
-      styles: mapStyle // Assuming mapStyle is your JSON style object
+      styles: mapStyle, // Assuming mapStyle is your JSON style object
     });
 
     // Creating a Data Layer
@@ -278,7 +278,7 @@ const Map = ({
 
     content.classList.add("property");
 
-    content.innerHTML = `<div style="width: 1rem; height: 1rem; background: red">moin</div>`
+    content.innerHTML = `<div style="width: 1rem; height: 1rem; background: red">moin</div>`;
 
     const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
       map,
@@ -286,7 +286,6 @@ const Map = ({
       position: { lat: 52.520008, lng: 13.404954 },
       title: "among us",
     });
-
   };
 
   return (
@@ -310,10 +309,10 @@ const Map = ({
         google={google}
         initialCenter={{ lat: 52.520008, lng: 13.404954 }}
         zoom={10}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: "100%", height: "100%" }}
         onReady={onMapReady}
       >
-        {newVehicles.map(vehicle => (
+        {newVehicles.map((vehicle) => (
           <Marker
             key={vehicle.LicensePlate}
             position={{ lat: vehicle.Latitude, lng: vehicle.Longitude }}
@@ -322,13 +321,17 @@ const Map = ({
         ))}
       </GoogleMap>
       <div className="flex flex-col w-80 h-full bg-gray-700 border-l-gray-600 border-l-2">
-        <h2>{hoveredDistrict ?? 'no district selected'}</h2>
-        <span>{districtInfo[hoveredDistrict] ? districtInfo[hoveredDistrict]?.vehicles?.length + ' vehicles' : ''}</span>
+        <h2>{hoveredDistrict ?? "no district selected"}</h2>
+        <span>
+          {districtInfo[hoveredDistrict]
+            ? districtInfo[hoveredDistrict]?.vehicles?.length + " vehicles"
+            : ""}
+        </span>
       </div>
     </>
   );
 };
 
 export default GoogleApiWrapper({
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
 })(Map);

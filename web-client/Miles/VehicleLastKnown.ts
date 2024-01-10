@@ -15,7 +15,6 @@ import { VehicleMeta } from "./VehicleMeta";
   name: "MilesVehicleLastKnown",
 })
 export class VehicleLastKnown {
-
   @PrimaryColumn()
   milesId: number;
 

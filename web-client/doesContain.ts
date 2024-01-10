@@ -1,15 +1,22 @@
-export const doesContain = (polygon: [number, number][], position: [number, number]): boolean => {
-    let x = position[0], y = position[1];
-    let inside = false;
+export const doesContain = (
+  polygon: [number, number][],
+  position: [number, number]
+): boolean => {
+  let x = position[0],
+    y = position[1];
+  let inside = false;
 
-    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-        const xi = polygon[i][0], yi = polygon[i][1];
-        const xj = polygon[j][0], yj = polygon[j][1];
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i][0],
+      yi = polygon[i][1];
+    const xj = polygon[j][0],
+      yj = polygon[j][1];
 
-        const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-        if (intersect) {
-            inside = !inside;
-        }
+    const intersect =
+      yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+    if (intersect) {
+      inside = !inside;
     }
-    return inside;
+  }
+  return inside;
 };

@@ -11,7 +11,10 @@ import {
 } from "typeorm";
 import { VehicleSize } from "./VehicleSize";
 import { VehicleMeta } from "./VehicleMeta";
-import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
+import {
+  MilesVehicleFuelReturn,
+  MilesVehicleTransmissionReturn,
+} from "@koenidv/abfahrt";
 
 @Entity({
   name: "MilesVehicleModel",

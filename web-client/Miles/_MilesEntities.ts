@@ -11,7 +11,7 @@ export const MilesEntities = [
   VehicleMeta,
   VehicleModel,
   VehicleSize,
-  VehicleLastKnown
+  VehicleLastKnown,
 ];
 
-export default {...MilesEntities}
+export default { ...MilesEntities };

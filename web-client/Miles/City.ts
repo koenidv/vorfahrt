@@ -15,7 +15,7 @@ export class City {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Index({ unique: true})
+  @Index({ unique: true })
   @Column()
   milesId: string;
 

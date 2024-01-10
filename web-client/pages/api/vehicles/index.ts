@@ -88,14 +88,16 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
       subscribers: [],
     });
     console.time("appDataSource initialized");
-    
+
     const appDataSource = await AppDataSource.initialize();
 
     console.timeEnd("appDataSource initialized");
 
     console.time("all vehicles query");
 
-    const vehicles = await appDataSource.getRepository(VehicleLastKnown).find({});
+    const vehicles = await appDataSource
+      .getRepository(VehicleLastKnown)
+      .find({});
 
     console.timeEnd("all vehicles query");
 
