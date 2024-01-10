@@ -27,7 +27,7 @@ import { ComboboxDemo } from "../../@/components/ui/ComboBox";
 const RENDER_VEHICLE_MARKERS = false;
 
 const Map = ({ hoveredArea, onAreaHover }: any) => {
-  const [newVehicles, setVehicles] = useState<Abfahrt.Miles.Vehicle[]>([]);
+  const [vehicles, setVehicles] = useState<Abfahrt.Miles.Vehicle[]>([]);
 
   const mapRef = useRef<google.maps.Map>(null);
 
@@ -50,7 +50,9 @@ const Map = ({ hoveredArea, onAreaHover }: any) => {
       const vehiclesData: { data: { vehicles: any[] } } =
         await vehiclesRes.json();
 
-      setVehicles(vehiclesData.data.vehicles);
+      const newVehicles = vehiclesData.data.vehicles;
+
+      setVehicles(newVehicles);
 
       const districtToVehicles = Object.fromEntries(
         berlinDistricts.features.map((district) => {

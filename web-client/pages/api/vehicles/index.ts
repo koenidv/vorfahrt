@@ -72,21 +72,22 @@ const berlinArea: Abfahrt.Area = {
 // }
 // const test = new DecoratorTest(1, 2);
 
+const AppDataSource = new DataSource({
+  type: "postgres",
+  host: env.dbHost,
+  port: env.dbPort,
+  username: env.dbUser,
+  password: env.dbPassword,
+  database: env.dbName,
+  synchronize: true,
+  logging: false,
+  entities: MilesEntities,
+  migrations: [],
+  subscribers: [],
+});
+
 const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const AppDataSource = new DataSource({
-      type: "postgres",
-      host: env.dbHost,
-      port: env.dbPort,
-      username: env.dbUser,
-      password: env.dbPassword,
-      database: env.dbName,
-      synchronize: true,
-      logging: false,
-      entities: MilesEntities,
-      migrations: [],
-      subscribers: [],
-    });
     console.time("appDataSource initialized");
 
     const appDataSource = await AppDataSource.initialize();
