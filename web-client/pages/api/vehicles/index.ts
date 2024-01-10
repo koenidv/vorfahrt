@@ -88,17 +88,18 @@ const AppDataSource = new DataSource({
 
 const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
-    console.time("appDataSource initialized");
+    if (!AppDataSource.isInitialized) {
+      console.time("appDataSource initialized");
 
-    const appDataSource = await AppDataSource.initialize();
+      await AppDataSource.initialize();
 
-    console.timeEnd("appDataSource initialized");
-
+      console.timeEnd("appDataSource initialized");
+    }
     console.time("all vehicles query");
 
-    const vehicles = await appDataSource
-      .getRepository(VehicleLastKnown)
-      .find({});
+    const vehicles = await AppDataSource.getRepository(VehicleLastKnown).find(
+      {}
+    );
 
     console.timeEnd("all vehicles query");
 
