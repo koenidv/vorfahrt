@@ -1,19 +1,15 @@
-import { doesContain } from "../../doesContain"
+import { doesContain } from "../../doesContain";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../../@/components/ui/accordion"
+} from "../../@/components/ui/accordion";
 
+import { Abfahrt, MilesClient } from "abfahrt";
 
-import {
-  Abfahrt,
-  MilesClient,
-} from "abfahrt";
-
-import { Marker } from "@koenidv/vorfahrt-vienna/src/index"
+import { Marker } from "@koenidv/vorfahrt-vienna/src/index";
 
 import berlinDistricts from "../../data/BER-districts.geojson.json";
 
@@ -30,10 +26,7 @@ import { ComboboxDemo } from "../../@/components/ui/ComboBox";
 
 const RENDER_VEHICLE_MARKERS = false;
 
-const Map = ({
-  hoveredArea,
-  onAreaHover,
-}: any) => {
+const Map = ({ hoveredArea, onAreaHover }: any) => {
   const [newVehicles, setVehicles] = useState<Abfahrt.Miles.Vehicle[]>([]);
 
   const mapRef = useRef<google.maps.Map>(null);
@@ -46,39 +39,47 @@ const Map = ({
 
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
 
-  const [layers, setLayers] = useState<Record<string, { geoJson: any, layer: null | google.maps.Data }>>({});
+  const [layers, setLayers] = useState<
+    Record<string, { geoJson: any; layer: null | google.maps.Data }>
+  >({});
 
   useEffect(() => {
     (async () => {
       const vehiclesRes = await fetch("/api/vehicles");
 
-      const vehiclesData: { data: any[] } = await vehiclesRes.json();
+      const vehiclesData: { data: { vehicles: any[] } } =
+        await vehiclesRes.json();
 
-      const newVehicles = vehiclesData.data.reduce<Abfahrt.Miles.Vehicle[]>(
-        (acc, i) => [...acc, ...i.data[0].Data.vehicles],
-        []
+      setVehicles(vehiclesData.data.vehicles);
+
+      const districtToVehicles = Object.fromEntries(
+        berlinDistricts.features.map((district) => {
+          const vehiclesInThisDistrict = newVehicles.filter((vehicle) =>
+            doesContain(
+              district.geometry.coordinates[0][0] as [number, number][],
+              [vehicle.longitude, vehicle.latitude]
+            )
+          );
+
+          return [
+            district.properties.name,
+            {
+              vehicles: vehiclesInThisDistrict,
+            },
+          ];
+        })
       );
-      setVehicles(newVehicles);
-
-      const districtToVehicles = Object.fromEntries(berlinDistricts.features.map(district => {
-
-        const vehiclesInThisDistrict = newVehicles.filter(vehicle => doesContain(district.geometry.coordinates[0][0] as [number, number][], [vehicle.Longitude, vehicle.Latitude]));
-
-        return [district.properties.name, {
-          vehicles: vehiclesInThisDistrict
-        }]
-      }));
       setDistrictInfo(districtToVehicles);
 
       if (mapRef.current) {
         for (const vehicle of newVehicles) {
           new google.maps.Marker({
             position: {
-              lat: vehicle.Latitude,
-              lng: vehicle.Longitude,
+              lat: vehicle.latitude,
+              lng: vehicle.longitude,
             },
             map: mapRef.current,
-            title: vehicle.LicensePlate,
+            title: vehicle.LicensePlate, // todo
             clickable: false,
             // icon: {
             //   url: Marker.Vehicle.AUDI_A4.chargingState[10].src,
@@ -95,7 +96,6 @@ const Map = ({
       }
     })();
   }, []);
-
 
   const loadMap = async () => {
     const loader = new Loader({
@@ -239,24 +239,27 @@ const Map = ({
       features: refinedBerlinFeatures,
     };
 
-    const dongs: Record<string, { geoJson: any, layer: null | google.maps.Data }> = {
+    const dongs: Record<
+      string,
+      { geoJson: any; layer: null | google.maps.Data }
+    > = {
       "MILES:SERVICE_AREA": {
-
         geoJson: berlinMilesServiceAreas,
 
         layer: null,
       },
       "ABFAHRT:CITY_DISTRICT": {
-
         geoJson: refinedBerlinDistricts,
 
         layer: null,
       },
-    }
-    const activeLayers: (keyof typeof dongs)[] = ["MILES:SERVICE_AREA", "ABFAHRT:CITY_DISTRICT"];
+    };
+    const activeLayers: (keyof typeof dongs)[] = [
+      "MILES:SERVICE_AREA",
+      "ABFAHRT:CITY_DISTRICT",
+    ];
 
     for (const layer of activeLayers) {
-
       const dataLayer = new google.maps.Data();
 
       dongs[layer].layer = dataLayer;
@@ -265,7 +268,7 @@ const Map = ({
 
       dataLayer.addGeoJson(dongs[layer].geoJson, {
         idPropertyName: "name",
-      })
+      });
 
       dataLayer.setStyle((feature) => {
         const featureData = feature.getProperty("abfahrt");
@@ -285,38 +288,33 @@ const Map = ({
         //   dynamicMapStyles[vendor][entityType].hover
         // );
         if (featureData.type === "ABFAHRT:CITY_DISTRICT") {
-
           setHoveredDistrict(featureData.districtId);
         }
       });
       dataLayer.addListener("mouseout", (e) => {
-
         const featureData = e.feature.getProperty("abfahrt");
 
         // dataLayer.revertStyle();
 
         if (featureData.type === "ABFAHRT:CITY_DISTRICT") {
-          setHoveredDistrict(null)
+          setHoveredDistrict(null);
         }
       });
     }
-    setLayers(dongs)
+    setLayers(dongs);
   };
 
   useEffect(() => {
-
     const cityDistrictLayer = layers["ABFAHRT:CITY_DISTRICT"]?.layer;
 
     if (cityDistrictLayer) {
-
       cityDistrictLayer.revertStyle();
 
-      const featureId = cityDistrictLayer.getFeatureById(hoveredDistrict)
+      const featureId = cityDistrictLayer.getFeatureById(hoveredDistrict);
 
-      const hoverStyle = dynamicMapStyles["ABFAHRT"]["CITY_DISTRICT"].hover
+      const hoverStyle = dynamicMapStyles["ABFAHRT"]["CITY_DISTRICT"].hover;
 
-      cityDistrictLayer.overrideStyle(
-        featureId, hoverStyle);
+      cityDistrictLayer.overrideStyle(featureId, hoverStyle);
     }
   }, [hoveredDistrict]);
 
@@ -335,26 +333,31 @@ const Map = ({
       />
       <div className="flex flex-col w-80 h-full bg-gray-700 border-l-gray-600 border-l-2">
         <h2>{hoveredDistrict ?? "no district selected"}</h2>
-        <span>{districtInfo[hoveredDistrict] ? districtInfo[hoveredDistrict]?.vehicles?.length + " vehicles" : "-"}</span>
+        <span>
+          {districtInfo[hoveredDistrict]
+            ? districtInfo[hoveredDistrict]?.vehicles?.length + " vehicles"
+            : "-"}
+        </span>
         <ComboboxDemo />
 
         <Accordion type="single" collapsible className="w-full">
-
           {Object.entries(districtInfo).map(([key, value]) => {
-
-            return <AccordionItem value={key} onMouseEnter={() => {
-
-              setHoveredDistrict(key)
-            }}
-              onMouseLeave={() => {
-
-                setHoveredDistrict(null)
-              }}>
-              <AccordionTrigger>{key}</AccordionTrigger>
-              <AccordionContent>
-                {value?.vehicles?.length ?? 0} vehicles
-              </AccordionContent>
-            </AccordionItem>
+            return (
+              <AccordionItem
+                value={key}
+                onMouseEnter={() => {
+                  setHoveredDistrict(key);
+                }}
+                onMouseLeave={() => {
+                  setHoveredDistrict(null);
+                }}
+              >
+                <AccordionTrigger>{key}</AccordionTrigger>
+                <AccordionContent>
+                  {value?.vehicles?.length ?? 0} vehicles
+                </AccordionContent>
+              </AccordionItem>
+            );
           })}
         </Accordion>
       </div>
