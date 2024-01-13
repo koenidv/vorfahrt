@@ -58,7 +58,7 @@ export class InfluxVehicleComparison {
     applyChargingChange(): this {
         const charging =
             this.newVehicle.EVPlugged ||
-            this.newVehicle.JSONFullVehicleDetails!.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged");
+            this.newVehicle.JSONFullVehicleDetails?.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged") === true;
         this.applyChange(this.currentVehicle["charging"], charging, "charging", FieldType.BOOLEAN);
         return this;
     }

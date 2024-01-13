@@ -148,7 +148,7 @@ export class MilesRelationalStore {
         lastKnown.longitude = vehicle.Longitude;
         const charging =
             vehicle.EVPlugged ||
-            vehicle.JSONFullVehicleDetails!.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged");
+            vehicle.JSONFullVehicleDetails?.vehicleBanner.some(banner => banner.text === "⚡Vehicle plugged") === true;
         lastKnown.charging = charging;
         lastKnown.charge = vehicle.FuelPct_parsed!;
         lastKnown.range = vehicle.RemainingRange_parsed!;
