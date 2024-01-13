@@ -34,10 +34,10 @@ export class MilesVehiclesPerCityCache {
             return (
                 cachedValue.charge >= filters.chargeMin &&
                 cachedValue.charge <= filters.chargeMax &&
-                cachedValue.lat > filters.area.latitude - filters.area.latitudeDelta / 2 &&
-                cachedValue.lat < filters.area.latitude + filters.area.latitudeDelta / 2 &&
-                cachedValue.lon > filters.area.longitude - filters.area.longitudeDelta / 2 &&
-                cachedValue.lon < filters.area.longitude + filters.area.longitudeDelta / 2
+                cachedValue.lat >= filters.area.latitude - filters.area.latitudeDelta / 2 &&
+                cachedValue.lat <= filters.area.latitude + filters.area.latitudeDelta / 2 &&
+                cachedValue.lon >= filters.area.longitude - filters.area.longitudeDelta / 2 &&
+                cachedValue.lon <= filters.area.longitude + filters.area.longitudeDelta / 2
             )
         }
     }
