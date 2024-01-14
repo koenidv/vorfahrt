@@ -2,6 +2,7 @@ import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/a
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
+import { MilesVehicleQueueSync } from "../DataStore/MilesVehicleQueueSync";
 
 export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
 export interface MilesVehicleSource extends ValueSource { source: SOURCE_TYPE.VEHICLE, priority: QueryPriority }
@@ -9,6 +10,9 @@ export interface MilesVehicleSource extends ValueSource { source: SOURCE_TYPE.VE
 export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, MilesVehicleSource> {
     private normalQueue: number[] = [];
     private lowQueue: number[] = [];
+
+    private onRegister: ((vehicleIds: number[], priority: QueryPriority) => void) | undefined = undefined;
+    private onDeregister: ((vehicleIds: number[]) => void) | undefined = undefined;
 
     register(vehicleIds: number[], priority: QueryPriority): this {
         const notAlreadyInQueue = vehicleIds.filter(el =>
@@ -37,6 +41,20 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
         if (this.lowQueue.length !== lowQueueLenghtBefore) this.observer.measure("queue-low", this.lowQueue.length);
         if (this.normalQueue.length !== normalQueueLenghtBefore) this.observer.measure("queue-normal", this.normalQueue.length);
         return this;
+    }
+
+    setOnRegister(listener: (vehicleIds: number[], priority: QueryPriority) => void) {
+        if (this.onRegister !== undefined) throw new Error("OnRegister listener already set");
+        this.onRegister = listener;
+    }
+
+    setOnDeregister(listener: (vehicleIds: number[]) => void) {
+        if (this.onDeregister !== undefined) throw new Error("OnDeregister listener already set");
+        this.onDeregister = listener;
+    }
+
+    getQueue(): { milesId: number, priority: QueryPriority }[] {
+        return [...this.normalQueue.map(el => ({ milesId: el, priority: QueryPriority.NORMAL })), ...this.lowQueue.map(el => ({ milesId: el, priority: QueryPriority.LOW }))];
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: MilesVehicleSource; } | null> {

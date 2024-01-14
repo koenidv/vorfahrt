@@ -9,11 +9,14 @@ import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta";
 import clc from "cli-color";
 import { SystemController } from "../SystemController";
 import MilesScraperPercentages from "./Scraping/MilesScraperPercentages";
+import { MilesVehicleQueueSync } from "./DataStore/MilesVehicleQueueSync";
 
 const RPM_VEHICLE = env.rpm_vehicle;
 const RPM_MAP = env.rpm_map;
 const RPM_CITES = env.rpm_cities;
 const RPM_PERCENTAGES = env.rpm_percentages;
+const INTERVAL_QUEUE_SYNC = 1000; // todo env
+const RESTORE_FROM_SYNC = false; // todo env
 
 export default class MilesController {
   private systemController: SystemController;
@@ -38,6 +41,7 @@ export default class MilesController {
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
     dataHandler.vehicleScraper = scraperVehicles;
 
+    this.startVehicleQueueSync(scraperVehicles, appDataSource);
     this.populateVehiclesQueue(scraperVehicles, dataHandler);
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
@@ -85,12 +89,26 @@ export default class MilesController {
     return this.scraperCitiesMeta;
   }
 
-  private async populateVehiclesQueue(vehicleScraper: MilesScraperVehicles, dataHandler: MilesDataHandler) {
-    const values = await dataHandler.restoreVehicleQueue();
-    vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL);
-    vehicleScraper.register(values.slowQueue, QueryPriority.LOW);
-    // also register the next 2000 vehicles to normal queue
-    vehicleScraper.register(Array.from({ length: 2000 }, (_, i) => values.highestId + i), QueryPriority.NORMAL);
+  private async startVehicleQueueSync(vehicleScraper: MilesScraperVehicles, appDataSource: DataSource): Promise<MilesVehicleQueueSync|null> {
+    if (INTERVAL_QUEUE_SYNC < 0) return null;
+    const sync = new MilesVehicleQueueSync(appDataSource.manager, INTERVAL_QUEUE_SYNC, vehicleScraper);
+    vehicleScraper.setOnRegister(sync.handleRegistered.bind(sync));
+    vehicleScraper.setOnDeregister(sync.handleDeregistered.bind(sync));
+    sync.start();
+    return sync;
   }
+
+  private async populateVehiclesQueue(vehicleScraper: MilesScraperVehicles, dataHandler: MilesDataHandler) {
+    if (RESTORE_FROM_SYNC) {
+
+    } else {
+      const values = await dataHandler.restoreVehicleQueue();
+      vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL);
+      vehicleScraper.register(values.slowQueue, QueryPriority.LOW);
+      // also register the next 2000 vehicles to normal queue
+      vehicleScraper.register(Array.from({ length: 2000 }, (_, i) => values.highestId + i), QueryPriority.NORMAL);
+    }
+  }
+
 
 }

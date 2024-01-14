@@ -1,4 +1,5 @@
 import { City } from "./City";
+import { InternalQueuedVehicle } from "./InternalQueuedVehicle";
 import { VehicleDamage } from "./VehicleDamage";
 import { VehicleLastKnown } from "./VehicleLastKnown";
 import { VehicleMeta } from "./VehicleMeta";
@@ -11,7 +12,8 @@ export const MilesEntities = [
   VehicleMeta,
   VehicleModel,
   VehicleSize,
-  VehicleLastKnown
+  VehicleLastKnown,
+  InternalQueuedVehicle,
 ];
 
 export default {...MilesEntities}
