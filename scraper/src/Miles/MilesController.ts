@@ -61,7 +61,7 @@ export default class MilesController {
 
   private startVehiclesScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperVehicles {
     let queue: VehicleQueueInterface;
-    if (INTERVAL_QUEUE_SYNC > 0) queue = new SyncedVehicleQueue(this.dataSource!.manager, INTERVAL_QUEUE_SYNC);
+    if (INTERVAL_QUEUE_SYNC > 0) queue = new SyncedVehicleQueue(this.dataSource!.manager, INTERVAL_QUEUE_SYNC).start();
     else queue = new VehicleQueue();
 
     this.scraperVehicles = new MilesScraperVehicles(abfahrt, RPM_VEHICLE, "miles-vehicles", this.systemController, queue)
