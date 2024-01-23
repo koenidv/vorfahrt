@@ -21,8 +21,8 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
         this.queue = queue;
     }
 
-    register(vehicleIds: number[], priority: QueryPriority): this {
-        const changed = this.queue.insert(vehicleIds, priority);
+    register(vehicleIds: number[], priority: QueryPriority, duringInit?: boolean): this {
+        const changed = this.queue.insert(vehicleIds, priority, duringInit);
         if (changed.length !== 0) this.measureQueueSizes();
         return this;
     }

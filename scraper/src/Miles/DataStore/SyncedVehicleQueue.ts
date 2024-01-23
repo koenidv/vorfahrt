@@ -27,29 +27,31 @@ export class SyncedVehicleQueue extends VehicleQueue {
         this.syncIntervalMs = syncIntervalMs;
     }
 
-    override insert(vehicleIds: number[], priority: number) {
+    override insert(vehicleIds: number[], priority: number, duringInit = true) {
         const changed = [];
         for (const vehicleId of vehicleIds) {
             const currentPriority = this.queue.get(vehicleId);
             if (currentPriority === undefined) {
                 this.queue.set(vehicleId, priority);
-                this.changes.push({
-                    milesId: vehicleId,
-                    priority,
-                    action: MilesVehicleQueueAction.REGISTER,
-                    timestamp: new Date()
-                });
+                if (!duringInit)
+                    this.changes.push({
+                        milesId: vehicleId,
+                        priority,
+                        action: MilesVehicleQueueAction.REGISTER,
+                        timestamp: new Date()
+                    });
                 changed.push(vehicleId);
                 continue;
             }
             if (currentPriority !== priority) {
                 this.queue.set(vehicleId, priority);
-                this.changes.push({
-                    milesId: vehicleId,
-                    priority,
-                    action: MilesVehicleQueueAction.CHANGE,
-                    timestamp: new Date()
-                });
+                if (!duringInit)
+                    this.changes.push({
+                        milesId: vehicleId,
+                        priority,
+                        action: MilesVehicleQueueAction.CHANGE,
+                        timestamp: new Date()
+                    });
                 changed.push(vehicleId);
                 continue;
             }
@@ -93,7 +95,7 @@ export class SyncedVehicleQueue extends VehicleQueue {
             while (this.changes.length > 0) {
                 const thisChange = this.changes.pop();
                 if (thisChange === undefined) continue;
-                if (thisChange.action === MilesVehicleQueueAction.REGISTER) {
+                if (thisChange.action === MilesVehicleQueueAction.REGISTER || thisChange.action === MilesVehicleQueueAction.CHANGE) {
                     console.log("registering", thisChange.milesId)
                     await manager.createQueryBuilder()
                         .insert()

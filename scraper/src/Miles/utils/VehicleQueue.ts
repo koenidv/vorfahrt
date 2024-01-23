@@ -3,7 +3,7 @@ import { QueryPriority } from "../Scraping/MilesScraperVehicles";
 export type QueueSizes = { [key: string]: number };
 
 export interface VehicleQueueInterface {
-    insert: (vehicleIds: number[], priority: QueryPriority) => number[];
+    insert: (vehicleIds: number[], priority: QueryPriority, duringInit?: boolean) => number[];
     remove: (vehicleIds: number[]) => number[];
     getQueue: () => { milesId: number, priority: QueryPriority }[];
     getQueueSizes: () => QueueSizes;

@@ -98,8 +98,8 @@ export default class MilesController {
       throw new Error("Restoring from sync not implemented");
     } else {
       const values = await dataHandler.restoreVehicleQueue();
-      vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL);
-      vehicleScraper.register(values.slowQueue, QueryPriority.LOW);
+      vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL, true);
+      vehicleScraper.register(values.slowQueue, QueryPriority.LOW, true);
       // also register the next 2000 vehicles to normal queue
       vehicleScraper.register(Array.from({ length: 2000 }, (_, i) => values.highestId + i), QueryPriority.NORMAL);
     }

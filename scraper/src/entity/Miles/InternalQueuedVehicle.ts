@@ -10,7 +10,7 @@ export class InternalQueuedVehicle {
     @PrimaryColumn()
     milesId: number;
 
-    @Column()
+    @Column({ type: "decimal" })
     priority: number;
 
     @Column()
