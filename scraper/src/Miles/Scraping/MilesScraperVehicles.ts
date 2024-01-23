@@ -1,60 +1,47 @@
-import { JsonParseBehaviour, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
+import { JsonParseBehaviour, MilesClient, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
-import { MilesVehicleQueueSync } from "../DataStore/MilesVehicleQueueSync";
+import { SystemController } from "../../SystemController";
+import { VehicleQueueInterface } from "../utils/VehicleQueue";
 
-export enum QueryPriority { NORMAL = 0.99, LOW = 0.01 }
+export enum QueryPriority {
+    HIGH = 999,
+    NORMAL = 0.99,
+    LOW = 0.01,
+}
+
 export interface MilesVehicleSource extends ValueSource { source: SOURCE_TYPE.VEHICLE, priority: QueryPriority }
 
 export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, MilesVehicleSource> {
-    private normalQueue: number[] = [];
-    private lowQueue: number[] = [];
+    private queue: VehicleQueueInterface;
 
-    private onRegister: ((vehicleIds: number[], priority: QueryPriority) => void) | undefined = undefined;
-    private onDeregister: ((vehicleIds: number[]) => void) | undefined = undefined;
+    constructor(abfahrt: MilesClient, cyclesMinute: number, scraperId: string, systemController: SystemController, queue: VehicleQueueInterface) {
+        super(abfahrt, cyclesMinute, scraperId, systemController);
+        this.queue = queue;
+    }
 
     register(vehicleIds: number[], priority: QueryPriority): this {
-        const notAlreadyInQueue = vehicleIds.filter(el =>
-            priority === QueryPriority.LOW
-                ? !this.lowQueue.includes(el)
-                : !this.normalQueue.includes(el)
-        );
-        if (notAlreadyInQueue.length === 0) return this;
-        if (priority === QueryPriority.LOW) {
-            this.normalQueue = this.normalQueue.filter(el => !notAlreadyInQueue.includes(el));
-            this.lowQueue.push(...notAlreadyInQueue);
-            this.observer.measure("queue-low", this.lowQueue.length);
-        } else {
-            this.lowQueue = this.lowQueue.filter(el => !notAlreadyInQueue.includes(el));
-            this.normalQueue.push(...notAlreadyInQueue);
-            this.observer.measure("queue-normal", this.normalQueue.length);
-        }
+        const changed = this.queue.insert(vehicleIds, priority);
+        if (changed.length !== 0) this.measureQueueSizes();
         return this;
     }
 
     deregister(vehicleIds: number[]): this {
-        const lowQueueLenghtBefore = this.lowQueue.length;
-        const normalQueueLenghtBefore = this.normalQueue.length;
-        this.lowQueue = this.lowQueue.filter(el => !vehicleIds.includes(el));
-        this.normalQueue = this.normalQueue.filter(el => !vehicleIds.includes(el));
-        if (this.lowQueue.length !== lowQueueLenghtBefore) this.observer.measure("queue-low", this.lowQueue.length);
-        if (this.normalQueue.length !== normalQueueLenghtBefore) this.observer.measure("queue-normal", this.normalQueue.length);
+        const changed = this.queue.remove(vehicleIds);
+        if (changed.length !== 0) this.measureQueueSizes();
         return this;
     }
 
-    setOnRegister(listener: (vehicleIds: number[], priority: QueryPriority) => void) {
-        if (this.onRegister !== undefined) throw new Error("OnRegister listener already set");
-        this.onRegister = listener;
-    }
-
-    setOnDeregister(listener: (vehicleIds: number[]) => void) {
-        if (this.onDeregister !== undefined) throw new Error("OnDeregister listener already set");
-        this.onDeregister = listener;
+    private measureQueueSizes() {
+        const queueSizes = this.queue.getQueueSizes();
+        for (const [key, value] of Object.entries(queueSizes)) {
+            this.observer.measure(`queue-${key}`, value);
+        }
     }
 
     getQueue(): { milesId: number, priority: QueryPriority }[] {
-        return [...this.normalQueue.map(el => ({ milesId: el, priority: QueryPriority.NORMAL })), ...this.lowQueue.map(el => ({ milesId: el, priority: QueryPriority.LOW }))];
+        return this.queue.getQueue();
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: MilesVehicleSource; } | null> {
@@ -70,25 +57,12 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
     }
 
     private selectNext(): { id: number, priority: QueryPriority } | null {
-        const random = Math.random() * (this.normalQueue.length + this.lowQueue.length);
-
-        let id: number | undefined;
-        let priority: QueryPriority;
-        if (random < QueryPriority.LOW * this.lowQueue.length || this.normalQueue.length === 0) {
-            id = this.lowQueue.shift() as number;
-            this.lowQueue.push(id);
-            priority = QueryPriority.LOW;
-        } else {
-            id = this.normalQueue.shift();
-            if (id !== undefined) this.normalQueue.push(id);
-            priority = QueryPriority.NORMAL;
-        }
-
-        if (id === undefined) {
+        const selected = this.queue.getRandom();
+        if (selected === null) {
             this.logWarn("No vehicles in queue: cycle will be skipped")
             return null;
         }
-        return { id, priority };
+        return selected;
     }
 
 

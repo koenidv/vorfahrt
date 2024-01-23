@@ -24,7 +24,7 @@ export class VehicleLastKnown {
   vehicle: VehicleMeta;
 
   @Column()
-  @Index()
+  @Index({ })
   status: string;
 
   @Column({ type: "float" })

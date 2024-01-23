@@ -9,14 +9,15 @@ import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta";
 import clc from "cli-color";
 import { SystemController } from "../SystemController";
 import MilesScraperPercentages from "./Scraping/MilesScraperPercentages";
-import { MilesVehicleQueueSync } from "./DataStore/MilesVehicleQueueSync";
+import { VehicleQueue, VehicleQueueInterface } from "./utils/VehicleQueue";
+import { SyncedVehicleQueue } from "./DataStore/SyncedVehicleQueue";
 
 const RPM_VEHICLE = env.rpm_vehicle;
 const RPM_MAP = env.rpm_map;
 const RPM_CITES = env.rpm_cities;
 const RPM_PERCENTAGES = env.rpm_percentages;
-const INTERVAL_QUEUE_SYNC = 1000; // todo env
-const RESTORE_FROM_SYNC = false; // todo env
+const INTERVAL_QUEUE_SYNC = env.interval_queue_sync;
+const RESTORE_FROM_SYNC = env.restore_from_sync;
 
 export default class MilesController {
   private systemController: SystemController;
@@ -41,7 +42,6 @@ export default class MilesController {
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
     dataHandler.vehicleScraper = scraperVehicles;
 
-    this.startVehicleQueueSync(scraperVehicles, appDataSource);
     this.populateVehiclesQueue(scraperVehicles, dataHandler);
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
@@ -60,7 +60,11 @@ export default class MilesController {
   }
 
   private startVehiclesScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperVehicles {
-    this.scraperVehicles = new MilesScraperVehicles(abfahrt, RPM_VEHICLE, "miles-vehicles", this.systemController)
+    let queue: VehicleQueueInterface;
+    if (INTERVAL_QUEUE_SYNC > 0) queue = new SyncedVehicleQueue(this.dataSource!.manager, INTERVAL_QUEUE_SYNC);
+    else queue = new VehicleQueue();
+
+    this.scraperVehicles = new MilesScraperVehicles(abfahrt, RPM_VEHICLE, "miles-vehicles", this.systemController, queue)
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
     if (process.argv.includes("--start")) this.scraperVehicles.start();
     return this.scraperVehicles;
@@ -89,18 +93,9 @@ export default class MilesController {
     return this.scraperCitiesMeta;
   }
 
-  private async startVehicleQueueSync(vehicleScraper: MilesScraperVehicles, appDataSource: DataSource): Promise<MilesVehicleQueueSync|null> {
-    if (INTERVAL_QUEUE_SYNC < 0) return null;
-    const sync = new MilesVehicleQueueSync(appDataSource.manager, INTERVAL_QUEUE_SYNC, vehicleScraper);
-    vehicleScraper.setOnRegister(sync.handleRegistered.bind(sync));
-    vehicleScraper.setOnDeregister(sync.handleDeregistered.bind(sync));
-    sync.start();
-    return sync;
-  }
-
   private async populateVehiclesQueue(vehicleScraper: MilesScraperVehicles, dataHandler: MilesDataHandler) {
     if (RESTORE_FROM_SYNC) {
-
+      throw new Error("Restoring from sync not implemented");
     } else {
       const values = await dataHandler.restoreVehicleQueue();
       vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL);
