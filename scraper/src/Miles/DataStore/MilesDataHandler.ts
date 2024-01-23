@@ -49,7 +49,7 @@ export default class MilesDataHandler {
       }
     } else if (source.source === SOURCE_TYPE.VEHICLE) {
       for (const vehicle of vehicles) {
-        this.handleMoveQueues(vehicle);
+        this.handleMoveQueues(vehicle, source as MilesVehicleSource);
       }
     } else if (source.source === SOURCE_TYPE.PERCENTAGE) {
       this.handleDisenqueuedVehicles(vehicles);
@@ -61,7 +61,7 @@ export default class MilesDataHandler {
     this.influxStore.handleVehicle(vehicle);
   }
 
-  private handleMoveQueues(vehicle: apiVehicleJsonParsed) {
+  private handleMoveQueues(vehicle: apiVehicleJsonParsed, source: MilesVehicleSource) {
     if (!this._vehicleScraper) {
       console.error(clc.bgRed("MilesDataHandler"), clc.red("MilesVehicleScraper is undefined"));
       return;
@@ -69,10 +69,10 @@ export default class MilesDataHandler {
 
     if (vehicle.idVehicleStatus === MilesVehicleStatus.DEPLOYED_FOR_RENTAL) {
       this._vehicleScraper.deregister([vehicle.idVehicle]);
-    }
-
-    if (getInfoFromMilesVehicleStatus(vehicle.idVehicleStatus as keyof typeof MilesVehicleStatus).isInLifecycle) {
+    } else if (getInfoFromMilesVehicleStatus(vehicle.idVehicleStatus as keyof typeof MilesVehicleStatus).isInLifecycle) {
       this._vehicleScraper.register([vehicle.idVehicle], QueryPriority.LOW);
+    } else if (source.priority !== QueryPriority.NORMAL) {
+      this._vehicleScraper.register([vehicle.idVehicle], QueryPriority.NORMAL);
     }
   }
 
