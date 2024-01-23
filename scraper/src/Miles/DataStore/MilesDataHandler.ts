@@ -81,7 +81,7 @@ export default class MilesDataHandler {
       console.error(clc.bgRed("MilesDataHandler"), clc.red("MilesVehicleScraper is undefined"));
       return;
     }
-    this._vehicleScraper.register(vehicleIds, QueryPriority.NORMAL);
+    this._vehicleScraper.register(vehicleIds, QueryPriority.HIGH);
   }
 
   private handleDisenqueuedVehicles(vehicles: apiVehicleJsonParsed[]) {
