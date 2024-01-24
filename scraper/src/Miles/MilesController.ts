@@ -66,21 +66,21 @@ export default class MilesController {
 
     this.scraperVehicles = new MilesScraperVehicles(abfahrt, RPM_VEHICLE, "miles-vehicles", this.systemController, queue)
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
-    if (process.argv.includes("--start")) this.scraperVehicles.start();
+    if (process.argv.includes("--start") && RPM_VEHICLE > 0) this.scraperVehicles.start();
     return this.scraperVehicles;
   }
 
   private startMapScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperMap {
     this.scraperMap = new MilesScraperMap(abfahrt, RPM_MAP, "miles-map", this.systemController)
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
-    if (process.argv.includes("--start")) this.scraperMap.start();
+    if (process.argv.includes("--start") && RPM_MAP > 0) this.scraperMap.start();
     return this.scraperMap;
   }
 
   private startPercentagesScraper(abfahrt: MilesClient, dataHandler: MilesDataHandler): MilesScraperPercentages {
     this.scraperPercentages = new MilesScraperPercentages(abfahrt, RPM_PERCENTAGES, "miles-percentages", this.systemController)
       .addListener(dataHandler.handleVehicles.bind(dataHandler))
-    if (process.argv.includes("--start")) this.scraperPercentages.start();
+    if (process.argv.includes("--start") && RPM_PERCENTAGES > 0) this.scraperPercentages.start();
     return this.scraperPercentages;
   }
 
@@ -89,7 +89,7 @@ export default class MilesController {
       .addListener(mapScraper.setAreas.bind(mapScraper))
       .addListener(this.dataHandler!.handleCitiesMeta.bind(this.dataHandler))
     await this.scraperCitiesMeta.executeOnce(); // Cities meta is always executed once on start
-    if (process.argv.includes("--start")) this.scraperCitiesMeta.start();
+    if (process.argv.includes("--start") && RPM_CITES > 0) this.scraperCitiesMeta.start();
     return this.scraperCitiesMeta;
   }
 
