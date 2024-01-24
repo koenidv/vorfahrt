@@ -4,6 +4,7 @@ import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 import { SystemController } from "../../SystemController";
 import { VehicleQueueInterface } from "../utils/VehicleQueue";
+import { SyncedVehicleQueue } from "../DataStore/SyncedVehicleQueue";
 
 export enum QueryPriority {
     HIGH = 999,
@@ -25,7 +26,7 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
         const changed = this.queue.insert(vehicleIds, priority, duringInit);
         if (changed.length !== 0) {
             console.log("smt changed on insert")
-        this.measureQueueSizes();
+            this.measureQueueSizes();
         }
         return this;
     }
@@ -45,6 +46,15 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
 
     getQueue(): { milesId: number, priority: QueryPriority | null }[] {
         return this.queue.getQueue();
+    }
+
+    async restoreFromSyncedQueue(): Promise<this> {
+        if (this.queue instanceof SyncedVehicleQueue) {
+            await this.queue.restoreFromSync();
+        } else {
+            throw new Error("Cannot restore from sync when not using SyncedVehicleQueue")
+        }
+        return this;
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: MilesVehicleSource; } | null> {

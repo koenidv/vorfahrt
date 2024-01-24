@@ -95,7 +95,7 @@ export default class MilesController {
 
   private async populateVehiclesQueue(vehicleScraper: MilesScraperVehicles, dataHandler: MilesDataHandler) {
     if (RESTORE_FROM_SYNC) {
-      throw new Error("Restoring from sync not implemented");
+      await vehicleScraper.restoreFromSyncedQueue();
     } else {
       const values = await dataHandler.restoreVehicleQueue();
       vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL, true);

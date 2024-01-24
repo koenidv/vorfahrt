@@ -2,6 +2,7 @@ import { EntityManager } from "typeorm";
 import { InternalQueuedVehicle } from "../../entity/Miles/InternalQueuedVehicle";
 import { VehicleQueue } from "../utils/VehicleQueue";
 import clc from "cli-color";
+import _ from "lodash";
 
 export class SyncedVehicleQueue extends VehicleQueue {
     manager: EntityManager;
@@ -78,8 +79,20 @@ export class SyncedVehicleQueue extends VehicleQueue {
             }
         }
 
-        if (changes !== 0) console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡓  Pulled", changes, "changes")
+        if (changes !== 0) console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡓 Pulled", changes, "changes")
         return pushToRemote;
+    }
+
+    async restoreFromSync() {
+        const remoteData = await this.getRemoteData();
+        this.restoreRemoteData(remoteData);
+    }
+
+    restoreRemoteData(remoteData: InternalQueuedVehicle[]) {
+        console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡓 Restored", remoteData.length, "queue items,", remoteData.filter(it => it.priority !== null).length, "active")
+        for (const remote of remoteData) {
+            this.insert([remote.milesId], remote.priority === null ? null : +remote.priority, true);
+        }
     }
 
 }
