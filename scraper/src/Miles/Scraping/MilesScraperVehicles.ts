@@ -16,6 +16,7 @@ export interface MilesVehicleSource extends ValueSource { source: SOURCE_TYPE.VE
 
 export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, MilesVehicleSource> {
     private queue: VehicleQueueInterface;
+    private lastQueueMeasuredTimestamp = 0;
 
     constructor(abfahrt: MilesClient, cyclesMinute: number, scraperId: string, systemController: SystemController, queue: VehicleQueueInterface) {
         super(abfahrt, cyclesMinute, scraperId, systemController);
@@ -24,8 +25,7 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
 
     register(vehicleIds: number[], priority: QueryPriority, duringInit?: boolean): this {
         const changed = this.queue.insert(vehicleIds, priority, duringInit);
-        if (changed.length !== 0) {
-            console.log("smt changed on insert")
+        if (changed.length !== 0 && Date.now() - this.lastQueueMeasuredTimestamp > 120 * 1000) {
             this.measureQueueSizes();
         }
         return this;
@@ -33,11 +33,14 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
 
     deregister(vehicleIds: number[]): this {
         const changed = this.queue.remove(vehicleIds);
-        if (changed.length !== 0) this.measureQueueSizes();
+        if (changed.length !== 0 && Date.now() - this.lastQueueMeasuredTimestamp > 120 * 1000) {
+            this.measureQueueSizes();
+        }
         return this;
     }
 
     private measureQueueSizes() {
+        this.lastQueueMeasuredTimestamp = Date.now();
         const queueSizes = this.queue.getQueueSizes();
         for (const [key, value] of Object.entries(queueSizes)) {
             this.observer.measure(`queue-${key}`, value);
