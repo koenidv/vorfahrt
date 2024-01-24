@@ -1,26 +1,29 @@
 import { QueryPriority } from "../Scraping/MilesScraperVehicles";
 
+
 export type QueueSizes = { [key: string]: number };
 
 export interface VehicleQueueInterface {
-    insert: (vehicleIds: number[], priority: QueryPriority, duringInit?: boolean) => number[];
+    insert: (vehicleIds: number[], priority: QueryPriority | null, duringInit?: boolean) => number[];
     remove: (vehicleIds: number[]) => number[];
-    getQueue: () => { milesId: number, priority: QueryPriority }[];
+    getQueue: () => { milesId: number, priority: QueryPriority | null }[];
     getQueueSizes: () => QueueSizes;
     getRandom: () => { id: number, priority: QueryPriority } | null;
 }
 
+export type QueueItemData = { priority: QueryPriority | null, updated: Date, fromInit?: boolean }
+
 export class VehicleQueue implements VehicleQueueInterface {
-    queue = new Map<number, number>();
+    queue = new Map<number, QueueItemData>();
 
     constructor() { }
 
-    insert(vehicleIds: number[], priority: number) {
+    insert(vehicleIds: number[], priority: QueryPriority | null, fromInit?: boolean) {
         const changed = [];
         for (const vehicleId of vehicleIds) {
-            const currentPriority = this.queue.get(vehicleId);
-            if (currentPriority !== priority) {
-                this.queue.set(vehicleId, priority);
+            const currentData = this.queue.get(vehicleId);
+            if (currentData?.priority !== priority) {
+                this.queue.set(vehicleId, { priority, updated: new Date(), fromInit });
                 changed.push(vehicleId);
                 continue;
             }
@@ -31,8 +34,8 @@ export class VehicleQueue implements VehicleQueueInterface {
     remove(vehicleIds: number[]) {
         const changed = [];
         for (const vehicleId of vehicleIds) {
-            const currentPriority = this.queue.get(vehicleId);
-            if (currentPriority === undefined) continue;
+            const currentData = this.queue.get(vehicleId);
+            if (currentData === undefined) continue;
             this.queue.delete(vehicleId);
             changed.push(vehicleId);
         }
@@ -40,25 +43,25 @@ export class VehicleQueue implements VehicleQueueInterface {
     }
 
     getQueue() {
-        return [...this.queue.entries()].map(([milesId, priority]) => ({ milesId, priority }));
+        return [...this.queue.entries()].map(([milesId, data]) => ({ milesId, priority: data.priority }));
     }
 
     getQueueSizes() {
         let queueSizes: QueueSizes = {}
         const stringKeys = Object.keys(QueryPriority).filter((v) => isNaN(Number(v)))
         for (const [_index, key] of stringKeys.entries()) {
-            queueSizes[key] = [...this.queue.values()].filter(el => el === QueryPriority[key as keyof typeof QueryPriority]).length;
+            queueSizes[key] = [...this.queue.values()].filter(el => el.priority === QueryPriority[key as keyof typeof QueryPriority]).length;
         }
         return queueSizes;
     }
 
     getRandom() {
-        const totalPriority = [...this.queue.values()].reduce((a, b) => a + b, 0);
+        const totalPriority = [...this.queue.values()].reduce((acc, data) => acc + (data.priority || 0), 0);
         const random = Math.random() * totalPriority;
         let current = 0;
-        for (const [id, priority] of this.queue.entries()) {
-            current += priority;
-            if (current >= random) return { id, priority };
+        for (const [id, data] of this.queue.entries()) {
+            current += (data.priority || 0);
+            if (current >= random) return { id, priority: data.priority as QueryPriority };
         }
         return null;
     }

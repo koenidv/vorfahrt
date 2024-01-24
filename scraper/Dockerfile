@@ -1,6 +1,7 @@
 FROM node:20-slim AS builder
 
-ENV DB_HOST \
+ENV HOSTNAME \
+    DB_HOST \
     DB_PORT \
     DB_USER \
     DB_PASSWORD \
@@ -10,7 +11,9 @@ ENV DB_HOST \
     RPM_VEHICLE \
     RPM_MAP \
     RPM_CITIES \
-    RPM_PERCENTAGES
+    RPM_PERCENTAGES \
+    INTERVAL_QUEUE_SYNC \
+    RESTORE_FROM_SYNC
 
 WORKDIR /dist
 

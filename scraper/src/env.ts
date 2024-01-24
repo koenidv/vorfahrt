@@ -10,6 +10,10 @@ const assertString = (value: unknown, key: string) => {
 };
 
 const env = {
+  hostname: assertString(
+    process.env.HOSTNAME,
+    "HOSTNAME",
+  ),
   dbHost: assertString(
     process.env.DB_HOST,
     "DB_HOST",

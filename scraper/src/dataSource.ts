@@ -11,8 +11,8 @@ export const AppDataSource = new DataSource({
   password: env.dbPassword,
   database: env.dbName,
   synchronize: true,
-  logging: false,
   entities: MilesEntities,
   migrations: [],
   subscribers: [],
+  logging: false,
 });

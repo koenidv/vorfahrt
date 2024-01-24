@@ -53,7 +53,7 @@ export default class MilesController {
   private createDataHandler(appDataSource: DataSource): MilesDataHandler {
     this.dataSource = appDataSource;
     const influxdb = new InfluxDB({ url: env.influxUrl, token: env.influxToken, timeout: 60000 });
-    this.influxWriteClient = influxdb.getWriteApi("vorfahrt", "miles", "s");
+    this.influxWriteClient = influxdb.getWriteApi("vorfahrt", "miles", "s", { defaultTags: { host: env.hostname } });
     this.influxQueryClient = influxdb.getQueryApi("vorfahrt");
     this.dataHandler = new MilesDataHandler(this.dataSource, this.influxWriteClient, this.influxQueryClient);
     return this.dataHandler;
@@ -101,9 +101,9 @@ export default class MilesController {
       vehicleScraper.register(values.normalQueue, QueryPriority.NORMAL, true);
       vehicleScraper.register(values.slowQueue, QueryPriority.LOW, true);
       // also register the next 2000 vehicles to normal queue
-      vehicleScraper.register(Array.from({ length: 2000 }, (_, i) => values.highestId + i), QueryPriority.NORMAL);
+      // todo should regularly check for new vehicles, i.e. preemptively add to queue
+      vehicleScraper.register(Array.from({ length: 2000 }, (_, i) => values.highestId + i), QueryPriority.NORMAL, true);
     }
   }
-
 
 }

@@ -1,24 +1,11 @@
 import { EntityManager } from "typeorm";
 import { InternalQueuedVehicle } from "../../entity/Miles/InternalQueuedVehicle";
 import { VehicleQueue } from "../utils/VehicleQueue";
-
-export enum MilesVehicleQueueAction {
-    REGISTER = "REGISTER",
-    DEREGISTER = "DEREGISTER",
-    CHANGE = "CHANGE"
-};
-
-export type MilesVehicleQueueChange = {
-    milesId: number
-    priority: number
-    action: MilesVehicleQueueAction
-    timestamp: Date
-};
+import clc from "cli-color";
 
 export class SyncedVehicleQueue extends VehicleQueue {
     manager: EntityManager;
     syncIntervalMs: number;
-    changes: MilesVehicleQueueChange[] = [];
     private syncInterval: NodeJS.Timeout | null = null
 
     constructor(manager: EntityManager, syncIntervalMs: number) {
@@ -27,56 +14,11 @@ export class SyncedVehicleQueue extends VehicleQueue {
         this.syncIntervalMs = syncIntervalMs;
     }
 
-    override insert(vehicleIds: number[], priority: number, duringInit = true) {
-        const changed = [];
-        for (const vehicleId of vehicleIds) {
-            const currentPriority = this.queue.get(vehicleId);
-            if (currentPriority === undefined) {
-                this.queue.set(vehicleId, priority);
-                if (!duringInit)
-                    this.changes.push({
-                        milesId: vehicleId,
-                        priority,
-                        action: MilesVehicleQueueAction.REGISTER,
-                        timestamp: new Date()
-                    });
-                changed.push(vehicleId);
-                continue;
-            }
-            if (currentPriority !== priority) {
-                this.queue.set(vehicleId, priority);
-                if (!duringInit)
-                    this.changes.push({
-                        milesId: vehicleId,
-                        priority,
-                        action: MilesVehicleQueueAction.CHANGE,
-                        timestamp: new Date()
-                    });
-                changed.push(vehicleId);
-                continue;
-            }
-        }
-        return changed;
-    }
-
     override remove(vehicleIds: number[]) {
-        const changed = [];
-        for (const vehicleId of vehicleIds) {
-            const currentPriority = this.queue.get(vehicleId);
-            if (currentPriority === undefined) continue;
-            this.queue.delete(vehicleId);
-            this.changes.push({
-                milesId: vehicleId,
-                priority: currentPriority,
-                action: MilesVehicleQueueAction.DEREGISTER,
-                timestamp: new Date()
-            });
-            changed.push(vehicleId);
-        }
-        return changed;
+        return this.insert(vehicleIds, null);
     }
 
-    // todo update update date if vehicle request was executed and is still in invisible state
+    // todo update updated date if vehicle request was executed and is still in invisible state
 
     start(): this {
         if (this.syncInterval !== null || this.syncIntervalMs === 0) return this;
@@ -85,54 +27,59 @@ export class SyncedVehicleQueue extends VehicleQueue {
     }
 
     async sync() {
-        await this.syncUpstream()
-        await this.syncDownstream()
+        const remoteData = await this.getRemoteData();
+        const pushToRemote = this.updateLocalDiffRemote(remoteData);
+        await this.syncUpstream(pushToRemote);
     }
 
-    async syncUpstream() {
+    async syncUpstream(ids: number[]) {
+        if (ids.length === 0) return;
+        let changes = 0;
         await this.manager.transaction(async manager => {
-            console.log("now syncing", this.changes.length, "changes")
-            while (this.changes.length > 0) {
-                const thisChange = this.changes.pop();
-                if (thisChange === undefined) continue;
-                if (thisChange.action === MilesVehicleQueueAction.REGISTER || thisChange.action === MilesVehicleQueueAction.CHANGE) {
-                    console.log("registering", thisChange.milesId)
-                    await manager.createQueryBuilder()
-                        .insert()
-                        .into(InternalQueuedVehicle)
-                        .values({
-                            milesId: thisChange.milesId,
-                            priority: thisChange.priority,
-                            updated: thisChange.timestamp
-                        })
-                        .onConflict('("milesId") DO UPDATE SET priority = :priority, updated = :updated WHERE i.updated < :updated')
-                        .setParameter("priority", thisChange.priority)
-                        .setParameter("updated", thisChange.timestamp)
-                        .execute()
-
-                    // todo
-
-                } else if (thisChange.action === MilesVehicleQueueAction.DEREGISTER) {
-                    console.log("deregistering", thisChange.milesId)
-                    await manager.createQueryBuilder()
-                        .delete()
-                        .from(InternalQueuedVehicle)
-                        .where("milesId = :milesId", { milesId: thisChange.milesId })
-                        .andWhere("updated < :timestamp", { timestamp: thisChange.timestamp })
-                        .execute();
-                }
+            for (const id of ids) {
+                const data = this.queue.get(id);
+                if (data === undefined || data.fromInit) continue;
+                await manager.createQueryBuilder()
+                    .insert()
+                    .into(InternalQueuedVehicle)
+                    .values({
+                        milesId: id,
+                        priority: data.priority,
+                        updated: data.updated
+                    })
+                    .onConflict('("milesId") DO UPDATE SET priority = :priority, updated = :updated WHERE "InternalMilesVehiclesQueue".updated < :updated')
+                    .setParameter("priority", data.priority)
+                    .setParameter("updated", data.updated)
+                    .execute()
+                changes++;
             }
         });
+        if (changes !== 0) console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡑 Pushed", changes, "changes")
     }
 
-    async syncDownstream() {
-
+    async getRemoteData() {
+        return await this.manager.find(InternalQueuedVehicle)
     }
 
-    diff() {
+    updateLocalDiffRemote(remoteData: InternalQueuedVehicle[]): number[] {
+        const pushToRemote = [...this.queue.keys()];
+        let changes = 0;
 
+        for (const remote of remoteData) {
+            const local = this.queue.get(remote.milesId);
+            if (local === undefined || local.updated < remote.updated) {
+                this.insert([remote.milesId], remote.priority, false);
+                changes++;
+                const index = pushToRemote.indexOf(remote.milesId);
+                if (index !== -1) pushToRemote.splice(index, 1);
+            } else if (local.priority === remote.priority || local.fromInit) {
+                const index = pushToRemote.indexOf(remote.milesId);
+                if (index !== -1) pushToRemote.splice(index, 1);
+            }
+        }
+
+        if (changes !== 0) console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡓  Pulled", changes, "changes")
+        return pushToRemote;
     }
-
-
 
 }
