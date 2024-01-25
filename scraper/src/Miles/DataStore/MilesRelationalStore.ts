@@ -10,12 +10,15 @@ import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv
 import clc from "cli-color";
 import { VehicleLastKnown } from "../../entity/Miles/VehicleLastKnown";
 import { RESTORE_NORMAL_STATES, RESTORE_SLOW_STATES } from "./MilesRelationalStore.config";
+import { MilesRelationalCache } from "./MilesRelationalCache";
 
 export class MilesRelationalStore {
     manager: EntityManager;
+    cache: MilesRelationalCache;
 
     constructor(manager: EntityManager) {
         this.manager = manager;
+        this.cache = new MilesRelationalCache(manager);
     }
 
     /**
@@ -67,7 +70,7 @@ export class MilesRelationalStore {
     }
 
     private async createVehicleMeta(vehicle: apiVehicleJsonParsed) {
-        if (await this.vehicleExists(vehicle.idVehicle)) return;
+        if (await this.cache.isVehicleKnown(vehicle.idVehicle)) return;
 
         const firstCity = await this.findCity(vehicle.idCity);
         if (!firstCity) {
@@ -102,10 +105,7 @@ export class MilesRelationalStore {
             .replace("https://api.app.miles-mobility.com/static/img/cars/small/", "");
 
         await this.manager.save(newVehicle);
-    }
-
-    private async vehicleExists(milesId: number): Promise<boolean> {
-        return await this.manager.exists(VehicleMeta, { where: { milesId } });
+        this.cache.registerVehicleKnown(vehicle.idVehicle);
     }
 
     private async createVehicleSize(name: string): Promise<VehicleSize> {
