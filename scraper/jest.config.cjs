@@ -7,5 +7,5 @@ module.exports = {
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
-  testPathIgnorePatterns: ["<rootDir>/__tests__/testEnv.ts"],
+  testPathIgnorePatterns: ["<rootDir>/test/testEnv.ts"]
 };

@@ -48,20 +48,23 @@ export class VehicleQueue implements VehicleQueueInterface {
 
     getQueueSizes() {
         let queueSizes: QueueSizes = {}
-        const stringKeys = Object.keys(QueryPriority).filter((v) => isNaN(Number(v)))
-        for (const [_index, key] of stringKeys.entries()) {
+        const enumKeys = Object.keys(QueryPriority).filter((v) => isNaN(Number(v)))
+        for (const [_index, key] of enumKeys.entries()) {
             queueSizes[key] = [...this.queue.values()].filter(el => el.priority === QueryPriority[key as keyof typeof QueryPriority]).length;
         }
         return queueSizes;
     }
 
     getRandom() {
-        const totalPriority = [...this.queue.values()].reduce((acc, data) => acc + (data.priority || 0), 0);
+        const copiedEntries = [...this.queue.entries()];
+        const totalPriority = copiedEntries.reduce((acc, [_id, data]) => acc + (data.priority ?? 0), 0);
         const random = Math.random() * totalPriority;
         let current = 0;
-        for (const [id, data] of this.queue.entries()) {
-            current += (data.priority || 0);
-            if (current >= random) return { id, priority: data.priority as QueryPriority };
+        for (const [id, data] of copiedEntries) {
+            current += data.priority ?? 0;
+            if (current >= random) {
+                return { id, priority: data.priority as QueryPriority };
+            }
         }
         return null;
     }

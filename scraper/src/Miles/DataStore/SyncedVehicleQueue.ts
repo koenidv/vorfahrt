@@ -2,7 +2,6 @@ import { EntityManager } from "typeorm";
 import { InternalQueuedVehicle } from "../../entity/Miles/InternalQueuedVehicle";
 import { VehicleQueue } from "../utils/VehicleQueue";
 import clc from "cli-color";
-import _ from "lodash";
 
 export class SyncedVehicleQueue extends VehicleQueue {
     manager: EntityManager;
@@ -33,6 +32,31 @@ export class SyncedVehicleQueue extends VehicleQueue {
         await this.syncUpstream(pushToRemote);
     }
 
+    async getRemoteData() {
+        return await this.manager.find(InternalQueuedVehicle);
+    }
+
+    updateLocalDiffRemote(remoteData: InternalQueuedVehicle[]): number[] {
+        const pushToRemote = [...this.queue.keys()];
+        let changes = 0;
+
+        for (const remote of remoteData) {
+            const local = this.queue.get(remote.milesId);
+            if (local === undefined || local.updated < remote.updated) {
+                this.insert([remote.milesId], remote.priority, true);
+                changes++;
+                const index = pushToRemote.indexOf(remote.milesId);
+                if (index !== -1) pushToRemote.splice(index, 1);
+            } else if (local.priority === remote.priority || local.fromInit) {
+                const index = pushToRemote.indexOf(remote.milesId);
+                if (index !== -1) pushToRemote.splice(index, 1);
+            }
+        }
+
+        if (changes !== 0) console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡓 Pulled", changes, "changes");
+        return pushToRemote;
+    }
+
     async syncUpstream(ids: number[]) {
         if (ids.length === 0) return;
         let changes = 0;
@@ -51,36 +75,11 @@ export class SyncedVehicleQueue extends VehicleQueue {
                     .onConflict('("milesId") DO UPDATE SET priority = :priority, updated = :updated WHERE "InternalMilesVehiclesQueue".updated < :updated')
                     .setParameter("priority", data.priority)
                     .setParameter("updated", data.updated)
-                    .execute()
+                    .execute();
                 changes++;
             }
         });
-        if (changes !== 0) console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡑 Pushed", changes, "changes")
-    }
-
-    async getRemoteData() {
-        return await this.manager.find(InternalQueuedVehicle)
-    }
-
-    updateLocalDiffRemote(remoteData: InternalQueuedVehicle[]): number[] {
-        const pushToRemote = [...this.queue.keys()];
-        let changes = 0;
-
-        for (const remote of remoteData) {
-            const local = this.queue.get(remote.milesId);
-            if (local === undefined || local.updated < remote.updated) {
-                this.insert([remote.milesId], remote.priority, false);
-                changes++;
-                const index = pushToRemote.indexOf(remote.milesId);
-                if (index !== -1) pushToRemote.splice(index, 1);
-            } else if (local.priority === remote.priority || local.fromInit) {
-                const index = pushToRemote.indexOf(remote.milesId);
-                if (index !== -1) pushToRemote.splice(index, 1);
-            }
-        }
-
-        if (changes !== 0) console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡓 Pulled", changes, "changes")
-        return pushToRemote;
+        if (changes !== 0) console.log(clc.bgBlackBright("SyncedVehicleQueue"), "🡑 Pushed", changes, "changes");
     }
 
     async restoreFromSync() {
