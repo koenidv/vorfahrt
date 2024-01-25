@@ -2,23 +2,23 @@ import { QueryPriority } from "../../src/Miles/Scraping/MilesScraperVehicles";
 import { VehicleQueue } from "../../src/Miles/utils/VehicleQueue";
 
 describe("VehicleQueue", () => {
-    
+
     test("should insert and remove", () => {
         const queue = new VehicleQueue();
         queue.insert([1, 2, 3], QueryPriority.NORMAL);
         queue.insert([4, 5, 6], QueryPriority.LOW);
         expect(queue.getQueue()).toEqual([
-            { milesId: 1, priority: QueryPriority.NORMAL },
-            { milesId: 2, priority: QueryPriority.NORMAL },
-            { milesId: 3, priority: QueryPriority.NORMAL },
-            { milesId: 4, priority: QueryPriority.LOW },
-            { milesId: 5, priority: QueryPriority.LOW },
-            { milesId: 6, priority: QueryPriority.LOW },
+            { milesId: 1, priority: QueryPriority.NORMAL, fromInit: false },
+            { milesId: 2, priority: QueryPriority.NORMAL, fromInit: false },
+            { milesId: 3, priority: QueryPriority.NORMAL, fromInit: false },
+            { milesId: 4, priority: QueryPriority.LOW, fromInit: false },
+            { milesId: 5, priority: QueryPriority.LOW, fromInit: false },
+            { milesId: 6, priority: QueryPriority.LOW, fromInit: false },
         ])
         queue.remove([1, 2, 3, 4]);
         expect(queue.getQueue()).toEqual([
-            { milesId: 5, priority: QueryPriority.LOW },
-            { milesId: 6, priority: QueryPriority.LOW },
+            { milesId: 5, priority: QueryPriority.LOW, fromInit: false },
+            { milesId: 6, priority: QueryPriority.LOW, fromInit: false },
         ])
     })
 
@@ -27,9 +27,9 @@ describe("VehicleQueue", () => {
         queue.insert([1, 2, 3], QueryPriority.NORMAL);
         queue.insert([1, 2], QueryPriority.LOW);
         expect(queue.getQueue()).toEqual([
-            { milesId: 1, priority: QueryPriority.LOW },
-            { milesId: 2, priority: QueryPriority.LOW },
-            { milesId: 3, priority: QueryPriority.NORMAL },
+            { milesId: 1, priority: QueryPriority.LOW, fromInit: false },
+            { milesId: 2, priority: QueryPriority.LOW, fromInit: false },
+            { milesId: 3, priority: QueryPriority.NORMAL, fromInit: false },
         ])
     })
 
@@ -102,6 +102,17 @@ describe("VehicleQueue", () => {
             expect(random?.priority).not.toBeNull();
         }
         expect(queue.queue.size).toBe(5);
+    })
+
+    test("init status should change even when inserted priority is the same", () => {
+        const queue = new VehicleQueue();
+        queue.insert([1, 2, 3], QueryPriority.NORMAL, true);
+        queue.insert([1, 2], QueryPriority.NORMAL, false);
+        expect(queue.getQueue()).toEqual([
+            { milesId: 1, priority: QueryPriority.NORMAL, fromInit: false },
+            { milesId: 2, priority: QueryPriority.NORMAL, fromInit: false },
+            { milesId: 3, priority: QueryPriority.NORMAL, fromInit: true },
+        ])
     })
 
 })

@@ -6,7 +6,7 @@ export type QueueSizes = { [key: string]: number };
 export interface VehicleQueueInterface {
     insert: (vehicleIds: number[], priority: QueryPriority | null, duringInit?: boolean) => number[];
     remove: (vehicleIds: number[]) => number[];
-    getQueue: () => { milesId: number, priority: QueryPriority | null }[];
+    getQueue: () => { milesId: number, priority: QueryPriority | null, fromInit: boolean }[];
     getQueueSizes: () => QueueSizes;
     getRandom: () => { id: number, priority: QueryPriority } | null;
 }
@@ -22,7 +22,7 @@ export class VehicleQueue implements VehicleQueueInterface {
         const changed = [];
         for (const vehicleId of vehicleIds) {
             const currentData = this.queue.get(vehicleId);
-            if (currentData?.priority !== priority) {
+            if (currentData?.priority !== priority || currentData.fromInit !== fromInit) {
                 this.queue.set(vehicleId, { priority, updated: new Date(), fromInit });
                 changed.push(vehicleId);
                 continue;
@@ -43,7 +43,7 @@ export class VehicleQueue implements VehicleQueueInterface {
     }
 
     getQueue() {
-        return [...this.queue.entries()].map(([milesId, data]) => ({ milesId, priority: data.priority }));
+        return [...this.queue.entries()].map(([milesId, data]) => ({ milesId, priority: data.priority, fromInit: data.fromInit ?? false }));
     }
 
     getQueueSizes() {
