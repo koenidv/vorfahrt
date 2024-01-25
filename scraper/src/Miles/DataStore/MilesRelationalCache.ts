@@ -28,6 +28,14 @@ export class MilesRelationalCache {
     }
 
     /**
+     * This method should be called to restore the cache on startup and avoid unnecessary database queries
+     * @param ids The miles vehicle IDs
+     */
+    registerVehiclesKnown(...ids: number[]) {
+        ids.forEach(id => this.knownVehicles.add(id));
+    }
+
+    /**
      * Checks if a vehicle is known to the cache or database
      * This cache is not invalidated, so its sensitivity might not be 100%
      * @param id The miles vehicle ID

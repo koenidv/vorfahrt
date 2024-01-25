@@ -46,6 +46,7 @@ export class MilesRelationalStore {
                 .getRawOne()
             ).maxId);
 
+        this.cache.registerVehiclesKnown(...normalQueue, ...slowQueue);
         return { normalQueue, slowQueue, highestId };
     }
 
