@@ -1,6 +1,6 @@
 {
   "name": "@koenidv/vorfahrt-vienna",
-  "version": "0.4.1",
+  "version": "0.5.0-test",
   "description": "Assets for Vorfahrt - A micromobility insight platform.",
   "main": "dist/index.js",
   "scripts": {
@@ -11,6 +11,9 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/jest": "^29.5.5",
     "@types/node": "^20.6.0",
