@@ -1,7 +1,9 @@
+"strict";
+
 import {memo, useState} from "react";
-import {Image} from "react-native";
+import {Image, ImageProps} from "react-native";
 import {Vehicle} from "../../lib/Miles/types";
-import findIcon from "@koenidv/vorfahrt-vienna";
+import findIcon, {entityTypes} from "@koenidv/vorfahrt-vienna";
 import {Marker} from "react-native-maps";
 
 type VehicleMarkerProps = {
@@ -11,8 +13,8 @@ type VehicleMarkerProps = {
 };
 
 function findIconForVehicle(vehicle: Vehicle, isSelected: boolean) {
-  const tags: string[] = [];
-  tags.push(vehicle.model);
+  const tags: entityTypes[] = [];
+  tags.push(vehicle.model as entityTypes);
   if (vehicle.isElectric) tags.push("electric");
   else tags.push("fuel");
   switch (vehicle.charge - 30) {
@@ -69,7 +71,7 @@ const VehicleMarker = (props: VehicleMarkerProps) => {
       tracksViewChanges={imageLoading || props.isSelected}>
       <Image
         onLoadEnd={() => setImageLoading(false)}
-        source={icon}
+        source={icon as unknown as ImageProps}
         style={{position: "absolute", width: 45, height: 45}}
       />
     </Marker>

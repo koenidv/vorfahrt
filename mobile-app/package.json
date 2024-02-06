@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@googlemaps/polyline-codec": "^1.0.28",
-    "@koenidv/vorfahrt-vienna": "^0.4.1",
+    "@koenidv/vorfahrt-vienna": "^0.5.0-test",
     "@miblanchard/react-native-slider": "^2.3.1",
     "@react-native-async-storage/async-storage": "^1.19.8",
     "@react-native-community/geolocation": "^3.1.0",
