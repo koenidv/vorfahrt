@@ -6,6 +6,8 @@ import env from "../../../env";
 import { VehicleLastKnown } from "../../../Miles/VehicleLastKnown";
 // import { AppDataSource } from "../../../../scraper/src/dataSource"
 
+// new InfluxDB({ url: "http://167.235.149.238:8086", token: "", timeout: 60000 }).getWriteApi("vorfahrt", "miles", "s");
+
 const berlinArea: Abfahrt.Area = {
   latitude: 52.52,
   longitude: 13.405,

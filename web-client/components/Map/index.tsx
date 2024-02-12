@@ -9,7 +9,7 @@ import {
 
 import { Abfahrt, MilesClient } from "abfahrt";
 
-import { Marker } from "@koenidv/vorfahrt-vienna/src/index";
+import findIcon, { fileTypes } from "@koenidv/vorfahrt-vienna";
 
 import berlinDistricts from "../../data/BER-districts.geojson.json";
 
@@ -83,6 +83,9 @@ const Map = ({ hoveredArea, onAreaHover }: any) => {
             map: mapRef.current,
             title: vehicle.LicensePlate, // todo
             clickable: false,
+            icon: {
+              url: (findIcon(fileTypes.png, ["VW ID.3"]) as any).src,
+            },
             // icon: {
             //   url: Marker.Vehicle.AUDI_A4.chargingState[10].src,
             // },
@@ -196,7 +199,7 @@ const Map = ({ hoveredArea, onAreaHover }: any) => {
           map,
           title: vehicle.LicensePlate,
           icon: {
-            url: Marker.Vehicle.AUDI_A4.chargingState[10].src,
+            url: (findIcon(fileTypes.png, ["VW ID.3"]) as any).src,
 
             scaledSize: new google.maps.Size(50, 50), // scaled size
             origin: new google.maps.Point(0, 0), // origin

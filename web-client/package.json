@@ -12,7 +12,7 @@
     "@googlemaps/js-api-loader": "^1.16.2",
     "@influxdata/influxdb-client": "^1.33.2",
     "@influxdata/influxdb-client-apis": "^1.33.2",
-    "@koenidv/vorfahrt-vienna": "^0.0.6",
+    "@koenidv/vorfahrt-vienna": "^0.5.0-test2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-popover": "^1.0.6",
