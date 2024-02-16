@@ -13,8 +13,6 @@ import {
   MilesClient,
 } from "abfahrt";
 
-import { Marker } from "@koenidv/vorfahrt-vienna/src/index"
-
 import berlinDistricts from "../../data/BER-districts.geojson.json";
 
 import berlinVehicleResponses from "../../data/vehicles.json";
@@ -27,6 +25,8 @@ import { Loader } from "@googlemaps/js-api-loader";
 import { BERLIN } from "./berlin";
 import dynamicMapStyles from "./dynamicMapStyles";
 import { ComboboxDemo } from "../../@/components/ui/ComboBox";
+import findIcon, { fileTypes } from "@koenidv/vorfahrt-vienna";
+import { ImageProps } from "next/image";
 
 const RENDER_VEHICLE_MARKERS = false;
 
@@ -186,6 +186,8 @@ const Map = ({
         //   VW_CRAFTER: "VW_CRAFTER",
         // }
 
+        const icon = findIcon(fileTypes.png, [vehicle.VehicleType]);
+
         new google.maps.Marker({
           position: {
             lat: vehicle.Latitude,
@@ -193,13 +195,14 @@ const Map = ({
           },
           map,
           title: vehicle.LicensePlate,
-          icon: {
-            url: Marker.Vehicle.AUDI_A4.chargingState[10].src,
+          icon: icon as unknown as ImageProps as any, // lol
+          // icon: {
+          //   url: Marker.Vehicle.AUDI_A4.chargingState[10].src,
 
-            scaledSize: new google.maps.Size(50, 50), // scaled size
-            origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0), // anchor
-          },
+          //   scaledSize: new google.maps.Size(50, 50), // scaled size
+          //   origin: new google.maps.Point(0, 0), // origin
+          //   anchor: new google.maps.Point(0, 0), // anchor
+          // },
         });
       }
     }
