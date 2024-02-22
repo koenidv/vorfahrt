@@ -1,14 +1,14 @@
 import { EntityManager } from "typeorm"
 import { MilesCityMeta, MilesVehicleDetails } from "../Miles.types";
-import { City } from "../../entity/Miles/City";
+import { City } from "../../../../../shared/typeorm-entities/Miles/City";
 import GeoPoint from "../utils/GeoPoint";
-import { VehicleMeta } from "../../entity/Miles/VehicleMeta";
+import { VehicleMeta } from "../../../../../shared/typeorm-entities/Miles/VehicleMeta";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { VehicleSize } from "../../entity/Miles/VehicleSize";
-import { VehicleModel } from "../../entity/Miles/VehicleModel";
+import { VehicleSize } from "../../../../../shared/typeorm-entities/Miles/VehicleSize";
+import { VehicleModel } from "../../../../../shared/typeorm-entities/Miles/VehicleModel";
 import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
 import clc from "cli-color";
-import { VehicleLastKnown } from "../../entity/Miles/VehicleLastKnown";
+import { VehicleLastKnown } from "../../../../../shared/typeorm-entities/Miles/VehicleLastKnown";
 import { RESTORE_NORMAL_STATES, RESTORE_SLOW_STATES } from "./MilesRelationalStore.config";
 import { MilesRelationalCache } from "./MilesRelationalCache";
 
