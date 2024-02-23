@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm";
-import { InternalQueuedVehicle } from "../../../../../shared/typeorm-entities/Miles/InternalQueuedVehicle";
+import { InternalQueuedVehicle } from "shared/typeorm-entities/Miles/InternalQueuedVehicle";
 import { VehicleQueue } from "../utils/VehicleQueue";
 import clc from "cli-color";
 
