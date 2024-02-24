@@ -1,8 +1,8 @@
 import {Image} from "react-native";
 import {ChargeStationAvailability} from "../../lib/ChargeStationAvailabilityType";
-import findIcon from "@koenidv/vorfahrt-vienna";
+import { findIcon } from "@koenidv/vorfahrt-vienna";
 import {memo, useState} from "react";
-import {ChargeStation, Coordinate} from "../../lib/Miles/types";
+import {ChargeStation} from "../../lib/Miles/types";
 import {Marker} from "react-native-maps";
 
 type ChargeStationAndAvailability = ChargeStation &

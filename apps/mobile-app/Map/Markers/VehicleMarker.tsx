@@ -3,7 +3,7 @@
 import {memo, useState} from "react";
 import {Image, ImageProps} from "react-native";
 import {Vehicle} from "../../lib/Miles/types";
-import findIcon, {entityTypes, fileTypes} from "@koenidv/vorfahrt-vienna";
+import {findIcon, entityTags} from "@koenidv/vorfahrt-vienna";
 import {Marker} from "react-native-maps";
 
 type VehicleMarkerProps = {
@@ -13,8 +13,8 @@ type VehicleMarkerProps = {
 };
 
 function findIconForVehicle(vehicle: Vehicle, isSelected: boolean) {
-  const tags: entityTypes[] = [];
-  tags.push(vehicle.model as entityTypes);
+  const tags: entityTags[] = [];
+  tags.push(vehicle.model as entityTags);
   if (vehicle.isElectric) tags.push("electric");
   else tags.push("fuel");
   switch (vehicle.charge - 30) {
@@ -50,7 +50,7 @@ function findIconForVehicle(vehicle: Vehicle, isSelected: boolean) {
   if (vehicle.isDiscounted) tags.push("discounted");
   if (isSelected) tags.push("selected");
 
-  return findIcon(fileTypes.png, tags);
+  return findIcon("png", tags);
 }
 
 const VehicleMarker = (props: VehicleMarkerProps) => {
