@@ -41,10 +41,10 @@
   "dependencies": {
     "@influxdata/influxdb-client": "^1.33.2",
     "@influxdata/influxdb-client-apis": "^1.33.2",
-    "@koenidv/abfahrt": "^0.0.32",
     "@trpc/server": "^10.44.0",
     "@types/cors": "^2.8.17",
     "@types/ws": "^8.5.10",
+    "abfahrt": "link:..\\..\\libs\\abfahrt",
     "cli-color": "^2.0.3",
     "cors": "^2.8.5",
     "express": "^4.18.2",
