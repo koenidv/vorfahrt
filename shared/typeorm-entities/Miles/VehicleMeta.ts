@@ -32,7 +32,9 @@ export class VehicleMeta {
   licensePlate: string;
 
   @ManyToOne(() => VehicleModel, (model) => model.vehicles)
+  @JoinColumn({ name: "modelId" })
   model: VehicleModel;
+  modelId: number;
 
   @Column()
   color: string;
