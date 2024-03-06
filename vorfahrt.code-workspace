@@ -2,19 +2,23 @@
 	"folders": [
 		{
 			"name": "mobile-app",
-			"path": "mobile-app"
+			"path": "apps/mobile-app"
 		},
 		{
 			"name": "scraper",
-			"path": "scraper"
+			"path": "backend/scraper"
 		},
 		{
 			"name": "web-client",
-			"path": "web-client"
+			"path": "apps/web-client"
 		},
 		{
 			"name": "stats-web",
-			"path": "stats-web"
+			"path": "apps/stats-web"
+		},
+		{
+			"name": "vienna",
+			"path": "libs/vorfaht-vienna"
 		}
 	],
 	"settings": {

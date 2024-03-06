@@ -1,0 +1,7 @@
+packages:
+#  - "apps/*"
+  - "apps/mobile-app"
+  - "apps/stats-web"
+  - "backend/*"
+  - "libs/*"
+  - "shared/*"
