@@ -3,6 +3,7 @@
 ## Development
 
 Use npm or [pnpm in hoisted mode](https://github.com/pnpm/pnpm/releases/tag/v6.25.0-2), react native doesn't understand symlinks.
+todo: update bundler scripts, [rnx-kit docs](https://microsoft.github.io/rnx-kit/docs/guides/bundling#creating-bundler-commands)
 
 ## Running the App
 
