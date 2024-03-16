@@ -6,6 +6,7 @@ import { validationMetadatasToSchemas } from "class-validator-jsonschema";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import express from "express";
+import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 import hpp from "hpp";
 import morgan from "morgan";
@@ -50,6 +51,13 @@ export class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(
+      rateLimit({
+        windowMs: 60 * 1000,
+        limit: 100,
+        standardHeaders: "draft-7",
+      }),
+    );
   }
 
   private initializeRoutes(controllers: Function[]) {

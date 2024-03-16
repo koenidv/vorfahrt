@@ -232,6 +232,9 @@ importers:
       express:
         specifier: ^4.18.1
         version: 4.18.2
+      express-rate-limit:
+        specifier: ^7.2.0
+        version: 7.2.0(express@4.18.2)
       helmet:
         specifier: ^5.1.1
         version: 5.1.1
@@ -8353,6 +8356,15 @@ packages:
   /exponential-backoff@3.1.1:
     resolution: {integrity: sha512-dX7e/LHVJ6W3DE1MHWi9S1EYzDESENfLrYohG2G++ovZrYOkm4Knwa0mc1cn84xJOR4KEU0WSchhLbd0UklbHw==}
     dev: true
+
+  /express-rate-limit@7.2.0(express@4.18.2):
+    resolution: {integrity: sha512-T7nul1t4TNyfZMJ7pKRKkdeVJWa2CqB8NA1P8BwYaoDI5QSBZARv5oMS43J7b7I5P+4asjVXjb7ONuwDKucahg==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      express: 4 || 5 || ^5.0.0-beta.1
+    dependencies:
+      express: 4.18.2
+    dev: false
 
   /express-session@1.18.0:
     resolution: {integrity: sha512-m93QLWr0ju+rOwApSsyso838LQwgfs44QtOP/WBiwtAgPIo/SAh1a5c6nn2BR6mFNZehTpqKDESzP+fRHVbxwQ==}
