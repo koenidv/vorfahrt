@@ -1,17 +1,15 @@
 import { hash } from 'bcrypt';
 import { Service } from 'typedi';
 import { CreateUserDto } from '@dtos/users.dto';
-import { HttpException } from '@exceptions/httpException';
+import { HttpException } from '@exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 import { UserModel } from '@models/users.model';
-import { CacheItemType } from '@/interfaces/vehicles.interface';
-import { VehiclesCacheModel } from '@/models/vehicles.model';
+import { VehiclesCacheModel } from '@models/vehicles.model';
 import { EntityManager } from 'typeorm';
-import { VehicleMeta } from 'shared/typeorm-entities/Miles/VehicleMeta';
 import { VehicleModel } from 'shared/typeorm-entities/Miles/VehicleModel';
-import { VehicleType } from 'shared/api-types/api.types';
+import { BasicVehicleStatus, VehicleType } from 'shared/api-types/api.types';
 import { VehicleLastKnown } from 'shared/typeorm-entities/Miles/VehicleLastKnown';
-import { MILES_STATUS_CODES, MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
+import { MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
 
 
 /*
@@ -52,7 +50,7 @@ export class VehicleService {
       const vehicleTypes = await this.fetchVehicleTypesFromDb();
       const vehicleTypesMapped = vehicleTypes.map(this.mapVehicleTypeToCacheItem);
       const vehiclesLastKnown = await this.fetchVehiclesLastKnownFromDb();
-      const vehiclesLastKnownMapped = vehiclesLastKnown.map(this.mapVehicleMetaToCacheItem);
+      const vehiclesLastKnownMapped = vehiclesLastKnown.map(this.mapVehicleMetaToBasicStatus);
 
       this.VehicleCache.saveVehicleTypes(vehicleTypesMapped);
       this.VehicleCache.saveStatuses(vehiclesLastKnownMapped);
@@ -60,8 +58,7 @@ export class VehicleService {
   }
 
   private async fetchVehicleTypesFromDb(): Promise<VehicleModel[]> {
-    // todo - expand vehicletype
-    return []
+    return await this.entityManager.find(VehicleModel, { relations: ["size"] });
   }
 
   private mapVehicleTypeToCacheItem(vehicleType: VehicleModel): VehicleType {
@@ -69,15 +66,14 @@ export class VehicleService {
   }
 
   private async fetchVehiclesLastKnownFromDb(): Promise<VehicleLastKnown[]> {
-    // todo - expand vehicle
-    return []
+    return await this.entityManager.find(VehicleLastKnown, { relations: ["vehicle"] });
   }
 
-  private mapVehicleMetaToCacheItem(vehicle: VehicleLastKnown): CacheItemType {
+  private mapVehicleMetaToBasicStatus(vehicle: VehicleLastKnown): BasicVehicleStatus {
     // todo status enum, cache models
     const statusId = MILES_STATUS_CODES_ARRAY.indexOf(vehicle.status);
     if (statusId === -1) throw new Error(`Unknown status code ${vehicle.status}`);
-    return [vehicle.milesId, vehicle.vehicle.licensePlate, vehicle.vehicle.modelId, vehicle.status, vehicle.latitude, vehicle.longitude]
+    return [vehicle.milesId, vehicle.vehicle.licensePlate, vehicle.vehicle.modelId, statusId, vehicle.latitude, vehicle.longitude, vehicle.updated.getTime()]
   }
 
 
@@ -105,7 +101,7 @@ export class VehicleService {
     return this.VehicleCache.getAllVehicleTypes();
   }
 
-  private getCachedStatuses(): CacheItemType[] {
+  private getCachedStatuses(): BasicVehicleStatus[] {
     return this.VehicleCache.getAllStatuses();
   }
 

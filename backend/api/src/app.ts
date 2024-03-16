@@ -1,18 +1,18 @@
-import 'reflect-metadata';
-import { defaultMetadataStorage } from 'class-transformer/cjs/storage';
-import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
-import express from 'express';
-import helmet from 'helmet';
-import hpp from 'hpp';
-import morgan from 'morgan';
-import { useExpressServer, getMetadataArgsStorage } from 'routing-controllers';
-import { routingControllersToSpec } from 'routing-controllers-openapi';
-import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
-import { ErrorMiddleware } from '@middlewares/error.middleware';
-import { logger, stream } from '@utils/logger';
+import { DB_PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, NODE_ENV } from "@config";
+import { ErrorMiddleware } from "@middlewares/error.middleware";
+import { logger, stream } from "@utils/logger";
+import { defaultMetadataStorage } from "class-transformer/cjs/storage";
+import { validationMetadatasToSchemas } from "class-validator-jsonschema";
+import compression from "compression";
+import cookieParser from "cookie-parser";
+import express from "express";
+import helmet from "helmet";
+import hpp from "hpp";
+import morgan from "morgan";
+import "reflect-metadata";
+import { useExpressServer, getMetadataArgsStorage } from "routing-controllers";
+import { routingControllersToSpec } from "routing-controllers-openapi";
+import swaggerUi from "swagger-ui-express";
 
 export class App {
   public app: express.Application;
@@ -21,8 +21,8 @@ export class App {
 
   constructor(Controllers: Function[]) {
     this.app = express();
-    this.env = NODE_ENV || 'development';
-    this.port = PORT || 3000;
+    this.env = NODE_ENV || "development";
+    this.port = DB_PORT || 3000;
 
     this.initializeMiddlewares();
     this.initializeRoutes(Controllers);
@@ -32,10 +32,9 @@ export class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      logger.info(`=================================`);
-      logger.info(`======= ENV: ${this.env} =======`);
-      logger.info(`🚀 App listening on the port ${this.port}`);
-      logger.info(`=================================`);
+      logger.info(`=========================================`);
+      logger.info(`🚀 App listening on http://localhost:${this.port}`);
+      logger.info(`======================== ENV: ${this.env}`);
     });
   }
 
@@ -67,7 +66,7 @@ export class App {
   private initializeSwagger(controllers: Function[]) {
     const schemas = validationMetadatasToSchemas({
       classTransformerMetadataStorage: defaultMetadataStorage,
-      refPointerPrefix: '#/components/schemas/',
+      refPointerPrefix: "#/components/schemas/",
     });
 
     const routingControllersOptions = {
@@ -80,19 +79,19 @@ export class App {
         schemas,
         securitySchemes: {
           basicAuth: {
-            scheme: 'basic',
-            type: 'http',
+            scheme: "basic",
+            type: "http",
           },
         },
       },
       info: {
-        title: 'vorfahrt api',
-        description: '`shared mobility insights`',
-        version: '0.0.1',
+        title: "vorfahrt api",
+        description: "`shared mobility insights`",
+        version: "0.0.1",
       },
     });
 
-    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));
+    this.app.use("/docs", swaggerUi.serve, swaggerUi.setup(spec));
   }
 
   private initializeErrorHandling() {

@@ -1,7 +1,7 @@
-import { plainToInstance } from 'class-transformer';
-import { validateOrReject, ValidationError } from 'class-validator';
-import { NextFunction, Request, Response } from 'express';
-import { HttpException } from '@exceptions/httpException';
+import { HttpException } from "@exceptions/HttpException";
+import { plainToInstance } from "class-transformer";
+import { validateOrReject, ValidationError } from "class-validator";
+import { NextFunction, Request, Response } from "express";
 
 /**
  * @name ValidationMiddleware
@@ -20,7 +20,7 @@ export const ValidationMiddleware = (type: any, skipMissingProperties = false, w
         next();
       })
       .catch((errors: ValidationError[]) => {
-        const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(', ');
+        const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(", ");
         next(new HttpException(400, message));
       });
   };

@@ -3,3 +3,4 @@ mobile-app/android/app/src/main/assets/index.android.bundle
 mobile-app/android/app/src/main/assets/index.android
 */.env
 node_modules
+shared/dist

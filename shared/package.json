@@ -1,12 +1,15 @@
 {
   "name": "shared",
   "version": "1.0.0",
-  "description": "sharing is carings",
-  "main": "index.js",
+  "description": "sharing is caring",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "vorfahrt",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.4.2"
+  }
 }

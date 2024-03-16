@@ -49,5 +49,5 @@ export const MILES_STATUS_CODES_ARRAY = [
     "BOOKED_BY_USER",
     "UPFITTING",
     "IN_OPS",
-    "FRAU"D
+    "FRAUD"
 ]

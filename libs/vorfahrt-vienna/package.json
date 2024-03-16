@@ -4,9 +4,9 @@
   "description": "Assets for Vorfahrt - A micromobility insight platform.",
   "main": "dist/index.js",
   "scripts": {
-    "build-node": "tsx ./build/index.ts",
+    "build-node": "pnpx tsx ./build/index.ts",
     "build": "bun run build/index.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build-node"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
