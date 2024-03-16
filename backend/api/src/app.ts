@@ -1,4 +1,4 @@
-import { DB_PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, NODE_ENV } from "@config";
+import { LOG_FORMAT, ORIGIN, CREDENTIALS, NODE_ENV, SERVE_PORT } from "@config";
 import { ErrorMiddleware } from "@middlewares/error.middleware";
 import { logger, stream } from "@utils/logger";
 import { defaultMetadataStorage } from "class-transformer/cjs/storage";
@@ -23,7 +23,7 @@ export class App {
   constructor(Controllers: Function[]) {
     this.app = express();
     this.env = NODE_ENV || "development";
-    this.port = DB_PORT || 3000;
+    this.port = SERVE_PORT || 3000;
 
     this.initializeMiddlewares();
     this.initializeRoutes(Controllers);

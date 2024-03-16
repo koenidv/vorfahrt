@@ -13,4 +13,11 @@ export class VehicleController {
   async getStatus() {
     return await this.vehicles.getAllMinified();
   }
+
+  // todo wip
+  @Get('/vehicles/status/refetch')
+  @OpenAPI({ summary: 'Returns the last known status for all vehicles' })
+  async refetchVehicles() {
+    return await this.vehicles.fetchVehicleTypesFromDb();
+  }
 }

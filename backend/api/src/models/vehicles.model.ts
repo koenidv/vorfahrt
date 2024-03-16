@@ -1,5 +1,7 @@
 import { VehicleType, BasicVehicleStatus } from "shared/api-types/api.types";
+import { Service } from "typedi";
 
+@Service()
 export class VehiclesCacheModel {
   VehicleTypesModel: Map<number, VehicleType> = new Map();
   VehiclesStatusModel: Map<number, BasicVehicleStatus> = new Map();

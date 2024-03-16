@@ -1,5 +1,5 @@
 import { hash } from 'bcrypt';
-import { Service } from 'typedi';
+import Container, { Service } from 'typedi';
 import { CreateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
@@ -25,12 +25,12 @@ import { MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
 
 @Service()
 export class VehicleService {
-  private entityManager: EntityManager;
+  private entityManager: EntityManager = Container.get("EntityManager");
   private VehicleCache: VehiclesCacheModel;
   private refreshInterval: number;
   private cacheExpiration: number;
 
-  constructor(entityManager: EntityManager, cache: VehiclesCacheModel, refreshInterval = 60000, cacheExpiration = refreshInterval) {
+  constructor(cache: VehiclesCacheModel, refreshInterval = 60000, cacheExpiration = refreshInterval) {
     this.VehicleCache = cache;
     this.refreshInterval = refreshInterval;
     this.cacheExpiration = cacheExpiration;
@@ -57,7 +57,8 @@ export class VehicleService {
     }
   }
 
-  private async fetchVehicleTypesFromDb(): Promise<VehicleModel[]> {
+  // todo private
+  async fetchVehicleTypesFromDb(): Promise<VehicleModel[]> {
     return await this.entityManager.find(VehicleModel, { relations: ["size"] });
   }
 
@@ -105,46 +106,4 @@ export class VehicleService {
     return this.VehicleCache.getAllStatuses();
   }
 
-  public async findAllUser(): Promise<User[]> {
-    const users: User[] = UserModel;
-    return users;
-  }
-
-  public async findUserById(userId: number): Promise<User> {
-    const findUser: User = UserModel.find(user => user.id === userId);
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
-
-    return findUser;
-  }
-
-  public async createUser(userData: CreateUserDto): Promise<User> {
-    const findUser: User = UserModel.find(user => user.email === userData.email);
-    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
-
-    const hashedPassword = await hash(userData.password, 10);
-    const createUserData: User = { id: UserModel.length + 1, ...userData, password: hashedPassword };
-
-    return createUserData;
-  }
-
-  public async updateUser(userId: number, userData: CreateUserDto): Promise<User[]> {
-    const findUser: User = UserModel.find(user => user.id === userId);
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
-
-    const hashedPassword = await hash(userData.password, 10);
-    const updateUserData: User[] = UserModel.map((user: User) => {
-      if (user.id === findUser.id) user = { id: userId, ...userData, password: hashedPassword };
-      return user;
-    });
-
-    return updateUserData;
-  }
-
-  public async deleteUser(userId: number): Promise<User[]> {
-    const findUser: User = UserModel.find(user => user.id === userId);
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
-
-    const deleteUserData: User[] = UserModel.filter(user => user.id !== findUser.id);
-    return deleteUserData;
-  }
 }

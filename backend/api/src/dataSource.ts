@@ -10,9 +10,9 @@ export const AppDataSource = new DataSource({
   username: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
-  synchronize: true,
+  synchronize: false,
   entities: MilesEntities,
   migrations: [],
   subscribers: [],
-  logging: false,
+  logging: true,
 });
