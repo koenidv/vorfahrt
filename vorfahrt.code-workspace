@@ -1,12 +1,12 @@
 {
 	"folders": [
 		{
-			"name": "mobile-app",
-			"path": "apps/mobile-app"
-		},
-		{
 			"name": "scraper",
 			"path": "backend/scraper"
+		},
+		{
+			"name": "api",
+			"path": "backend/api"
 		},
 		{
 			"name": "web-client",
@@ -17,8 +17,20 @@
 			"path": "apps/stats-web"
 		},
 		{
+			"name": "mobile-app",
+			"path": "apps/mobile-app"
+		},
+		{
 			"name": "vienna",
-			"path": "libs/vorfaht-vienna"
+			"path": "libs/vorfahrt-vienna"
+		},
+		{
+			"name": "shared",
+			"path": "shared"
+		},
+		{
+			"name": "docs",
+			"path": "docs"
 		}
 	],
 	"settings": {
