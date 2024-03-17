@@ -34,6 +34,7 @@ export class VehicleMeta {
   @ManyToOne(() => VehicleModel, (model) => model.vehicles)
   @JoinColumn({ name: "modelId" })
   model: VehicleModel;
+  @Column({ nullable: false })
   modelId: number;
 
   @Column()

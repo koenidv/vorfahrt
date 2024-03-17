@@ -1,15 +1,11 @@
-import { hash } from 'bcrypt';
 import Container, { Service } from 'typedi';
-import { CreateUserDto } from '@dtos/users.dto';
-import { HttpException } from '@exceptions/HttpException';
-import { User } from '@interfaces/users.interface';
-import { UserModel } from '@models/users.model';
 import { VehiclesCacheModel } from '@models/vehicles.model';
 import { EntityManager } from 'typeorm';
 import { VehicleModel } from 'shared/typeorm-entities/Miles/VehicleModel';
 import { BasicVehicleStatus, VehicleType } from 'shared/api-types/api.types';
 import { VehicleLastKnown } from 'shared/typeorm-entities/Miles/VehicleLastKnown';
 import { MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
+import { MoreThan } from 'typeorm';
 
 
 /*
@@ -27,38 +23,52 @@ import { MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
 export class VehicleService {
   private entityManager: EntityManager = Container.get("EntityManager");
   private VehicleCache: VehiclesCacheModel;
-  private refreshInterval: number;
-  private cacheExpiration: number;
+  private refreshIntervalMs: number;
+  private cacheExpirationMs: number;
+  private refreshInterval: NodeJS.Timeout;
+  private lastRefetchComplete: Date;
 
-  constructor(cache: VehiclesCacheModel, refreshInterval = 60000, cacheExpiration = refreshInterval) {
+  constructor(cache: VehiclesCacheModel, refreshInterval = 60000, cacheExpiration = refreshInterval * 4) {
     this.VehicleCache = cache;
-    this.refreshInterval = refreshInterval;
-    this.cacheExpiration = cacheExpiration;
+    this.refreshIntervalMs = refreshInterval;
+    this.cacheExpirationMs = cacheExpiration;
+    this.start();
+    // fixme this is only called during the first request, but should be called on server start
   }
+
+  public start() {
+    this.refreshInterval = setInterval(() =>
+      this.fetchAll(this.lastRefetchComplete), this.refreshIntervalMs
+    );
+    this.fetchAll();
+  }
+
+  public stop() {
+    clearInterval(this.refreshInterval);
+  }
+
 
   private isCacheExpired(): boolean {
     if (this.VehicleCache.statusIsEmpty()) return true;
     const now = Date.now();
-    return (now - this.VehicleCache.lastBatchUpdate) > this.cacheExpiration;
+    return (now - this.VehicleCache.lastBatchUpdate) > this.cacheExpirationMs;
   }
 
-  private async refetchIfCacheExpired(): Promise<boolean> {
-    if (!this.isCacheExpired()) {
-      return false;
-    } else {
-      // todo refetch cache
-      const vehicleTypes = await this.fetchVehicleTypesFromDb();
-      const vehicleTypesMapped = vehicleTypes.map(this.mapVehicleTypeToCacheItem);
-      const vehiclesLastKnown = await this.fetchVehiclesLastKnownFromDb();
-      const vehiclesLastKnownMapped = vehiclesLastKnown.map(this.mapVehicleMetaToBasicStatus);
 
-      this.VehicleCache.saveVehicleTypes(vehicleTypesMapped);
-      this.VehicleCache.saveStatuses(vehiclesLastKnownMapped);
-    }
+  async fetchAll(since?: Date): Promise<void> {
+    console.log("fetching all")
+    const vehicleTypes = await this.fetchVehicleTypesFromDb();
+    this.VehicleCache.saveVehicleTypes(vehicleTypes.map(this.mapVehicleTypeToCacheItem));
+    console.log("fetched vehicle types")
+
+    const vehiclesLastKnown = await this.fetchVehiclesLastKnownFromDb(since);
+    this.VehicleCache.saveStatuses(vehiclesLastKnown.map(this.mapVehicleMetaToBasicStatus));
+    console.log("fetched vehicle statuses")
+
+    this.lastRefetchComplete = new Date();
   }
 
-  // todo private
-  async fetchVehicleTypesFromDb(): Promise<VehicleModel[]> {
+  private async fetchVehicleTypesFromDb(): Promise<VehicleModel[]> {
     return await this.entityManager.find(VehicleModel, { relations: ["size"] });
   }
 
@@ -66,31 +76,40 @@ export class VehicleService {
     return [vehicleType.id, vehicleType.name, vehicleType.size.name, vehicleType.electric]
   }
 
-  private async fetchVehiclesLastKnownFromDb(): Promise<VehicleLastKnown[]> {
-    return await this.entityManager.find(VehicleLastKnown, { relations: ["vehicle"] });
+  private async fetchVehiclesLastKnownFromDb(since: Date = new Date(0)): Promise<VehicleLastKnown[]> {
+    return await this.entityManager.find(VehicleLastKnown, { relations: ["vehicle"], where: { updated: MoreThan(since) } });
   }
 
   private mapVehicleMetaToBasicStatus(vehicle: VehicleLastKnown): BasicVehicleStatus {
-    // todo status enum, cache models
     const statusId = MILES_STATUS_CODES_ARRAY.indexOf(vehicle.status);
-    if (statusId === -1) throw new Error(`Unknown status code ${vehicle.status}`);
+    if (statusId === -1 || statusId === undefined) throw new Error(`Unknown status code ${vehicle.status}`);
     return [vehicle.milesId, vehicle.vehicle.licensePlate, vehicle.vehicle.modelId, statusId, vehicle.latitude, vehicle.longitude, vehicle.updated.getTime()]
   }
 
 
-  public async getAllMinified(): Promise<string> {
+
+  public getStatusesMinified(): string | null {
+    if (this.isCacheExpired()) {
+      console.error("Tried to get minified statuses but cache is expired or empty");
+      return null;
+    }
+    return this.minifyVehicleStatuses(
+      this.getCachedVehicles(),
+      this.getCachedStatuses()
+    )
+  }
+
+  private minifyVehicleStatuses(vehicleTypes: VehicleType[], statuses: BasicVehicleStatus[]): string {
     const result: string[] = [];
     result.push(MILES_STATUS_CODES_ARRAY.join(","));
-    
-    const vehicleTypes = this.getCachedVehicles();
+
     vehicleTypes.forEach(vehicleType => {
       result.push(vehicleType.join(","));
     });
-    
+
     // push an empty line as indicator for start of status data
     result.push("");
-    
-    const statuses = this.getCachedStatuses();
+
     statuses.forEach(status => {
       result.push(status.join(","));
     });

@@ -1,4 +1,4 @@
-import { Controller, Get } from 'routing-controllers';
+import { Controller, Get, OnNull } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { Container } from 'typedi';
 import { VehicleService } from '@services/vehicles.service';
@@ -10,14 +10,9 @@ export class VehicleController {
 
   @Get('/vehicles/status')
   @OpenAPI({ summary: 'Returns the last known status for all vehicles' })
+  @OnNull(503)
   async getStatus() {
-    return await this.vehicles.getAllMinified();
+    return this.vehicles.getStatusesMinified();
   }
 
-  // todo wip
-  @Get('/vehicles/status/refetch')
-  @OpenAPI({ summary: 'Returns the last known status for all vehicles' })
-  async refetchVehicles() {
-    return await this.vehicles.fetchVehicleTypesFromDb();
-  }
 }
