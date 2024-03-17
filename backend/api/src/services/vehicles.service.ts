@@ -33,7 +33,6 @@ export class VehicleService {
     this.refreshIntervalMs = refreshInterval;
     this.cacheExpirationMs = cacheExpiration;
     this.start();
-    // fixme this is only called during the first request, but should be called on server start
   }
 
   public start() {

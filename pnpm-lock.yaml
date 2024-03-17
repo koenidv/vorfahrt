@@ -199,6 +199,12 @@ importers:
 
   backend/api:
     dependencies:
+      '@influxdata/influxdb-client':
+        specifier: ^1.33.2
+        version: 1.33.2
+      '@influxdata/influxdb-client-apis':
+        specifier: ^1.33.2
+        version: 1.33.2(@influxdata/influxdb-client@1.33.2)
       '@types/superagent':
         specifier: ^8.1.4
         version: 8.1.4

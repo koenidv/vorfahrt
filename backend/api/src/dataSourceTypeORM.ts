@@ -14,5 +14,5 @@ export const AppDataSource = new DataSource({
   entities: MilesEntities,
   migrations: [],
   subscribers: [],
-  logging: true,
+  logging: false,
 });
