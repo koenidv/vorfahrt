@@ -56,14 +56,12 @@ export class VehicleService {
 
 
   async fetchAll(since?: Date): Promise<void> {
-    console.log("fetching all")
+    console.log("Fetching vehicle types and statuses")
     const vehicleTypes = await this.fetchVehicleTypesFromDb();
     this.VehicleCache.saveVehicleTypes(vehicleTypes.map(this.mapVehicleTypeToCacheItem));
-    console.log("fetched vehicle types")
 
     const vehiclesLastKnown = await this.fetchVehiclesLastKnownFromDb(since);
     this.VehicleCache.saveStatuses(vehiclesLastKnown.map(this.mapVehicleMetaToBasicStatus));
-    console.log("fetched vehicle statuses")
 
     this.lastRefetchComplete = new Date();
   }
