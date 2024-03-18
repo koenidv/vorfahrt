@@ -90,10 +90,11 @@ export class VehicleService {
       console.error("Tried to get minified statuses but cache is expired or empty");
       return null;
     }
-    return this.minifyVehicleStatuses(
+    const minified = this.minifyVehicleStatuses(
       this.getCachedVehicles(),
       this.getCachedStatuses()
     )
+    return this.VehicleCache.lastBatchUpdate + "\n" + minified;
   }
 
   private minifyVehicleStatuses(vehicleTypes: VehicleType[], statuses: BasicVehicleStatus[]): string {
