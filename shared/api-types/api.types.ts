@@ -17,3 +17,10 @@ export type BasicVehicleStatus = [
     timestamp: number,
     //images are per vehicle because of colors, but not worth it for now
 ]
+
+export type HistoryPoint = [
+    vehicleId: number,
+    timestamp: number,
+    keyId: number,
+    value: number | string | boolean,
+]

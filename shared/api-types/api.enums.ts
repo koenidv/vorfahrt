@@ -51,3 +51,25 @@ export const MILES_STATUS_CODES_ARRAY = [
     "IN_OPS",
     "FRAUD"
 ]
+
+export enum MILES_HISTORY_KEYS {
+    charge,
+    charging,
+    damageCount,
+    discounted,
+    latitude,
+    longitude,
+    range,
+    status
+}
+
+export const MILES_HISTORY_KEYS_ARRAY = [
+    "charge",
+    "charging",
+    "damageCount",
+    "discounted",
+    "latitude",
+    "longitude",
+    "range",
+    "status"
+]
