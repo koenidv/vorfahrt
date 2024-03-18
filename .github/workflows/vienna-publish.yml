@@ -4,7 +4,7 @@ run-name: Publish Vienna
 on:
   push:
     branches:
-      - main
+      - vienna-publish
 
 jobs:
   release:
