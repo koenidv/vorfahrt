@@ -5,7 +5,7 @@ import { Service } from "typedi";
 export class VehiclesCacheModel {
   VehicleTypesModel: Map<number, VehicleType> = new Map();
   VehiclesStatusModel: Map<number, BasicVehicleStatus> = new Map();
-  lastBatchUpdate: number;
+  lastBatchUpdate = 0;
 
   vehicleTypesIsEmpty(): boolean {
     return this.VehicleTypesModel.size === 0;

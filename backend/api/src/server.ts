@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+import "reflect-metadata";
+import { HistoryController } from "@controllers/history.controller";
 import { App } from "@/app";
 import { getInfluxQueryApi } from "@/dataSourceInflux";
 import { AppDataSource } from "@/dataSourceTypeORM";
@@ -20,6 +23,6 @@ import Container from "typedi";
   Container.get(VehicleService);
   Container.get(HistoryService);
 
-  const app = new App([AuthController, UserController, VehicleController]);
+  const app = new App([AuthController, UserController, VehicleController, HistoryController]);
   app.listen();
 })();

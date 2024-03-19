@@ -4,7 +4,7 @@ import { Service } from "typedi";
 @Service()
 export class HistoryCacheModel {
   private historyItems: HistoryPoint[] = [];
-  lastUpdate: number;
+  lastUpdate = 0;
 
   isEmpty(): boolean {
     return this.historyItems.length === 0;

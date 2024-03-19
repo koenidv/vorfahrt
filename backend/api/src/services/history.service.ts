@@ -64,9 +64,9 @@ export class HistoryService {
    */
   private async fetch(since?: Date): Promise<void> {
     console.log("Fetching history");
-    for await (const row of this.QueryAPI.iterateRows(this.getFluxQuery(since))) {
-      this.saveRow(row.values as FilteredFluxResponseRow, row.tableMeta);
-    }
+    // for await (const row of this.QueryAPI.iterateRows(this.getFluxQuery(since))) {
+    //   this.saveRow(row.values as FilteredFluxResponseRow, row.tableMeta);
+    // }
   }
 
   /**
@@ -155,7 +155,7 @@ export class HistoryService {
    * Retrieve cached values and minimize them for bandwidth efficiency
    * @returns minified cache for api response
    */
-  private getCacheMinified(): string {
+   getCacheMinified(): string {
     return `
       ${this.historyCache.lastUpdate}
       ${this.minifyCachedKeys()}
@@ -193,6 +193,7 @@ export class HistoryService {
    * @returns cached history points
    */
   private getCachedValues(): HistoryPoint[] {
+    console.log(this.historyCache)
     return this.historyCache.getAll();
   }
 
