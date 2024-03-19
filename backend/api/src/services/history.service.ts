@@ -27,6 +27,9 @@ export class HistoryService {
     this.start();
   }
 
+  /**
+   * Fetch and cache values and start an interval to refresh the cache
+   */
   public start() {
     this.refreshInterval = setInterval(() =>
       this.fetch(this.lastRefetchComplete), this.refreshIntervalMs
@@ -34,16 +37,27 @@ export class HistoryService {
     this.fetch();
   }
 
+  /**
+   * Stops the refresh interval
+   */
   public stop() {
     clearInterval(this.refreshInterval);
   }
 
+  /**
+   * Checks if the cache is empty or expired
+   * @returns true if cache is empty or expired
+   */
   private isCacheExpired(): boolean {
     if (this.historyCache.isEmpty()) return true;
     const now = Date.now();
     return (now - this.historyCache.lastUpdate) > this.cacheExpirationMs;
   }
 
+  /**
+   * Fetch and save history values from Influx to cache
+   * @param since last update date
+   */
   private async fetch(since?: Date): Promise<void> {
     console.log("Fetching history");
     for await (const row of this.QueryAPI.iterateRows(this.getFluxQuery(since))) {
@@ -51,6 +65,11 @@ export class HistoryService {
     }
   }
 
+  /**
+   * Generates the flux query to get cached keys from the last update or start of today, whichever is later
+   * @param sinceOpt last update date
+   * @returns flux query string
+   */
   private getFluxQuery(sinceOpt?: Date): string {
     const sinceText = this.getFluxStartWithinToday(sinceOpt);
     const fields = `[${MILES_HISTORY_KEYS_ARRAY.map(key => `"${key}"`).join(",")}]`;
@@ -66,7 +85,7 @@ export class HistoryService {
 
   /**
    * Generates a relative flux time string for the last update or start of today, whichever is later 
-   * @param sinceOpt last update time
+   * @param sinceOpt last update date
    * @returns relative flux time: "-<seconds>s"
    */
   private getFluxStartWithinToday(sinceOpt?: Date): string {
@@ -80,10 +99,21 @@ export class HistoryService {
     return `-${secondsPassed}s`;
   }
 
+  /**
+   * Saves a single row returned by influx
+   * @param row 
+   * @param tableMeta 
+   */
   private saveRow(row: FilteredFluxResponseRow, tableMeta: FluxTableMetaData): void {
     this.historyCache.save([this.parseRow(row, tableMeta)]);
   }
 
+  /**
+   * Parses a row returned by influx to a HistoryPoint
+   * @param row values from influx as result, table, time, value, key, vehicleId
+   * @param tableMeta vehicleMeta describing the types of each column
+   * @returns parsed HistoryPoint
+   */
   private parseRow(row: FilteredFluxResponseRow, tableMeta: FluxTableMetaData): HistoryPoint {
     const keyId = MILES_HISTORY_KEYS_ARRAY.indexOf(row[4]);
     if (keyId === -1) throw new Error(`Unknown key ${row[4]}`);
@@ -95,6 +125,12 @@ export class HistoryService {
     ]
   }
 
+  /**
+   * Identifies the type of the value column and parses it accordingly
+   * @param row values from influx as result, table, time, value, key, vehicleId
+   * @param tableMeta vehicleMeta describing the types of each column
+   * @returns parsed value from the value column
+   */
   private parseValueType(row: FilteredFluxResponseRow, tableMeta: FluxTableMetaData): string | number | boolean {
     const type = tableMeta.columns[3].dataType;
     if (type === "string") return row[3];
