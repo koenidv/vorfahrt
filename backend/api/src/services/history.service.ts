@@ -1,12 +1,16 @@
 import Container, { Service } from 'typedi';
 import { FluxTableMetaData, QueryApi } from '@influxdata/influxdb-client';
 import { HistoryCacheModel } from '@/models/history.model';
-import { MILES_HISTORY_KEYS_ARRAY } from 'shared/api-types/api.enums';
+import { MILES_HISTORY_KEYS_ARRAY, MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
 import { HistoryPoint } from 'shared/api-types/api.types';
 
 /*
  * History output is non-standard csv to save bandwith
- * output to be decided
+ * last update timestamp
+ * MEASUREMENT_KEY*0, MEASUREMENT_KEY*1, ...
+ * STATUSCODE*0, STATUSCODE*1, ...
+ * (for each vehicle) milesId, timestamp, keyId, value (value type depends on key, will be statusId for status)
+ * ...
  */
 
 type FilteredFluxResponseRow = [result: string, table: string, time: string, value: string, key: string, vehicleId: string];
@@ -127,11 +131,19 @@ export class HistoryService {
 
   /**
    * Identifies the type of the value column and parses it accordingly
+   * status strings will be parsed to statusIds
    * @param row values from influx as result, table, time, value, key, vehicleId
    * @param tableMeta vehicleMeta describing the types of each column
    * @returns parsed value from the value column
    */
   private parseValueType(row: FilteredFluxResponseRow, tableMeta: FluxTableMetaData): string | number | boolean {
+    const key = row[4];
+    if (key === "status") {
+      const statusId = MILES_STATUS_CODES_ARRAY.indexOf(row[3]);
+      if (statusId === -1) throw new Error(`Unknown status ${row[3]}`);
+      return statusId;
+    }
+
     const type = tableMeta.columns[3].dataType;
     if (type === "string") return row[3];
     if (type === "long") return Number(row[3]);

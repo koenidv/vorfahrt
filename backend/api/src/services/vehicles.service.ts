@@ -10,7 +10,8 @@ import { MoreThan } from 'typeorm';
 
 /*
  * Vehicles output is a bit of a weird format to be very bandwidth efficient. This is what it looks like (as CSV)
- * STATUSCODE*1 (referred to as status #0), STATUSCODE*2 (status #1), ...
+ * last update timestamp 
+ * STATUSCODE*0 (referred to as status #0), STATUSCODE*1 (status #1), ...
  * (for vehicle type #0) name, size, image, electric (e/c)
  * (for vehicle type #1) name, size, image, electric (e/c)
  * ...
