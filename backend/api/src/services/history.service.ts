@@ -18,14 +18,12 @@ export class HistoryService {
   private refreshIntervalMs: number;
   private cacheExpirationMs: number;
   private refreshInterval: NodeJS.Timeout;
-  private maxHistoryMs: number;
   private lastRefetchComplete: Date;
 
-  constructor(cache: HistoryCacheModel, refreshInterval = 60000, cacheExpiration = refreshInterval * 4, maxHistoryMs = 24 * 60 * 60 * 1000) {
+  constructor(cache: HistoryCacheModel, refreshInterval = 60000, cacheExpiration = refreshInterval * 4) {
     this.historyCache = cache;
     this.refreshIntervalMs = refreshInterval;
     this.cacheExpirationMs = cacheExpiration;
-    this.maxHistoryMs = maxHistoryMs;
     this.start();
   }
 
@@ -54,7 +52,7 @@ export class HistoryService {
   }
 
   private getFluxQuery(sinceOpt?: Date): string {
-    const sinceText = this.getFluxStart(sinceOpt);
+    const sinceText = this.getFluxStartWithinToday(sinceOpt);
     const fields = `[${MILES_HISTORY_KEYS_ARRAY.map(key => `"${key}"`).join(",")}]`;
     return `
       from(bucket: "miles")
@@ -66,15 +64,20 @@ export class HistoryService {
       `
   }
 
-  private getFluxStart(sinceOpt?: Date): string {
+  /**
+   * Generates a relative flux time string for the last update or start of today, whichever is later 
+   * @param sinceOpt last update time
+   * @returns relative flux time: "-<seconds>s"
+   */
+  private getFluxStartWithinToday(sinceOpt?: Date): string {
+    const today = new Date();
+    const todayStartMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
     const sinceMs = Math.max(
       sinceOpt !== undefined ? sinceOpt.getTime() : 0,
-      Date.now() - this.maxHistoryMs
+      todayStartMs
     );
     const secondsPassed = Math.floor(Date.now() - sinceMs / 1000);
-    //return `-${secondsPassed}s`;
-    // todo should be within today, not within 24h
-    return "-1m"
+    return `-${secondsPassed}s`;
   }
 
   private saveRow(row: FilteredFluxResponseRow, tableMeta: FluxTableMetaData): void {
