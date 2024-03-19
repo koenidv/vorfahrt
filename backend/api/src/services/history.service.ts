@@ -151,5 +151,50 @@ export class HistoryService {
     throw new Error(`Unknown data type ${type}`);
   }
 
+  /**
+   * Retrieve cached values and minimize them for bandwidth efficiency
+   * @returns minified cache for api response
+   */
+  private getCacheMinified(): string {
+    return `
+      ${this.historyCache.lastUpdate}
+      ${this.minifyCachedKeys()}
+      ${this.minifyStatuses()}
+      ${this.minifyHistoryPoints(this.getCachedValues())}
+    `;
+  }
+
+  /**
+   * csv key array for api response
+   * @returns minified keys
+   */
+  private minifyCachedKeys(): string {
+    return MILES_HISTORY_KEYS_ARRAY.join(",");
+  }
+
+  /**
+   * csv status array for api response
+   * @returns minified statuses
+   */
+  private minifyStatuses(): string {
+    return MILES_STATUS_CODES_ARRAY.join(",");
+  }
+
+  /**
+   * csv Minify history points for bandwidth efficiency
+   * @param historyPoints minified history points from cache
+   */
+  private minifyHistoryPoints(historyPoints: HistoryPoint[]): string {
+    return historyPoints.map(point => point.join(",")).join("\n");
+  }
+
+  /**
+   * Retrieve cached values
+   * @returns cached history points
+   */
+  private getCachedValues(): HistoryPoint[] {
+    return this.historyCache.getAll();
+  }
+
 
 }
