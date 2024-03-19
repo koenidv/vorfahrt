@@ -1,61 +1,104 @@
 import Container, { Service } from 'typedi';
-import { QueryApi } from '@influxdata/influxdb-client';
+import { FluxTableMetaData, QueryApi } from '@influxdata/influxdb-client';
+import { HistoryCacheModel } from '@/models/history.model';
+import { MILES_HISTORY_KEYS_ARRAY } from 'shared/api-types/api.enums';
+import { HistoryPoint } from 'shared/api-types/api.types';
 
 /*
  * History output is non-standard csv to save bandwith
  * output to be decided
  */
 
+type FilteredFluxResponseRow = [result: string, table: string, time: string, value: string, key: string, vehicleId: string];
+
 @Service()
 export class HistoryService {
   private QueryAPI: QueryApi = Container.get("InfluxQueryApi");
-  // private VehicleCache: VehiclesCacheModel;
+  private historyCache: HistoryCacheModel;
   private refreshIntervalMs: number;
   private cacheExpirationMs: number;
   private refreshInterval: NodeJS.Timeout;
+  private maxHistoryMs: number;
   private lastRefetchComplete: Date;
 
-  constructor(/*cache: VehiclesCacheModel,*/ refreshInterval = 60000, cacheExpiration = refreshInterval * 4) {
-    // this.VehicleCache = cache;
+  constructor(cache: HistoryCacheModel, refreshInterval = 60000, cacheExpiration = refreshInterval * 4, maxHistoryMs = 24 * 60 * 60 * 1000) {
+    this.historyCache = cache;
     this.refreshIntervalMs = refreshInterval;
     this.cacheExpirationMs = cacheExpiration;
+    this.maxHistoryMs = maxHistoryMs;
     this.start();
   }
 
   public start() {
     this.refreshInterval = setInterval(() =>
-      // this.fetchAll(this.lastRefetchComplete), this.refreshIntervalMs
-      true
+      this.fetch(this.lastRefetchComplete), this.refreshIntervalMs
     );
-    // this.fetchAll();
-    // todo this was only to test influx connection and will be removed later
-    this.QueryAPI.collectRows(`
-      from(bucket: "system_scraper")
-        |> range(start: -15m)
-        |> filter(fn: (r) => r["_measurement"] == "miles-map-citylog")
-        |> filter(fn: (r) => r["_field"] == "vehicles")
-        |> group(columns: ["city"])
-        |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
-        |> yield(name: "mean")
-    `).then((rows) => {
-      rows.forEach(row => {
-        console.log(row);
-      });
-    });
+    this.fetch();
   }
 
   public stop() {
     clearInterval(this.refreshInterval);
   }
 
+  private isCacheExpired(): boolean {
+    if (this.historyCache.isEmpty()) return true;
+    const now = Date.now();
+    return (now - this.historyCache.lastUpdate) > this.cacheExpirationMs;
+  }
 
-  // private isCacheExpired(): boolean {
-  //   if (this.VehicleCache.statusIsEmpty()) return true;
-  //   const now = Date.now();
-  //   return (now - this.VehicleCache.lastBatchUpdate) > this.cacheExpirationMs;
-  // }
+  private async fetch(since?: Date): Promise<void> {
+    console.log("Fetching history");
+    for await (const row of this.QueryAPI.iterateRows(this.getFluxQuery(since))) {
+      this.saveRow(row.values as FilteredFluxResponseRow, row.tableMeta);
+    }
+  }
 
+  private getFluxQuery(sinceOpt?: Date): string {
+    const sinceText = this.getFluxStart(sinceOpt);
+    const fields = `[${MILES_HISTORY_KEYS_ARRAY.map(key => `"${key}"`).join(",")}]`;
+    return `
+      from(bucket: "miles")
+      |> range(start: ${sinceText})
+      |> filter(fn: (r) => r["_measurement"] == "vehicle_data")
+      |> filter(fn: (r) => contains(value: r["_field"], set: ${fields}))
+      |> drop(columns: ["table", "_measurement", "_start", "_stop", "city", "host", "status", "statusChangedFrom"])
+      |> group(columns: ["_field"])
+      `
+  }
 
+  private getFluxStart(sinceOpt?: Date): string {
+    const sinceMs = Math.max(
+      sinceOpt !== undefined ? sinceOpt.getTime() : 0,
+      Date.now() - this.maxHistoryMs
+    );
+    const secondsPassed = Math.floor(Date.now() - sinceMs / 1000);
+    //return `-${secondsPassed}s`;
+    // todo should be within today, not within 24h
+    return "-1m"
+  }
+
+  private saveRow(row: FilteredFluxResponseRow, tableMeta: FluxTableMetaData): void {
+    this.historyCache.save([this.parseRow(row, tableMeta)]);
+  }
+
+  private parseRow(row: FilteredFluxResponseRow, tableMeta: FluxTableMetaData): HistoryPoint {
+    const keyId = MILES_HISTORY_KEYS_ARRAY.indexOf(row[4]);
+    if (keyId === -1) throw new Error(`Unknown key ${row[4]}`);
+    return [
+      Number(row[5]),
+      new Date(row[2]).getTime(),
+      keyId,
+      this.parseValueType(row, tableMeta)
+    ]
+  }
+
+  private parseValueType(row: FilteredFluxResponseRow, tableMeta: FluxTableMetaData): string | number | boolean {
+    const type = tableMeta.columns[3].dataType;
+    if (type === "string") return row[3];
+    if (type === "long") return Number(row[3]);
+    if (type === "boolean") return row[3] === "true";
+    throw new Error(`Unknown data type ${type}`);
+  }
 
 
 }
