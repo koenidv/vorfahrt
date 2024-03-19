@@ -35,6 +35,9 @@ export class VehicleService {
     this.start();
   }
 
+  /**
+   * Fetch and cache values and start an interval to refresh the cache
+   */
   public start() {
     this.refreshInterval = setInterval(() =>
       this.fetchAll(this.lastRefetchComplete), this.refreshIntervalMs
@@ -42,18 +45,27 @@ export class VehicleService {
     this.fetchAll();
   }
 
+  /**
+   * Stops the refresh interval
+   */
   public stop() {
     clearInterval(this.refreshInterval);
   }
 
-
+  /**
+   * Checks if the cache is empty or expired
+   * @returns true if cache is empty or expired
+   */
   private isCacheExpired(): boolean {
     if (this.VehicleCache.statusIsEmpty() || this.VehicleCache.vehicleTypesIsEmpty) return true;
     const now = Date.now();
     return (now - this.VehicleCache.lastBatchUpdate) > this.cacheExpirationMs;
   }
 
-
+  /**
+   * Fetch and save vehicle types and statuses from DB to cache
+   * @param since last update date
+   */
   async fetchAll(since?: Date): Promise<void> {
     console.log("Fetching vehicle types and statuses")
     const vehicleTypes = await this.fetchVehicleTypesFromDb();
@@ -65,26 +77,48 @@ export class VehicleService {
     this.lastRefetchComplete = new Date();
   }
 
+  /**
+   * Fetches vehicle types from DB
+   * @returns vehicle types
+   */
   private async fetchVehicleTypesFromDb(): Promise<VehicleModel[]> {
     return await this.entityManager.find(VehicleModel, { relations: ["size"] });
   }
 
+  /**
+   * Maps vehicle type to cache item
+   * @param vehicleType vehicle type entity
+   * @returns mapped cache item
+   */
   private mapVehicleTypeToCacheItem(vehicleType: VehicleModel): VehicleType {
     return [vehicleType.id, vehicleType.name, vehicleType.size.name, vehicleType.electric]
   }
 
+  /**
+   * Fetches vehicle statuses from DB
+   * @param since last update date
+   * @returns vehicle statuses
+   */
   private async fetchVehiclesLastKnownFromDb(since: Date = new Date(0)): Promise<VehicleLastKnown[]> {
     return await this.entityManager.find(VehicleLastKnown, { relations: ["vehicle"], where: { updated: MoreThan(since) } });
   }
 
+  /**
+   * Maps vehicle meta to basic status
+   * @param vehicle vehicle meta entity
+   * @returns mapped basic status
+   */
   private mapVehicleMetaToBasicStatus(vehicle: VehicleLastKnown): BasicVehicleStatus {
     const statusId = MILES_STATUS_CODES_ARRAY.indexOf(vehicle.status);
     if (statusId === -1 || statusId === undefined) throw new Error(`Unknown status code ${vehicle.status}`);
     return [vehicle.milesId, vehicle.vehicle.licensePlate, vehicle.vehicle.modelId, statusId, vehicle.latitude, vehicle.longitude, vehicle.updated.getTime()]
   }
 
-
-
+  /**
+   * Retrieve cached values and minimize them for bandwidth efficiency,
+   * including the last update timestamp
+   * @returns minified statuses or null if cache is empty
+   */
   public getStatusesMinified(): string | null {
     if (this.isCacheExpired()) {
       console.error("Tried to get minified statuses but cache is expired or empty");
@@ -97,6 +131,12 @@ export class VehicleService {
     return this.VehicleCache.lastBatchUpdate + "\n" + minified;
   }
 
+  /**
+   * Minify vehicle types and statuses for bandwidth efficiency, including a list of vehicle statuses
+   * @param vehicleTypes vehicle types from cache
+   * @param statuses vehicle statuses from cache
+   * @returns 
+   */
   private minifyVehicleStatuses(vehicleTypes: VehicleType[], statuses: BasicVehicleStatus[]): string {
     const result: string[] = [];
     result.push(MILES_STATUS_CODES_ARRAY.join(","));
@@ -115,10 +155,18 @@ export class VehicleService {
     return result.join("\n");
   }
 
+  /**
+   * Retrieve cached vehicle types
+   * @returns vehicle types
+   */
   private getCachedVehicles(): VehicleType[] {
     return this.VehicleCache.getAllVehicleTypes();
   }
 
+  /**
+   * Retrieve cached vehicle statuses
+   * @returns vehicle statuses
+   */
   private getCachedStatuses(): BasicVehicleStatus[] {
     return this.VehicleCache.getAllStatuses();
   }
