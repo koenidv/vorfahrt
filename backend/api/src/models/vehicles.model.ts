@@ -27,7 +27,6 @@ export class VehiclesCacheModel {
 
   saveVehicleTypes(types: VehicleType[]): void {
     types.forEach(item => {
-      if (this.VehicleTypesModel.has(item[0])) console.warn(`Vehicle type ${item[0]} already in cache`);
       this.VehicleTypesModel.set(item[0], item);
     });
   }

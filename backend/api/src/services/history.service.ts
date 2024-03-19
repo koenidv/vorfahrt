@@ -156,6 +156,10 @@ export class HistoryService {
    * @returns minified cache for api response
    */
    getCacheMinified(): string {
+    if (this.isCacheExpired()) {
+      console.error("Tried to get history but cache is expired or empty");
+      return null;
+    }
     return `
       ${this.historyCache.lastUpdate}
       ${this.minifyCachedKeys()}
