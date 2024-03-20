@@ -58,7 +58,7 @@ export class VehicleService {
    * @returns true if cache is empty or expired
    */
   private isCacheExpired(): boolean {
-    if (this.VehicleCache.statusIsEmpty() || this.VehicleCache.vehicleTypesIsEmpty) return true;
+    if (this.VehicleCache.statusIsEmpty() || this.VehicleCache.vehicleTypesIsEmpty()) return true;
     const now = Date.now();
     return (now - this.VehicleCache.lastBatchUpdate) > this.cacheExpirationMs;
   }
