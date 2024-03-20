@@ -1,5 +1,5 @@
 import { createTRPCProxyClient, createWSClient, httpBatchLink, wsLink } from '@trpc/client';
-import type { AppRouter } from "../../../scraper/src/web-api/appRouter";
+import type { AppRouter } from "vorfahrt-miles-scraper/src/web-api/appRouter";
 import { PUBLIC_ADMIN_WS } from '$env/static/public';
 import { PUBLIC_ADMIN_HTTP } from '$env/static/public';
 import { browser } from '$app/environment';

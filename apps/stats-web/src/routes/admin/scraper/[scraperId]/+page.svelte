@@ -4,7 +4,7 @@
   import { VisXYContainer, VisLine, VisAxis, VisArea } from "@unovis/svelte";
   import { browser } from "$app/environment";
   import { page } from "$app/stores";
-  import type { AggregatedMetric } from "../../../../../../scraper/src/types";
+  import type { AggregatedMetric } from "vorfahrt-miles-scraper/src/types";
   import SpeedAdjustButton from "./SpeedAdjustButton.svelte";
 
   let service = writable<Service | undefined>(undefined);
