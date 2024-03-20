@@ -10,13 +10,13 @@ import { MoreThan } from 'typeorm';
 
 /*
  * Vehicles output is a bit of a weird format to be very bandwidth efficient. This is what it looks like (as CSV)
- * last update timestamp 
+ * last update timestamp (seconds)
  * STATUSCODE*0 (referred to as status #0), STATUSCODE*1 (status #1), ...
  * (for vehicle type #0) name, size, image, electric (e/c)
  * (for vehicle type #1) name, size, image, electric (e/c)
  * ...
  * \n
- * (for each vehicle) milesId, licensePlate, type code, status code, latitude, longitude
+ * (for each vehicle) milesId, licensePlate, type code, status code, latitude, longitude, updated(seconds)
  * ...
  */
 
@@ -39,11 +39,11 @@ export class VehicleService {
   /**
    * Fetch and cache values and start an interval to refresh the cache
    */
-  public start() {
-    this.refreshInterval = setInterval(() =>
-      this.fetchAll(this.lastRefetchComplete), this.refreshIntervalMs
+  public async start() {
+    this.refreshInterval = setInterval(async () =>
+      await this.fetchAll(this.lastRefetchComplete), this.refreshIntervalMs
     );
-    this.fetchAll();
+    await this.fetchAll();
   }
 
   /**
@@ -112,7 +112,7 @@ export class VehicleService {
   private mapVehicleMetaToBasicStatus(vehicle: VehicleLastKnown): BasicVehicleStatus {
     const statusId = MILES_STATUS_CODES_ARRAY.indexOf(vehicle.status);
     if (statusId === -1 || statusId === undefined) throw new Error(`Unknown status code ${vehicle.status}`);
-    return [vehicle.milesId, vehicle.vehicle.licensePlate, vehicle.vehicle.modelId, statusId, vehicle.latitude, vehicle.longitude, vehicle.updated.getTime()]
+    return [vehicle.milesId, vehicle.vehicle.licensePlate, vehicle.vehicle.modelId, statusId, vehicle.latitude, vehicle.longitude, vehicle.updated.getTime() / 1000]
   }
 
   /**
@@ -129,7 +129,7 @@ export class VehicleService {
       this.getCachedVehicles(),
       this.getCachedStatuses()
     )
-    return this.VehicleCache.lastBatchUpdate + "\n" + minified;
+    return (this.VehicleCache.lastBatchUpdate / 1000) + "\n" + minified;
   }
 
   /**
