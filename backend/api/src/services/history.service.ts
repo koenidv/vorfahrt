@@ -6,10 +6,10 @@ import { HistoryPoint } from 'shared/api-types/api.types';
 
 /*
  * History output is non-standard csv to save bandwith
- * last update timestamp
+ * last update timestamp (seconds)
  * MEASUREMENT_KEY*0, MEASUREMENT_KEY*1, ...
  * STATUSCODE*0, STATUSCODE*1, ...
- * (for each vehicle) milesId, timestamp, keyId, value (value type depends on key, will be statusId for status)
+ * (for each vehicle) milesId, timestamp(seconds), keyId, value (value type depends on key, will be statusId for status)
  * ...
  */
 
@@ -19,26 +19,29 @@ type FilteredFluxResponseRow = [result: string, table: string, time: string, val
 export class HistoryService {
   private QueryAPI: QueryApi = Container.get("InfluxQueryApi");
   private historyCache: HistoryCacheModel;
+  private paginationMaxSeconds: number;
   private refreshIntervalMs: number;
   private cacheExpirationMs: number;
   private refreshInterval: NodeJS.Timeout;
   private lastRefetchComplete: Date;
 
-  constructor(cache: HistoryCacheModel, refreshInterval = 60000, cacheExpiration = refreshInterval * 4) {
+  constructor(cache: HistoryCacheModel, refreshInterval = 5 * 60000, cacheExpiration = refreshInterval * 4, paginationMaxSeconds = 15 * 60) {
     this.historyCache = cache;
     this.refreshIntervalMs = refreshInterval;
     this.cacheExpirationMs = cacheExpiration;
+    this.paginationMaxSeconds = paginationMaxSeconds;
     this.start();
   }
 
   /**
    * Fetch and cache values and start an interval to refresh the cache
    */
-  public start() {
-    this.refreshInterval = setInterval(() =>
-      this.fetch(this.lastRefetchComplete), this.refreshIntervalMs
+  public async start() {
+    this.refreshInterval = setInterval(async () =>
+      await this.fetch(this.lastRefetchComplete),
+      this.refreshIntervalMs
     );
-    this.fetch();
+    await this.fetch();
   }
 
   /**
@@ -64,8 +67,16 @@ export class HistoryService {
    */
   private async fetch(since?: Date): Promise<void> {
     console.log("Fetching history");
-    console.log(this.getFluxQuery(since));
-    for await (const row of this.QueryAPI.iterateRows(this.getFluxQuery(since))) {
+    const fluxRanges = this.getFluxRangesPaginated(this.getStartSecondsPassedWithinToday(since));
+    for (const query of this.getFluxQueries(fluxRanges)) {
+      await this.fetchPage(query);
+    }
+    this.lastRefetchComplete = new Date();
+  }
+
+  private async fetchPage(query: string): Promise<void> {
+    console.log("Fetching history page: ", query)
+    for await (const row of this.QueryAPI.iterateRows(query)) {
       this.saveRow(row.values as FilteredFluxResponseRow, row.tableMeta);
     }
   }
@@ -75,33 +86,46 @@ export class HistoryService {
    * @param sinceOpt last update date
    * @returns flux query string
    */
-  private getFluxQuery(sinceOpt?: Date): string {
-    const sinceText = this.getFluxStartWithinToday(sinceOpt);
+  private getFluxQueries(ranges: string[]): string[] {
     const fields = `[${MILES_HISTORY_KEYS_ARRAY.map(key => `"${key}"`).join(",")}]`;
-    return `
+    return ranges.map(range => (`
       from(bucket: "miles")
-      |> range(start: ${sinceText})
+      |> range(${range})
       |> filter(fn: (r) => r["_measurement"] == "vehicle_data")
       |> filter(fn: (r) => contains(value: r["_field"], set: ${fields}))
       |> drop(columns: ["table", "_measurement", "_start", "_stop", "city", "host", "status", "statusChangedFrom"])
       |> group(columns: ["_field"])
-      `
+    `));
   }
 
-  /**
-   * Generates a relative flux time string for the last update or start of today, whichever is later 
-   * @param sinceOpt last update date
-   * @returns relative flux time: "-<seconds>s"
-   */
-  private getFluxStartWithinToday(sinceOpt?: Date): string {
+  private getStartSecondsPassedWithinToday(sinceOpt?: Date): number {
     const today = new Date();
     const todayStartMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
     const sinceMs = Math.max(
       sinceOpt !== undefined ? sinceOpt.getTime() : 0,
       todayStartMs
     );
-    const secondsPassed = Math.floor((Date.now() - sinceMs) / 1000);
-    return `-${secondsPassed}s`;
+    return Math.floor((Date.now() - sinceMs) / 1000);
+  }
+
+  private getFluxRangesPaginated(durationSeconds: number): string[] {
+    return this.paginateRange(durationSeconds).map(range => this.getFluxRange(range.start, range.stop));
+  }
+
+  private paginateRange(durationSeconds: number): { start: number, stop: number }[] {
+    const ranges: { start: number, stop: number }[] = [];
+    let stopSecondsAgo = 0;
+    while (durationSeconds > 0) {
+      const range = Math.min(this.paginationMaxSeconds, durationSeconds);
+      durationSeconds -= range;
+      ranges.push({ start: stopSecondsAgo + range, stop: stopSecondsAgo });
+      stopSecondsAgo += range;
+    }
+    return ranges;
+  }
+
+  private getFluxRange(startSecondsAgo: number, stopSecondsAgo: number): string {
+    return `start: -${startSecondsAgo}s, stop: -${stopSecondsAgo}s`;
   }
 
   /**
@@ -124,7 +148,7 @@ export class HistoryService {
     if (keyId === -1) throw new Error(`Unknown key ${row[4]}`);
     return [
       Number(row[5]),
-      new Date(row[2]).getTime(),
+      new Date(row[2]).getTime() / 1000,
       keyId,
       this.parseValueType(row, tableMeta)
     ]
@@ -147,7 +171,7 @@ export class HistoryService {
 
     const type = tableMeta.columns[3].dataType;
     if (type === "string") return row[3];
-    if (type === "long") return Number(row[3]);
+    if (type === "long" || type === "double") return Number(row[3]);
     if (type === "boolean") return row[3] === "true";
     throw new Error(`Unknown data type ${type}`);
   }
@@ -156,17 +180,17 @@ export class HistoryService {
    * Retrieve cached values and minimize them for bandwidth efficiency
    * @returns minified cache for api response
    */
-   getCacheMinified(): string {
+  getCacheMinified(): string {
     if (this.isCacheExpired()) {
       console.error("Tried to get history but cache is expired or empty");
       return null;
     }
-    return `
-      ${this.historyCache.lastUpdate}
-      ${this.minifyCachedKeys()}
-      ${this.minifyStatuses()}
-      ${this.minifyHistoryPoints(this.getCachedValues())}
-    `;
+    return (
+      this.historyCache.lastUpdate / 1000 + "\n" +
+      this.minifyCachedKeys() + "\n" +
+      this.minifyStatuses() + "\n" +
+      this.minifyHistoryPoints(this.getCachedValues())
+    );
   }
 
   /**
@@ -198,7 +222,6 @@ export class HistoryService {
    * @returns cached history points
    */
   private getCachedValues(): HistoryPoint[] {
-    console.log(this.historyCache)
     return this.historyCache.getAll();
   }
 
