@@ -64,9 +64,10 @@ export class HistoryService {
    */
   private async fetch(since?: Date): Promise<void> {
     console.log("Fetching history");
-    // for await (const row of this.QueryAPI.iterateRows(this.getFluxQuery(since))) {
-    //   this.saveRow(row.values as FilteredFluxResponseRow, row.tableMeta);
-    // }
+    console.log(this.getFluxQuery(since));
+    for await (const row of this.QueryAPI.iterateRows(this.getFluxQuery(since))) {
+      this.saveRow(row.values as FilteredFluxResponseRow, row.tableMeta);
+    }
   }
 
   /**
@@ -99,7 +100,7 @@ export class HistoryService {
       sinceOpt !== undefined ? sinceOpt.getTime() : 0,
       todayStartMs
     );
-    const secondsPassed = Math.floor(Date.now() - sinceMs / 1000);
+    const secondsPassed = Math.floor((Date.now() - sinceMs) / 1000);
     return `-${secondsPassed}s`;
   }
 
