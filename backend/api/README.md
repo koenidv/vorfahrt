@@ -11,3 +11,4 @@ This is a caching service in front of the databases, as well as a proxy for real
 ## API Docs
 
 Once you have the server running, you can access the API docs at `http://localhost:3000/docs` (or your specified port).
+Example responses can be found in [`docs/api-examples`](../../docs/api-examples/).
