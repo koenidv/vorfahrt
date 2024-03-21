@@ -3,8 +3,6 @@ import { FluxTableMetaData, QueryApi } from '@influxdata/influxdb-client';
 import { HistoryCacheModel } from '@/models/history.model';
 import { MILES_HISTORY_KEYS_ARRAY, MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
 import { HistoryPoint } from 'shared/api-types/api.types';
-import { minifyMilesCachedKeys, minifyMilesStatuses } from '@/utils/minifyUtils';
-import { createMinifiedHistoryResponse } from '@/utils/minifyHistory';
 
 /*
  * History output is non-standard csv to save bandwith
@@ -18,19 +16,17 @@ import { createMinifiedHistoryResponse } from '@/utils/minifyHistory';
 type FilteredFluxResponseRow = [result: string, table: string, time: string, value: string, key: string, vehicleId: string];
 
 @Service()
-export class HistoryService {
+export class HistoryCachingService {
   private QueryAPI: QueryApi = Container.get("InfluxQueryApi");
   private historyCache: HistoryCacheModel;
   private paginationMaxSeconds: number;
   private refreshIntervalMs: number;
-  private cacheExpirationMs: number;
   private refreshInterval: NodeJS.Timeout;
   private lastRefetchComplete: Date;
 
-  constructor(cache: HistoryCacheModel, refreshInterval = 5 * 60000, cacheExpiration = refreshInterval * 4, paginationMaxSeconds = 15 * 60) {
+  constructor(cache: HistoryCacheModel, refreshInterval = 5 * 60000, paginationMaxSeconds = 15 * 60) {
     this.historyCache = cache;
     this.refreshIntervalMs = refreshInterval;
-    this.cacheExpirationMs = cacheExpiration;
     this.paginationMaxSeconds = paginationMaxSeconds;
     this.start();
   }
@@ -51,16 +47,6 @@ export class HistoryService {
    */
   public stop() {
     clearInterval(this.refreshInterval);
-  }
-
-  /**
-   * Checks if the cache is empty or expired
-   * @returns true if cache is empty or expired
-   */
-  private isCacheExpired(): boolean {
-    if (this.historyCache.isEmpty()) return true;
-    const now = Date.now();
-    return (now - this.historyCache.lastUpdate) > this.cacheExpirationMs;
   }
 
   /**
@@ -177,26 +163,5 @@ export class HistoryService {
     if (type === "boolean") return row[3] === "true";
     throw new Error(`Unknown data type ${type}`);
   }
-
-  /**
-   * Retrieve cached values and minimize them for bandwidth efficiency
-   * @returns minified cache for api response
-   */
-  getCacheMinified(): string {
-    if (this.isCacheExpired()) {
-      console.error("Tried to get history but cache is expired or empty");
-      return null;
-    }
-    return createMinifiedHistoryResponse(this.getCachedValues(), this.historyCache.lastUpdate / 1000);
-  }
-
-  /**
-   * Retrieve cached values
-   * @returns cached history points
-   */
-  private getCachedValues(): HistoryPoint[] {
-    return this.historyCache.getAll();
-  }
-
 
 }

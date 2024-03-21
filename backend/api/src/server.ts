@@ -7,7 +7,7 @@ import { AppDataSource } from "@/dataSourceTypeORM";
 import { AuthController } from "@controllers/auth.controller";
 import { UserController } from "@controllers/users.controller";
 import { VehicleController } from "@controllers/vehicles.controller";
-import { HistoryService } from "@services/history.service";
+import { HistoryCachingService } from "@/services/historyCaching.service";
 import { VehicleService } from "@services/vehicles.service";
 import { ValidateEnv } from "@utils/validateEnv";
 import Container from "typedi";
@@ -21,7 +21,7 @@ import Container from "typedi";
 
   // Get the caching services so they're initialized and have a cache ready for the first request
   Container.get(VehicleService);
-  Container.get(HistoryService);
+  Container.get(HistoryCachingService);
 
   const app = new App([AuthController, UserController, VehicleController, HistoryController]);
   app.listen();

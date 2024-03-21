@@ -15,7 +15,7 @@ import { join } from 'path';
  */
 
 @Service()
-export class HistoryService {
+export class HistoryStaticService {
   private historyCache: HistoryCacheModel;
 
   constructor(cache: HistoryCacheModel) {
