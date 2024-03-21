@@ -6,6 +6,7 @@ import { BasicVehicleStatus, VehicleType } from 'shared/api-types/api.types';
 import { VehicleLastKnown } from 'shared/typeorm-entities/Miles/VehicleLastKnown';
 import { MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
 import { MoreThan } from 'typeorm';
+import { minifyMilesStatuses } from '@/utils/minifyUtils';
 
 
 /*
@@ -51,6 +52,10 @@ export class VehicleService {
    */
   public stop() {
     clearInterval(this.refreshInterval);
+  }
+
+  public resetLastRefetchComplete() {
+    this.lastRefetchComplete = undefined;
   }
 
   /**
@@ -140,7 +145,7 @@ export class VehicleService {
    */
   private minifyVehicleStatuses(vehicleTypes: VehicleType[], statuses: BasicVehicleStatus[]): string {
     const result: string[] = [];
-    result.push(MILES_STATUS_CODES_ARRAY.join(","));
+    result.push(minifyMilesStatuses());
 
     vehicleTypes.forEach(vehicleType => {
       result.push(vehicleType.join(","));

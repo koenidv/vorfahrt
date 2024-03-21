@@ -3,6 +3,8 @@ import { FluxTableMetaData, QueryApi } from '@influxdata/influxdb-client';
 import { HistoryCacheModel } from '@/models/history.model';
 import { MILES_HISTORY_KEYS_ARRAY, MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
 import { HistoryPoint } from 'shared/api-types/api.types';
+import { minifyMilesCachedKeys, minifyMilesStatuses } from '@/utils/minifyUtils';
+import { createMinifiedHistoryResponse } from '@/utils/minifyHistory';
 
 /*
  * History output is non-standard csv to save bandwith
@@ -185,36 +187,7 @@ export class HistoryService {
       console.error("Tried to get history but cache is expired or empty");
       return null;
     }
-    return (
-      this.historyCache.lastUpdate / 1000 + "\n" +
-      this.minifyCachedKeys() + "\n" +
-      this.minifyStatuses() + "\n" +
-      this.minifyHistoryPoints(this.getCachedValues())
-    );
-  }
-
-  /**
-   * csv key array for api response
-   * @returns minified keys
-   */
-  private minifyCachedKeys(): string {
-    return MILES_HISTORY_KEYS_ARRAY.join(",");
-  }
-
-  /**
-   * csv status array for api response
-   * @returns minified statuses
-   */
-  private minifyStatuses(): string {
-    return MILES_STATUS_CODES_ARRAY.join(",");
-  }
-
-  /**
-   * csv Minify history points for bandwidth efficiency
-   * @param historyPoints minified history points from cache
-   */
-  private minifyHistoryPoints(historyPoints: HistoryPoint[]): string {
-    return historyPoints.map(point => point.join(",")).join("\n");
+    return createMinifiedHistoryResponse(this.getCachedValues(), this.historyCache.lastUpdate / 1000);
   }
 
   /**

@@ -7,6 +7,7 @@ import { Container } from 'typedi';
 export class HistoryController {
   public path = '/history'
   public history = Container.get(HistoryService);
+  public staticFilesService = 
 
   @Get('/history/today')
   @OpenAPI({ summary: 'Returns today\'s history points for all vehicles' })
