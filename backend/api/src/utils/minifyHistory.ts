@@ -8,7 +8,7 @@ import { HistoryPoint } from "shared/api-types/api.types";
 export function createMinifiedHistoryResponse(historyPoints: HistoryPoint[], lastUpdateSeconds: number): string {
   // eslint-disable-next-line prettier/prettier
   return (
-    lastUpdateSeconds + "\n" +
+    Math.round(lastUpdateSeconds) + "\n" +
     minifyMilesCachedKeys() + "\n" +
     minifyMilesStatuses() + "\n" +
     minifyHistoryPoints(historyPoints)

@@ -22,6 +22,15 @@ export class HistoryStaticService {
     this.historyCache = cache;
   }
 
+  public async getStaticFileContent(date: Date): Promise<PathLike> {
+    const path = this.getPathForDate(date);
+    if (fssync.existsSync(join(path.pathName, path.fileName))) {
+      return await fs.readFile(join(path.pathName, path.fileName));
+    } else {
+      return undefined;
+    }
+  };
+
   /**
    * Builds a static history file including all currently cached history points for a given date
    * @param date date to generate the file for, i.e. the just finished and completely cached day
