@@ -134,7 +134,7 @@ export class VehicleService {
       this.getCachedVehicles(),
       this.getCachedStatuses()
     )
-    return (this.VehicleCache.lastBatchUpdate / 1000) + "\n" + minified;
+    return Math.round(this.VehicleCache.lastBatchUpdate / 1000) + "\n" + minified;
   }
 
   /**
