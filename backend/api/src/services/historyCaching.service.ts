@@ -50,6 +50,13 @@ export class HistoryCachingService {
   }
 
   /**
+   * Resets the last refetch complete date to force a refetch on the next interval
+   */
+  public resetLastRefetchComplete() {
+    this.lastRefetchComplete = undefined;
+  }
+
+  /**
    * Fetch and save history values from Influx to cache
    * @param since last update date
    */

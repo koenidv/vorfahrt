@@ -11,7 +11,7 @@ export function createMinifiedHistoryResponse(historyPoints: HistoryPoint[], las
     lastUpdateSeconds + "\n" +
     minifyMilesCachedKeys() + "\n" +
     minifyMilesStatuses() + "\n" +
-    minifyHistoryPoints(this.getCachedValues())
+    minifyHistoryPoints(historyPoints)
   );
 }
 

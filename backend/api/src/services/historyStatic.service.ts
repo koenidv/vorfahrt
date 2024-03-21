@@ -34,12 +34,16 @@ export class HistoryStaticService {
     const minifiedHistory = createMinifiedHistoryResponse(filteredPoints, this.historyCache.lastUpdate / 1000);
     const path = this.getPathForDate(date);
 
-    if (fssync.existsSync(path)) {
+    if (!fssync.existsSync(path.pathName)) {
+      await fs.mkdir(path.pathName, { recursive: true });
+    }
+    if (fssync.existsSync(path.fileName)) {
       throw new Error('Generate static history: File already exists for date ' + date);
     }
+    console.log('Generate static history: Writing to file', path)
     // todo check if saving this stuff to fs poses a security risk
-    await fs.writeFile(path, minifiedHistory);
-    return path;
+    await fs.writeFile(join(path.pathName, path.fileName), minifiedHistory);
+    return join(path.pathName, path.fileName);
   }
 
   /**
@@ -63,9 +67,9 @@ export class HistoryStaticService {
    * @param date date to generate the file for
    * @returns path to save the generated file to
    */
-  private getPathForDate(date: Date): string {
+  private getPathForDate(date: Date): { pathName: string, fileName: string } {
     const fileName = `history-${date.toISOString().split('T')[0]}.csv`;
-    return join(__dirname, 'static', fileName);
+    return { pathName: join(__dirname, "static"), fileName: fileName };
   }
 
 }

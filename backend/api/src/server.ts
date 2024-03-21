@@ -19,9 +19,10 @@ import Container from "typedi";
   Container.set("EntityManager", appDataSource.manager);
   Container.set("InfluxQueryApi", getInfluxQueryApi());
 
-  // Get the caching services so they're initialized and have a cache ready for the first request
+  // Get the services that need to run all the time so they're initialized
   Container.get(VehicleService);
   Container.get(HistoryCachingService);
+  Container.get(HistoryController);
 
   const app = new App([AuthController, UserController, VehicleController, HistoryController]);
   app.listen();

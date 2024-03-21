@@ -22,5 +22,6 @@ export class HistoryCacheModel {
 
   clear(): void {
     this.historyItems = [];
+    this.lastUpdate = 0;
   }
 }
