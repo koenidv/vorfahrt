@@ -45,8 +45,9 @@ export class HistoryController {
   @Get('/history/today')
   @OpenAPI({ summary: 'Returns today\'s history points for all vehicles. This also includes yesterday\'s points until the static file is generated.' })
   @OnNull(503)
+  @Header('Cache-Control', 'public, max-age=60')
+  @Header('Content-Type', 'text/csv')
   async getToday() {
-    // todo content type csv
     return this.serving.getResponse();
   }
 
@@ -54,6 +55,7 @@ export class HistoryController {
   @OpenAPI({ summary: 'Returns history points for all vehicles for the given day.' })
   @OnUndefined(404)
   @OnNull(503)
+  @Header('Content-Type', 'text/csv')
   async getHistoryForDay(@Param("year") year: number, @Param("month") month: number, @Param("day") day: number) {
     const dateRequested = new Date(year, month - 1, day);
     const now = new Date();
