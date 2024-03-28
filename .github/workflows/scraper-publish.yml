@@ -3,7 +3,7 @@ name: Docker
 on:
   push:
     branches: 
-      - scraper-publish
+      - publish/scraper
   
 env:
   # Use docker.io for Docker Hub if empty
