@@ -7,7 +7,7 @@ FROM base AS build
 COPY . /app
 WORKDIR /app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run -r build
+RUN pnpm run -r --filter "@vorfahrt-backend/*" build
 RUN pnpm deploy --filter=scraper --prod /prod/scraper
 RUN pnpm deploy --filter=api --prod /prod/api
 

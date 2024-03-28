@@ -1,5 +1,5 @@
 {
-  "name": "vorfahrt-miles-scraper",
+  "name": "@vorfahrt-backend/scraper",
   "version": "0.0.1",
   "description": "Scraping service for Vorfahrt - A micromobility insight platform. Uses our abfahrt scraper.",
   "main": "dist/index.js",
