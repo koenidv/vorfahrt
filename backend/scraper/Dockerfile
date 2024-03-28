@@ -17,7 +17,8 @@ ENV HOSTNAME \
 
 WORKDIR /dist
 
-COPY package.json package-lock.json .npmrc ./
+COPY package.json package-lock.json ./
+COPY *.npmrc ../../*.npmrc ./
 RUN npm ci
 
 COPY . .
