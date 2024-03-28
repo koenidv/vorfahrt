@@ -6,7 +6,7 @@
   "scripts": {
     "build": "pnpm dlx tsx ./build/index.ts",
     "build:bun": "bun run build/index.ts",
-    "prepublishOnly": "pnpm run build-node"
+    "prepublishOnly": "pnpm run build"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
