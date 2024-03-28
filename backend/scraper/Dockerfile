@@ -1,4 +1,4 @@
-FROM node:20-slim AS builder
+FROM node:20-slim AS base
 
 ENV HOSTNAME \
     DB_HOST \
@@ -15,23 +15,22 @@ ENV HOSTNAME \
     INTERVAL_QUEUE_SYNC \
     RESTORE_FROM_SYNC
 
-WORKDIR /dist
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
+WORKDIR /app
 
-COPY package.json package-lock.json ./
-COPY *.npmrc ../../*.npmrc ./
-RUN npm ci
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-COPY . .
-RUN npm run build
-RUN npm prune --production
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
 
-
-FROM node:20-slim
-
-WORKDIR /dist
-COPY --from=builder /dist/build/src build/
-COPY --from=builder /dist/node_modules node_modules/
-COPY package.json .
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/build/src /app/build
 EXPOSE 3000
 ENV NODE_ENV=production
 CMD [ "node", "build", "--start" ]

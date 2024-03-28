@@ -4,8 +4,8 @@
   "description": "Assets for Vorfahrt - A micromobility insight platform.",
   "main": "dist/index.js",
   "scripts": {
-    "build-node": "pnpm dlx tsx ./build/index.ts",
-    "build": "bun run build/index.ts",
+    "build": "pnpm dlx tsx ./build/index.ts",
+    "build:bun": "bun run build/index.ts",
     "prepublishOnly": "pnpm run build-node"
   },
   "publishConfig": {
