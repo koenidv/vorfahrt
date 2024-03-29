@@ -24,13 +24,11 @@ jobs:
       id-token: write
 
     steps:
-      - name: Set up abfahrt package deploy key
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.ABFAHRT_DEPLOY_TOKEN }}
-
-      - name: Checkout repository
+      - name: Checkout repository and submodules
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ABFAHRT_PAT }}
+          submodules: recursive
 
       # Install the cosign tool
       # https://github.com/sigstore/cosign-installer
