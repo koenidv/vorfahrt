@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { EntityManager } from "typeorm";
 import { MilesCityMeta, MilesVehicleDetails } from "../Miles.types";
 import { City } from "shared/typeorm-entities/Miles/City";
 import GeoPoint from "../utils/GeoPoint";

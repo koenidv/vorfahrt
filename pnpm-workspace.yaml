@@ -4,4 +4,4 @@ packages:
   - "apps/stats-web"
   - "backend/*"
   - "libs/*"
-  - "shared/*"
+  - "shared"
