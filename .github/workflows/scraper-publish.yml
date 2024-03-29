@@ -24,6 +24,11 @@ jobs:
       id-token: write
 
     steps:
+      - name: Set up abfahrt package deploy key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.ABFAHRT_DEPLOY_TOKEN }}
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
