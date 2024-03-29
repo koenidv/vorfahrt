@@ -9,6 +9,7 @@ WORKDIR /app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run -r --filter "@vorfahrt-backend/*" build
 RUN pnpm deploy --filter=scraper --prod /prod/scraper
+RUN rm -rf /app/node_modules/bcrypt_tmp_*
 RUN pnpm deploy --filter=api --prod /prod/api
 
 FROM base AS scraper
