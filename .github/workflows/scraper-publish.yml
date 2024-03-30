@@ -26,9 +26,6 @@ jobs:
     steps:
       - name: Checkout repository and submodules
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.ABFAHRT_PAT }}
-          submodules: recursive
 
       # Install the cosign tool
       # https://github.com/sigstore/cosign-installer
@@ -71,7 +68,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          target: scraper
+          file: ./scraper.Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -79,8 +76,6 @@ jobs:
           cache-to: type=gha,mode=max
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.ABFAHRT_PAT }}
-
-
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
