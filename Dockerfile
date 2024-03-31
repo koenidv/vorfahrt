@@ -11,14 +11,25 @@ RUN pnpm run -r build
 RUN pnpm deploy --filter=scraper --prod /prod/scraper
 RUN pnpm deploy --filter=api --prod /prod/api
 
-FROM base AS scraper
+FROM base
+ENV HOSTNAME \
+    DB_HOST \
+    DB_PORT \
+    DB_USER \
+    DB_PASSWORD \
+    DB_NAME \
+    INFLUX_URL \
+    INFLUX_TOKEN \
+    RPM_VEHICLE \
+    RPM_MAP \
+    RPM_CITIES \
+    RPM_PERCENTAGES \
+    INTERVAL_QUEUE_SYNC \
+    RESTORE_FROM_SYNC
+
 COPY --from=build /prod/scraper /prod/scraper
+COPY --from=build /pnpm/store /pnpm/store
 WORKDIR /prod/scraper
 EXPOSE 3000
-CMD [ "pnpm", "start" ]
-
-FROM base AS api
-COPY --from=build /prod/api /prod/api
-WORKDIR /prod/api
-EXPOSE 8000
+EXPOSE 3001
 CMD [ "pnpm", "start" ]

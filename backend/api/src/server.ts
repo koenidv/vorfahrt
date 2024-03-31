@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import "reflect-metadata";
+// import "reflect-metadata";
 import { HistoryController } from "@controllers/history.controller";
 import { App } from "@/app";
 import { getInfluxQueryApi } from "@/dataSourceInflux";
