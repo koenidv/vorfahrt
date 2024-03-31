@@ -1,3 +1,4 @@
 [submodule "libs/abfahrt"]
 	path = libs/abfahrt
-	url = https://github.com/koenidv/vorfahrt
+	url = https://github.com/koenidv/abfahrt
+	brach = main

@@ -7,13 +7,13 @@ import { browser } from '$app/environment';
 
 let link;
 
-if (browser) {
+if (browser && false) {
     const wsClient = createWSClient({
         url: PUBLIC_ADMIN_WS,
     });
     link = wsLink({ client: wsClient });
 } else {
-    link = httpBatchLink({ url: PUBLIC_ADMIN_HTTP });
+    link = httpBatchLink({ url: PUBLIC_ADMIN_HTTP, headers: { authentication: "TEST"}});
 }
 
 export const trpc = createTRPCProxyClient<AppRouter>({

@@ -6,9 +6,15 @@ export function createCreateContext(systemController: SystemController) {
     return ({
         req,
         res,
-    }: trpcExpress.CreateExpressContextOptions) => ({
-        systemController: systemController, // Instantiate your class here
-    });
+    }: trpcExpress.CreateExpressContextOptions) => {
+
+        console.log(req.headers.authorization)
+
+        return {
+
+            systemController: systemController,
+        }
+    };
 }
 export type Context = Awaited<ReturnType<ReturnType<typeof createCreateContext>>>;
 
