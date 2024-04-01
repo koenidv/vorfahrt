@@ -38,8 +38,8 @@
   "dependencies": {
     "@influxdata/influxdb-client": "^1.33.2",
     "@influxdata/influxdb-client-apis": "^1.33.2",
-    "@koenidv/abfahrt": "file:..\\..\\libs\\abfahrt",
-    "shared": "file:..\\..\\shared",
+    "@koenidv/abfahrt": "link:..\\..\\libs\\abfahrt",
+    "shared": "link:..\\..\\shared",
     "@trpc/server": "^10.44.0",
     "@types/cors": "^2.8.17",
     "@types/ws": "^8.5.10",
