@@ -8,7 +8,7 @@ import ws from "ws";
 import { applyWSSHandler } from '@trpc/server/adapters/ws';
 
 export class WebApiServer {
-    private app: express.Application;
+    private app;
     private systemController: SystemController;
 
     constructor(systemController: SystemController) {
@@ -32,12 +32,12 @@ export class WebApiServer {
 
     public start(port: number = 3000): this {
         this.app.listen(port, () => {
-            console.log(`Example app listening at http://localhost:${port}`)
+            console.log(`✅ tRPC/http Express Server listening on http://localhost:${port}`)
         });
         return this;
     }
 
-    startWs(port: number = 3001): this {
+    public startWs(port: number = 3001): this {
         const wss = new ws.Server({ port: port });
 
         const handler = applyWSSHandler<AppRouter>({
@@ -53,7 +53,7 @@ export class WebApiServer {
                 console.log(`➖➖ Connection (${wss.clients.size})`);
             });
         });
-        console.log('✅ WebSocket Server listening on ws://localhost:3001');
+        console.log('✅ tRPC/ws Server listening on ws://localhost:${port}');
         process.on('SIGTERM', () => {
             console.log('SIGTERM');
             handler.broadcastReconnectNotification();

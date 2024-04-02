@@ -2,5 +2,16 @@ mobile-app/android/app/src/main/res/drawable-mdpi/node_modules_reactnative_libra
 mobile-app/android/app/src/main/assets/index.android.bundle
 mobile-app/android/app/src/main/assets/index.android
 */.env
+*/*/.env
+*/.npmrc
+*/*/.npmrc
+*/.vscode
+*/*/.vscode
 node_modules
+*/node_modules
+*/*/node_modules
 shared/dist
+*/*/build
+*/*/dist
+*/*/tmp
+*/*/temp

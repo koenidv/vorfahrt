@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "description": "Scraping service for Vorfahrt - A micromobility insight platform. Uses our abfahrt scraper.",
   "main": "dist/index.js",
+  "type": "commonjs",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "node build/index.js",
     "dev": "ts-node src/index.ts --start --no-measure",
-    "build": "tsc --skipLibCheck --moduleResolution node",
+    "build": "tsc --skipLibCheck",
     "format": "prettier --write .",
     "test": "jest",
     "typeorm": "typeorm-ts-node-commonjs"
@@ -30,7 +31,6 @@
     "@types/jest": "^29.5.4",
     "@types/lodash": "^4.14.202",
     "@types/node": "^16.18.91",
-    "dotenv": "^16.3.1",
     "prettier": "^3.0.3",
     "ts-node": "10.7.0",
     "typescript": "5.3.2"
@@ -39,7 +39,7 @@
     "@influxdata/influxdb-client": "^1.33.2",
     "@influxdata/influxdb-client-apis": "^1.33.2",
     "@koenidv/abfahrt": "file:..\\..\\libs\\abfahrt",
-    "shared": "file:..\\..\\shared",
+    "shared": "link:..\\..\\shared",
     "@trpc/server": "^10.44.0",
     "@types/cors": "^2.8.17",
     "@types/ws": "^8.5.10",
@@ -54,6 +54,7 @@
     "ts-jest": "^29.1.2",
     "typeorm": "0.3.17",
     "ws": "^8.14.2",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "dotenv": "^16.3.1"
   }
 }
