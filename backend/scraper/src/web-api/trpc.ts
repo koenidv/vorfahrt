@@ -8,7 +8,7 @@ export function createCreateContext(systemController: SystemController) {
         res,
     }: trpcExpress.CreateExpressContextOptions) => {
 
-        console.log(req.headers.authorization)
+        //console.log(req.headers.authorization)
 
         return {
 
