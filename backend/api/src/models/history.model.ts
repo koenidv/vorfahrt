@@ -1,4 +1,4 @@
-import { HistoryPoint } from "shared/api-types/api.types";
+import { HistoryPoint } from "@vorfahrt/shared/api-types/api.types";
 import { Service } from "typedi";
 
 @Service()

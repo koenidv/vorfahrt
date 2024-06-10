@@ -1,5 +1,5 @@
 {
-  "name": "shared",
+  "name": "@vorfahrt/shared",
   "version": "1.0.0",
   "description": "sharing is caring",
   "scripts": {

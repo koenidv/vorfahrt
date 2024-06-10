@@ -1,5 +1,5 @@
 {
-  "name": "@vorfahrt-backend/scraper",
+  "name": "@vorfahrt/scraper",
   "version": "0.0.1",
   "description": "Scraping service for Vorfahrt - A micromobility insight platform. Uses our abfahrt scraper.",
   "main": "dist/index.js",
@@ -38,8 +38,8 @@
   "dependencies": {
     "@influxdata/influxdb-client": "^1.33.2",
     "@influxdata/influxdb-client-apis": "^1.33.2",
-    "@koenidv/abfahrt": "file:..\\..\\libs\\abfahrt",
-    "shared": "link:..\\..\\shared",
+    "@koenidv/abfahrt": "workspace:*",
+    "@vorfahrt/shared": "workspace:*",
     "@trpc/server": "^10.44.0",
     "@types/cors": "^2.8.17",
     "@types/ws": "^8.5.10",

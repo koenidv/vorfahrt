@@ -1,4 +1,4 @@
-import { VehicleType, BasicVehicleStatus } from "shared/api-types/api.types";
+import { VehicleType, BasicVehicleStatus } from "@vorfahrt/shared/api-types/api.types";
 import { Service } from "typedi";
 
 @Service()

@@ -1,10 +1,10 @@
 import Container, { Service } from 'typedi';
 import { VehiclesCacheModel } from '@models/vehicles.model';
 import { EntityManager } from 'typeorm';
-import { VehicleModel } from 'shared/typeorm-entities/Miles/VehicleModel';
-import { BasicVehicleStatus, VehicleType } from 'shared/api-types/api.types';
-import { VehicleLastKnown } from 'shared/typeorm-entities/Miles/VehicleLastKnown';
-import { MILES_STATUS_CODES_ARRAY } from 'shared/api-types/api.enums';
+import { VehicleModel } from '@vorfahrt/shared/typeorm-entities/Miles/VehicleModel';
+import { BasicVehicleStatus, VehicleType } from '@vorfahrt/shared/api-types/api.types';
+import { VehicleLastKnown } from '@vorfahrt/shared/typeorm-entities/Miles/VehicleLastKnown';
+import { MILES_STATUS_CODES_ARRAY } from '@vorfahrt/shared/api-types/api.enums';
 import { MoreThan } from 'typeorm';
 import { minifyMilesStatuses } from '@/utils/minifyUtils';
 

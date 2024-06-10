@@ -1,5 +1,5 @@
 import { minifyMilesCachedKeys, minifyMilesStatuses } from "./minifyUtils";
-import { HistoryPoint } from "shared/api-types/api.types";
+import { HistoryPoint } from "@vorfahrt/shared/api-types/api.types";
 
 /**
  * Retrieve cached values and minimize them for bandwidth efficiency

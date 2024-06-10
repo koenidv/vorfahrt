@@ -24,7 +24,7 @@ FROM base AS build
 COPY . /app
 WORKDIR /app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run -r --filter "@vorfahrt-backend/scraper" build
+RUN pnpm run -r --filter "@vorfahrt/scraper" build
 RUN pnpm \
   --config.shamefully-hoist=true \
   --config.hoist=true \

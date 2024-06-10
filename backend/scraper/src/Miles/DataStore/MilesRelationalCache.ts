@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm";
-import { VehicleMeta } from "shared/typeorm-entities/Miles/VehicleMeta";
+import { VehicleMeta } from "@vorfahrt/shared/typeorm-entities/Miles/VehicleMeta";
 
 /**
  * This class stores used IDs for vehicles, models, etc.
