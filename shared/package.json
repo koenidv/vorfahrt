@@ -2,6 +2,9 @@
   "name": "@vorfahrt/shared",
   "version": "1.0.0",
   "description": "sharing is caring",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"

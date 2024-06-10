@@ -1,4 +1,4 @@
-import { MILES_HISTORY_KEYS_ARRAY, MILES_STATUS_CODES_ARRAY } from "@vorfahrt/shared/api-types/api.enums";
+import { MILES_HISTORY_KEYS_ARRAY, MILES_STATUS_CODES_ARRAY } from "@vorfahrt/shared";
 
 /**
  * csv status array for api response

@@ -1,14 +1,14 @@
 import { EntityManager } from "typeorm";
 import { MilesCityMeta, MilesVehicleDetails } from "../Miles.types";
-import { City } from "@vorfahrt/shared/typeorm-entities/Miles/City";
+import { City } from "@vorfahrt/shared";
 import GeoPoint from "../utils/GeoPoint";
-import { VehicleMeta } from "@vorfahrt/shared/typeorm-entities/Miles/VehicleMeta";
+import { VehicleMeta } from "@vorfahrt/shared";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { VehicleSize } from "@vorfahrt/shared/typeorm-entities/Miles/VehicleSize";
-import { VehicleModel } from "@vorfahrt/shared/typeorm-entities/Miles/VehicleModel";
+import { VehicleSize } from "@vorfahrt/shared";
+import { VehicleModel } from "@vorfahrt/shared";
 import { MilesVehicleFuelReturn, MilesVehicleTransmissionReturn } from "@koenidv/abfahrt";
 import clc from "cli-color";
-import { VehicleLastKnown } from "@vorfahrt/shared/typeorm-entities/Miles/VehicleLastKnown";
+import { VehicleLastKnown } from "@vorfahrt/shared";
 import { RESTORE_NORMAL_STATES, RESTORE_SLOW_STATES } from "./MilesRelationalStore.config";
 import { MilesRelationalCache } from "./MilesRelationalCache";
 

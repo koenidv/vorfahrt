@@ -1,6 +1,6 @@
 // todo make env file shared or copy it to api
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from "@config";
-import { MilesEntities } from "@vorfahrt/shared/typeorm-entities/Miles/_MilesEntities";
+import { MilesEntities } from "@vorfahrt/shared";
 import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({

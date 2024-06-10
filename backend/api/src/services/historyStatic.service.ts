@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { HistoryCacheModel } from '@/models/history.model';
-import { HistoryPoint } from '@vorfahrt/shared/api-types/api.types';
+import { HistoryPoint } from '@vorfahrt/shared';
 import { createMinifiedHistoryResponse } from '@/utils/minifyHistory';
 import fssync, { PathLike, promises as fs } from 'fs';
 import { join } from 'path';

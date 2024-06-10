@@ -1,8 +1,8 @@
 import Container, { Service } from 'typedi';
 import { FluxTableMetaData, QueryApi } from '@influxdata/influxdb-client';
 import { HistoryCacheModel } from '@/models/history.model';
-import { MILES_HISTORY_KEYS_ARRAY, MILES_STATUS_CODES_ARRAY } from '@vorfahrt/shared/api-types/api.enums';
-import { HistoryPoint } from '@vorfahrt/shared/api-types/api.types';
+import { MILES_HISTORY_KEYS_ARRAY, MILES_STATUS_CODES_ARRAY } from '@vorfahrt/shared';
+import { HistoryPoint } from '@vorfahrt/shared';
 
 /*
  * History output is non-standard csv to save bandwith
