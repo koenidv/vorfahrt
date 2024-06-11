@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "sharing is caring",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.js"
+    }
   },
   "scripts": {
     "build": "tsc",
@@ -13,6 +16,7 @@
   "author": "vorfahrt",
   "license": "ISC",
   "dependencies": {
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "typeorm": "0.3.17"
   }
 }

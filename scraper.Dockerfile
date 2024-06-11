@@ -20,22 +20,10 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-FROM base AS build
-COPY . /app
 WORKDIR /app
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run -r --filter "@vorfahrt/scraper" build
-RUN pnpm \
-  --config.shamefully-hoist=true \
-  --config.hoist=true \
-  --config.node-linker=isolated \
-  --config.symlinks=false \
-  --config.shared-workspace-lockfile=false \
-  deploy --filter=scraper --prod /prod/scraper
+COPY . .
 
-FROM base
-COPY --from=build /prod/scraper /prod/scraper
-WORKDIR /prod/scraper
-EXPOSE 3000
-EXPOSE 3001
-CMD [ "pnpm", "start" ]
+RUN pnpm install --frozen-lockfile
+RUN pnpm build --filter="@vorfahrt/scraper"
+
+CMD pnpm start --filter="@vorfahrt/scraper"
