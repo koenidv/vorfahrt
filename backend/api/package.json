@@ -7,6 +7,7 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
+    "build": "swc src -d dist --source-maps --copy-files",
     "dev": "ts-node-dev -r tsconfig-paths/register src/server.ts",
     "start:tsn": "ts-node -r tsconfig-paths/register src/server.ts",
     "start:swc": "pnpm run build && cross-env NODE_ENV=production node dist/server.js",
