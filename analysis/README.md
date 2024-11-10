@@ -24,4 +24,4 @@
 
     This might take a few minutes, there are 37 shards to restore.
 
-5. Done :)
+5. Install `requirements.txt` and done :)
