@@ -14,7 +14,7 @@
 
    You will get a handful of errors about the 'readaccess' role not existing, but this is fine for our purposes.
 
-4. Restore the dataset for influx:
+4. Restore the influx dataset:
 
    ```bash
     docker cp /path/to/influx_backup analysis-influx-1:/tmp
@@ -24,4 +24,4 @@
 
     This might take a few minutes, there are 37 shards to restore.
 
-5. Install `requirements.txt` and done :)
+5. Install `requirements.txt` and run the notebooks :)

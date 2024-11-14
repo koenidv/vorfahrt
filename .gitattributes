@@ -1,0 +1,2 @@
+analysis/notebooks/.ipynb_checkpoints/long[[:space:]]trips-checkpoint.ipynb filter=lfs diff=lfs merge=lfs -text
+analysis/notebooks/long[[:space:]]trips.ipynb filter=lfs diff=lfs merge=lfs -text
