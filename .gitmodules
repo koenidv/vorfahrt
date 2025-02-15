@@ -2,3 +2,9 @@
 	path = libs/abfahrt
 	url = https://github.com/koenidv/abfahrt
 	brach = main
+[submodule "backend/scraper/abfahrt"]
+	path = backend/scraper/abfahrt
+	url = https://github.com/koenidv/abfahrt
+[submodule "abfahrt"]
+	path = abfahrt
+	url = https://github.com/koenidv/abfahrt
