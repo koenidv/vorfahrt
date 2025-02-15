@@ -4,26 +4,21 @@ import { MilesRelationalStore } from "./MilesRelationalStore";
 import { MilesCityMeta } from "../Miles.types";
 import MilesScraperVehicles, { QueryPriority, MilesVehicleSource } from "../Scraping/MilesScraperVehicles";
 import { MilesVehicleStatus, getInfoFromMilesVehicleStatus } from "@koenidv/abfahrt";
-import { QueryApi, WriteApi } from "@influxdata/influxdb-client";
-import { MilesInfluxStore } from "./MilesInfluxStore";
 import clc from "cli-color";
 import { MilesVehiclesPerCityCache } from "./MilesVehiclesPerCityCache";
 import { MilesMapSource } from "../Scraping/MilesScraperMap";
-import { MilesPercentageSource } from "../Scraping/MilesScraperPercentages";
 import { SOURCE_TYPE, ValueSource } from "../../types";
 
 export default class MilesDataHandler {
   private relationalStore: MilesRelationalStore;
-  private influxStore: MilesInfluxStore;
   private _vehicleScraper: MilesScraperVehicles | undefined = undefined;
   set vehicleScraper(value: MilesScraperVehicles) {
     this._vehicleScraper = value;
   }
   private vehiclesPerCity = new MilesVehiclesPerCityCache();
 
-  constructor(dataSource: DataSource, influxWriteClient: WriteApi, influxQueryClient: QueryApi) {
+  constructor(dataSource: DataSource) {
     this.relationalStore = new MilesRelationalStore(dataSource.manager);
-    this.influxStore = new MilesInfluxStore(influxWriteClient, influxQueryClient);
   }
 
   async restoreVehicleQueue() {
@@ -58,7 +53,6 @@ export default class MilesDataHandler {
 
   private async handleSingleVehicleResponse(vehicle: apiVehicleJsonParsed, source: ValueSource) {
     await this.relationalStore.handleVehicle(vehicle);
-    this.influxStore.handleVehicle(vehicle);
   }
 
   private handleMoveQueues(vehicle: apiVehicleJsonParsed, source: MilesVehicleSource) {

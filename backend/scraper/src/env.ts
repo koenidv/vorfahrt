@@ -42,9 +42,6 @@ const env = {
   rpm_map: (process.env.RPM_MAP ? parseInt(process.env.RPM_MAP) : 120),
   rpm_vehicle: (process.env.RPM_VEHICLE ? parseInt(process.env.RPM_VEHICLE) : 60),
   rpm_cities: (process.env.RPM_CITIES ? parseInt(process.env.RPM_CITIES) : 1 / (60 * 12)),
-  rpm_percentages: (process.env.RPM_PERCENTAGES ? parseInt(process.env.RPM_PERCENTAGES) : 30),
-  interval_queue_sync: (process.env.INTERVAL_QUEUE_SYNC ? parseInt(process.env.INTERVAL_QUEUE_SYNC) * 1000 : 0),
-  restore_from_sync: (process.env.RESTORE_FROM_SYNC ? process.env.RESTORE_FROM_SYNC === "true" : false),
 } as const;
 
 export default env;

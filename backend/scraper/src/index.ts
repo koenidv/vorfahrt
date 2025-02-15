@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "./dataSource";
 import { InfluxDB, WriteApi } from "@influxdata/influxdb-client";
-import { Observer } from "./Observer";
 import env from "./env";
 import { WebApiServer } from "./web-api/server";
 import { SystemController } from "./SystemController";

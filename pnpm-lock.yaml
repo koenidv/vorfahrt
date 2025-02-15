@@ -12,6 +12,40 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3
 
+  abfahrt:
+    dependencies:
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.4
+    devDependencies:
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: ^4.2.0
+        version: 4.3.0(prettier@3.2.5)
+      '@types/jest':
+        specifier: ^29.5.4
+        version: 29.5.12
+      '@types/node':
+        specifier: ^20.5.7
+        version: 20.12.2
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.4.5
+      jest:
+        specifier: ^29.6.4
+        version: 29.7.0(@types/node@20.12.2)
+      microbundle:
+        specifier: ^0.15.1
+        version: 0.15.1
+      prettier:
+        specifier: ^3.0.3
+        version: 3.2.5
+      ts-jest:
+        specifier: ^29.1.1
+        version: 29.1.2(@babel/core@7.24.3)(jest@29.7.0)(typescript@5.4.3)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.4.3
+
   apps/mobile-app:
     dependencies:
       '@babel/runtime':
@@ -400,7 +434,7 @@ importers:
         version: 1.33.2(@influxdata/influxdb-client@1.33.2)
       '@koenidv/abfahrt':
         specifier: workspace:*
-        version: link:../../libs/abfahrt
+        version: link:../../abfahrt
       '@trpc/server':
         specifier: ^10.44.0
         version: 10.45.2
@@ -480,40 +514,6 @@ importers:
       typescript:
         specifier: 5.3.2
         version: 5.3.2
-
-  libs/abfahrt:
-    dependencies:
-      zod:
-        specifier: ^3.22.2
-        version: 3.22.4
-    devDependencies:
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: ^4.2.0
-        version: 4.3.0(prettier@3.2.5)
-      '@types/jest':
-        specifier: ^29.5.4
-        version: 29.5.12
-      '@types/node':
-        specifier: ^20.5.7
-        version: 20.12.2
-      dotenv:
-        specifier: ^16.3.1
-        version: 16.4.5
-      jest:
-        specifier: ^29.6.4
-        version: 29.7.0(@types/node@20.12.2)
-      microbundle:
-        specifier: ^0.15.1
-        version: 0.15.1
-      prettier:
-        specifier: ^3.0.3
-        version: 3.2.5
-      ts-jest:
-        specifier: ^29.1.1
-        version: 29.1.2(@babel/core@7.24.3)(jest@29.7.0)(typescript@5.4.3)
-      typescript:
-        specifier: ^5.2.2
-        version: 5.4.3
 
   libs/vorfahrt-vienna:
     dependencies:
@@ -6958,6 +6958,7 @@ packages:
 
   /core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
+    requiresBuild: true
 
   /cors@2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
@@ -13875,6 +13876,7 @@ packages:
 
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
+    requiresBuild: true
 
   /promise-inflight@1.0.1:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
@@ -15307,6 +15309,7 @@ packages:
 
   /string_decoder@1.1.1:
     resolution: {integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==}
+    requiresBuild: true
     dependencies:
       safe-buffer: 5.1.2
 
