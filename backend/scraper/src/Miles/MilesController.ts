@@ -29,14 +29,15 @@ export default class MilesController {
 
     const abfahrt = new MilesClient();
     const dataHandler = this.createDataHandler(appDataSource);
+    
+    const scraperMap = this.startMapScraper(abfahrt, dataHandler);
+    this.startCitiesMetaScraper(abfahrt, scraperMap);
 
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler);
     dataHandler.vehicleScraper = scraperVehicles;
 
     this.populateVehiclesQueue(scraperVehicles, dataHandler);
 
-    const scraperMap = this.startMapScraper(abfahrt, dataHandler);
-    this.startCitiesMetaScraper(abfahrt, scraperMap);
   }
 
   private createDataHandler(appDataSource: DataSource): MilesDataHandler {

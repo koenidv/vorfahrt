@@ -4,6 +4,7 @@ import { MilesCityAreaBounds, MilesCityMeta } from "../Miles.types";
 import { polygonToArea } from "@koenidv/abfahrt";
 import { GetCityAreasResponse } from "@koenidv/abfahrt/dist/src/miles/net/getCityAreas";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
+import env from "../../env";
 
 export interface MilesCityMetaSource extends ValueSource { source: SOURCE_TYPE.CITY_META }
 
@@ -24,7 +25,9 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<Miles
         const meta = info.map(city => {
             const area = areas.find(area => area.cityId === city.idCity);
             if (area === undefined) {
-                this.logError("City", city.name, "has no area");
+                if (env.scrape_single_city_id != null && env.scrape_single_city_id === city.idCity) {
+                    this.logError("City", city.name, "has no area");
+                }
                 return;
             }
             (city as MilesCityMeta).area = area.area;
@@ -52,7 +55,7 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<Miles
 
     private parseCityPolygons(raw: GetCityAreasResponse["Data"]): MilesCityAreaBounds[] {
         const polygons = JSON.parse(raw.JSONCityAreas).JSONCityAreas.areas as cityArea[];
-        const filtered = polygons.filter(polygon => polygon.idCityLayerType === "CITY_SERVICE_AREA");
+        var filtered = polygons.filter(polygon => polygon.idCityLayerType === "CITY_SERVICE_AREA");
 
         // remove one polygon from CGN. this is a super tiny area next to RWTH Aachen, probably used for research
         const cologneIndex = filtered.findIndex(polygon => polygon.idCity === "CGN");
@@ -61,6 +64,14 @@ export default class MilesScraperCitiesMeta extends BaseMilesScraperCycled<Miles
             if ((subarea[0] as ZoneCoordinates)[0][0] === 6.07327048) return false;
             return true;
         }) as [ZoneCoordinates][];
+
+        if (env.scrape_single_city_id != null) {
+            filtered = filtered.filter(polygon => polygon.idCity === env.scrape_single_city_id);
+            if (filtered.length != 1) {
+                this.logError("City", env.scrape_single_city_id, "not found in cities meta:", filtered);
+                return [];
+            }
+        }
 
         const bounds = filtered.map(polygon => ({
             cityId: polygon.idCity,

@@ -4,7 +4,7 @@ import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
 import { SystemController } from "../../SystemController";
 import { VehicleQueueInterface } from "../utils/VehicleQueue";
-import { SyncedVehicleQueue } from "../DataStore/SyncedVehicleQueue";
+import env from "../../env";
 
 export enum QueryPriority {
     HIGH = 999,
@@ -49,15 +49,6 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
 
     getQueue(): { milesId: number, priority: QueryPriority | null }[] {
         return this.queue.getQueue();
-    }
-
-    async restoreFromSyncedQueue(): Promise<this> {
-        if (this.queue instanceof SyncedVehicleQueue) {
-            await this.queue.restoreFromSync();
-        } else {
-            throw new Error("Cannot restore from sync when not using SyncedVehicleQueue")
-        }
-        return this;
     }
 
     async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: MilesVehicleSource; } | null> {
@@ -105,6 +96,13 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
             this.observer.requestExecuted(RequestStatus.OK, result._time, vehicleId);
             const vehicle = result.Data.vehicle[0]
             const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
+
+            if (env.scrape_single_city_id != null) {
+                if (vehicleParsed.idCity !== env.scrape_single_city_id) {
+                    this.log("Vehicle", vehicleId, "is not in selected city, removing")
+                    return null;
+                }
+            }
 
             return vehicleParsed;
         } catch (e) {

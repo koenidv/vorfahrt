@@ -42,6 +42,7 @@ const env = {
   rpm_map: (process.env.RPM_MAP ? parseInt(process.env.RPM_MAP) : 120),
   rpm_vehicle: (process.env.RPM_VEHICLE ? parseInt(process.env.RPM_VEHICLE) : 60),
   rpm_cities: (process.env.RPM_CITIES ? parseInt(process.env.RPM_CITIES) : 1 / (60 * 12)),
+  scrape_single_city_id: (process.env.SCRAPE_SINGLE_CITY_ID ? String(process.env.SCRAPE_SINGLE_CITY_ID) : null),
 } as const;
 
 export default env;

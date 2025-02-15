@@ -67,7 +67,7 @@ export class MilesRelationalStore {
     async handleVehicle(vehicle: apiVehicleJsonParsed) {
         await this.createVehicleMeta(vehicle);
         // todo insert damages here
-        await this.saveLastKnown(vehicle);
+        if (await this.cache.isVehicleKnown(vehicle.idVehicle)) await this.saveLastKnown(vehicle);
     }
 
     private async createVehicleMeta(vehicle: apiVehicleJsonParsed) {
