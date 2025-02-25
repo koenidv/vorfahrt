@@ -8,6 +8,8 @@ import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta";
 import clc from "cli-color";
 import { SystemController } from "../SystemController";
 import { VehicleQueue, VehicleQueueInterface } from "./utils/VehicleQueue";
+import { WriteApi } from "@influxdata/influxdb-client";
+import { RelationalStoreObserver } from "RelationalStoreObserver";
 
 const RPM_VEHICLE = env.rpm_vehicle;
 const RPM_MAP = env.rpm_map;
@@ -23,12 +25,12 @@ export default class MilesController {
   dataSource: DataSource | undefined;
   dataHandler: MilesDataHandler | undefined;
 
-  constructor(systemController: SystemController, appDataSource: DataSource) {
+  constructor(systemController: SystemController, appDataSource: DataSource, observerWriteApi: WriteApi) {
     console.log(clc.bgBlackBright("MilesController"), clc.blue("Initializing"));
     this.systemController = systemController;
 
     const abfahrt = new MilesClient();
-    const dataHandler = this.createDataHandler(appDataSource);
+    const dataHandler = this.createDataHandler(appDataSource, observerWriteApi);
     
     const scraperMap = this.startMapScraper(abfahrt, dataHandler);
     this.startCitiesMetaScraper(abfahrt, scraperMap);
@@ -40,9 +42,10 @@ export default class MilesController {
 
   }
 
-  private createDataHandler(appDataSource: DataSource): MilesDataHandler {
+  private createDataHandler(appDataSource: DataSource, observerWriteApi: WriteApi): MilesDataHandler {
     this.dataSource = appDataSource;
-    this.dataHandler = new MilesDataHandler(this.dataSource);
+    const observer = new RelationalStoreObserver(observerWriteApi);
+    this.dataHandler = new MilesDataHandler(this.dataSource, observer);
     return this.dataHandler;
   }
 

@@ -14,6 +14,7 @@ import {
 import { VehicleModel } from "./VehicleModel";
 import { City } from "./City";
 import { VehicleDamage } from "./VehicleDamage";
+import { Trip, Trip } from "./Trip";
 import { VehicleLastKnown } from "./VehicleLastKnown";
 
 @Entity({
@@ -52,6 +53,9 @@ export class VehicleMeta {
 
   @OneToMany(() => VehicleDamage, (damage) => damage.vehicle)
   damages: VehicleDamage[];
+
+  @OneToMany(() => Trip, (trip) => trip.vehicle)
+  trips: Trip[];
 
   @CreateDateColumn({
     precision: 0,

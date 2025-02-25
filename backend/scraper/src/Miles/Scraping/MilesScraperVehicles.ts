@@ -1,4 +1,4 @@
-import { JsonParseBehaviour, MilesClient, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
+import { JsonParseBehaviour, MilesClient, MilesVehicleStatus, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
 import { BaseMilesScraperCycled } from "../BaseMilesScraper";
 import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
@@ -7,8 +7,8 @@ import { VehicleQueueInterface } from "../utils/VehicleQueue";
 import env from "../../env";
 
 export enum QueryPriority {
-    HIGH = 999,
-    NORMAL = 0.99,
+    HIGH = 49,
+    NORMAL = 1,
     LOW = 0.01,
 }
 
@@ -98,7 +98,8 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehi
             const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
 
             if (env.scrape_single_city_id != null) {
-                if (vehicleParsed.idCity !== env.scrape_single_city_id) {
+                if (vehicleParsed.idCity !== env.scrape_single_city_id && 
+                    vehicleParsed.idVehicleStatus != MilesVehicleStatus.CAR_SUBSCRIPTION) {
                     this.log("Vehicle", vehicleId, "is not in selected city, removing")
                     return null;
                 }
