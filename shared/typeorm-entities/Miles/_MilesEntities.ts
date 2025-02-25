@@ -6,6 +6,7 @@ import { VehicleModel } from "./VehicleModel";
 import { VehicleSize } from "./VehicleSize";
 import { Trip } from "./Trip";
 import { Waypoint } from "./Waypoint";
+import { Booking } from "./Booking";
 
 export { City } from "./City";
 export { VehicleDamage } from "./VehicleDamage";
@@ -15,6 +16,7 @@ export { VehicleModel } from "./VehicleModel";
 export { VehicleSize } from "./VehicleSize";
 export { Trip } from "./Trip";
 export { Waypoint } from "./Waypoint";
+export { Booking } from "./Booking";
 
 export const MilesEntities = [
   City,
@@ -25,4 +27,5 @@ export const MilesEntities = [
   VehicleLastKnown,
   Trip,
   Waypoint,
+  Booking,
 ];

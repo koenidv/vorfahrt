@@ -14,11 +14,12 @@ class Main {
 
   async initialize() {
     this.appDataSource = await AppDataSource.initialize();
-    
-    this.systemController = new SystemController(this.getObserverWriteClient());
+    const observerWriteApi = this.getObserverWriteClient();
+
+    this.systemController = new SystemController(observerWriteApi);
     this.apiServer = new WebApiServer(this.systemController).start().startWs();
     
-    this.systemController.createMilesScraper(this.appDataSource);
+    this.systemController.createMilesScraper(this.appDataSource, observerWriteApi);
   }
 
   getObserverWriteClient(): WriteApi {

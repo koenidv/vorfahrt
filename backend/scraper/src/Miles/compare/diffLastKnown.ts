@@ -39,7 +39,7 @@ export async function diffLastKnown(
   )
   if (!lastKnown) return DiffResult.INSIGNIFICANT // do not record if a vehicle is new
 
-  relationalObserver.onVehicleDiffed(lastKnown)
+  relationalObserver.onVehicleDiffed(lastKnown, newVehicle)
 
   if (newVehicle.idVehicleStatus === subscriptionStatus) {
     if (locationRelevant(newVehicle, lastKnown))
@@ -66,6 +66,14 @@ export async function diffLastKnown(
     inRideStatuses.includes(lastKnown.status)
   ) {
     return DiffResult.TRIP_ENDED
+  }
+
+  if (newVehicle.idVehicleStatus === bookedStatus && lastKnown.status !== bookedStatus) {
+    return DiffResult.BOOKING_STARTED
+  }
+
+  if (lastKnown.status === bookedStatus && newVehicle.idVehicleStatus !== bookedStatus) {
+    return DiffResult.BOOKING_ENDED
   }
 
   if (locationRelevant(newVehicle, lastKnown)) {

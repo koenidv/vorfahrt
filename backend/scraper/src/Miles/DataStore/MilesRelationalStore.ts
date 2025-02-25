@@ -4,6 +4,7 @@ import {
 } from "@koenidv/abfahrt"
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes"
 import {
+  Booking,
   City,
   Trip,
   TripType,
@@ -111,6 +112,12 @@ export class MilesRelationalStore {
     switch (diff) {
       case DiffResult.LIFECYCLED:
         await this.cancelTrip(vehicle.idVehicle)
+        break
+      case DiffResult.BOOKING_STARTED:
+        await this.startBooking(vehicle.idVehicle)
+        break
+      case DiffResult.BOOKING_ENDED:
+        await this.endBooking(vehicle.idVehicle)
         break
       case DiffResult.TRIP_STARTED:
         await this.startTrip(vehicle, TripType.PUBLIC)
@@ -268,6 +275,24 @@ export class MilesRelationalStore {
     })
   }
 
+  public async startBooking(vehicleId: number) {
+    const booking = new Booking()
+    booking.milesId = vehicleId
+    booking.startTime = new Date()
+    await this.manager.save(booking)
+  }
+
+  public async endBooking(
+    vehicleId: number
+  ): Promise<Booking | null> {
+    const pending = await this.manager.findOne(Booking, {
+      where: { milesId: vehicleId, endTime: IsNull() },
+    })
+    if (!pending) return null
+    pending.endTime = new Date()
+    return await this.manager.save(pending)
+  }
+
   public async startTrip(vehicle: apiVehicleJsonParsed, tripType: TripType) {
     if (await this.findPendingTrip(vehicle.idVehicle)) {
       console.warn(
@@ -288,9 +313,13 @@ export class MilesRelationalStore {
       )
       return
     }
+
+    const fromBooking = await this.endBooking(vehicle.idVehicle)
+
     await this.manager.transaction(async (manager) => {
       const trip = new Trip()
       trip.milesId = vehicle.idVehicle
+      trip.fromBooking = fromBooking
       await manager.save(trip)
       const startPoint = mapMilesWaypoint(trip, vehicle)
       await manager.save(startPoint)
@@ -344,6 +373,7 @@ export class MilesRelationalStore {
   }
 
   public async cancelTrip(vehicleId: number) {
+    await this.endBooking(vehicleId)
     await this.manager
       .createQueryBuilder()
       .delete()

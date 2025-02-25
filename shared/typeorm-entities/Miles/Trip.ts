@@ -12,6 +12,7 @@ import {
 } from "typeorm";
 import { VehicleMeta } from "./VehicleMeta";
 import { Waypoint } from "./Waypoint";
+import { Booking } from "./Booking";
 
 export enum TripType {
   PUBLIC,
@@ -19,10 +20,12 @@ export enum TripType {
   RELOCATION,
 }
 
+type NewType = Booking;
+
 @Entity({
   name: "MilesTrip",
 })
-export class Trip { // todo triptype: public, subscription (won't have end point), relocation
+export class Trip {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -39,6 +42,10 @@ export class Trip { // todo triptype: public, subscription (won't have end point
     default: TripType.PUBLIC,
   })
   type: TripType;
+
+  @OneToOne(() => Booking, (booking) => booking.trip, { nullable: true, cascade: true })
+  @JoinColumn({ name: "fromBooking" })
+  fromBooking: Booking | null;
 
   @OneToOne(() => Waypoint, (point) => point.trip, { nullable: true, cascade: true, onDelete: "SET NULL" })
   @JoinColumn({ name: "startPoint" })
