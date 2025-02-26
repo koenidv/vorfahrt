@@ -37,4 +37,24 @@ export class RelationalStoreObserver {
     )
     this.writeClient.writePoint(logPoint)
   }
+
+  public onTripMissed(
+    lastKnown: VehicleLastKnown,
+    newVehicle: apiVehicleJsonParsed
+  ) {
+    const logPoint = new Point("missed_trips")
+      .tag("vehicleId", lastKnown.milesId.toString())
+      .tag("oldStatus", lastKnown.status)
+      .tag("newStatus", newVehicle.idVehicleStatus)
+      .intField("lastKnownTime", lastKnown.updated.getTime())
+      .intField("newTime", new Date().getTime())
+      .intField(
+        "locationDelta",
+        Math.sqrt(
+          Math.pow(lastKnown.latitude - newVehicle.Latitude, 2) +
+            Math.pow(lastKnown.longitude - newVehicle.Longitude, 2)
+        )
+      )
+    this.writeClient.writePoint(logPoint)
+  }
 }

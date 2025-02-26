@@ -68,15 +68,22 @@ export async function diffLastKnown(
     return DiffResult.TRIP_ENDED
   }
 
-  if (newVehicle.idVehicleStatus === bookedStatus && lastKnown.status !== bookedStatus) {
+  if (
+    newVehicle.idVehicleStatus === bookedStatus &&
+    lastKnown.status !== bookedStatus
+  ) {
     return DiffResult.BOOKING_STARTED
   }
 
-  if (lastKnown.status === bookedStatus && newVehicle.idVehicleStatus !== bookedStatus) {
+  if (
+    lastKnown.status === bookedStatus &&
+    newVehicle.idVehicleStatus !== bookedStatus
+  ) {
     return DiffResult.BOOKING_ENDED
   }
 
   if (locationRelevant(newVehicle, lastKnown)) {
+    relationalObserver.onTripMissed(lastKnown, newVehicle)
     return DiffResult.TRIP_MISSED
   }
 

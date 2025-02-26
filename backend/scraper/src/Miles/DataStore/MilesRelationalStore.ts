@@ -132,9 +132,7 @@ export class MilesRelationalStore {
         await this.finalizeTrip(vehicle)
         break
       case DiffResult.TRIP_MISSED:
-        // todo
-        console.error("Trip missed")
-        // todo also log this to influx
+        await this.endBooking(vehicle.idVehicle) // make sure bookings are ended
         break
       case DiffResult.SUBSCRIPTION_MOVED:
         await this.updateSubscriptionTrip(vehicle)
@@ -337,9 +335,13 @@ export class MilesRelationalStore {
       )
       return
     }
+
+    const fromBooking = await this.endBooking(vehicleId)
+
     await this.manager.transaction(async (manager) => {
       const trip = new Trip()
       trip.milesId = lastKnown.milesId
+      trip.fromBooking = fromBooking
       await manager.save(trip)
       const startPoint = mapLastKnownToMilesWaypoint(trip, lastKnown)
       await manager.save(startPoint)
@@ -374,16 +376,32 @@ export class MilesRelationalStore {
 
   public async cancelTrip(vehicleId: number) {
     await this.endBooking(vehicleId)
-    await this.manager
-      .createQueryBuilder()
-      .delete()
-      .from(Trip)
-      .where("milesId = :vehicleId", { vehicleId })
-      .andWhere("endPoint IS NULL")
-      .andWhere(
-        'id = (SELECT MAX(id) FROM "MilesTrip" WHERE milesId = :vehicleId AND endPoint IS NULL)'
-      )
-      .execute()
+    await this.manager.transaction(async (transactionalEntityManager) => {
+      const tripToDelete = await transactionalEntityManager
+        .createQueryBuilder()
+        .select("id")
+        .from(Trip, "MilesTrip")
+        .where("milesId = :vehicleId", { vehicleId })
+        .andWhere("endPoint IS NULL")
+        .orderBy("id", "DESC")
+        .limit(1)
+        .getRawOne();
+    
+      if (tripToDelete) {
+        await transactionalEntityManager
+          .createQueryBuilder()
+          .delete()
+          .from("MilesPoint")
+          .where("tripId = :tripId", { tripId: tripToDelete.id })
+          .execute();
+        await transactionalEntityManager
+          .createQueryBuilder()
+          .delete()
+          .from("MilesTrip")
+          .where("id = :tripId", { tripId: tripToDelete.id })
+          .execute();
+      }
+    });
   }
 
   public async saveWaypoint(vehicle: apiVehicleJsonParsed) {

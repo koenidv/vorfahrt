@@ -47,11 +47,11 @@ export class Trip {
   @JoinColumn({ name: "fromBooking" })
   fromBooking: Booking | null;
 
-  @OneToOne(() => Waypoint, (point) => point.trip, { nullable: true, cascade: true, onDelete: "SET NULL" })
+  @OneToOne(() => Waypoint, (point) => point.trip, { nullable: true, cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "startPoint" })
   startPoint: Waypoint;
 
-  @OneToOne(() => Waypoint, (point) => point.trip, { nullable: true, cascade: true, onDelete: "SET NULL" })
+  @OneToOne(() => Waypoint, (point) => point.trip, { nullable: true, cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "endPoint" })
   endPoint: Waypoint?;
 
