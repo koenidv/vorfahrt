@@ -27,12 +27,12 @@ export class Booking {
   @Column()
   milesId: number;
 
-  @Column("timestampz")
+  @Column("timestamptz", { nullable: false })
   startTime: Date;
 
-  @Column("timestampz")
+  @Column("timestamptz", { nullable: true })
   endTime: Date;
 
-  @OneToOne(() => Trip, (trip) => trip.fromBooking, { nullable: true, cascade: true })
-  trip: Trip;
+  @OneToOne(() => Trip, (trip) => trip.fromBooking, { nullable: true })
+  trip: Trip | null;
 }

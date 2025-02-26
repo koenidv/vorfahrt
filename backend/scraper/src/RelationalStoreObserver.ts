@@ -1,7 +1,6 @@
 import { Point, WriteApi } from "@influxdata/influxdb-client"
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes"
 import { VehicleLastKnown } from "@vorfahrt/shared"
-import { MilesRelationalStore } from "Miles/DataStore/MilesRelationalStore"
 
 export class RelationalStoreObserver {
   private writeClient: WriteApi

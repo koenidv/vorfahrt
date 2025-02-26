@@ -9,7 +9,7 @@ import clc from "cli-color";
 import { SystemController } from "../SystemController";
 import { VehicleQueue, VehicleQueueInterface } from "./utils/VehicleQueue";
 import { WriteApi } from "@influxdata/influxdb-client";
-import { RelationalStoreObserver } from "RelationalStoreObserver";
+import { RelationalStoreObserver } from "../RelationalStoreObserver";
 
 const RPM_VEHICLE = env.rpm_vehicle;
 const RPM_MAP = env.rpm_map;
