@@ -1,10 +1,10 @@
 import { config } from "dotenv";
 
-config({ path: ".env" });
+config({ path: ".env", override: false });
 
 const assertString = (value: unknown, key: string) => {
   if (typeof value !== "string" || value.length < 1) {
-    throw new Error(`invalid .env: ${key} missing`);
+    throw new Error(`${key} missing from env`);
   }
   return value;
 };

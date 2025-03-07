@@ -21,7 +21,7 @@ export class RelationalStoreObserver {
       .tag("status", newVehicle.idVehicleStatus)
       .intField(
         "secondsSinceUpdate",
-        Math.round(new Date().getTime() - lastKnown.updated.getTime() / 1000)
+        Math.round((new Date().getTime() - lastKnown.updated.getTime()) / 1000)
       )
     this.writeClient.writePoint(logPoint)
   }

@@ -378,27 +378,27 @@ export class MilesRelationalStore {
     await this.endBooking(vehicleId)
     await this.manager.transaction(async (transactionalEntityManager) => {
       const tripToDelete = await transactionalEntityManager
-        .createQueryBuilder()
-        .select("id")
-        .from(Trip, "MilesTrip")
-        .where("milesId = :vehicleId", { vehicleId })
-        .andWhere("endPoint IS NULL")
-        .orderBy("id", "DESC")
-        .limit(1)
-        .getRawOne();
+      .createQueryBuilder()
+      .select("id")
+      .from(Trip, "MilesTrip")
+      .where('"milesId" = :vehicleId', { vehicleId })
+      .andWhere('"endPoint" IS NULL')
+      .orderBy("id", "DESC")
+      .limit(1)
+      .getRawOne();
     
       if (tripToDelete) {
         await transactionalEntityManager
           .createQueryBuilder()
           .delete()
           .from("MilesPoint")
-          .where("tripId = :tripId", { tripId: tripToDelete.id })
+          .where('"tripId" = :tripId', { tripId: tripToDelete.id })
           .execute();
         await transactionalEntityManager
           .createQueryBuilder()
           .delete()
           .from("MilesTrip")
-          .where("id = :tripId", { tripId: tripToDelete.id })
+          .where('"id" = :tripId', { tripId: tripToDelete.id })
           .execute();
       }
     });

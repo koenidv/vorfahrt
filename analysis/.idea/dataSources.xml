@@ -22,5 +22,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5433/vorfahrt</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="postgres@188.245.236.19" uuid="8ca2509f-7996-4d9b-bd2c-4439074427b4">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://188.245.236.19:5433/postgres</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
