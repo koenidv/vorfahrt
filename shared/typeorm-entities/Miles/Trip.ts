@@ -15,9 +15,9 @@ import { Waypoint } from "./Waypoint";
 import { Booking } from "./Booking";
 
 export enum TripType {
-  PUBLIC,
-  SUBSCRIPTION,
-  RELOCATION,
+  PUBLIC = "public",
+  SUBSCRIPTION = "subscription",
+  RELOCATION = "relocation",
 }
 
 type NewType = Booking;

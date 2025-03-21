@@ -24,7 +24,7 @@ class Main {
 
   getObserverWriteClient(): WriteApi {
     return new InfluxDB({ url: env.influxUrl, token: env.influxToken, timeout: 60000 })
-      .getWriteApi("vorfahrt", "system_scraper", "ms", { defaultTags: { host: env.hostname } });
+      .getWriteApi("vorfahrt", "system_scraper", "ms", { defaultTags: { host: env.hostname }, flushInterval: 20000 });
   }
 
 }
