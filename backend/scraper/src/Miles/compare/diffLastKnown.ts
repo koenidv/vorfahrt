@@ -23,6 +23,7 @@ const inRideStatuses = ["USER_IN_RIDE", "PAUSED_BY_USER"]
 const bookedStatus = "BOOKED_BY_USER"
 const subscriptionStatus = "CAR_SUBSCRIPTION"
 const relocationStatus = "IN_RELOCATION_TRIP"
+const opsStatus = "IN_OPS"
 
 export async function diffLastKnown(
   newVehicle: apiVehicleJsonParsed,
@@ -33,7 +34,10 @@ export async function diffLastKnown(
   const newInfo = getInfoFromMilesVehicleStatus(
     newVehicle.idVehicleStatus as any
   )
-  if (newInfo.isInLifecycle) return DiffResult.LIFECYCLED
+  if (newInfo.isInLifecycle || opsStatus == newVehicle.idVehicleStatus) {
+    return DiffResult.LIFECYCLED
+  }
+
   const lastKnown = await relationalStore.getLastKnownVehicle(
     newVehicle.idVehicle
   )
@@ -51,9 +55,17 @@ export async function diffLastKnown(
     return DiffResult.INSIGNIFICANT
   }
 
-  if (inRideStatuses.includes(newVehicle.idVehicleStatus)) {
-    if (!inRideStatuses.includes(lastKnown.status))
-      return DiffResult.TRIP_STARTED
+  if (
+    inRideStatuses.includes(newVehicle.idVehicleStatus) ||
+    relocationStatus == newVehicle.idVehicleStatus
+  ) {
+    if (
+      !inRideStatuses.includes(lastKnown.status) ||
+      relocationStatus == lastKnown.status
+    )
+      return inRideStatuses.includes(newVehicle.idVehicleStatus)
+        ? DiffResult.TRIP_STARTED
+        : DiffResult.TRIP_STARTED_INTERNAL
     else if (
       locationRelevant(newVehicle, lastKnown) ||
       lastKnown.status !== newVehicle.idVehicleStatus
@@ -105,5 +117,5 @@ function locationRelevant(
   newVehicle: apiVehicleJsonParsed,
   lastKnown: VehicleLastKnown
 ): boolean {
-  return calculateLocationDelta(newVehicle, lastKnown) > 0.0005
+  return calculateLocationDelta(newVehicle, lastKnown) > 0.001
 }

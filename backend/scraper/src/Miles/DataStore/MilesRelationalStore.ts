@@ -114,6 +114,7 @@ export class MilesRelationalStore {
         await this.cancelTrip(vehicle.idVehicle)
         break
       case DiffResult.BOOKING_STARTED:
+        this.cancelTrip(vehicle.idVehicle)
         await this.startBooking(vehicle.idVehicle)
         break
       case DiffResult.BOOKING_ENDED:
@@ -132,7 +133,12 @@ export class MilesRelationalStore {
         await this.finalizeTrip(vehicle)
         break
       case DiffResult.TRIP_MISSED:
+        await this.cancelTrip(vehicle.idVehicle)
         await this.endBooking(vehicle.idVehicle) // make sure bookings are ended
+        this.observer.onTripMissed(
+          await this.getLastKnownVehicle(vehicle.idVehicle),
+          vehicle
+        )
         break
       case DiffResult.SUBSCRIPTION_MOVED:
         await this.updateSubscriptionTrip(vehicle)
@@ -280,9 +286,7 @@ export class MilesRelationalStore {
     await this.manager.save(booking)
   }
 
-  public async endBooking(
-    vehicleId: number
-  ): Promise<Booking | null> {
+  public async endBooking(vehicleId: number): Promise<Booking | null> {
     const pending = await this.manager.findOne(Booking, {
       where: { milesId: vehicleId, endTime: IsNull() },
     })
@@ -378,30 +382,30 @@ export class MilesRelationalStore {
     await this.endBooking(vehicleId)
     await this.manager.transaction(async (transactionalEntityManager) => {
       const tripToDelete = await transactionalEntityManager
-      .createQueryBuilder()
-      .select("id")
-      .from(Trip, "MilesTrip")
-      .where('"milesId" = :vehicleId', { vehicleId })
-      .andWhere('"endPoint" IS NULL')
-      .orderBy("id", "DESC")
-      .limit(1)
-      .getRawOne();
-    
+        .createQueryBuilder()
+        .select("id")
+        .from(Trip, "MilesTrip")
+        .where('"milesId" = :vehicleId', { vehicleId })
+        .andWhere('"endPoint" IS NULL')
+        .orderBy("id", "DESC")
+        .limit(1)
+        .getRawOne()
+
       if (tripToDelete) {
         await transactionalEntityManager
           .createQueryBuilder()
           .delete()
           .from("MilesPoint")
           .where('"tripId" = :tripId', { tripId: tripToDelete.id })
-          .execute();
+          .execute()
         await transactionalEntityManager
           .createQueryBuilder()
           .delete()
           .from("MilesTrip")
           .where('"id" = :tripId', { tripId: tripToDelete.id })
-          .execute();
+          .execute()
       }
-    });
+    })
   }
 
   public async saveWaypoint(vehicle: apiVehicleJsonParsed) {
