@@ -272,9 +272,10 @@ export class MilesRelationalStore {
   }
 
   public async getLastKnownVehicle(
-    id: number
+    id: number,
+    manager = this.manager
   ): Promise<VehicleLastKnown | null> {
-    return await this.manager.findOne(VehicleLastKnown, {
+    return await manager.findOne(VehicleLastKnown, {
       where: { milesId: id },
     })
   }
@@ -286,13 +287,17 @@ export class MilesRelationalStore {
     await this.manager.save(booking)
   }
 
-  public async endBooking(vehicleId: number): Promise<Booking | null> {
-    const pending = await this.manager.findOne(Booking, {
+  public async endBooking(
+    vehicleId: number,
+    manager = this.manager
+  ): Promise<Booking | null> {
+    const pending = await manager.findOne(Booking, {
       where: { milesId: vehicleId, endTime: IsNull() },
+      order: { id: "DESC" },
     })
     if (!pending) return null
     pending.endTime = new Date()
-    return await this.manager.save(pending)
+    return await manager.save(pending)
   }
 
   public async startTrip(vehicle: apiVehicleJsonParsed, tripType: TripType) {
@@ -331,31 +336,34 @@ export class MilesRelationalStore {
   }
 
   public async startTripFromLastKnown(vehicleId: number) {
-    const lastKnown = await this.getLastKnownVehicle(vehicleId)
-    if (!lastKnown) {
-      console.error(
-        "Trip could not be started: no last known found for vehicle with id",
-        vehicleId
-      )
-      return
-    }
+    await this.manager.transaction(async (transaction) => {
+      const lastKnown = await this.getLastKnownVehicle(vehicleId, transaction)
+      if (!lastKnown) {
+        console.error(
+          "Trip could not be started: no last known found for vehicle with id",
+          vehicleId
+        )
+        return
+      }
 
-    const fromBooking = await this.endBooking(vehicleId)
+      const fromBooking = await this.endBooking(vehicleId, transaction)
 
-    await this.manager.transaction(async (manager) => {
       const trip = new Trip()
       trip.milesId = lastKnown.milesId
       trip.fromBooking = fromBooking
-      await manager.save(trip)
+      await transaction.save(trip)
       const startPoint = mapLastKnownToMilesWaypoint(trip, lastKnown)
-      await manager.save(startPoint)
+      await transaction.save(startPoint)
       trip.startPoint = startPoint
-      await manager.save(trip)
+      await transaction.save(trip)
     })
   }
 
-  public async findPendingTrip(vehicleId: number): Promise<Trip | null> {
-    return await this.manager.findOne(Trip, {
+  public async findPendingTrip(
+    vehicleId: number,
+    manager = this.manager
+  ): Promise<Trip | null> {
+    return await manager.findOne(Trip, {
       where: { milesId: vehicleId, endPoint: IsNull() },
     })
   }
@@ -365,62 +373,93 @@ export class MilesRelationalStore {
   }
 
   public async finalizeTrip(vehicle: apiVehicleJsonParsed) {
-    const pendingTrip = await this.findPendingTrip(vehicle.idVehicle)
-    if (!pendingTrip) {
-      console.error(
-        "Trip could not be finalized: no pending trip found for vehicle with id",
-        vehicle.idVehicle
-      )
-      return
-    }
+    try {
+      await this.manager.transaction(async (transaction) => {
+        const pendingTrip = await this.findPendingTrip(
+          vehicle.idVehicle,
+          transaction
+        )
+        if (!pendingTrip) {
+          console.error(
+            "Trip could not be finalized: no pending trip found for vehicle with id",
+            vehicle.idVehicle
+          )
+          return
+        }
 
-    pendingTrip.endPoint = mapMilesWaypoint(pendingTrip, vehicle)
-    await this.manager.save(pendingTrip)
+        pendingTrip.endPoint = mapMilesWaypoint(pendingTrip, vehicle)
+        await transaction.save(pendingTrip)
+      })
+    } catch (e) {
+      console.error(
+        clc.bgRedBright("MilesRelationalStore"),
+        clc.red(`Error finalizing trip for vehicle ${vehicle.idVehicle}: ${e}`)
+      )
+      this.observer.onDbError(e ?? {})
+    }
   }
 
   public async cancelTrip(vehicleId: number) {
-    await this.endBooking(vehicleId)
-    await this.manager.transaction(async (transactionalEntityManager) => {
-      const tripToDelete = await transactionalEntityManager
-        .createQueryBuilder()
-        .select("id")
-        .from(Trip, "MilesTrip")
-        .where('"milesId" = :vehicleId', { vehicleId })
-        .andWhere('"endPoint" IS NULL')
-        .orderBy("id", "DESC")
-        .limit(1)
-        .getRawOne()
+    try {
+      await this.manager.transaction(async (transaction) => {
+        await this.endBooking(vehicleId, transaction)
+        const tripToDelete = await transaction
+          .createQueryBuilder()
+          .select("id")
+          .from(Trip, "MilesTrip")
+          .where('"milesId" = :vehicleId', { vehicleId })
+          .andWhere('"endPoint" IS NULL')
+          .orderBy("id", "DESC")
+          .limit(1)
+          .getRawOne()
 
-      if (tripToDelete) {
-        await transactionalEntityManager
-          .createQueryBuilder()
-          .delete()
-          .from("MilesPoint")
-          .where('"tripId" = :tripId', { tripId: tripToDelete.id })
-          .execute()
-        await transactionalEntityManager
-          .createQueryBuilder()
-          .delete()
-          .from("MilesTrip")
-          .where('"id" = :tripId', { tripId: tripToDelete.id })
-          .execute()
-      }
-    })
+        if (tripToDelete) {
+          await transaction
+            .createQueryBuilder()
+            .delete()
+            .from("MilesPoint")
+            .where('"tripId" = :tripId', { tripId: tripToDelete.id })
+            .execute()
+          await transaction
+            .createQueryBuilder()
+            .delete()
+            .from("MilesTrip")
+            .where('"id" = :tripId', { tripId: tripToDelete.id })
+            .execute()
+        }
+      })
+    } catch (e) {
+      console.error(
+        clc.bgRedBright("MilesRelationalStore"),
+        clc.red(`Error canceling trip for vehicle ${vehicleId}: ${e}`)
+      )
+      this.observer.onDbError(e ?? {})
+    }
   }
 
   public async saveWaypoint(vehicle: apiVehicleJsonParsed) {
-    const trip = await this.findPendingTrip(vehicle.idVehicle)
-    if (!trip) {
-      console.error(
-        "Waypoint could not be saved: no pending trip found for vehicle with id",
-        vehicle.idVehicle
-      )
-      // todo create new trip, for subsciption vehicles
-      return
-    }
+    try {
+      await this.manager.transaction(async (transaction) => {
+        const trip = await this.findPendingTrip(vehicle.idVehicle, transaction)
+        if (!trip) {
+          console.error(
+            "Waypoint could not be saved: no pending trip found for vehicle with id",
+            vehicle.idVehicle
+          )
+          // todo create new trip, for subsciption vehicles
+          return
+        }
 
-    const waypoint = mapMilesWaypoint(trip, vehicle)
-    await this.manager.save(waypoint)
+        const waypoint = mapMilesWaypoint(trip, vehicle)
+        await transaction.save(waypoint)
+      })
+    } catch (e) {
+      console.error(
+        clc.bgRedBright("MilesRelationalStore"),
+        clc.red(`Error saving waypoint for vehicle ${vehicle.idVehicle}: ${e}`)
+      )
+      this.observer.onDbError(e ?? {})
+    }
   }
 
   public async updateSubscriptionTrip(vehicle: apiVehicleJsonParsed) {
