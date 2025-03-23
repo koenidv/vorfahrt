@@ -290,11 +290,9 @@ export class MilesRelationalStore {
     const booking = new Booking()
     booking.milesId = vehicle.idVehicle
     booking.startTime = new Date()
-    booking.setLocation(
-      vehicle.Longitude,
-      vehicle.Latitude,
-      await this.getPostalCode(vehicle.Longitude, vehicle.Latitude)
-    )
+    booking.longitude = vehicle.Longitude
+    booking.latitude = vehicle.Latitude
+    booking.postcode = await this.getPostalCode(vehicle.Longitude, vehicle.Latitude)
     await this.manager.save(booking)
   }
 
@@ -307,12 +305,8 @@ export class MilesRelationalStore {
       order: { id: "DESC" },
     })
     if (!pending) return null
-    // workaround for typeorm bug with spatial types
-    await manager.query(
-      `UPDATE "MilesBooking" SET "endTime" = $1 WHERE "id" = $2`,
-      [new Date(), pending.id]
-    )
-    return await manager.findOne(Booking, { where: { id: pending.id } })
+    pending.endTime = new Date()
+    return await manager.save(pending)
   }
 
   public async startTrip(vehicle: apiVehicleJsonParsed, tripType: TripType) {

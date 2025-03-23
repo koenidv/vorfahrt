@@ -12,7 +12,6 @@ import {
 import { VehicleMeta } from "./VehicleMeta";
 import { Trip } from "./Trip";
 
-
 @Entity({
   name: "MilesBooking",
 })
@@ -33,18 +32,16 @@ export class Booking {
   @Column("timestamptz", { nullable: true })
   endTime: Date;
 
-  @Column({ type: "point", spatialFeatureType: "Point", srid: 4326 })
-  @Index({ spatial: true })
-  location: string;
-  
-  @Column()
+  // not using location as typeorm will consistently break it on update
+
+  @Column({ type: "float" })
+  longitude: number;
+
+  @Column({ type: "float" })
+  latitude: number;
+
+  @Column({ nullable: true })
   postcode: string?;
-
-  setLocation(longitude: number, latitude: number, postcode: string?) {
-    this.location = `(${longitude}, ${latitude})`;
-    this.postcode = postcode;
-  }
-
 
   @OneToOne(() => Trip, (trip) => trip.fromBooking, { nullable: true })
   trip: Trip | null;
