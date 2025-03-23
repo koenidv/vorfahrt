@@ -34,11 +34,13 @@ export class MilesRelationalStore {
   manager: EntityManager
   cache: MilesRelationalCache
   observer: RelationalStoreObserver
+  getPostalCode: (lon: number, lat: number) => Promise<string | null>
 
-  constructor(manager: EntityManager, observer: RelationalStoreObserver) {
+  constructor(manager: EntityManager, observer: RelationalStoreObserver, getPostalCode: (lon: number, lat: number) => Promise<string | null>) {
     this.manager = manager
     this.cache = new MilesRelationalCache(manager)
     this.observer = observer
+    this.getPostalCode = getPostalCode
   }
 
   /**
@@ -328,7 +330,7 @@ export class MilesRelationalStore {
       trip.milesId = vehicle.idVehicle
       trip.fromBooking = fromBooking
       await manager.save(trip)
-      const startPoint = mapMilesWaypoint(trip, vehicle)
+      const startPoint = await mapMilesWaypoint(trip, vehicle, this.getPostalCode)
       await manager.save(startPoint)
       trip.startPoint = startPoint
       await manager.save(trip)
@@ -352,7 +354,7 @@ export class MilesRelationalStore {
       trip.milesId = lastKnown.milesId
       trip.fromBooking = fromBooking
       await transaction.save(trip)
-      const startPoint = mapLastKnownToMilesWaypoint(trip, lastKnown)
+      const startPoint = await mapLastKnownToMilesWaypoint(trip, lastKnown, this.getPostalCode)
       await transaction.save(startPoint)
       trip.startPoint = startPoint
       await transaction.save(trip)
@@ -387,7 +389,7 @@ export class MilesRelationalStore {
           return
         }
 
-        pendingTrip.endPoint = mapMilesWaypoint(pendingTrip, vehicle)
+        pendingTrip.endPoint = await mapMilesWaypoint(pendingTrip, vehicle, this.getPostalCode)
         await transaction.save(pendingTrip)
       })
     } catch (e) {
@@ -450,7 +452,7 @@ export class MilesRelationalStore {
           return
         }
 
-        const waypoint = mapMilesWaypoint(trip, vehicle)
+        const waypoint = await mapMilesWaypoint(trip, vehicle, this.getPostalCode)
         await transaction.save(waypoint)
       })
     } catch (e) {

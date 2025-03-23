@@ -10,6 +10,9 @@ import { SystemController } from "../SystemController";
 import { VehicleQueue, VehicleQueueInterface } from "./utils/VehicleQueue";
 import { WriteApi } from "@influxdata/influxdb-client";
 import { RelationalStoreObserver } from "../RelationalStoreObserver";
+import { PostalCodeFeature, PostalCodeLookup } from "./utils/PostcalCodeLookup";
+
+import berlinPostalCodes from '../assets/berlin_plz_simple.json';
 
 const RPM_VEHICLE = env.rpm_vehicle;
 const RPM_MAP = env.rpm_map;
@@ -45,7 +48,8 @@ export default class MilesController {
   private createDataHandler(appDataSource: DataSource, observerWriteApi: WriteApi): MilesDataHandler {
     this.dataSource = appDataSource;
     const observer = new RelationalStoreObserver(observerWriteApi);
-    this.dataHandler = new MilesDataHandler(this.dataSource, observer);
+    const postalLookup = new PostalCodeLookup(berlinPostalCodes as { features: PostalCodeFeature[] });
+    this.dataHandler = new MilesDataHandler(this.dataSource, observer, postalLookup);
     return this.dataHandler;
   }
 

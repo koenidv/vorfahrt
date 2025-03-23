@@ -161,10 +161,10 @@ export default class MilesScraperVehicles extends BaseMilesScraperCycled<
             !getInfoFromMilesVehicleStatus(
               vehicleParsed.idVehicleStatus as keyof typeof MilesVehicleStatus
             ).isInRide &&
-            (vehicleParsed.Latitude < 52 ||
-              vehicleParsed.Latitude > 53 ||
-              vehicleParsed.Longitude < 13 ||
-              vehicleParsed.Longitude > 14)
+            (vehicleParsed.Latitude < 52.2 ||
+              vehicleParsed.Latitude > 52.7 ||
+              vehicleParsed.Longitude < 12.9 ||
+              vehicleParsed.Longitude > 13.8)
           ) {
             this.log("Vehicle", vehicleId, "is in lifecycle, removing")
             return null

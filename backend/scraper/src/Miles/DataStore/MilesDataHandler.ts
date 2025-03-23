@@ -16,6 +16,7 @@ import MilesScraperVehicles, {
 } from "../Scraping/MilesScraperVehicles"
 import { MilesRelationalStore } from "./MilesRelationalStore"
 import { MilesVehiclesPerCityCache } from "./MilesVehiclesPerCityCache"
+import { PostalCodeLookup } from "Miles/utils/PostcalCodeLookup"
 
 export default class MilesDataHandler {
   private relationalStore: MilesRelationalStore
@@ -27,11 +28,13 @@ export default class MilesDataHandler {
 
   constructor(
     dataSource: DataSource,
-    relationalObserver: RelationalStoreObserver
+    relationalObserver: RelationalStoreObserver,
+    postalLookup: PostalCodeLookup
   ) {
     this.relationalStore = new MilesRelationalStore(
       dataSource.manager,
-      relationalObserver
+      relationalObserver,
+      postalLookup.getPostalCode.bind(postalLookup)
     )
   }
 
