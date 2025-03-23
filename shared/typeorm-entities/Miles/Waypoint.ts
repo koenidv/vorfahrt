@@ -37,8 +37,12 @@ export class Waypoint {
   @Index({ spatial: true })
   location: string;
 
-  setLocation(latitude: number, longitude: number) {
+  @Column({ type: "varchar", nullable: true })
+  postcode: string?;
+
+  setLocation(longitude: number, latitude: number, postcode: string?) {
     this.location = `(${longitude}, ${latitude})`;
+    this.postcode = postcode;
   }
   get latitude(): number {
     return parseFloat(this.location.split(",")[1].replace(")", "").trim());
@@ -49,7 +53,4 @@ export class Waypoint {
 
   @Column({ type: "int" })
   rangeRemaining: number;
-
-  @Column({ type: "varchar", nullable: true })
-  plz: string?;
 }

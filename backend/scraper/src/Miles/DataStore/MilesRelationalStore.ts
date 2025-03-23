@@ -36,7 +36,11 @@ export class MilesRelationalStore {
   observer: RelationalStoreObserver
   getPostalCode: (lon: number, lat: number) => Promise<string | null>
 
-  constructor(manager: EntityManager, observer: RelationalStoreObserver, getPostalCode: (lon: number, lat: number) => Promise<string | null>) {
+  constructor(
+    manager: EntityManager,
+    observer: RelationalStoreObserver,
+    getPostalCode: (lon: number, lat: number) => Promise<string | null>
+  ) {
     this.manager = manager
     this.cache = new MilesRelationalCache(manager)
     this.observer = observer
@@ -117,7 +121,7 @@ export class MilesRelationalStore {
         break
       case DiffResult.BOOKING_STARTED:
         this.cancelTrip(vehicle.idVehicle)
-        await this.startBooking(vehicle.idVehicle)
+        await this.startBooking(vehicle)
         break
       case DiffResult.BOOKING_ENDED:
         await this.endBooking(vehicle.idVehicle)
@@ -282,10 +286,15 @@ export class MilesRelationalStore {
     })
   }
 
-  public async startBooking(vehicleId: number) {
+  public async startBooking(vehicle: apiVehicleJsonParsed) {
     const booking = new Booking()
-    booking.milesId = vehicleId
+    booking.milesId = vehicle.idVehicle
     booking.startTime = new Date()
+    booking.setLocation(
+      vehicle.Longitude,
+      vehicle.Latitude,
+      await this.getPostalCode(vehicle.Longitude, vehicle.Latitude)
+    )
     await this.manager.save(booking)
   }
 
@@ -330,7 +339,11 @@ export class MilesRelationalStore {
       trip.milesId = vehicle.idVehicle
       trip.fromBooking = fromBooking
       await manager.save(trip)
-      const startPoint = await mapMilesWaypoint(trip, vehicle, this.getPostalCode)
+      const startPoint = await mapMilesWaypoint(
+        trip,
+        vehicle,
+        this.getPostalCode
+      )
       await manager.save(startPoint)
       trip.startPoint = startPoint
       await manager.save(trip)
@@ -354,7 +367,11 @@ export class MilesRelationalStore {
       trip.milesId = lastKnown.milesId
       trip.fromBooking = fromBooking
       await transaction.save(trip)
-      const startPoint = await mapLastKnownToMilesWaypoint(trip, lastKnown, this.getPostalCode)
+      const startPoint = await mapLastKnownToMilesWaypoint(
+        trip,
+        lastKnown,
+        this.getPostalCode
+      )
       await transaction.save(startPoint)
       trip.startPoint = startPoint
       await transaction.save(trip)
@@ -389,7 +406,11 @@ export class MilesRelationalStore {
           return
         }
 
-        pendingTrip.endPoint = await mapMilesWaypoint(pendingTrip, vehicle, this.getPostalCode)
+        pendingTrip.endPoint = await mapMilesWaypoint(
+          pendingTrip,
+          vehicle,
+          this.getPostalCode
+        )
         await transaction.save(pendingTrip)
       })
     } catch (e) {
@@ -452,7 +473,11 @@ export class MilesRelationalStore {
           return
         }
 
-        const waypoint = await mapMilesWaypoint(trip, vehicle, this.getPostalCode)
+        const waypoint = await mapMilesWaypoint(
+          trip,
+          vehicle,
+          this.getPostalCode
+        )
         await transaction.save(waypoint)
       })
     } catch (e) {

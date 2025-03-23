@@ -9,10 +9,13 @@ export async function mapMilesWaypoint(
 ): Promise<Waypoint> {
   const waypoint = new Waypoint()
   waypoint.trip = trip
-  waypoint.setLocation(vehicle.Latitude, vehicle.Longitude)
+  waypoint.setLocation(
+    vehicle.Longitude,
+    vehicle.Latitude,
+    await getPostalCode(vehicle.Longitude, vehicle.Latitude)
+  )
   waypoint.status = vehicle.idVehicleStatus.trim()
   waypoint.rangeRemaining = vehicle.RemainingRange_parsed!
-  waypoint.plz = await getPostalCode(vehicle.Longitude, vehicle.Latitude)
   return waypoint
 }
 
@@ -23,9 +26,12 @@ export async function mapLastKnownToMilesWaypoint(
 ): Promise<Waypoint> {
   const waypoint = new Waypoint()
   waypoint.trip = trip
-  waypoint.setLocation(lastKnown.latitude, lastKnown.longitude)
+  waypoint.setLocation(
+    lastKnown.longitude,
+    lastKnown.latitude,
+    await getPostalCode(lastKnown.longitude, lastKnown.latitude)
+  )
   waypoint.status = lastKnown.status
   waypoint.rangeRemaining = lastKnown.range
-  waypoint.plz = await getPostalCode(lastKnown.longitude, lastKnown.latitude)
   return waypoint
 }

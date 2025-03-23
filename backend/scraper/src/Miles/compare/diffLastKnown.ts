@@ -117,5 +117,5 @@ function locationRelevant(
   newVehicle: apiVehicleJsonParsed,
   lastKnown: VehicleLastKnown
 ): boolean {
-  return calculateLocationDelta(newVehicle, lastKnown) > 0.001
+  return calculateLocationDelta(newVehicle, lastKnown) > 0.001 // ~111m in longitude or, in Berlin, ~68m in latitude
 }
