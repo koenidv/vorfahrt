@@ -1,116 +1,186 @@
-import { JsonParseBehaviour, MilesClient, MilesVehicleStatus, applyJsonParseBehaviourToVehicle } from "@koenidv/abfahrt";
-import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes";
-import { BaseMilesScraperCycled } from "../BaseMilesScraper";
-import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types";
-import { SystemController } from "../../SystemController";
-import { VehicleQueueInterface } from "../utils/VehicleQueue";
-import env from "../../env";
+import {
+  applyJsonParseBehaviourToVehicle,
+  getInfoFromMilesVehicleStatus,
+  JsonParseBehaviour,
+  MilesClient,
+  MilesVehicleStatus,
+} from "@koenidv/abfahrt"
+import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes"
+
+import env from "../../env"
+import { SystemController } from "../../SystemController"
+import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types"
+import { BaseMilesScraperCycled } from "../BaseMilesScraper"
+import { VehicleQueueInterface } from "../utils/VehicleQueue"
 
 export enum QueryPriority {
-    HIGH = 49,
-    NORMAL = 1,
-    LOW = 0.01,
+  HIGH = 49,
+  NORMAL = 1,
+  LOW = 0.01,
 }
 
-export interface MilesVehicleSource extends ValueSource { source: SOURCE_TYPE.VEHICLE, priority: QueryPriority }
+export interface MilesVehicleSource extends ValueSource {
+  source: SOURCE_TYPE.VEHICLE
+  priority: QueryPriority
+}
 
-export default class MilesScraperVehicles extends BaseMilesScraperCycled<apiVehicleJsonParsed, MilesVehicleSource> {
-    private queue: VehicleQueueInterface;
-    private lastQueueMeasuredTimestamp = 0;
+export default class MilesScraperVehicles extends BaseMilesScraperCycled<
+  apiVehicleJsonParsed,
+  MilesVehicleSource
+> {
+  private queue: VehicleQueueInterface
+  private lastQueueMeasuredTimestamp = 0
 
-    constructor(abfahrt: MilesClient, cyclesMinute: number, scraperId: string, systemController: SystemController, queue: VehicleQueueInterface) {
-        super(abfahrt, cyclesMinute, scraperId, systemController);
-        this.queue = queue;
+  constructor(
+    abfahrt: MilesClient,
+    cyclesMinute: number,
+    scraperId: string,
+    systemController: SystemController,
+    queue: VehicleQueueInterface
+  ) {
+    super(abfahrt, cyclesMinute, scraperId, systemController)
+    this.queue = queue
+  }
+
+  register(
+    vehicleIds: number[],
+    priority: QueryPriority,
+    duringInit?: boolean
+  ): this {
+    const changed = this.queue.insert(vehicleIds, priority, duringInit)
+    if (
+      changed.length !== 0 &&
+      Date.now() - this.lastQueueMeasuredTimestamp > 120 * 1000
+    ) {
+      this.measureQueueSizes()
     }
+    return this
+  }
 
-    register(vehicleIds: number[], priority: QueryPriority, duringInit?: boolean): this {
-        const changed = this.queue.insert(vehicleIds, priority, duringInit);
-        if (changed.length !== 0 && Date.now() - this.lastQueueMeasuredTimestamp > 120 * 1000) {
-            this.measureQueueSizes();
+  deregister(vehicleIds: number[]): this {
+    const changed = this.queue.remove(vehicleIds)
+    if (
+      changed.length !== 0 &&
+      Date.now() - this.lastQueueMeasuredTimestamp > 120 * 1000
+    ) {
+      this.measureQueueSizes()
+    }
+    return this
+  }
+
+  private measureQueueSizes() {
+    this.lastQueueMeasuredTimestamp = Date.now()
+    const queueSizes = this.queue.getQueueSizes()
+    for (const [key, value] of Object.entries(queueSizes)) {
+      this.observer.measure(`queue-${key}`, value)
+    }
+  }
+
+  getQueue(): { milesId: number; priority: QueryPriority | null }[] {
+    return this.queue.getQueue()
+  }
+
+  async cycle(): Promise<{
+    data: apiVehicleJsonParsed[]
+    source: MilesVehicleSource
+  } | null> {
+    const next = this.selectNext()
+    if (next !== null) {
+      const vehicle = await this.fetch(next.id)
+      return vehicle === null
+        ? null
+        : {
+            data: [vehicle],
+            source: { source: SOURCE_TYPE.VEHICLE, priority: next.priority },
+          }
+    }
+    return null
+  }
+
+  private selectNext(): { id: number; priority: QueryPriority } | null {
+    const selected = this.queue.getRandom()
+    if (selected === null) {
+      this.logWarn("No vehicles in queue: cycle will be skipped")
+      return null
+    }
+    return selected
+  }
+
+  private async fetch(vehicleId: number): Promise<apiVehicleJsonParsed | null> {
+    try {
+      const result = await this.abfahrt
+        .createGetVehicle(vehicleId)
+        .onRequestRetry((_: any, time: number) =>
+          this.observer.requestExecuted(
+            RequestStatus.API_ERROR,
+            time,
+            vehicleId
+          )
+        )
+        .execute()
+
+      if (result.ResponseText === "Vehicle ID not found") {
+        this.log(
+          "Vehicle",
+          vehicleId,
+          "not found and removed from future queue"
+        )
+        this.deregister([vehicleId])
+        this.observer.requestExecuted(
+          RequestStatus.NOT_FOUND,
+          result._time,
+          vehicleId
+        )
+        return null
+      }
+
+      if (result.Result !== "OK") {
+        this.logError("Vehicle", vehicleId, "returned error", result.Result)
+        this.logError(result)
+        this.observer.requestExecuted(
+          RequestStatus.API_ERROR,
+          result._time,
+          vehicleId
+        )
+        return null
+      }
+
+      this.observer.requestExecuted(RequestStatus.OK, result._time, vehicleId)
+      const vehicle = result.Data.vehicle[0]
+      const vehicleParsed = applyJsonParseBehaviourToVehicle(
+        vehicle,
+        JsonParseBehaviour.PARSE
+      )
+
+      if (
+        env.scrape_single_city_id != null &&
+        vehicleParsed.idVehicleStatus != MilesVehicleStatus.CAR_SUBSCRIPTION
+      ) {
+        if (env.scrape_single_city_id === "BER") {
+          if (
+            !getInfoFromMilesVehicleStatus(
+              vehicleParsed.idVehicleStatus as keyof typeof MilesVehicleStatus
+            ).isInRide &&
+            (vehicleParsed.Latitude < 52 ||
+              vehicleParsed.Latitude > 53 ||
+              vehicleParsed.Longitude < 13 ||
+              vehicleParsed.Longitude > 14)
+          ) {
+            this.log("Vehicle", vehicleId, "is in lifecycle, removing")
+            return null
+          }
         }
-        return this;
-    }
-
-    deregister(vehicleIds: number[]): this {
-        const changed = this.queue.remove(vehicleIds);
-        if (changed.length !== 0 && Date.now() - this.lastQueueMeasuredTimestamp > 120 * 1000) {
-            this.measureQueueSizes();
+        if (vehicleParsed.idCity !== env.scrape_single_city_id) {
+          this.log("Vehicle", vehicleId, "is not in selected city, removing")
+          return null
         }
-        return this;
+      }
+
+      return vehicleParsed
+    } catch (e) {
+      this.logError("Error occurred while scraping a vehicle", e)
+      this.observer.requestExecuted(RequestStatus.SCRAPER_ERROR, 0, vehicleId)
+      return null
     }
-
-    private measureQueueSizes() {
-        this.lastQueueMeasuredTimestamp = Date.now();
-        const queueSizes = this.queue.getQueueSizes();
-        for (const [key, value] of Object.entries(queueSizes)) {
-            this.observer.measure(`queue-${key}`, value);
-        }
-    }
-
-    getQueue(): { milesId: number, priority: QueryPriority | null }[] {
-        return this.queue.getQueue();
-    }
-
-    async cycle(): Promise<{ data: apiVehicleJsonParsed[]; source: MilesVehicleSource; } | null> {
-        const next = this.selectNext()
-        if (next !== null) {
-            const vehicle = await this.fetch(next.id);
-            return vehicle === null ? null : {
-                data: [vehicle],
-                source: { source: SOURCE_TYPE.VEHICLE, priority: next.priority }
-            };
-        }
-        return null;
-    }
-
-    private selectNext(): { id: number, priority: QueryPriority } | null {
-        const selected = this.queue.getRandom();
-        if (selected === null) {
-            this.logWarn("No vehicles in queue: cycle will be skipped")
-            return null;
-        }
-        return selected;
-    }
-
-
-    private async fetch(vehicleId: number): Promise<apiVehicleJsonParsed | null> {
-        try {
-            const result = await this.abfahrt.createGetVehicle(vehicleId)
-                .onRequestRetry((_: any, time: number) => this.observer.requestExecuted(RequestStatus.API_ERROR, time, vehicleId))
-                .execute();
-
-            if (result.ResponseText === "Vehicle ID not found") {
-                this.log("Vehicle", vehicleId, "not found and removed from future queue")
-                this.deregister([vehicleId]);
-                this.observer.requestExecuted(RequestStatus.NOT_FOUND, result._time, vehicleId);
-                return null;
-            }
-
-            if (result.Result !== "OK") {
-                this.logError("Vehicle", vehicleId, "returned error", result.Result);
-                this.logError(result);
-                this.observer.requestExecuted(RequestStatus.API_ERROR, result._time, vehicleId);
-                return null;
-            }
-
-            this.observer.requestExecuted(RequestStatus.OK, result._time, vehicleId);
-            const vehicle = result.Data.vehicle[0]
-            const vehicleParsed = applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE);
-
-            if (env.scrape_single_city_id != null) {
-                if (vehicleParsed.idCity !== env.scrape_single_city_id && 
-                    vehicleParsed.idVehicleStatus != MilesVehicleStatus.CAR_SUBSCRIPTION) {
-                    this.log("Vehicle", vehicleId, "is not in selected city, removing")
-                    return null;
-                }
-            }
-
-            return vehicleParsed;
-        } catch (e) {
-            this.logError("Error occurred while scraping a vehicle", e);
-            this.observer.requestExecuted(RequestStatus.SCRAPER_ERROR, 0, vehicleId);
-            return null;
-        }
-    }
-
+  }
 }
