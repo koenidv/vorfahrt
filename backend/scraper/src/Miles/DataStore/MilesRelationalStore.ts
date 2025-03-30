@@ -6,6 +6,7 @@ import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes"
 import {
   Booking,
   City,
+  DiscountChange,
   Trip,
   TripType,
   VehicleLastKnown,
@@ -112,10 +113,14 @@ export class MilesRelationalStore {
 
   async handleVehicle(vehicle: apiVehicleJsonParsed) {
     await this.createVehicleMeta(vehicle)
-    // todo insert damages here
 
     const diff = await diffLastKnown(vehicle, this, this.cache, this.observer)
-    switch (diff) {
+
+    if (diff.discountChanged) {
+      await this.saveDiscountChange(vehicle)
+    }
+
+    switch (diff.event) {
       case DiffResult.LIFECYCLED:
         await this.cancelTrip(vehicle.idVehicle)
         break
@@ -271,6 +276,7 @@ export class MilesRelationalStore {
     lastKnown.charge = vehicle.FuelPct_parsed!
     lastKnown.range = vehicle.RemainingRange_parsed!
     lastKnown.discounted = vehicle.RentalPrice_discounted_parsed !== null
+    lastKnown.discountSource = vehicle.RentalPrice_discountSource ?? null
     lastKnown.damageCount = vehicle.JSONVehicleDamages?.length ?? 0
     lastKnown.coverageGsm = vehicle.GSMCoverage!
     lastKnown.coverageGps = vehicle.SatelliteNumber!
@@ -292,7 +298,11 @@ export class MilesRelationalStore {
     booking.startTime = new Date()
     booking.longitude = vehicle.Longitude
     booking.latitude = vehicle.Latitude
-    booking.postcode = await this.getPostalCode(vehicle.Longitude, vehicle.Latitude)
+    booking.postcode = await this.getPostalCode(
+      vehicle.Longitude,
+      vehicle.Latitude
+    )
+    booking.discount = vehicle.RentalPrice_discountSource ?? null
     await this.manager.save(booking)
   }
 
@@ -336,6 +346,7 @@ export class MilesRelationalStore {
       const trip = new Trip()
       trip.milesId = vehicle.idVehicle
       trip.fromBooking = fromBooking
+      trip.discount = vehicle.RentalPrice_discountSource ?? null
       await manager.save(trip)
       const startPoint = await mapMilesWaypoint(
         trip,
@@ -494,5 +505,12 @@ export class MilesRelationalStore {
     } else {
       await this.startTrip(vehicle, TripType.SUBSCRIPTION)
     }
+  }
+
+  public async saveDiscountChange(Vehicle: apiVehicleJsonParsed) {
+    const discountChange = new DiscountChange()
+    discountChange.milesId = Vehicle.idVehicle
+    discountChange.discount = Vehicle.RentalPrice_discountSource ?? "NONE"
+    await this.manager.save(discountChange)
   }
 }

@@ -7,6 +7,7 @@ import { VehicleSize } from "./VehicleSize";
 import { Trip } from "./Trip";
 import { Waypoint } from "./Waypoint";
 import { Booking } from "./Booking";
+import { DiscountChange } from "./DiscountChange";
 
 export { City } from "./City";
 export { VehicleDamage } from "./VehicleDamage";
@@ -17,6 +18,7 @@ export { VehicleSize } from "./VehicleSize";
 export { Trip } from "./Trip";
 export { Waypoint } from "./Waypoint";
 export { Booking } from "./Booking";
+export { DiscountChange } from "./DiscountChange";
 
 export const MilesEntities = [
   City,
@@ -28,4 +30,5 @@ export const MilesEntities = [
   Trip,
   Waypoint,
   Booking,
+  DiscountChange,
 ];

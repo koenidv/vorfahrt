@@ -45,6 +45,9 @@ export class VehicleLastKnown {
   @Column()
   discounted: boolean;
 
+  @Column({nullable: true})
+  discountSource: string?;
+
   @Column()
   damageCount: number;
 

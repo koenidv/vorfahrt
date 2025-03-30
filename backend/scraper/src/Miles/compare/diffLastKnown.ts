@@ -1,4 +1,3 @@
-import { WriteApi } from "@influxdata/influxdb-client"
 import { getInfoFromMilesVehicleStatus } from "@koenidv/abfahrt"
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes"
 import { VehicleLastKnown } from "@vorfahrt/shared"
@@ -30,28 +29,50 @@ export async function diffLastKnown(
   relationalStore: MilesRelationalStore,
   relationalCache: MilesRelationalCache,
   relationalObserver: RelationalStoreObserver
-): Promise<DiffResult> {
+): Promise<{ event: DiffResult; discountChanged: boolean }> {
   const newInfo = getInfoFromMilesVehicleStatus(
     newVehicle.idVehicleStatus as any
   )
   if (newInfo.isInLifecycle || opsStatus == newVehicle.idVehicleStatus) {
-    return DiffResult.LIFECYCLED
+    return { event: DiffResult.LIFECYCLED, discountChanged: false }
   }
 
   const lastKnown = await relationalStore.getLastKnownVehicle(
     newVehicle.idVehicle
   )
-  if (!lastKnown) return DiffResult.INSIGNIFICANT // do not record if a vehicle is new
+
+  if (!lastKnown)
+    return { event: DiffResult.INSIGNIFICANT, discountChanged: true } // only track discount if vehicle is new
 
   relationalObserver.onVehicleDiffed(lastKnown, newVehicle)
 
+  return {
+    event: diffVehicleEvent(
+      newVehicle,
+      lastKnown,
+      await relationalCache.isVehicleKnown(newVehicle.idVehicle),
+      relationalObserver.onTripMissed.bind(relationalObserver)
+    ),
+    discountChanged: discountChanged(newVehicle, lastKnown),
+  }
+}
+
+function diffVehicleEvent(
+  newVehicle: apiVehicleJsonParsed,
+  lastKnown: VehicleLastKnown,
+  isVehicleCached: boolean,
+  onTripMissed: (
+    lastKnown: VehicleLastKnown,
+    newVehicle: apiVehicleJsonParsed
+  ) => void
+): DiffResult {
   if (newVehicle.idVehicleStatus === subscriptionStatus) {
     if (locationRelevant(newVehicle, lastKnown))
       return DiffResult.SUBSCRIPTION_MOVED
     else return DiffResult.INSIGNIFICANT
   }
 
-  if (!(await relationalCache.isVehicleKnown(newVehicle.idVehicle))) {
+  if (!isVehicleCached) {
     return DiffResult.INSIGNIFICANT
   }
 
@@ -95,11 +116,18 @@ export async function diffLastKnown(
   }
 
   if (locationRelevant(newVehicle, lastKnown)) {
-    relationalObserver.onTripMissed(lastKnown, newVehicle)
+    onTripMissed(lastKnown, newVehicle)
     return DiffResult.TRIP_MISSED
   }
 
   return DiffResult.INSIGNIFICANT
+}
+
+export function discountChanged(
+  newVehicle: apiVehicleJsonParsed,
+  lastKnown: VehicleLastKnown
+): boolean {
+  return lastKnown.discountSource !== newVehicle.RentalPrice_discountSource
 }
 
 function calculateLocationDelta(

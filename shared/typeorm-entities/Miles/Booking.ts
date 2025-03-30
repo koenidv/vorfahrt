@@ -43,6 +43,9 @@ export class Booking {
   @Column({ nullable: true })
   postcode: string?;
 
+  @Column({nullable: true})
+  discount: string?;
+
   @OneToOne(() => Trip, (trip) => trip.fromBooking, { nullable: true })
   trip: Trip | null;
 }

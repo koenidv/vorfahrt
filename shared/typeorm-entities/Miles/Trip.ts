@@ -47,6 +47,9 @@ export class Trip {
   @JoinColumn({ name: "fromBooking" })
   fromBooking: Booking | null;
 
+  @Column({nullable: true})
+  discount: string?;
+
   @OneToOne(() => Waypoint, (point) => point.trip, { nullable: true, cascade: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "startPoint" })
   startPoint: Waypoint;
