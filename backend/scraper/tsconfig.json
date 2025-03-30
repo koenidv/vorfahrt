@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6"],
-    "target": "ES2022",
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
     "module": "CommonJS",
     "types": ["node"],
     "moduleResolution": "Node",
@@ -16,5 +16,5 @@
     "preserveSymlinks": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "src/**/*.json", ".env"]
+  "include": ["src/**/*.ts", "src/**/*.json", ".env"],
 }

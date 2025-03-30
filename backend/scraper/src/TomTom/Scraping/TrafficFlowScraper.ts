@@ -1,8 +1,9 @@
 import { Tile } from "tiles/Tile"
 import { TrafficApiResult } from "TomTom/TrafficFlow.types"
-import { SOURCE_TYPE, ValueSource } from "types"
 
-import { BaseScraperBatched } from "../../BaseScraperBatched"
+import { BaseScraperBatched } from "../../BaseScrapeBatched"
+import env from "../../env"
+import { RequestStatus, SOURCE_TYPE, ValueSource } from "../../types"
 
 export interface TrafficFlowSource extends ValueSource {
   source: SOURCE_TYPE.TRAFFIC_FLOW
@@ -22,10 +23,26 @@ export class TrafficFlowScraper extends BaseScraperBatched<
   async execute(
     task: Tile
   ): Promise<{ data: TrafficApiResult; source: TrafficFlowSource } | null> {
+    const startTime = Date.now()
     const res = await fetch(
-      `https://api.tomtom.com/traffic/map/4/tile/flow/relative/13/4399/2687.png?thickness=8&tileSize=256&key=*****`
+      `https://api.tomtom.com/traffic/map/4/tile/flow/relative/${task.zoom}/${task.x}/${task.y}.png?thickness=8&tileSize=512&key=${env.tomtom_api_key}`
     )
-
-    throw new Error("Not implemented")
+    this.observer.requestExecuted(
+      res.ok ? RequestStatus.OK : RequestStatus.API_ERROR,
+      Date.now() - startTime,
+      res.statusText
+    )
+    if (!res.ok) {
+      this.logError(
+        `Failed to fetch traffic flow for tile ${task}: ${res.status} ${res.text()}`
+      )
+      return null
+    }
+    return {
+      data: {
+        tile: Buffer.from(await res.arrayBuffer()),
+      },
+      source: { source: SOURCE_TYPE.TRAFFIC_FLOW, tile: task },
+    }
   }
 }

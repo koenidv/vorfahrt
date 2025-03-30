@@ -28,8 +28,8 @@ export class ESPG3857factory implements TileFactory {
     )
     return {
       zoom,
-      x: x,
-      y: y,
+      x: Math.round(x),
+      y: Math.round(y),
       northwest: northwestPoint,
       southeast: southeastPoint,
     }
@@ -50,8 +50,8 @@ export class ESPG3857factory implements TileFactory {
     )
     return {
       zoom: zoom,
-      x: x,
-      y: y,
+      x: Math.round(x),
+      y: Math.round(y),
       northwest: northwestPoint,
       southeast: southeastPoint,
     }

@@ -43,6 +43,7 @@ const env = {
   scrape_single_city_id: process.env.SCRAPE_SINGLE_CITY_ID
     ? String(process.env.SCRAPE_SINGLE_CITY_ID)
     : null,
+  tomtom_api_key: assertString(process.env.TOMTOM_API_KEY, "TOMTOM_API_KEY"),
   mpc_traffic_flow: process.env.TRAFFIC_FLOW_MINS
     ? parseInt(process.env.TRAFFIC_FLOW_MINS)
     : 5,

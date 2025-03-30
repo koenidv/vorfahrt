@@ -45,12 +45,12 @@ export abstract class BaseScraperBatched<
   }
 
   protected async cycleNotifyListeners() {
-    this.tasks.forEach(async (task) => {
+    for (const task of this.tasks) {
       const result = await this.execute(task)
       if (result !== null) {
         this.notifyListeners([result.data], result.source)
       }
-    }, this)
+    }
     return true
   }
 
