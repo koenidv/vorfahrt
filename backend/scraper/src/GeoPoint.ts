@@ -1,10 +1,10 @@
 export default class GeoPoint {
-    lat: number;
     lng: number;
+    lat: number;
 
-    constructor(lat: number, lng: number) {
-        this.lat = lat;
+    constructor(lng: number, lat: number) {
         this.lng = lng;
+        this.lat = lat;
     }
 
     public static fromString(string: string) {
@@ -13,9 +13,9 @@ export default class GeoPoint {
         if (!matches || matches.length !== 3) {
             throw new Error("Invalid Point string");
         }
-        const lat = parseFloat(matches[1]);
-        const lng = parseFloat(matches[2]);
-        return new this(lat, lng);
+        const lng = parseFloat(matches[1]);
+        const lat = parseFloat(matches[2]);
+        return new this(lng, lat);
     }
 
     public equalsWithTolerance(compare: GeoPoint, tolerance: number = 0.005) {
@@ -23,7 +23,7 @@ export default class GeoPoint {
     }
 
     public toString() {
-        return `(${this.lat.toFixed(5)},${this.lng.toFixed(5)})`;
+        return `(${this.lng.toFixed(5)},${this.lat.toFixed(5)})`;
     }
 
 }
