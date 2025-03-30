@@ -4,7 +4,8 @@ import {
   Column,
   Entity,
   Index,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  CreateDateColumn
 } from "typeorm";
 
 @Entity({
@@ -13,6 +14,11 @@ import {
 export class TrafficFlow {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @CreateDateColumn({
+    precision: 0,
+  })
+  time: Date;
 
   @Column({ type: "point", spatialFeatureType: "Point", srid: 4326 })
   @Index({ spatial: true })

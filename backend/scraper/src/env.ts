@@ -1,4 +1,6 @@
 import { config } from "dotenv"
+import { delay } from "lodash"
+
 import GeoPoint from "./GeoPoint"
 
 config({ path: ".env", override: false })
@@ -47,6 +49,9 @@ const env = {
   mpc_traffic_flow: process.env.TRAFFIC_FLOW_MINS
     ? parseInt(process.env.TRAFFIC_FLOW_MINS)
     : 5,
+  delay_traffic_flow: process.env.TRAFFIC_FLOW_DELAY
+    ? parseInt(process.env.TRAFFIC_FLOW_DELAY)
+    : 0,
   traffic_area_northwest: assertPoint(
     process.env.TRAFFIC_AREA_NORTHWEST,
     "TRAFFIC_AREA_NORTHWEST"
@@ -55,8 +60,26 @@ const env = {
     process.env.TRAFFIC_AREA_SOUTHEAST,
     "TRAFFIC_AREA_SOUTHEAST"
   ),
-  traffic_flow_zoom: process.env.TRAFFIC_FLOW_ZOOM ? parseInt(process.env.TRAFFIC_FLOW_ZOOM) : 13,
-  
+  traffic_flow_zoom: process.env.TRAFFIC_FLOW_ZOOM
+    ? parseInt(process.env.TRAFFIC_FLOW_ZOOM)
+    : 13,
+  mpc_weather: process.env.WEATHER_MINS
+    ? parseInt(process.env.WEATHER_MINS)
+    : 5,
+  delay_weather: process.env.WEATHER_DELAY
+    ? parseInt(process.env.WEATHER_DELAY)
+    : 0,
+  weather_area_northwest: assertPoint(
+    process.env.WEATHER_AREA_NORTHWEST,
+    "WEATHER_AREA_NORTHWEST"
+  ),
+  weather_area_southeast: assertPoint(
+    process.env.WEATHER_AREA_SOUTHEAST,
+    "WEATHER_AREA_SOUTHEAST"
+  ),
+  weather_zoom: process.env.WEATHER_ZOOM
+    ? parseInt(process.env.WEATHER_ZOOM)
+    : 13,
 } as const
 
 export default env

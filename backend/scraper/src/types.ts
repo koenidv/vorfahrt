@@ -26,6 +26,7 @@ export enum SOURCE_TYPE {
     CITY_META = "city-meta",
     VEHICLE = "vehicle",
     TRAFFIC_FLOW = "traffic-flow",
+    WEATHER = "weather",
 }
 
 export enum RequestStatus {

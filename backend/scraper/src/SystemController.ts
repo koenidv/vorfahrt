@@ -6,6 +6,7 @@ import { Scraper } from "./BaseScraper"
 import MilesController from "./Miles/MilesController"
 import { Observer } from "./Observer"
 import TomTomController from "./TomTom/TomTomController"
+import WeatherController from "./Weather/WeatherController"
 
 type ObservedScraper = {
   scraper: Scraper
@@ -21,6 +22,7 @@ export class SystemController {
 
   private milesController: MilesController | undefined
   private tomTomController: TomTomController | undefined
+  private weatherController: WeatherController | undefined
 
   constructor(observerWriteClient: WriteApi) {
     this._observerWriteClient = observerWriteClient
@@ -55,6 +57,18 @@ export class SystemController {
     observerWriteApi: WriteApi
   ): this {
     this.tomTomController = new TomTomController(
+      this,
+      appDataSource,
+      observerWriteApi
+    )
+    return this
+  }
+
+  createWeatherScraper(
+    appDataSource: DataSource,
+    observerWriteApi: WriteApi
+  ): this {
+    this.weatherController = new WeatherController(
       this,
       appDataSource,
       observerWriteApi

@@ -21,6 +21,7 @@ class Main {
     
     this.systemController.createMilesScraper(this.appDataSource, observerWriteApi);
     this.systemController.createTomTomScraper(this.appDataSource, observerWriteApi);
+    this.systemController.createWeatherScraper(this.appDataSource, observerWriteApi);
   }
 
   getObserverWriteClient(): WriteApi {

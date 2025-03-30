@@ -1,6 +1,6 @@
 import GeoPoint from "../GeoPoint"
 
-export type Tile {
+export type Tile = {
   zoom: number
   x: number
   y: number

@@ -1,7 +1,6 @@
-import clc from "cli-color"
-import { SystemController } from "SystemController"
-
 import { BaseScraper } from "./BaseScraper"
+import { SystemController } from "./SystemController"
+import { RequestStatus } from "./types"
 
 export abstract class BaseScraperBatched<
   Task,
@@ -9,16 +8,19 @@ export abstract class BaseScraperBatched<
   SourceType,
 > extends BaseScraper<Result, SourceType> {
   private interval: NodeJS.Timeout | undefined
+  private requestDelay: number
   protected tasks: Task[]
 
   constructor(
     cyclesMinute: number,
+    requestDelay: number,
     tasks: Task[],
     scraperId: string,
     systemController: SystemController
   ) {
     super(cyclesMinute, scraperId, systemController)
     this.tasks = tasks
+    this.requestDelay = requestDelay
   }
 
   start(): this {
@@ -46,9 +48,19 @@ export abstract class BaseScraperBatched<
 
   protected async cycleNotifyListeners() {
     for (const task of this.tasks) {
-      const result = await this.execute(task)
-      if (result !== null) {
-        this.notifyListeners([result.data], result.source)
+      try {
+        await new Promise((resolve) => setTimeout(resolve, this.requestDelay))
+        const result = await this.execute(task)
+        if (result !== null) {
+          this.notifyListeners([result.data], result.source)
+        }
+      } catch (e) {
+        this.logError(`Error executing task ${task}: ${e}`)
+        this.observer.requestExecuted(
+          RequestStatus.SCRAPER_ERROR,
+          0,
+          e?.toString()
+        )
       }
     }
     return true
