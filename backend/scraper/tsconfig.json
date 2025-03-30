@@ -3,6 +3,7 @@
     "lib": ["es5", "es6"],
     "target": "ES2022",
     "module": "CommonJS",
+    "types": ["node"],
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "outDir": "./build",
@@ -13,7 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./src",
     "preserveSymlinks": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "src/**/*.json", ".env"],
+  "include": ["src/**/*.ts", "src/**/*.json", ".env"]
 }

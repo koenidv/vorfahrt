@@ -9,7 +9,7 @@ export abstract class BaseScraperBatched<
   SourceType,
 > extends BaseScraper<Result, SourceType> {
   private interval: NodeJS.Timeout | undefined
-  private tasks: Task[]
+  protected tasks: Task[]
 
   constructor(
     cyclesMinute: number,
@@ -44,7 +44,7 @@ export abstract class BaseScraperBatched<
     return await this.cycleNotifyListeners()
   }
 
-  private async cycleNotifyListeners() {
+  protected async cycleNotifyListeners() {
     this.tasks.forEach(async (task) => {
       const result = await this.execute(task)
       if (result !== null) {

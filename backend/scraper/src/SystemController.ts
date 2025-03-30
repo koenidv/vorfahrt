@@ -5,6 +5,7 @@ import { DataSource } from "typeorm"
 import { Scraper } from "./BaseScraper"
 import MilesController from "./Miles/MilesController"
 import { Observer } from "./Observer"
+import TomTomController from "./TomTom/TomTomController"
 
 type ObservedScraper = {
   scraper: Scraper
@@ -19,6 +20,7 @@ export class SystemController {
   }
 
   private milesController: MilesController | undefined
+  private tomTomController: TomTomController | undefined
 
   constructor(observerWriteClient: WriteApi) {
     this._observerWriteClient = observerWriteClient
@@ -41,6 +43,18 @@ export class SystemController {
     observerWriteApi: WriteApi
   ): this {
     this.milesController = new MilesController(
+      this,
+      appDataSource,
+      observerWriteApi
+    )
+    return this
+  }
+
+  createTomTomScraper(
+    appDataSource: DataSource,
+    observerWriteApi: WriteApi
+  ): this {
+    this.tomTomController = new TomTomController(
       this,
       appDataSource,
       observerWriteApi

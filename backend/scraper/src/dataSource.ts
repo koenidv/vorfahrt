@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import env from "./env";
-import { MilesEntities } from "@vorfahrt/shared";
+import { MilesEntities, TomTomEntities } from "@vorfahrt/shared";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
   password: env.dbPassword,
   database: env.dbName,
   synchronize: true,
-  entities: MilesEntities,
+  entities: [...MilesEntities, ...TomTomEntities],
   migrations: [],
   subscribers: [],
   logging: false,

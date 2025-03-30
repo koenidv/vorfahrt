@@ -25,6 +25,7 @@ export enum SOURCE_TYPE {
     MAP = "map",
     CITY_META = "city-meta",
     VEHICLE = "vehicle",
+    TRAFFIC_FLOW = "traffic-flow",
 }
 
 export enum RequestStatus {

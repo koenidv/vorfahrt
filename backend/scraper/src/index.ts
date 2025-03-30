@@ -20,6 +20,7 @@ class Main {
     this.apiServer = new WebApiServer(this.systemController).start().startWs();
     
     this.systemController.createMilesScraper(this.appDataSource, observerWriteApi);
+    this.systemController.createTomTomScraper(this.appDataSource, observerWriteApi);
   }
 
   getObserverWriteClient(): WriteApi {

@@ -17,10 +17,10 @@ import {
 import clc from "cli-color"
 import { EntityManager, IsNull } from "typeorm"
 
-import { MilesRelationalStoreObserver } from "Miles/MilesRelationalStoreObserver"
 import GeoPoint from "../../GeoPoint"
 import { diffLastKnown, DiffResult } from "../compare/diffLastKnown"
 import { MilesCityMeta, MilesVehicleDetails } from "../Miles.types"
+import { MilesRelationalStoreObserver } from "../MilesRelationalStoreObserver"
 import {
   mapLastKnownToMilesWaypoint,
   mapMilesWaypoint,
