@@ -32,9 +32,11 @@ export default class TomTomDataHandler {
     result: TrafficApiResult,
     source: TrafficFlowSource
   ) {
+    const calculated = await calculateTrafficFlow(result)
     this.relationalStore.saveTrafficFlow(
       source.tile,
-      await calculateTrafficFlow(result)
+      calculated.flow,
+      calculated.density
     )
   }
 }

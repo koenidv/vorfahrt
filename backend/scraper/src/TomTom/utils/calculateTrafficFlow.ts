@@ -6,7 +6,7 @@ import { TrafficApiResult } from "TomTom/TrafficFlow.types"
  */
 export async function calculateTrafficFlow(
   apiResponse: TrafficApiResult
-): Promise<number> {
+): Promise<{ flow: number; density: number }> {
   const { data, info } = await sharp(apiResponse.tile)
     .raw()
     .toBuffer({ resolveWithObject: true })
@@ -32,9 +32,12 @@ export async function calculateTrafficFlow(
     }
   }
 
-  if (nonTransparentPixels === 0) return 1
+  if (nonTransparentPixels === 0) return { flow: 1, density: 0 }
 
-  return Math.round((1 - flowAcc / nonTransparentPixels) * 1000) / 1000
+  return {
+    flow: Math.round((1 - flowAcc / nonTransparentPixels) * 1000) / 1000,
+    density: nonTransparentPixels / (info.width * info.height),
+  }
 }
 
 export function calculateSlowdownForPixel(

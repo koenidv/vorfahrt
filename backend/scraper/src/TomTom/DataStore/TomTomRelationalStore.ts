@@ -14,13 +14,14 @@ export class TomTomRelationalStore {
     this.observer = observer
   }
 
-  public saveTrafficFlow(tile: Tile, flow: number) {
+  public saveTrafficFlow(tile: Tile, flow: number, density: number) {
     const trafficFlow = new TrafficFlow()
     trafficFlow.tile = new GeoPoint(tile.x, tile.y).toString()
     trafficFlow.northwest = tile.northwest.toString()
     trafficFlow.southeast = tile.southeast.toString()
     trafficFlow.zoom = tile.zoom
     trafficFlow.flow = flow
+    trafficFlow.density = density
     this.manager.save(trafficFlow)
   }
 }

@@ -31,4 +31,7 @@ export class TrafficFlow {
 
   @Column({ type: "float" })
   flow: number;
+
+  @Column({ type: "float" })
+  density: number;
 }
