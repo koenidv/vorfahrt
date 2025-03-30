@@ -4,9 +4,10 @@ import {
 } from "@koenidv/abfahrt"
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes"
 import clc from "cli-color"
-import { RelationalStoreObserver } from "RelationalStoreObserver"
 import { DataSource } from "typeorm"
 
+import { MilesRelationalStoreObserver } from "Miles/MilesRelationalStoreObserver"
+import { PostalCodeLookup } from "Miles/utils/PostcalCodeLookup"
 import { SOURCE_TYPE, ValueSource } from "../../types"
 import { MilesCityMeta } from "../Miles.types"
 import { MilesMapSource } from "../Scraping/MilesScraperMap"
@@ -16,7 +17,6 @@ import MilesScraperVehicles, {
 } from "../Scraping/MilesScraperVehicles"
 import { MilesRelationalStore } from "./MilesRelationalStore"
 import { MilesVehiclesPerCityCache } from "./MilesVehiclesPerCityCache"
-import { PostalCodeLookup } from "Miles/utils/PostcalCodeLookup"
 
 export default class MilesDataHandler {
   private relationalStore: MilesRelationalStore
@@ -28,7 +28,7 @@ export default class MilesDataHandler {
 
   constructor(
     dataSource: DataSource,
-    relationalObserver: RelationalStoreObserver,
+    relationalObserver: MilesRelationalStoreObserver,
     postalLookup: PostalCodeLookup
   ) {
     this.relationalStore = new MilesRelationalStore(

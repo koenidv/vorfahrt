@@ -1,8 +1,7 @@
 import { Point, WriteApi } from "@influxdata/influxdb-client";
-import { Scraper } from "./BaseScraper";
 import clc from "cli-color";
-import { GenericNumberMetric, RequestMetric, RequestStatus } from "./types";
 import { eventEmitter } from "./EventEmitter";
+import { GenericNumberMetric, RequestMetric, RequestStatus } from "./types";
 
 const LOG_ON_MEAUSRE = true;
 

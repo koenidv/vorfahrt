@@ -10,9 +10,9 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Booking } from "./Booking";
 import { VehicleMeta } from "./VehicleMeta";
 import { Waypoint } from "./Waypoint";
-import { Booking } from "./Booking";
 
 export enum TripType {
   PUBLIC = "public",

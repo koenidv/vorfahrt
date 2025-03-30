@@ -3,6 +3,7 @@ import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes"
 import { VehicleLastKnown } from "@vorfahrt/shared"
 import { MilesRelationalCache } from "Miles/DataStore/MilesRelationalCache"
 import { MilesRelationalStore } from "Miles/DataStore/MilesRelationalStore"
+import { MilesRelationalStoreObserver } from "Miles/MilesRelationalStoreObserver"
 import { RelationalStoreObserver } from "RelationalStoreObserver"
 
 export enum DiffResult {
@@ -28,7 +29,7 @@ export async function diffLastKnown(
   newVehicle: apiVehicleJsonParsed,
   relationalStore: MilesRelationalStore,
   relationalCache: MilesRelationalCache,
-  relationalObserver: RelationalStoreObserver
+  relationalObserver: MilesRelationalStoreObserver
 ): Promise<{ event: DiffResult; discountChanged: boolean }> {
   const newInfo = getInfoFromMilesVehicleStatus(
     newVehicle.idVehicleStatus as any

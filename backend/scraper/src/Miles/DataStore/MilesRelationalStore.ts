@@ -15,12 +15,12 @@ import {
   VehicleSize,
 } from "@vorfahrt/shared"
 import clc from "cli-color"
-import { RelationalStoreObserver } from "RelationalStoreObserver"
 import { EntityManager, IsNull } from "typeorm"
 
+import { MilesRelationalStoreObserver } from "Miles/MilesRelationalStoreObserver"
+import GeoPoint from "../../GeoPoint"
 import { diffLastKnown, DiffResult } from "../compare/diffLastKnown"
 import { MilesCityMeta, MilesVehicleDetails } from "../Miles.types"
-import GeoPoint from "../utils/GeoPoint"
 import {
   mapLastKnownToMilesWaypoint,
   mapMilesWaypoint,
@@ -34,12 +34,12 @@ import {
 export class MilesRelationalStore {
   manager: EntityManager
   cache: MilesRelationalCache
-  observer: RelationalStoreObserver
+  observer: MilesRelationalStoreObserver
   getPostalCode: (lon: number, lat: number) => Promise<string | null>
 
   constructor(
     manager: EntityManager,
-    observer: RelationalStoreObserver,
+    observer: MilesRelationalStoreObserver,
     getPostalCode: (lon: number, lat: number) => Promise<string | null>
   ) {
     this.manager = manager
