@@ -35,7 +35,7 @@ export async function diffLastKnown(
     newVehicle.idVehicleStatus as any
   )
   if (newInfo.isInLifecycle || opsStatus == newVehicle.idVehicleStatus) {
-    return { event: DiffResult.LIFECYCLED, discountChanged: false }
+    return { event: DiffResult.LIFECYCLED, discountChanged: true }
   }
 
   const lastKnown = await relationalStore.getLastKnownVehicle(

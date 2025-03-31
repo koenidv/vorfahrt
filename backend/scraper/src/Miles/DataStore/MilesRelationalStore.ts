@@ -508,6 +508,7 @@ export class MilesRelationalStore {
   }
 
   public async saveDiscountChange(Vehicle: apiVehicleJsonParsed) {
+    if (!this.cache.isVehicleKnown(Vehicle.idVehicle)) return
     const discountChange = new DiscountChange()
     discountChange.milesId = Vehicle.idVehicle
     discountChange.discount = Vehicle.RentalPrice_discountSource ?? "NONE"
