@@ -9,6 +9,7 @@ import { SystemController } from "../SystemController"
 import MilesDataHandler from "./DataStore/MilesDataHandler"
 import { MilesRelationalStoreObserver } from "./MilesRelationalStoreObserver"
 import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta"
+import MilesScraperHub from "./Scraping/MilesScraperHub"
 import MilesScraperMap from "./Scraping/MilesScraperMap"
 import MilesScraperVehicles, {
   QueryPriority,
@@ -19,6 +20,8 @@ import { VehicleQueue, VehicleQueueInterface } from "./utils/VehicleQueue"
 const RPM_VEHICLE = env.rpm_vehicle
 const RPM_MAP = env.rpm_map
 const RPM_CITES = env.rpm_cities
+const RPM_HUBS = env.rpm_hubs
+const HUB_LIST = env.hub_list
 
 export default class MilesController {
   private systemController: SystemController
@@ -26,6 +29,7 @@ export default class MilesController {
   scraperMap: MilesScraperMap | undefined
   scraperVehicles: MilesScraperVehicles | undefined
   scraperCitiesMeta: MilesScraperCitiesMeta | undefined
+  scraperHubs: MilesScraperHub | undefined
 
   dataSource: DataSource | undefined
   dataHandler: MilesDataHandler | undefined
@@ -46,6 +50,8 @@ export default class MilesController {
 
     const scraperVehicles = this.startVehiclesScraper(abfahrt, dataHandler)
     dataHandler.vehicleScraper = scraperVehicles
+
+    this.startHubScraper(abfahrt, dataHandler)
 
     this.populateVehiclesQueue(scraperVehicles, dataHandler)
   }
@@ -116,6 +122,23 @@ export default class MilesController {
     if (process.argv.includes("--start") && RPM_CITES > 0)
       this.scraperCitiesMeta.start()
     return this.scraperCitiesMeta
+  }
+
+  private startHubScraper(
+    abfahrt: MilesClient,
+    dataHandler: MilesDataHandler
+  ): MilesScraperHub {
+    this.scraperHubs = new MilesScraperHub(
+      abfahrt,
+      RPM_HUBS,
+      "miles-hubs",
+      this.systemController
+    )
+      .setHubs(HUB_LIST)
+      .addListener(dataHandler.handleVehicles.bind(dataHandler))
+    if (process.argv.includes("--start") && RPM_MAP > 0)
+      this.scraperHubs.start()
+    return this.scraperHubs
   }
 
   private async populateVehiclesQueue(

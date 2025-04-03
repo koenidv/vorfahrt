@@ -17,6 +17,7 @@ import {
 import clc from "cli-color"
 import { EntityManager, IsNull } from "typeorm"
 
+import env from "../../env"
 import GeoPoint from "../../GeoPoint"
 import { diffLastKnown, DiffResult } from "../compare/diffLastKnown"
 import { MilesCityMeta, MilesVehicleDetails } from "../Miles.types"
@@ -507,11 +508,27 @@ export class MilesRelationalStore {
     }
   }
 
-  public async saveDiscountChange(Vehicle: apiVehicleJsonParsed) {
-    if (!this.cache.isVehicleKnown(Vehicle.idVehicle)) return
-    const discountChange = new DiscountChange()
-    discountChange.milesId = Vehicle.idVehicle
-    discountChange.discount = Vehicle.RentalPrice_discountSource ?? "NONE"
-    await this.manager.save(discountChange)
+  public async saveDiscountChange(vehicle: apiVehicleJsonParsed) {
+    try {
+      if (!this.cache.isVehicleKnown(vehicle.idVehicle)) return
+      const discountChange = new DiscountChange()
+      discountChange.milesId = vehicle.idVehicle
+      discountChange.discount = vehicle.RentalPrice_discountSource ?? "NONE"
+      await this.manager.save(discountChange)
+    } catch (e) {
+      if (
+        env.scrape_single_city_id &&
+        vehicle.idCity !== env.scrape_single_city_id
+      ) {
+        return
+      }
+      console.error(
+        clc.bgYellow("MilesRelationalStore"),
+        clc.yellow(
+          `Could not save discount change for ${vehicle.idVehicle}, the vehicle is likely unknown (${e})`
+        )
+      )
+      this.observer.onDbError(e ?? {})
+    }
   }
 }

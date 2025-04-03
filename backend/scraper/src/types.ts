@@ -23,6 +23,7 @@ export type ValueSource = {
 export enum SOURCE_TYPE {
     PERCENTAGE = "percentage",
     MAP = "map",
+    HUB = "hub",
     CITY_META = "city-meta",
     VEHICLE = "vehicle",
     TRAFFIC_FLOW = "traffic-flow",
