@@ -26,10 +26,10 @@ export async function calculateTrafficFlow(
 
     if (red == green && green == blue) continue // road closure
 
-    if (alpha > 0) {
-      flowAcc += calculateSlowdownForPixel(red, green, blue)
-      nonTransparentPixels++
-    }
+    if (alpha != 1) continue
+    
+    flowAcc += calculateSlowdownForPixel(red, green, blue)
+    nonTransparentPixels++
   }
 
   if (nonTransparentPixels === 0) return { flow: 1, density: 0 }

@@ -321,6 +321,7 @@ export class MilesRelationalStore {
   }
 
   public async startTrip(vehicle: apiVehicleJsonParsed, tripType: TripType) {
+    // fixme this will not update the triptype. it doesn't even apply it to new trips
     if (await this.findPendingTrip(vehicle.idVehicle)) {
       console.warn(
         "Pending trip found for vehicle",
