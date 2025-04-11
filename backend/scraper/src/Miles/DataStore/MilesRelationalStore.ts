@@ -15,6 +15,7 @@ import {
   VehicleSize,
 } from "@vorfahrt/shared"
 import clc from "cli-color"
+import { determineTripType } from "../compare/determineTripType"
 import { EntityManager, IsNull } from "typeorm"
 
 import env from "../../env"
@@ -321,13 +322,12 @@ export class MilesRelationalStore {
   }
 
   public async startTrip(vehicle: apiVehicleJsonParsed, tripType: TripType) {
-    // fixme this will not update the triptype. it doesn't even apply it to new trips
-    if (await this.findPendingTrip(vehicle.idVehicle)) {
-      console.warn(
-        "Pending trip found for vehicle",
-        vehicle.idVehicle,
-        "already exists, adding waypoint"
-      )
+    const pendingTrip = await this.findPendingTrip(vehicle.idVehicle)
+    if (pendingTrip) {
+      const tripType = determineTripType(vehicle)
+      if (pendingTrip.type != tripType) {
+        this.updateTripType(pendingTrip, tripType)
+      }
       await this.saveWaypoint(vehicle)
       this.observer.onTripStarted(await this.getPendingTripsCount())
       return
@@ -348,6 +348,7 @@ export class MilesRelationalStore {
       const trip = new Trip()
       trip.milesId = vehicle.idVehicle
       trip.fromBooking = fromBooking
+      trip.type = determineTripType(vehicle)
       trip.discount = vehicle.RentalPrice_discountSource ?? null
       await manager.save(trip)
       const startPoint = await mapMilesWaypoint(
@@ -359,6 +360,15 @@ export class MilesRelationalStore {
       trip.startPoint = startPoint
       await manager.save(trip)
     })
+  }
+
+  private async updateTripType(
+    trip: Trip,
+    tripType: TripType,
+    manager = this.manager
+  ) {
+    trip.type = tripType
+    await manager.save(trip)
   }
 
   public async startTripFromLastKnown(vehicleId: number) {
