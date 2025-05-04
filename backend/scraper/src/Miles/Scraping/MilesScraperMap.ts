@@ -84,6 +84,7 @@ export default class MilesScraperMap extends BaseMilesScraper<apiVehicleJsonPars
 
         const request = this.abfahrt.createVehicleSearch(city.area)
             .setMaxConcurrent(16)
+            .setZoomLevel(0)
         applyMilesMapScrapingFilters(city, request, this.cycleTime);
 
         request.addEventListener("fetchCompleted", handleFetchResult);

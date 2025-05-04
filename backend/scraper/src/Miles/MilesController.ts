@@ -1,13 +1,14 @@
 import { WriteApi } from "@influxdata/influxdb-client"
 import { MilesClient } from "@koenidv/abfahrt"
 import clc from "cli-color"
-import { DataSource } from "typeorm"
+import { DataSource, EntityManager } from "typeorm"
 
 import berlinPostalCodes from "../assets/berlin_plz_simple.json"
 import env from "../env"
 import { SystemController } from "../SystemController"
 import MilesDataHandler from "./DataStore/MilesDataHandler"
 import { MilesRelationalStoreObserver } from "./MilesRelationalStoreObserver"
+import { MetaScraperMilesDensity } from "./Scraping/MetaScraperMilesDensity"
 import MilesScraperCitiesMeta from "./Scraping/MilesScraperCitiesMeta"
 import MilesScraperHub from "./Scraping/MilesScraperHub"
 import MilesScraperMap from "./Scraping/MilesScraperMap"
@@ -22,6 +23,7 @@ const RPM_MAP = env.rpm_map
 const RPM_CITES = env.rpm_cities
 const RPM_HUBS = env.rpm_hubs
 const HUB_LIST = env.hub_list
+const MPC_DENSITY = env.mpc_miles_density
 
 export default class MilesController {
   private systemController: SystemController
@@ -43,7 +45,13 @@ export default class MilesController {
     this.systemController = systemController
 
     const abfahrt = new MilesClient()
-    const dataHandler = this.createDataHandler(appDataSource, observerWriteApi)
+    abfahrt.setRandomDeviceKey()
+    const postalLookup = this.createPostalCodeLookup()
+    const dataHandler = this.createDataHandler(
+      appDataSource,
+      observerWriteApi,
+      postalLookup
+    )
 
     const scraperMap = this.startMapScraper(abfahrt, dataHandler)
     this.startCitiesMetaScraper(abfahrt, scraperMap)
@@ -53,18 +61,28 @@ export default class MilesController {
 
     this.startHubScraper(abfahrt, dataHandler)
 
+    this.startDensityMetaScraper(
+      appDataSource.manager,
+      postalLookup,
+      dataHandler
+    )
+
     this.populateVehiclesQueue(scraperVehicles, dataHandler)
+  }
+
+  private createPostalCodeLookup() {
+    return new PostalCodeLookup(
+      berlinPostalCodes as { features: PostalCodeFeature[] }
+    )
   }
 
   private createDataHandler(
     appDataSource: DataSource,
-    observerWriteApi: WriteApi
+    observerWriteApi: WriteApi,
+    postalLookup: PostalCodeLookup
   ): MilesDataHandler {
     this.dataSource = appDataSource
     const observer = new MilesRelationalStoreObserver(observerWriteApi)
-    const postalLookup = new PostalCodeLookup(
-      berlinPostalCodes as { features: PostalCodeFeature[] }
-    )
     this.dataHandler = new MilesDataHandler(
       this.dataSource,
       observer,
@@ -139,6 +157,24 @@ export default class MilesController {
     if (process.argv.includes("--start") && RPM_MAP > 0)
       this.scraperHubs.start()
     return this.scraperHubs
+  }
+
+  private startDensityMetaScraper(
+    entityManager: EntityManager,
+    postalLookup: PostalCodeLookup,
+    dataHandler: MilesDataHandler
+  ): MetaScraperMilesDensity {
+    const densityMetaScraper = new MetaScraperMilesDensity(
+      MPC_DENSITY,
+      0,
+      [...postalLookup.listPostalCodes().values()],
+      "miles-meta-density",
+      this.systemController,
+      entityManager
+    ).addListener(dataHandler.handleDensityResult.bind(dataHandler))
+    if (process.argv.includes("--start") && MPC_DENSITY > 0)
+      densityMetaScraper.start()
+    return densityMetaScraper
   }
 
   private async populateVehiclesQueue(

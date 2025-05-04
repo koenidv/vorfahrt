@@ -4,10 +4,14 @@ import {
 } from "@koenidv/abfahrt"
 import { apiVehicleJsonParsed } from "@koenidv/abfahrt/dist/src/miles/apiTypes"
 import clc from "cli-color"
+import { MilesRelationalStoreObserver } from "Miles/MilesRelationalStoreObserver"
+import {
+  MilesDensityResult,
+  MilesDensitySource,
+} from "Miles/Scraping/MetaScraperMilesDensity"
+import { PostalCodeLookup } from "Miles/utils/PostcalCodeLookup"
 import { DataSource } from "typeorm"
 
-import { MilesRelationalStoreObserver } from "Miles/MilesRelationalStoreObserver"
-import { PostalCodeLookup } from "Miles/utils/PostcalCodeLookup"
 import { SOURCE_TYPE, ValueSource } from "../../types"
 import { MilesCityMeta } from "../Miles.types"
 import { MilesMapSource } from "../Scraping/MilesScraperMap"
@@ -75,6 +79,15 @@ export default class MilesDataHandler {
     } else if (source.source === SOURCE_TYPE.PERCENTAGE) {
       this.handleDisenqueuedVehicles(vehicles)
     }
+  }
+
+  async handleDensityResult(
+    result: MilesDensityResult[],
+    source: MilesDensitySource
+  ) {
+    result.forEach((r) => {
+      this.relationalStore.saveDensity(source.postcode, r.counts)
+    }, this)
   }
 
   private async handleSingleVehicleResponse(

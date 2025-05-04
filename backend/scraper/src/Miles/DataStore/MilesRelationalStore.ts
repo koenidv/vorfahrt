@@ -7,6 +7,7 @@ import {
   Booking,
   City,
   DiscountChange,
+  MilesDensity,
   Trip,
   TripType,
   VehicleLastKnown,
@@ -15,11 +16,11 @@ import {
   VehicleSize,
 } from "@vorfahrt/shared"
 import clc from "cli-color"
-import { determineTripType } from "../compare/determineTripType"
 import { EntityManager, IsNull } from "typeorm"
 
 import env from "../../env"
 import GeoPoint from "../../GeoPoint"
+import { determineTripType } from "../compare/determineTripType"
 import { diffLastKnown, DiffResult } from "../compare/diffLastKnown"
 import { MilesCityMeta, MilesVehicleDetails } from "../Miles.types"
 import { MilesRelationalStoreObserver } from "../MilesRelationalStoreObserver"
@@ -32,6 +33,7 @@ import {
   RESTORE_NORMAL_STATES,
   RESTORE_SLOW_STATES,
 } from "./MilesRelationalStore.config"
+import { MilesDensityResult } from "Miles/Scraping/MetaScraperMilesDensity"
 
 export class MilesRelationalStore {
   manager: EntityManager
@@ -269,6 +271,10 @@ export class MilesRelationalStore {
     lastKnown.status = vehicle.idVehicleStatus.trim()
     lastKnown.latitude = vehicle.Latitude
     lastKnown.longitude = vehicle.Longitude
+    lastKnown.postcode = await this.getPostalCode(
+      vehicle.Longitude,
+      vehicle.Latitude
+    )
     const charging =
       vehicle.EVPlugged ||
       vehicle.JSONFullVehicleDetails?.vehicleBanner.some(
@@ -541,5 +547,19 @@ export class MilesRelationalStore {
       )
       this.observer.onDbError(e ?? {})
     }
+  }
+
+  public async saveDensity(
+    postcode: string,
+    counts: MilesDensityResult["counts"],
+  ) {
+    const density = new MilesDensity()
+    density.postcode = postcode
+    density.small = counts.small ?? 0
+    density.medium = counts.medium ?? 0
+    density.large = counts.large ?? 0
+    density.extralarge = counts.extraLarge ?? 0
+    density.premium = counts.premium ?? 0
+    this.manager.save(density)
   }
 }

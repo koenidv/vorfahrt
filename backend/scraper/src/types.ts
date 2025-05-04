@@ -26,6 +26,7 @@ export enum SOURCE_TYPE {
     HUB = "hub",
     CITY_META = "city-meta",
     VEHICLE = "vehicle",
+    MILES_DENSITY = "miles-density",
     TRAFFIC_FLOW = "traffic-flow",
     WEATHER = "weather",
 }

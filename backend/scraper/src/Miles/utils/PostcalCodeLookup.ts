@@ -59,7 +59,6 @@ export class PostalCodeLookup {
           : turf.multiPolygon(feature.geometry.coordinates)
 
       if (turf.booleanPointInPolygon(turf.point(point), polygon)) {
-        console.log("Postal code found for", point, feature.properties.plz)
         return feature.properties.plz
       }
     }
@@ -67,5 +66,13 @@ export class PostalCodeLookup {
     console.log("No postal code found for", point)
 
     return null
+  }
+
+  listPostalCodes(): Set<string> {
+    const postalCodes = new Set<string>()
+    for (const feature of this.postalCodePolygons.values()) {
+      postalCodes.add(feature.properties.plz)
+    }
+    return postalCodes
   }
 }

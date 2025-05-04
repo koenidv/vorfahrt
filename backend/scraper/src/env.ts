@@ -46,6 +46,7 @@ const env = {
     ? String(process.env.SCRAPE_SINGLE_CITY_ID)
     : null,
   rpm_hubs: process.env.RPM_HUBS ? parseInt(process.env.RPM_HUBS) : 6,
+  mpc_miles_density: process.env.MILES_DENSITY_MINS ? parseFloat(process.env.MILES_DENSITY_MINS) : 5,
   hub_list: process.env.HUB_LIST
     ? assertString(process.env.HUB_LIST, "HUB_LIST")
         .split(",")

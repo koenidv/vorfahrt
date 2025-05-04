@@ -24,7 +24,7 @@ export class VehicleLastKnown {
   vehicle: VehicleMeta;
 
   @Column()
-  @Index({ })
+  @Index()
   status: string;
 
   @Column({ type: "float" })
@@ -32,6 +32,10 @@ export class VehicleLastKnown {
 
   @Column({ type: "float" })
   longitude: number;
+
+  @Column({ type: "varchar", nullable: true })
+  @Index()
+  postcode: string?;
 
   @Column()
   charging: boolean;
@@ -60,5 +64,6 @@ export class VehicleLastKnown {
   @UpdateDateColumn({
     precision: 0,
   })
+  @Index()
   updated: Date;
 }

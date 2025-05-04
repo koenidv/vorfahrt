@@ -40,11 +40,12 @@ function applyStrategy(mapSearch: MilesAreaSearch, singleFilter: boolean) {
     // Berlin QUADRANTS_WITH_CLUSTERS: 4759 vehicles (4726 occurences) in 288 requests, 109s 
     // Berlin QUADRANTS_ALL: 5507 vehicles (5456 occurences) in 335 requests, 120s
     // if (singleFilter) {
-        mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_CLUSTERS);
+        mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_ALL_WITH_MAX_VEHICLES);
     // } else {
     //     mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_VEHICLES);
     // }
     // fixme MILES no longer delivers vehicles when there are clusters
+    // fixme MILES no longer delivers clusters under certain conditions, only maxed vehicles
     // mapSearch.setFetchingStrategy(FETCHING_STRATEGY.QUADRANTS_WITH_VEHICLES);
 }
 
