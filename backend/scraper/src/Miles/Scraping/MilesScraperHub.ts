@@ -78,6 +78,14 @@ export default class MilesScraperHub extends BaseMilesScraper<
       )
     const result = await request.execute()
 
+    if (!result.Data.vehicles) {
+      this.logError(
+        `No vehicles found for hub ${hubId}: ${result.Result} ${result.Data.response.Result} ${result.ResponseText} ${result.Data.response.AdditionalInfo}`
+      )
+      this.observer.requestExecuted(RequestStatus.API_ERROR, 0, hubId)
+      return
+    }
+
     const vehicles = result.Data.vehicles.map((vehicle) =>
       applyJsonParseBehaviourToVehicle(vehicle, JsonParseBehaviour.PARSE)
     )
