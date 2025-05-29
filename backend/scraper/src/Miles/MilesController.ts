@@ -23,7 +23,7 @@ const RPM_MAP = env.rpm_map
 const RPM_CITES = env.rpm_cities
 const RPM_HUBS = env.rpm_hubs
 const HUB_LIST = env.hub_list
-const MPC_DENSITY = env.mpc_miles_density
+const DENSITY_MINUTES = env.mpc_miles_density
 
 export default class MilesController {
   private systemController: SystemController
@@ -165,14 +165,14 @@ export default class MilesController {
     dataHandler: MilesDataHandler
   ): MetaScraperMilesDensity {
     const densityMetaScraper = new MetaScraperMilesDensity(
-      MPC_DENSITY,
+      1 / DENSITY_MINUTES,
       0,
       [...postalLookup.listPostalCodes().values()],
       "miles-meta-density",
       this.systemController,
       entityManager
     ).addListener(dataHandler.handleDensityResult.bind(dataHandler))
-    if (process.argv.includes("--start") && MPC_DENSITY > 0)
+    if (process.argv.includes("--start") && DENSITY_MINUTES > 0)
       densityMetaScraper.start()
     return densityMetaScraper
   }
