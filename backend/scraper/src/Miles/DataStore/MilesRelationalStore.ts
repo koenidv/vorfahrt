@@ -555,11 +555,11 @@ export class MilesRelationalStore {
   ) {
     const density = new MilesDensity()
     density.postcode = postcode
-    density.small = counts.small ?? 0
-    density.medium = counts.medium ?? 0
-    density.large = counts.large ?? 0
-    density.extralarge = counts.extraLarge ?? 0
-    density.premium = counts.premium ?? 0
+    density.small = counts.S ?? 0
+    density.medium = counts.M ?? 0
+    density.large = counts.L ?? 0
+    density.extralarge = counts.X ?? 0
+    density.premium = counts.P ?? 0
     this.manager.save(density)
   }
 }

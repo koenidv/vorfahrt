@@ -16,11 +16,11 @@ export interface MilesDensitySource extends ValueSource {
 }
 
 enum VehicleSizeClass {
-  SMALL = "small",
-  MEDIUM = "medium",
-  LARGE = "large",
-  EXTRA_LARGE = "extraLarge",
-  PREMIUM = "premium",
+  SMALL = "S",
+  MEDIUM = "M",
+  LARGE = "L",
+  EXTRA_LARGE = "X",
+  PREMIUM = "P",
 }
 
 export interface MilesDensityResult {
