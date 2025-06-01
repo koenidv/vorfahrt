@@ -133,14 +133,15 @@ export default class MilesDataHandler {
       )
       return
     }
-    this._vehicleScraper.register(vehicleIds, QueryPriority.HIGH)
-
+    
     // falsely started trip for lifecycled vehicles will be deleted once the vehicle query completes
     await Promise.allSettled(
       vehicleIds.map(async (vehicleId) => {
         await this.relationalStore.startTripFromLastKnown(vehicleId)
       })
     )
+    
+    this._vehicleScraper.register(vehicleIds, QueryPriority.HIGH)
   }
 
   private handleDisenqueuedVehicles(vehicles: apiVehicleJsonParsed[]) {
